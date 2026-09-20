@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
+
 from __future__ import annotations
 
 import importlib.util
@@ -5,6 +8,7 @@ import json
 import runpy
 import subprocess
 import sys
+from importlib.machinery import ModuleSpec
 from pathlib import Path
 
 import pytest
@@ -34,10 +38,10 @@ def _run_setup_py(
 
     real_find_spec = importlib.util.find_spec
 
-    def fake_find_spec(name: str, *args: object, **kwargs: object) -> object | None:
+    def fake_find_spec(name: str, package: str | None = None) -> ModuleSpec | None:
         if name == "torch_npu":
-            return object() if has_torch_npu else None
-        return real_find_spec(name, *args, **kwargs)
+            return ModuleSpec(name, loader=None) if has_torch_npu else None
+        return real_find_spec(name, package)
 
     real_path_exists = Path.exists
 
@@ -116,19 +120,25 @@ def test_ascend_ops_build_is_disabled_by_default_on_gpu(
 
 
 @pytest.mark.parametrize(
-    ("kwargs", "expected"),
+    ("has_torch_npu", "has_ascend_toolkit", "ascend_env_var"),
     [
-        ({"has_torch_npu": True}, ["afd_plugin._C_ascend"]),
-        ({"has_ascend_toolkit": True}, ["afd_plugin._C_ascend"]),
-        ({"ascend_env_var": "ASCEND_HOME_PATH"}, ["afd_plugin._C_ascend"]),
+        (True, False, None),
+        (False, True, None),
+        (False, False, "ASCEND_HOME_PATH"),
     ],
 )
 def test_ascend_ops_build_is_enabled_by_default_on_npu(
     monkeypatch: pytest.MonkeyPatch,
-    kwargs: dict[str, object],
-    expected: list[str],
+    has_torch_npu: bool,
+    has_ascend_toolkit: bool,
+    ascend_env_var: str | None,
 ):
-    assert _run_setup_py(monkeypatch, **kwargs) == expected
+    assert _run_setup_py(
+        monkeypatch,
+        has_torch_npu=has_torch_npu,
+        has_ascend_toolkit=has_ascend_toolkit,
+        ascend_env_var=ascend_env_var,
+    ) == ["afd_plugin._C_ascend"]
 
 
 @pytest.mark.parametrize(
