@@ -97,6 +97,9 @@ npu_op_library(cust_op_proto GRAPH
     ${ops_srcs}
     ${proto_src}
 )
+target_include_directories(cust_op_proto PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+)
 target_compile_options(cust_op_proto PRIVATE
     -fvisibility=hidden
 )
@@ -110,6 +113,9 @@ set_source_files_properties(${fallback_src} PROPERTIES GENERATED TRUE)
 npu_op_library(cust_optiling TILING
     ${ops_srcs}
     ${fallback_src}
+)
+target_include_directories(cust_optiling PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 target_compile_options(cust_optiling PRIVATE
     -fvisibility=hidden

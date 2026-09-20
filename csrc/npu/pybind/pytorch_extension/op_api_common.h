@@ -118,7 +118,8 @@ constexpr aclDataType kATenScalarTypeToAclDataTypeTable
   memcpy(g_hashBuf + g_hashOffset, data_expression, size_expression); \
   g_hashOffset += size_expression;
 
-bool IsOpInputBaseFormat(const at::Tensor &tensor)
+// Inline linkage keeps this header safe to share across binding translation units.
+inline bool IsOpInputBaseFormat(const at::Tensor &tensor)
 {
     if (!tensor.is_privateuseone()) {
         return true;

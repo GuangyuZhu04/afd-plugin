@@ -262,11 +262,29 @@ def _run_select_ops(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def test_select_ops_resolves_registry_order():
-    result = _run_select_ops("--soc", "ascend910_93", "--shmem", "0")
+@pytest.mark.parametrize(
+    ("soc", "expected"),
+    [
+        (
+            "ascend910_93",
+            [
+                "a2e",
+                "e2a",
+                "afd_async_dispatch_send",
+                "afd_async_dispatch_recv",
+                "afd_async_combine_send",
+                "afd_async_combine_recv",
+            ],
+        ),
+        ("ascend950", ["a2e", "e2a"]),
+    ],
+)
+@pytest.mark.parametrize("shmem", ["0", "1"])
+def test_select_ops_resolves_registry_order(soc: str, expected: list[str], shmem: str):
+    result = _run_select_ops("--soc", soc, "--shmem", shmem)
 
     assert result.returncode == 0, result.stderr
-    assert result.stdout.split() == ["a2e", "e2a"]
+    assert result.stdout.split() == expected
 
 
 def test_select_ops_accepts_explicit_operator_subset():

@@ -1,0 +1,311 @@
+{
+  "source_project": "cam_async-routed-only-candidate",
+  "source_snapshot": "Local source snapshot supplied for this integration; no Git metadata is present.",
+  "import_date": "2026-09-20",
+  "protocol": "cam_async_routed_only_compact_v2",
+  "supported_soc": [
+    "ascend910_93"
+  ],
+  "scope": "Four routed-only dispatch/combine native operators. Existing CAMAsyncAFDConnector integration is unchanged.",
+  "source_license": "LICENSES/mit.txt",
+  "source_license_sha256": "ef6dbc56ea6bd2e5b5193c960f65f308ad28228f52c9049bc1cfc412428c2621",
+  "vendored_license": "LICENSE",
+  "source_protocol_reference": "doc/routed_only_compact_migration.md",
+  "source_protocol_reference_sha256": "b03a968e63cf650ebe642b53ce5b2c5cd6ee2d5ee310174d5b984548187ad0cc",
+  "files": [
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_send/op_api/aclnn_cam_moe_distribute_dispatch_send.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_send/op_api/aclnn_afd_async_dispatch_send.cpp",
+      "source_sha256": "101be7018cdaa38a083ba9a1f3c91c2384f8b19d60093b19c5ba631089ac8a4b",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "fd9a3afddb296c3cc0b46bfec8c87642f52f40fa50276360529a99a188a9a52e"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_send/op_api/aclnn_cam_moe_distribute_dispatch_send.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_send/op_api/aclnn_afd_async_dispatch_send.h",
+      "source_sha256": "3787df5d41592e7b5a9f28de6589d7d6446aea8199497d322f2a6cd5f3ecfc1c",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "b1b4d7cafbe4c540774eb415828a8d75f61845372412daa450088df0a3bdc7c5"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_send/op_host/cam_moe_distribute_dispatch_send.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_send/op_host/afd_async_dispatch_send.cpp",
+      "source_sha256": "ce81e8232f45c788780079cbecc877919b932d7a5f2454631a13288e260c2974",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "694ee326a3f697cb578b30f7e466ab4c6fe3c5ccd5837c829c4e9d05aa03beac"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_send/op_kernel/cam_moe_distribute_dispatch_send.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_send/op_kernel/afd_async_dispatch_send.cpp",
+      "source_sha256": "425624b544d9b64e2bfc74ca25e9f37a9d3b62422c6499ccd985825a7a63caf8",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "9dbb7de756bc0784ee0f6d87f22c7c0ee9c94a3b6629d9798fbbad1b7fb912d5"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_send/op_kernel/cam_moe_distribute_dispatch_send.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_send/op_kernel/afd_async_dispatch_send.h",
+      "source_sha256": "7eb94edfef79efe05a69840494e9b7b252d0902982212bf3811c669f3ae077ae",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Include the isolated CAM async communication header.",
+        "Include the isolated CAM async HCCL resource header.",
+        "Remove inherited trailing whitespace; no semantic change."
+      ],
+      "vendored_sha256_lf": "af16bd9a664e041ddce7ff400f341bb3eff0e3b3b778f5306b94f227d1ae813b"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_send/op_kernel/cam_moe_distribute_dispatch_send_tiling.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_send/op_kernel/afd_async_dispatch_send_tiling.h",
+      "source_sha256": "153768a365a746c1eac3df210d9f151358a967f8c9c41d138f408695f8a48f2b",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "12f182ebeda95a144308606150b87c9a83c9b5afd72cb463878dcb31979b19d4"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_recv/op_api/aclnn_cam_moe_distribute_dispatch_recv.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_api/aclnn_afd_async_dispatch_recv.cpp",
+      "source_sha256": "5aaa1715a3feffec422b9f06b7c23800514a859ea3d2cddf5afaf87cfe372349",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "ef1bd0ccd1e974a868fcdeab5f5eb54adad6c8bbc43d2e1106c31f608989ef2e"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_recv/op_api/aclnn_cam_moe_distribute_dispatch_recv.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_api/aclnn_afd_async_dispatch_recv.h",
+      "source_sha256": "23c714e2e592107273559f7063bb9a7e36e232c54842ab3624eb6435dc55d1bd",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "0d892f176d5a4e11745758ba38c68269401bc9e7f672d0f24a46c8594326c247"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_recv/op_host/cam_moe_distribute_dispatch_recv.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_host/afd_async_dispatch_recv.cpp",
+      "source_sha256": "b701292435fea86583fe280c2ab87682c185b354477081acffc84464952eccfe",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "f49f9dd859e7d8e110bcfe26079c55530667fa52120855c55807eb4628a6f07a"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_recv/op_kernel/cam_moe_distribute_dispatch_recv.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_kernel/afd_async_dispatch_recv.cpp",
+      "source_sha256": "d29751e81371ebbfba286b23e72464fed66f593091fb1d98095983c35aef0a5c",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "699b36e99fe4fa7dcae35a6c86b33ac4bccd38735ce5411e13a811beb39d4a25"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_recv/op_kernel/cam_moe_distribute_dispatch_recv.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_kernel/afd_async_dispatch_recv.h",
+      "source_sha256": "9f8106e5c932346f3fb198107d7792f96546f4f05c8bff2f6f198018669f9a2f",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Include the isolated CAM async communication header.",
+        "Include the isolated CAM async HCCL resource header.",
+        "Remove inherited trailing whitespace; no semantic change."
+      ],
+      "vendored_sha256_lf": "54b036ad0d9449eff63bb040864469284c12e0c20c7392e9752fe2aae4945739"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_dispatch_recv/op_kernel/cam_moe_distribute_dispatch_recv_tiling.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_kernel/afd_async_dispatch_recv_tiling.h",
+      "source_sha256": "e02c0e5e38fe70d1c293c92a606b08333099600d739fdcbc8720f18bcf384677",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "8ad52d9be5472d3d526d3c198a71b41f338d8431714138730d4d7b887f7bbe0e"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_send/op_api/aclnn_cam_moe_distribute_combine_send.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_send/op_api/aclnn_afd_async_combine_send.cpp",
+      "source_sha256": "1fd3be4b84a752fd887270254d873a91cb7c7875eac3358c410ef562975a8055",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "2861ab3224642884e780e1e6e52620ed89afbe782d3c393cb8684d7fca9ff926"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_send/op_api/aclnn_cam_moe_distribute_combine_send.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_send/op_api/aclnn_afd_async_combine_send.h",
+      "source_sha256": "62263162b80201f5fc49bd054406018986b6f8ca87bf651b7ba73d2371c68370",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "382ec6e6d46b5d8936defd5e0d3d37aa515a765a924296ee1f7b69ed40845358"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_send/op_host/cam_moe_distribute_combine_send.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_send/op_host/afd_async_combine_send.cpp",
+      "source_sha256": "31f93e7bf8fabb2f69b83667519763d2fe8c0f25b4d602a07c8963a4299170aa",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "eea91f0dd483c8eea80a5699a11beb8380dbab29baa4c3b19857d7b1af69d894"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_send/op_kernel/cam_moe_distribute_combine_send.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_send/op_kernel/afd_async_combine_send.cpp",
+      "source_sha256": "f82b8dad9d3c0e3bd060e1a254541743412c3c87e0d4cf844498e6d40e7ec154",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "134dc7c1a133f039492406b1dc5783b2be06abbb2214531788bc41a2f1cc9006"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_send/op_kernel/cam_moe_distribute_combine_send.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_send/op_kernel/afd_async_combine_send.h",
+      "source_sha256": "becb67b5295326e9f4e032548af39b3ae617cadbd2d3f0d301857859366b629e",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Include the isolated CAM async communication header.",
+        "Include the isolated CAM async HCCL resource header."
+      ],
+      "vendored_sha256_lf": "df2abebcdc356a2976de5b8475e03a530230573002eb24ffc8d36576d645deda"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_send/op_kernel/cam_moe_distribute_combine_send_tiling.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_send/op_kernel/afd_async_combine_send_tiling.h",
+      "source_sha256": "631be7b44955e9a026dce58f235f2a9e28fa35d0c562f61a994ad34497983862",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "f90c79b78322c588bd145ba4503aa6c8a5e3aa26c13c9d35940048fe8127e86d"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_recv/op_api/aclnn_cam_moe_distribute_combine_recv.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_recv/op_api/aclnn_afd_async_combine_recv.cpp",
+      "source_sha256": "987b15164970b913ab83617da00041877ccea09834c046f798b041695f9e2cc2",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "ecb911e741cc7bcdb5542322fcc05681bb1c15d509603a30a6194a488ebd2c73"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_recv/op_api/aclnn_cam_moe_distribute_combine_recv.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_recv/op_api/aclnn_afd_async_combine_recv.h",
+      "source_sha256": "16a831d3af9a1e16343baaaaf0b444c54580aa6f3eba39268b72e0030c76883c",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Add SPDX and the original package MIT copyright notice to the unheaded API file, with a source-manifest reference."
+      ],
+      "vendored_sha256_lf": "8df02bc27aee996adfffd43b5dda80e4552ac28f83cdcba46382ec5d22fbab18"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_recv/op_host/cam_moe_distribute_combine_recv.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_recv/op_host/afd_async_combine_recv.cpp",
+      "source_sha256": "3daba3b31d7bc1720d587beeb0c001398664299c7b2c687b6b71572b1fd5ec65",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "6ca70bf9da2ddbf106fb130deb8c083d37f8523244af9fb5fbe4f4935e5a3d17"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_recv/op_kernel/cam_moe_distribute_combine_recv.cpp",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_recv/op_kernel/afd_async_combine_recv.cpp",
+      "source_sha256": "6dac655574155b42e608155b492c48d6f0292fcff0a8f6166251f4069b9351bc",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "00d3c65c1f0103d56deb5d9c8a2516784c17bc7d6e288d9b6868a881e1be47d3"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_recv/op_kernel/cam_moe_distribute_combine_recv.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_recv/op_kernel/afd_async_combine_recv.h",
+      "source_sha256": "a89765add1858f33eb2d964c149997a892b4a2715f48785c5cb50ca390c9f6cb",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC.",
+        "Include the isolated CAM async communication header.",
+        "Include the isolated CAM async HCCL resource header."
+      ],
+      "vendored_sha256_lf": "b892cdd7fdeb6049da850b8ec4645a047042b091383d5c10c294fa364dabc3ad"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/cam_moe_distribute_combine_recv/op_kernel/cam_moe_distribute_combine_recv_tiling.h",
+      "destination": "csrc/npu/ascend_kernels/afd_async_combine_recv/op_kernel/afd_async_combine_recv_tiling.h",
+      "source_sha256": "da3f485672cd364c2ae7f42ac44f5128e1bd1e768bf43e3cee9dd5b4e87bcb08",
+      "afd_changes": [
+        "Rename CANN registration, ACLNN public/inner interfaces, kernel entry, tiling types, filenames, includes, and include guards to AfdAsync/afd_async/AFD_ASYNC."
+      ],
+      "vendored_sha256_lf": "b14ba543e380528cea5b4bf0ed7dff7aa7083aad3a51e91f6749ffbd5e5ce2d5"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/utils/op_host/ops_log.h",
+      "destination": "csrc/npu/ascend_kernels/utils/op_host/ops_log.h",
+      "source_sha256": "f95a75ac8d56b14c593418db93c288651c35baf11db10f1ef99b8c26be3a8e9b",
+      "afd_changes": [],
+      "vendored_sha256_lf": "f95a75ac8d56b14c593418db93c288651c35baf11db10f1ef99b8c26be3a8e9b"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/utils/op_host/ops_error.h",
+      "destination": "csrc/npu/ascend_kernels/utils/op_host/ops_error.h",
+      "source_sha256": "967dc46f570b26dffc09baffb65af62a37b6eeada45910d48c802658afefe72e",
+      "afd_changes": [],
+      "vendored_sha256_lf": "967dc46f570b26dffc09baffb65af62a37b6eeada45910d48c802658afefe72e"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/utils/op_kernel/comm_group.h",
+      "destination": "csrc/npu/ascend_kernels/utils/op_kernel/cam_async_comm_group.h",
+      "source_sha256": "0d59295884e7b1594b142cdd71057528ee1c8c05c6dbe9e67da3d30ddd48ae79",
+      "afd_changes": [
+        "Isolate the shared header filename and include guard from synchronous CAMP2P."
+      ],
+      "vendored_sha256_lf": "a8d3f7b6c08d2e385de0a4516e919c4f6067c676d3e8b0c3d06d4e074d2b6fe7"
+    },
+    {
+      "source": "src/comm_operator/ascend_kernels/utils/op_kernel/comm_args.h",
+      "destination": "csrc/npu/ascend_kernels/utils/op_kernel/cam_async_comm_args.h",
+      "source_sha256": "028070451ee6515842f71b582aace88d726994d948bf0e6ed4cbcc48b5a0b9c7",
+      "afd_changes": [
+        "Isolate the shared header filename and include guard from synchronous CAMP2P."
+      ],
+      "vendored_sha256_lf": "138e105418c9a757abd55b40324ce13464572d5bfee220fe4a4f7a2bc8249d74"
+    }
+  ],
+  "cann_registration": {
+    "source_prefix": "CamMoeDistribute",
+    "afd_prefix": "AfdAsync",
+    "public_aclnn_prefix": "aclnnAfdAsync",
+    "inner_aclnn_prefix": "aclnnInnerAfdAsync",
+    "kernel_prefix": "afd_async_",
+    "purpose": "Avoid CANN registration and ACLNN symbol collisions with externally installed CAM operators."
+  },
+  "protocol_warning": "All communication participants must use compact_v2. Namespace isolation does not permit mixed old/new wire layouts or shared communication-window state.",
+  "mechanical_changes": {
+    "CamMoeDistribute": "AfdAsync",
+    "cam_moe_distribute": "afd_async",
+    "ACLNN_CAM_MOE_DISTRIBUTE": "ACLNN_AFD_ASYNC",
+    "ASCENDC_CAM_H_COMM_MOE_DISTRIBUTE": "ASCENDC_AFD_ASYNC",
+    "CAM_H_COMM_MOE_DISTRIBUTE": "ASCENDC_AFD_ASYNC",
+    "CAM_MOE_DISTRIBUTE": "AFD_ASYNC",
+    "\"comm_args.h\"": "\"cam_async_comm_args.h\"",
+    "\"comm_group.h\"": "\"cam_async_comm_group.h\"",
+    "COMM_ARGS_H": "AFD_CAM_ASYNC_COMM_ARGS_H",
+    "COMM_GROUP_H": "AFD_CAM_ASYNC_COMM_GROUP_H"
+  },
+  "text_normalization": "Files with AFD changes use LF line endings and a terminating newline. Unmodified files preserve their source bytes.",
+  "hash_normalization": {
+    "source_sha256": "SHA-256 of original source bytes, without normalization.",
+    "vendored_sha256_lf": "SHA-256 of vendored bytes after replacing CRLF with LF; stable across Git checkout line endings."
+  },
+  "op_api_provenance_header": "// SPDX-License-Identifier: MIT\n// Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.\n// Source and changes: csrc/npu/ascend_kernels/cam_async_sources.json.\n\n",
+  "vendored_license_note": "The root LICENSE includes the original MIT notice for these imported CAM asynchronous operator sources."
+}

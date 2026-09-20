@@ -22,7 +22,7 @@ esac
 
 NPU_CSRC_DIR="${ROOT_DIR}/csrc/npu"
 rm -rf "${NPU_CSRC_DIR}/build" "${NPU_CSRC_DIR}/output"
-echo "building AFD ACLNN custom ops a2e;e2a for ${SOC_ARG}"
+echo "building AFD ACLNN custom ops selected from the registry for ${SOC_ARG}"
 bash "${NPU_CSRC_DIR}/scripts/compile_ascend_proj.sh" \
   "${NPU_CSRC_DIR}" \
   "${SOC_ARG}" \
