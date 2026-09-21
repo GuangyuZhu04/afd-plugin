@@ -312,6 +312,17 @@ real CAM dispatch/combine operator namespace. Its loader verifies
 `async_dispatch_send`, `async_dispatch_recv`, `async_combine_send`, and
 `async_combine_recv` when the connector initializes.
 
+The 910C native package additionally includes four experimental plugin-owned
+routed-only CAM operators under `torch.ops.afd_ascend.afd_async_*`. CANN types,
+ACLNN public/inner symbols, and kernel entries have an AFD prefix to isolate
+them from external CAM registrations. The 950 package does not build or
+register these operators. They use compact routed-only metadata and do not
+transmit shared-expert payloads; the existing connector and model contracts
+are unchanged. A future connector migration must update metadata, shared-expert
+computation ownership, and lifecycle handling together, as described in
+[the routed-only guide](../../npu/CAM_ASYNC_ROUTED_OPS.md). Device validation
+is required before this native integration can support a runtime claim.
+
 ### NPU profiling
 
 Attention and FFN use independent optional `torch_npu.profiler` instances,

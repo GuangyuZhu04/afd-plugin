@@ -85,6 +85,7 @@ class BuildAscendOps(build_ext):
             f"-DCMAKE_BUILD_TYPE={os.environ.get('CMAKE_BUILD_TYPE', 'Release')}",
             f"-DCMAKE_INSTALL_PREFIX={install_prefix}",
             f"-DPYTHON_EXECUTABLE={sys.executable}",
+            f"-DAFD_SOC_VERSION={os.environ.get('SOC_VERSION', '910c')}",
         ]
         try:
             pybind11_cmake_dir = subprocess.check_output(

@@ -49,6 +49,23 @@ pybind11_add_module(afd_plugin_ascend_C
   "${CMAKE_CURRENT_LIST_DIR}/pytorch_extension/NPUBridge.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/pytorch_extension/NPUStorageImpl.cpp")
 
+# Keep registration aligned with the run package selected by setup.py. The
+# asynchronous CAM kernels use the A3 HCCL resource ABI and do not support A5.
+if(NOT DEFINED AFD_SOC_VERSION OR AFD_SOC_VERSION STREQUAL "")
+  set(AFD_SOC_VERSION "$ENV{SOC_VERSION}")
+endif()
+if(AFD_SOC_VERSION STREQUAL "")
+  set(AFD_SOC_VERSION "910c")
+endif()
+if(AFD_SOC_VERSION STREQUAL "910c" OR AFD_SOC_VERSION MATCHES "^ascend910_93")
+  target_sources(afd_plugin_ascend_C PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}/torch_binding_cam_async.cpp")
+elseif(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
+  message(STATUS "CAM asynchronous bindings disabled for Ascend 950")
+else()
+  message(FATAL_ERROR "Unsupported AFD_SOC_VERSION: ${AFD_SOC_VERSION}")
+endif()
+
 set_target_properties(afd_plugin_ascend_C PROPERTIES OUTPUT_NAME "_C_ascend")
 target_compile_definitions(afd_plugin_ascend_C PRIVATE TORCH_EXTENSION_NAME=_C_ascend)
 
