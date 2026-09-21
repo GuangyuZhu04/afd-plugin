@@ -12,6 +12,7 @@ constructs the native MoE module and exposes it through the runner-facing
 """
 
 from collections.abc import Callable, Iterable, Iterator
+from copy import copy
 from typing import Any
 
 import torch
@@ -73,6 +74,7 @@ def _checkpoint_weight_roles(
     name: str,
     *,
     attn_owns_gate: bool = True,
+    attention_shared_experts: bool = False,
 ) -> frozenset[str]:
     """Return the AFD owner for a DSV4 checkpoint path.
 
@@ -95,6 +97,8 @@ def _checkpoint_weight_roles(
     if stage in ("attn", "self_attn"):
         return frozenset((_ATTENTION_ROLE,))
     if stage in ("ffn", "mlp"):
+        if attention_shared_experts and remainder and remainder[0] == "shared_experts":
+            return frozenset((_ATTENTION_ROLE,))
         if remainder and remainder[0] == "gate":
             # Every router parameter, including the Hash id table, belongs to
             # each role that built a router: with the gate on Attention, the
@@ -116,9 +120,14 @@ def _iter_role_weights(
     *,
     role: str,
     attn_owns_gate: bool = True,
+    attention_shared_experts: bool = False,
 ) -> Iterator[tuple[str, torch.Tensor]]:
     for name, loaded_weight in weights:
-        if role in _checkpoint_weight_roles(name, attn_owns_gate=attn_owns_gate):
+        if role in _checkpoint_weight_roles(
+            name,
+            attn_owns_gate=attn_owns_gate,
+            attention_shared_experts=attention_shared_experts,
+        ):
             yield name, loaded_weight
 
 
@@ -165,6 +174,7 @@ class AFDDeepseekV4AttentionGateRemoteMoE(RemoteFFNProxy):
         config: Any,
         layer_idx: int,
         prefix: str,
+        vllm_config: VllmConfig,
     ) -> None:
         super().__init__(layer_idx=layer_idx)
         self.top_k = int(config.num_experts_per_tok)
@@ -175,6 +185,22 @@ class AFDDeepseekV4AttentionGateRemoteMoE(RemoteFFNProxy):
         self.topk_group = int(getattr(config, "topk_group", 1))
         self.routed_scaling_factor = float(
             getattr(config, "routed_scaling_factor", 1.5),
+        )
+        # Native SP MLP owns replicated shared weights and consumes local
+        # tokens, including FlashComm1 shards, without a TP reduction.
+        self.shared_experts = (
+            native.DeepseekV2MLP(
+                hidden_size=config.hidden_size,
+                intermediate_size=config.moe_intermediate_size
+                * config.n_shared_experts,
+                hidden_act=config.hidden_act,
+                swiglu_limit=getattr(config, "swiglu_limit", None),
+                quant_config=vllm_config.quant_config,
+                is_sequence_parallel=True,
+                prefix=f"{prefix}.shared_experts",
+            )
+            if config.n_shared_experts
+            else None
         )
         self.gate = ReplicatedLinear(
             config.hidden_size,
@@ -220,7 +246,10 @@ class AFDDeepseekV4AttentionGateRemoteMoE(RemoteFFNProxy):
             topk_weights=dispatch_payload.topk_weights,
             topk_ids=dispatch_payload.topk_ids,
         )
-        return restore_cam_dispatch_output(output, dispatch_payload.layout)
+        output = restore_cam_dispatch_output(output, dispatch_payload.layout)
+        if self.shared_experts is not None:
+            output = output + self.shared_experts(hidden_states)
+        return output
 
 
 class AFDDeepseekV4DecoderLayer(native.DeepseekV2DecoderLayer):
@@ -285,14 +314,22 @@ class AFDDeepseekV4DecoderLayer(native.DeepseekV2DecoderLayer):
                     config=config,
                     layer_idx=layer_idx,
                     prefix=f"{prefix}.mlp",
+                    vllm_config=vllm_config,
                 )
             else:
                 self.mlp = AFDDeepseekV4RemoteMoE(layer_idx=layer_idx)
         elif afd_config.role == _FFN_ROLE:
             self.self_attn = native.PPMissingLayer()
             _refresh_ascend_fused_moe()
+            moe_config = config
+            if afd_config.connector == AFD_ASYNC_CONNECTOR:
+                moe_config = copy(config)
+                # HF validates this public field as int, but pinned native
+                # MoE uses only None to omit shared construction (0 builds a
+                # zero-width MLP). Keep the original model config unchanged.
+                object.__setattr__(moe_config, "n_shared_experts", None)
             self.mlp = native.DeepseekV4MoE(
-                config=config,
+                config=moe_config,
                 parallel_config=parallel_config,
                 quant_config=quant_config,
                 prefix=f"{prefix}.mlp",
@@ -637,6 +674,7 @@ class AFDDeepseekV4ForCausalLM(native.AscendDeepseekV4ForCausalLM):
             weights,
             role=self.afd_role,
             attn_owns_gate=bool(self.afd_config.compute_gate_on_attention),
+            attention_shared_experts=self.afd_config.connector == AFD_ASYNC_CONNECTOR,
         )
         loaded = super().load_weights(role_weights)
         return loaded

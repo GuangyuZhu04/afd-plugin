@@ -77,6 +77,7 @@ def _vllm_stub() -> Iterator[None]:
 
 
 with _vllm_stub():
+    from afd_plugin.model_executor.models.npu import deepseek_v4_attention_gate
     from afd_plugin.model_executor.models.npu.deepseek_v4_attention_gate import (
         hash_input_ids_from_context,
         local_hash_input_ids,
@@ -308,3 +309,42 @@ def test_remote_moe_without_context_ids_raises_instead_of_sending_activations_on
         layer.forward(torch.zeros(3, 8))
 
     assert layer.sent == []
+
+
+@pytest.mark.parametrize(
+    "scoring_func,selector",
+    [
+        ("sqrtsoftplus", "_compute_sqrtsoftplus_topk"),
+        ("softmax", "_compute_standard_topk"),
+    ],
+)
+def test_dsv4_router_preserves_native_fp32_gate_precision(
+    monkeypatch, scoring_func, selector
+):
+    # These BF16 weights are exact, but BF16 GEMM rounds both logits to 1.25.
+    # Native FP32 accumulation keeps expert 1's slightly greater score.
+    hidden = torch.tensor([[1.0, 0.25]], dtype=torch.bfloat16)
+    weight = torch.tensor([[1.0, 1.0], [1.0, 1.0078125]], dtype=torch.float32)
+    moe = types.SimpleNamespace(
+        gate=types.SimpleNamespace(weight_fp32=weight),
+        scoring_func=scoring_func,
+    )
+    captured = []
+
+    def select(_moe, logits):
+        captured.append(logits)
+        ids = logits.argmax(dim=-1, keepdim=True)
+        return torch.ones_like(ids, dtype=torch.float32), ids
+
+    def unexpected_selector(*_args):
+        raise AssertionError("incorrect selector for scoring_func")
+
+    for name in ("_compute_sqrtsoftplus_topk", "_compute_standard_topk"):
+        monkeypatch.setattr(deepseek_v4_attention_gate, name, unexpected_selector)
+    monkeypatch.setattr(deepseek_v4_attention_gate, selector, select)
+    weights, ids = deepseek_v4_attention_gate.compute_attention_gate_topk(moe, hidden)
+
+    assert captured[0].dtype == torch.float32
+    torch.testing.assert_close(captured[0], torch.tensor([[1.25, 1.251953125]]))
+    assert ids.tolist() == [[1]]
+    assert weights.dtype == torch.float32
