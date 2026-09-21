@@ -318,15 +318,17 @@ def test_remote_moe_without_context_ids_raises_instead_of_sending_activations_on
         ("softmax", "_compute_standard_topk"),
     ],
 )
-def test_dsv4_router_preserves_native_fp32_gate_precision(
-    monkeypatch, scoring_func, selector
-):
-    # These BF16 weights are exact, but BF16 GEMM rounds both logits to 1.25.
-    # Native FP32 accumulation keeps expert 1's slightly greater score.
+def test_dsv4_router_uses_model_gate(monkeypatch, scoring_func, selector):
     hidden = torch.tensor([[1.0, 0.25]], dtype=torch.bfloat16)
-    weight = torch.tensor([[1.0, 1.0], [1.0, 1.0078125]], dtype=torch.float32)
+    router_logits = torch.tensor([[1.25, 1.251953125]], dtype=torch.float32)
+    gate_inputs = []
+
+    def gate(hidden_states):
+        gate_inputs.append(hidden_states)
+        return router_logits, None
+
     moe = types.SimpleNamespace(
-        gate=types.SimpleNamespace(weight_fp32=weight),
+        gate=gate,
         scoring_func=scoring_func,
     )
     captured = []
@@ -344,7 +346,8 @@ def test_dsv4_router_preserves_native_fp32_gate_precision(
     monkeypatch.setattr(deepseek_v4_attention_gate, selector, select)
     weights, ids = deepseek_v4_attention_gate.compute_attention_gate_topk(moe, hidden)
 
-    assert captured[0].dtype == torch.float32
-    torch.testing.assert_close(captured[0], torch.tensor([[1.25, 1.251953125]]))
+    assert len(gate_inputs) == 1
+    assert gate_inputs[0] is hidden
+    assert captured[0] is router_logits
     assert ids.tolist() == [[1]]
     assert weights.dtype == torch.float32
