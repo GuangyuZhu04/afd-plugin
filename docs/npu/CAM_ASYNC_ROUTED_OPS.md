@@ -31,10 +31,10 @@ would not isolate CANN operator types from an older external CAM package.
 The AFD prefix prevents registration-name collisions; it does not make the
 old and new communication protocols interoperable.
 
-The imported algorithm and communication layout come from the supplied local
-candidate snapshot. There was no Git metadata in that source directory.
-[The source manifest](../../csrc/npu/ascend_kernels/cam_async_sources.json)
-records the original file paths, hashes, and AFD adaptations.
+The operators are adapted from the MIT-licensed `cam_async-routed-only-candidate`
+snapshot, under `src/comm_operator/ascend_kernels/`. The integration renames
+operator symbols and shared headers for AFD isolation while preserving the
+compact routed-only communication layout.
 The complete upstream MIT copyright and permission notice is retained in
 [the repository license](../../LICENSE) and included in package license data.
 The candidate's separate build system,

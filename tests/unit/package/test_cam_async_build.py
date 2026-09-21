@@ -90,7 +90,6 @@ def test_cam_sources_survive_source_distribution_manifest(monkeypatch):
     required = {
         "csrc/npu/pybind/torch_binding_cam_async.cpp",
         "csrc/npu/ascend_kernels/operator_registry.json",
-        "csrc/npu/ascend_kernels/cam_async_sources.json",
         "LICENSE",
     }
     for operator in CAM_OPERATORS:

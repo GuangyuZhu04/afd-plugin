@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2025 Huawei Technologies Co., Ltd. All rights reserved.
-// Source and changes: csrc/npu/ascend_kernels/cam_async_sources.json.
 
 #ifndef ACLNN_AFD_ASYNC_DISPATCH_SEND_H_
 #define ACLNN_AFD_ASYNC_DISPATCH_SEND_H_
