@@ -34,6 +34,9 @@ from afd_plugin.model_executor.models.npu.async_cam_layout import (
     prepare_cam_dispatch_payload,
     restore_cam_dispatch_output,
 )
+from afd_plugin.model_executor.models.npu.deepseek_v4_shared_experts import (
+    AFDDeepseekV4SharedExperts,
+)
 
 try:
     from vllm_ascend.models import deepseek_v4 as native
@@ -189,7 +192,7 @@ class AFDDeepseekV4AttentionGateRemoteMoE(RemoteFFNProxy):
         # Native SP MLP owns replicated shared weights and consumes local
         # tokens, including FlashComm1 shards, without a TP reduction.
         self.shared_experts = (
-            native.DeepseekV2MLP(
+            AFDDeepseekV4SharedExperts(
                 hidden_size=config.hidden_size,
                 intermediate_size=config.moe_intermediate_size
                 * config.n_shared_experts,
