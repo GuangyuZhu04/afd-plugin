@@ -144,6 +144,11 @@ variants) built for `ascend910_93`. It is registered as
 autograd grad) and is excluded from `ascend950` builds. Nothing selects it at
 runtime yet; switching a connector/model path to it is a separate follow-up.
 
+For CANN 9.0.1, the layered ACLNN entry explicitly registers
+`grouped_matmul_swiglu_quant_v2_layered.json` as a kernel configuration
+candidate. The default runtime name conversion of `V2Layered` does not match
+opbuild's filename (issue #372). No extra JSON aliases are installed.
+
 No new NPU correctness, performance, or ACL graph support is claimed without
 device validation. The new operators are inference-only and do not transfer
 shared-expert payloads.
