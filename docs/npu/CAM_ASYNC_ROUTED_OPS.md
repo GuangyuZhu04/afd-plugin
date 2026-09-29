@@ -43,16 +43,22 @@ are not imported.
 
 ## Communication window configuration
 
-`HCCL_BUFFER_SIZE` is the AFD host-tiling window size in MiB. It defaults to
-408 MiB and is capped at 32768 MiB (32 GiB). This custom environment variable
-does not allocate HCCL memory: configure the same effective size with the
-HCCL group's `hccl_buffer_size` or the runtime's `HCCL_BUFFSIZE` fallback.
-The operators use this size for capacity checks and a window-tail state slot.
+AFD host tiling reads the HCCL runtime environment variable `HCCL_BUFFSIZE`
+in MiB. Set it explicitly to the intended window size on every rank. The
+host helper retains its 408 MiB fallback and 32768 MiB (32 GiB) cap; these
+are host-side limits, not a query of the HCCL domain's allocated memory.
+For HCCL, the variable also sets the process-wide allocation fallback for
+groups without a per-group override.
 
-Rename existing overrides of the previous LCCL-prefixed environment variable
-to `HCCL_BUFFER_SIZE`; the previous spelling is no longer read. Rebuild the
-native operator package after updating the source. The standalone harness
-sets the host-tiling and HCCL allocation settings together via `--window-mb`.
+If the HCCL group sets `hccl_buffer_size`, configure `HCCL_BUFFSIZE` to the
+same effective size. A per-group allocation override does not update the
+process environment. The operators use the host-tiling size for capacity
+checks and a window-tail state slot, so the values must remain aligned.
+The standalone harness sets both settings together via `--window-mb`.
+
+Migrate overrides of the previous LCCL-prefixed environment variable to
+`HCCL_BUFFSIZE`; the previous spelling is no longer read. Rebuild the native
+operator package after updating the source.
 
 ## Build and loading
 
