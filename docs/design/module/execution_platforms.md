@@ -315,6 +315,12 @@ See [the routed-only guide](../../npu/CAM_ASYNC_ROUTED_OPS.md) for metadata
 and window lifetime contracts. Device validation remains necessary for each
 target topology.
 
+The routed-only operator host tiling reads the custom `HCCL_BUFFER_SIZE`
+environment variable in MiB. Its effective value must match the HCCL domain's
+allocated window size (`hccl_buffer_size`, or `HCCL_BUFFSIZE` when no per-group
+override is configured). The standalone harness sets all three consistently;
+changing the tiling variable alone does not resize HCCL memory.
+
 ### NPU profiling
 
 Attention and FFN use independent optional `torch_npu.profiler` instances,

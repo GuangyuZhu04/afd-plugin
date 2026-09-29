@@ -41,6 +41,19 @@ The candidate's separate build system,
 generated binaries, placeholder backward functions, and unrelated components
 are not imported.
 
+## Communication window configuration
+
+`HCCL_BUFFER_SIZE` is the AFD host-tiling window size in MiB. It defaults to
+408 MiB and is capped at 32768 MiB (32 GiB). This custom environment variable
+does not allocate HCCL memory: configure the same effective size with the
+HCCL group's `hccl_buffer_size` or the runtime's `HCCL_BUFFSIZE` fallback.
+The operators use this size for capacity checks and a window-tail state slot.
+
+Rename existing overrides of the previous LCCL-prefixed environment variable
+to `HCCL_BUFFER_SIZE`; the previous spelling is no longer read. Rebuild the
+native operator package after updating the source. The standalone harness
+sets the host-tiling and HCCL allocation settings together via `--window-mb`.
+
 ## Build and loading
 
 Use a matching Ascend development environment and the normal package build:
