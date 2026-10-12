@@ -42,6 +42,10 @@ constexpr static int ATTR_ENUM_HCCL_GROUP_NAME = 13;
 
 constexpr static int TILING_KEY_BF16 = 100;
 constexpr static int TILING_KEY_FP16 = 101;
+// ### PATCH START: Separate A5 SIMT metadata keys
+constexpr static int TILING_KEY_BF16_SIMT = AFD_ASYNC_DISPATCH_SIMT_BF16_KEY;
+constexpr static int TILING_KEY_FP16_SIMT = AFD_ASYNC_DISPATCH_SIMT_FP16_KEY;
+// ### PATCH END: Separate A5 SIMT metadata keys
 
 constexpr static int LIMIT_BATCH_SIZE_MIN = 1;
 constexpr static int LIMIT_MAX_SEQ_LEN_MIN = 1;
@@ -82,6 +86,10 @@ static void SetHcommCfg(AfdAsyncDispatchSendTilingData *tiling, const std::strin
     mc2CcTilingConfig.GetTiling(tiling->mc2CcTiling1);
 }
 
+// Patch reason: a SIMT call graph needs an explicit UB reserve and a separate key.
+// Patch functionality: select A5 metadata routing only when its complete UB arena fits;
+// preserve scalar keys and their original shape acceptance otherwise.
+// Signature: matches the original TilingFunc; no added parameters.
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
     const char *nodeName = context->GetNodeName();
@@ -199,13 +207,18 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
         OPS_LOG_E(nodeName, "Ascend 950 compact-v2 source batch must fit uint16 counters (maximum %ld).",
             AsyncHost::MAX_SOURCE_TOKEN_COUNT), return ge::GRAPH_FAILED);
 
+    // ### PATCH START: Conservative SIMT eligibility without tightening B0
+    bool useSimtRouting = false;
     if (isAscend950) {
         uint64_t requiredUbSize = AsyncHost::DispatchSendUbBytes(moeRankNum, expertNum, hiddenSize,
             aivNum, dynamicQuant == 1);
         OPS_ERR_IF(ubSize < requiredUbSize,
             OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires %lu UB bytes but platform provides %lu.",
                 requiredUbSize, ubSize), return ge::GRAPH_FAILED);
+        useSimtRouting = AsyncRouting::CanUseSimtRouting(
+            ubSize, requiredUbSize, batchSize, aivNum, topk);
     }
+    // ### PATCH END: Conservative SIMT eligibility without tightening B0
 
     // shared memory needed by dispatch perf optimization (max ~54 KB)
     uint64_t dispatchNeedSize = MathCeil(
@@ -245,12 +258,14 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
     tilingData->moeDistributeDispatchInfo.totalUbSize = ubSize;
     tilingData->moeDistributeDispatchInfo.totalWorkspaceSize = sharedMemSize;
 
+    // ### PATCH START: Preserve full-UB scalar fallback keys
     auto xDtype = context->GetInputDesc(0)->GetDataType();
     if (xDtype == ge::DT_BF16) {
-        context->SetTilingKey(TILING_KEY_BF16);
+        context->SetTilingKey(useSimtRouting ? TILING_KEY_BF16_SIMT : TILING_KEY_BF16);
     } else if (xDtype == ge::DT_FLOAT16) {
-        context->SetTilingKey(TILING_KEY_FP16);
+        context->SetTilingKey(useSimtRouting ? TILING_KEY_FP16_SIMT : TILING_KEY_FP16);
     }
+    // ### PATCH END: Preserve full-UB scalar fallback keys
 
     return ge::GRAPH_SUCCESS;
 }

@@ -60,7 +60,11 @@ include `--soc-version 950 --aiv-count <native-active-aiv>
 `min(platform_aiv, 48)`; the byte budget must come from the target platform.
 These arguments are preflight inputs and do not control kernel launch or query
 hardware. No A5 device correctness or performance is claimed by a dry run.
-See [the A5 baseline record](../../docs/npu/CAM_ASYNC_A5_BASELINE.md).
+See [the A5 baseline record](../../docs/npu/CAM_ASYNC_A5_BASELINE.md) and
+[the P1 SIMT record](../../docs/npu/CAM_ASYNC_A5_SIMT_ROUTING.md). For P1, pass
+the full native per-core UB size used by the baseline, before the SIMT reserve.
+Native tiling subtracts that reserve for SIMT keys; do not subtract it again
+in the harness argument. The default small lengths exercise scalar fallback.
 
 Launch one process per NPU, with Attention ranks first and MoE ranks second.
 All ranks must receive identical script arguments. The default topology is

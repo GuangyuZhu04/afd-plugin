@@ -44,6 +44,11 @@ INT8_BYTES = 1
 INT16_BYTES = 2
 INT32_BYTES = 4
 INT64_BYTES = 8
+SIMT_MAX_DATA_CACHE_BYTES = 128 * 1024
+SIMT_COMPILER_RESERVED_BYTES = 8 * 1024
+SIMT_RESERVED_UB_BYTES = SIMT_MAX_DATA_CACHE_BYTES + SIMT_COMPILER_RESERVED_BYTES
+SIMT_MIN_TOKENS_PER_AIV = 32
+SIMT_MAX_TOPK = IDS_CACHE_BYTES // INT32_BYTES
 BATCH_INFO_FIELDS = 5
 QUANT_REDUCTION_FLOATS = 8
 OP_NAMES = ("dispatch_send", "dispatch_recv", "combine_send", "combine_recv")
@@ -577,6 +582,27 @@ def describe_config(config: HarnessConfig) -> dict:
             "optional_buffers": "kernel checks spare UB after mandatory buffers",
             "insufficient_spare_ub": "baseline single-buffer fallback",
             "device_overlap_validation": "requires NPU execution and profiling",
+        },
+        "simt_routing_policy": {
+            "candidate_operator": (
+                "dispatch_send" if config.soc_version == "950" else None
+            ),
+            "reserved_ub_bytes": SIMT_RESERVED_UB_BYTES,
+            "minimum_tokens_per_aiv": SIMT_MIN_TOKENS_PER_AIV,
+            "maximum_topk": SIMT_MAX_TOPK,
+            "ub_reserve_basis": "documented cache upper bound plus compiler space",
+            "budget_gate": "baseline dispatch-send peak plus reserve fits native UB",
+            "workload_gate": (
+                "one warp minimum per AIV; no performance crossover claim"
+            ),
+            "insufficient_resources": "original scalar tiling keys without VF",
+            "prefix_staging": (
+                "separate spare-UB check; scalar prefix remains "
+                "when staging does not fit"
+            ),
+            "selection_evidence": (
+                "native tiling metadata; CPU planning does not prove selection"
+            ),
         },
         "moe_chunks": [
             [

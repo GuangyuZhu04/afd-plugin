@@ -16,6 +16,15 @@
 #include "afd_async_dispatch_send_tiling.h"
 #include "cam_async_comm_args.h"
 #include "cam_async_window.h"
+// ### PATCH START: Isolate SIMT declarations to their selected keys
+#define CAM_ASYNC_ROUTING_BUDGET_INLINE __aicore__ inline
+#include "cam_async_simt_routing_budget.h"
+#undef CAM_ASYNC_ROUTING_BUDGET_INLINE
+#if ((defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)) && defined(TILING_KEY_VAR) && (TILING_KEY_VAR == AFD_ASYNC_DISPATCH_SIMT_BF16_KEY || TILING_KEY_VAR == AFD_ASYNC_DISPATCH_SIMT_FP16_KEY)
+#define AFD_ASYNC_DISPATCH_SIMT_ROUTING 1
+#include "afd_async_dispatch_send_simt.h"
+#endif
+// ### PATCH END: Isolate SIMT declarations to their selected keys
 
 namespace MoeDistributeDispatchImpl {
 constexpr uint64_t CAM_MAX_RANK_SIZE = 384;  // max NPUs supported by the Cam comm library
@@ -23,6 +32,9 @@ constexpr uint32_t UB_ALIGN = 32;            // UB aligned to 32 bytes
 constexpr uint32_t BATCH_INFO_VAL_NUM = 5;   // number of batch-related info fields
 constexpr uint32_t IDS_PAGE_SIZE = 1024 * 64;  // routing table cache page size
 constexpr uint32_t IDS_PAGE_ELEMENT_NUM = IDS_PAGE_SIZE / sizeof(int32_t); // elements per cache page
+// ### PATCH START: SIMT tiles invalidate the scalar routing-page tag
+constexpr int32_t INVALID_IDS_PAGE_INDEX = -1;
+// ### PATCH END: SIMT tiles invalidate the scalar routing-page tag
 
 template<AscendC::HardEvent event>
 __aicore__ inline void SyncFunc() {
@@ -31,8 +43,12 @@ __aicore__ inline void SyncFunc() {
     AscendC::WaitFlag<event>(eventID);
 }
 
-#define TemplateMC2TypeClass typename XType, typename ExpandXOutType, bool DynamicQuant
-#define TemplateMC2TypeFunc XType, ExpandXOutType, DynamicQuant
+// ### PATCH START: Compile-time metadata backend selection
+// Added template parameter UseSimtRouting selects only count/prefix metadata;
+// false retains the scalar call graph and its complete original UB arena.
+#define TemplateMC2TypeClass typename XType, typename ExpandXOutType, bool DynamicQuant, bool UseSimtRouting
+#define TemplateMC2TypeFunc XType, ExpandXOutType, DynamicQuant, UseSimtRouting
+// ### PATCH END: Compile-time metadata backend selection
 
 using namespace AscendC;
 using namespace Cam;
@@ -77,6 +93,11 @@ private:
     }
 
     __aicore__ inline void PreProcess(uint32_t bufOffset);
+    // ### PATCH START: A5 UB-only metadata counter
+#ifdef AFD_ASYNC_DISPATCH_SIMT_ROUTING
+    __aicore__ inline void count_routing_tokens(LocalTensor<uint32_t> &statistics);
+#endif
+    // ### PATCH END: A5 UB-only metadata counter
 
     __aicore__ inline void SetFlags();
 
@@ -183,6 +204,11 @@ private:
     }
 };
 
+// Patch reason: SIMT resources must not overlap native UB or contaminate scalar keys.
+// Patch functionality: reserve the documented SIMT upper bound only for the new
+// metadata specialization and let payload routing reload its normal page cache.
+// Signature: matches the original Init; no added method parameters. The added
+// class template parameter UseSimtRouting is documented at its declaration.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Init(
     GM_ADDR x, GM_ADDR expertIds, GM_ADDR workspaceGM, TPipe *pipe,
@@ -203,6 +229,11 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Init(
     hiddenSize_ = tilingData->moeDistributeDispatchInfo.hiddenSize;
     topk_ = tilingData->moeDistributeDispatchInfo.topk;
     totalUbSize_ = tilingData->moeDistributeDispatchInfo.totalUbSize;
+    // ### PATCH START: Keep SIMT resources outside the native UB arena
+    if constexpr (UseSimtRouting) {
+        totalUbSize_ -= AsyncRouting::SIMT_RESERVED_UB_BYTES;
+    }
+    // ### PATCH END: Keep SIMT resources outside the native UB arena
     totalWorkspaceSize_ = tilingData->moeDistributeDispatchInfo.totalWorkspaceSize;
     layerIndex_ = tilingData->moeDistributeDispatchInfo.layerIndex;
 
@@ -250,7 +281,13 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Init(
     idsPageTensor_ = ubBuffer_.GetWithOffset<int32_t>(bufSize / sizeof(int32_t), bufOffset);
     bufOffset += bufSize;
 
-    GetIds(0, true);
+    // ### PATCH START: Keep the scalar page loader separate from SIMT tiles
+    if constexpr (UseSimtRouting) {
+        idsPageIndex_ = INVALID_IDS_PAGE_INDEX;
+    } else {
+        GetIds(0, true);
+    }
+    // ### PATCH END: Keep the scalar page loader separate from SIMT tiles
 
     bufSize = MathCeil(sizeof(int32_t) * expertNum_, UB_ALIGN);
     expertRecvTokenNumTensor_ = ubBuffer_.GetWithOffset<int32_t>(bufSize / sizeof(int32_t), bufOffset);
@@ -464,6 +501,10 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
     SetFlags();
 }
 
+// Patch reason: the original Scalar metadata loop serializes count/prefix work.
+// Patch functionality: selected A5 keys use UB-only SIMT while preserving native
+// GM copies, both cross-AIV barriers, final gather, and the scalar staging fallback.
+// Signature: matches the original PreProcess; no added method parameters.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::PreProcess(uint32_t bufOffset)
 {
@@ -486,36 +527,45 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::PreProcess(uin
     Duplicate(aivStatTensor, (uint32_t)0, statEntriesPerAiv * aivNum_);
     SyncFunc<HardEvent::V_S>();
 
-    // each aiv counts the quantity it is responsible for sending
-    for (uint32_t topkId = (topk_ * batchSizePerAivStart_); topkId < (topk_ * batchSizePerAivEnd_); ++topkId) {
-        if (topkId % topk_ == 0) {  // a new token
-            // clear the send table
-            for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {  // routed destinations only
-                tokenSentFlagTensor_(moeRankId) = 0;
+    // ### PATCH START: Preserve stable native-AIV counts through UB SIMT
+#ifdef AFD_ASYNC_DISPATCH_SIMT_ROUTING
+    if constexpr (UseSimtRouting) {
+        count_routing_tokens(aivStatTensor);
+    } else
+#endif
+    {
+        // each aiv counts the quantity it is responsible for sending
+        for (uint32_t topkId = (topk_ * batchSizePerAivStart_); topkId < (topk_ * batchSizePerAivEnd_); ++topkId) {
+            if (topkId % topk_ == 0) {  // a new token
+                // clear the send table
+                for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {  // routed destinations only
+                    tokenSentFlagTensor_(moeRankId) = 0;
+                }
+
+                // Only routed destinations participate in the per-token send table.
             }
 
-            // Only routed destinations participate in the per-token send table.
-        }
+            {
+                uint32_t routeExpertId = GetIds(topkId);
+                uint32_t moeRankId = routeExpertId / routeExpertNumPerMoe_;
+                aivStatTensor(moeRankNum_ + routeExpertId)++;
 
-        {
-            uint32_t routeExpertId = GetIds(topkId);
-            uint32_t moeRankId = routeExpertId / routeExpertNumPerMoe_;
-            aivStatTensor(moeRankNum_ + routeExpertId)++;
-
-            if (tokenSentFlagTensor_(moeRankId) == 0) {
-                tokenSentFlagTensor_(moeRankId) = 1;
+                if (tokenSentFlagTensor_(moeRankId) == 0) {
+                    tokenSentFlagTensor_(moeRankId) = 1;
+                }
             }
-        }
 
-        if ((topkId + 1) % topk_ == 0) {
-            // refresh offsets from the send table
-            for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {
-                if (tokenSentFlagTensor_(moeRankId) == 1) {
-                    aivStatTensor(moeRankId)++;  // how many this aiv sends to each moe
+            if ((topkId + 1) % topk_ == 0) {
+                // refresh offsets from the send table
+                for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {
+                    if (tokenSentFlagTensor_(moeRankId) == 1) {
+                        aivStatTensor(moeRankId)++;  // how many this aiv sends to each moe
+                    }
                 }
             }
         }
     }
+    // ### PATCH END: Preserve stable native-AIV counts through UB SIMT
 
     // each aiv shares the quantity it is responsible for sending with the other aivs
     GM_ADDR srcGM = GetPeerAddrByRankId(attnRankId_);
@@ -539,7 +589,9 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::PreProcess(uin
     uint32_t maxColumnsPerAiv = (statEntriesPerAiv + aivNum_ - 1) / aivNum_;
     uint64_t maxPrefixBufferSize = static_cast<uint64_t>(aivNum_ - 1)
         * MathCeil(maxColumnsPerAiv * sizeof(uint32_t), UB_ALIGN);
-    if (maxPrefixBufferSize <= totalUbSize_ - bufOffset) {
+    // ### PATCH START: Use the same checked staging gate in native and CPU validation
+    if (AsyncRouting::CanFitPrefixStaging(totalUbSize_, bufOffset, maxPrefixBufferSize)) {
+    // ### PATCH END: Use the same checked staging gate in native and CPU validation
         uint32_t columnsPerAiv = statEntriesPerAiv / aivNum_;
         uint32_t extraColumns = statEntriesPerAiv % aivNum_;
         uint32_t columnStart = aivId_ * columnsPerAiv
@@ -549,13 +601,28 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::PreProcess(uin
             uint32_t prefixRowStride = MathCeil(columnCount * sizeof(uint32_t), UB_ALIGN) / sizeof(uint32_t);
             LocalTensor<uint32_t> prefixTensor = ubBuffer_.GetWithOffset<uint32_t>(
                 (aivNum_ - 1) * prefixRowStride, bufOffset);
-            for (uint32_t col = 0; col < columnCount; ++col) {
-                uint32_t sum = aivStatTensor(columnStart + col);
-                for (uint32_t row = 1; row < aivNum_; ++row) {
-                    sum += aivStatTensor(statEntriesPerAiv * row + columnStart + col);
-                    prefixTensor((row - 1) * prefixRowStride + col) = sum;
+            // ### PATCH START: Fill aligned UB prefixes without SIMT GM writes
+#ifdef AFD_ASYNC_DISPATCH_SIMT_ROUTING
+            if constexpr (UseSimtRouting) {
+                SyncFunc<HardEvent::MTE2_V>();
+                AscendC::Simt::VF_CALL<prefix_routing_columns_vf>(
+                    AscendC::Simt::Dim3(ROUTING_VF_THREAD_COUNT),
+                    (__ubuf__ const uint32_t *)aivStatTensor.GetPhyAddr(),
+                    (__ubuf__ uint32_t *)prefixTensor.GetPhyAddr(), aivNum_,
+                    statEntriesPerAiv, columnStart, columnCount, prefixRowStride);
+                SyncFunc<HardEvent::V_MTE3>();
+            } else
+#endif
+            {
+                for (uint32_t col = 0; col < columnCount; ++col) {
+                    uint32_t sum = aivStatTensor(columnStart + col);
+                    for (uint32_t row = 1; row < aivNum_; ++row) {
+                        sum += aivStatTensor(statEntriesPerAiv * row + columnStart + col);
+                        prefixTensor((row - 1) * prefixRowStride + col) = sum;
+                    }
                 }
             }
+            // ### PATCH END: Fill aligned UB prefixes without SIMT GM writes
 
             // GM keeps its original compact row layout; only the UB staging rows are padded.
             constexpr uint32_t PREFIX_COPY_ROWS = 32;
@@ -616,6 +683,40 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::PreProcess(uin
         }
     }
 }
+
+// ### PATCH START: Token-aligned UB tiles with native pipeline ownership
+#ifdef AFD_ASYNC_DISPATCH_SIMT_ROUTING
+// The host admits at least one complete token in the existing 64-KiB ID page.
+// Each VF consumes an entire tile before MTE2 may overwrite it; statistics
+// accumulate in the initialized first row, and native MTE3 publishes that row.
+template <TemplateMC2TypeClass>
+__aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::count_routing_tokens(
+    LocalTensor<uint32_t> &statistics)
+{
+    const uint32_t tokensPerTile = IDS_PAGE_ELEMENT_NUM / topk_;
+    for (uint32_t tokenStart = batchSizePerAivStart_; tokenStart < batchSizePerAivEnd_;) {
+        const uint32_t remainingTokens = batchSizePerAivEnd_ - tokenStart;
+        const uint32_t tileTokens = tokensPerTile < remainingTokens ? tokensPerTile : remainingTokens;
+        const uint32_t tileBytes = static_cast<uint32_t>(
+            static_cast<uint64_t>(tileTokens) * topk_ * sizeof(int32_t));
+        DataCopyPad(idsPageTensor_, idsGMTensor_[static_cast<uint64_t>(tokenStart) * topk_],
+            {1U, tileBytes, 0U, 0U, 0U}, {false, 0U, 0U, 0});
+        SyncFunc<HardEvent::MTE2_V>();
+        AscendC::Simt::VF_CALL<count_routing_tokens_vf>(
+            AscendC::Simt::Dim3(ROUTING_VF_THREAD_COUNT),
+            (__ubuf__ const int32_t *)idsPageTensor_.GetPhyAddr(),
+            (__ubuf__ uint32_t *)statistics.GetPhyAddr(), tileTokens, topk_,
+            moeRankNum_, expertNumPerMoe_);
+        SyncFunc<HardEvent::V_MTE2>();
+        tokenStart += tileTokens;
+    }
+    SyncFunc<HardEvent::V_MTE3>();
+    // Tiles begin at the native AIV's token offset, not a global routing page.
+    // Force GetIds to reload before the unchanged payload loop reads that page.
+    idsPageIndex_ = INVALID_IDS_PAGE_INDEX;
+}
+#endif
+// ### PATCH END: Token-aligned UB tiles with native pipeline ownership
 
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::SetFlags()

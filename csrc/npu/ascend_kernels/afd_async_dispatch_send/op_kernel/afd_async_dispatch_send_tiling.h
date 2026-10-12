@@ -13,6 +13,11 @@
 #include <cstdint>
 #include "kernel_tiling/kernel_tiling.h"
 
+// ### PATCH START: Separate scalar and SIMT metadata compilation
+#define AFD_ASYNC_DISPATCH_SIMT_BF16_KEY 110
+#define AFD_ASYNC_DISPATCH_SIMT_FP16_KEY 111
+// ### PATCH END: Separate scalar and SIMT metadata compilation
+
 namespace Cam {
 struct AfdAsyncDispatchSendInfo {
     int64_t magic;

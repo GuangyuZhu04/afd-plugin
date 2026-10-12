@@ -17,6 +17,7 @@ from tests.npu.async_cam_common import (
     CONSERVATIVE_UB_BYTES,
     MAX_A5_RANKS,
     MAX_AIV_COUNT,
+    SIMT_RESERVED_UB_BYTES,
     HarnessConfig,
     NativeHarness,
     chunk_plans,
@@ -302,6 +303,29 @@ class AsyncCamPlannerTests(unittest.TestCase):
         )
         self.assertEqual(
             describe_config(a3)["mte_pipeline_policy"]["candidate_operators"], ()
+        )
+
+    def test_simt_policy_keeps_scalar_fallback_and_baseline_ub_contract(self):
+        baseline = HarnessConfig()
+        config = replace(
+            baseline,
+            soc_version="950",
+            aiv_count=MAX_AIV_COUNT,
+            ub_budget_bytes=max(unified_buffer_requirements(baseline).values()),
+        )
+        # A shape fitting only the original minimum stays accepted. The optional
+        # SIMT arena is an additional native selector condition, not a preflight
+        # requirement or evidence that a VF was selected/executed on hardware.
+        validate_config(config)
+        self.assertEqual(
+            unified_buffer_requirements(config), unified_buffer_requirements(baseline)
+        )
+        policy = describe_config(config)["simt_routing_policy"]
+        self.assertEqual(policy["candidate_operator"], "dispatch_send")
+        self.assertEqual(policy["reserved_ub_bytes"], SIMT_RESERVED_UB_BYTES)
+        self.assertIn("scalar", policy["insufficient_resources"])
+        self.assertIsNone(
+            describe_config(baseline)["simt_routing_policy"]["candidate_operator"]
         )
 
     def test_a5_cli_dry_run_reports_explicit_resources_without_qualification(self):

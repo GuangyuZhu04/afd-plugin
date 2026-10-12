@@ -73,7 +73,10 @@ SOC_VERSION=910c AFD_BUILD_ASCEND_OPS=1 \
 For 910C, the registry selects A2E/E2A and all four routed-only operators.
 For 950, A2E/E2A and all four routed-only operators are selected, and the
 PyTorch registrations are compiled. The A5 baseline uses SDK-mapped MTE data
-windows and at most 48 active AIVs; it introduces no CCU/SIMT performance path. `setup.py` passes the same `SOC_VERSION` to the ACLNN build and
+windows and at most 48 active AIVs. This branch adds the
+[P0 MTE pipelines](CAM_ASYNC_A5_MTE_PIPELINE.md) and resource-gated
+[P1 SIMT routing metadata](CAM_ASYNC_A5_SIMT_ROUTING.md); device qualification
+remains pending. `setup.py` passes the same `SOC_VERSION` to the ACLNN build and
 the extension CMake configuration (`AFD_SOC_VERSION`).
 
 `AFD_SKIP_ACLNN_BUILD=1` still requires an existing, matching AFD vendor

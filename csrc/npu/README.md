@@ -138,7 +138,10 @@ A2E/E2A continue to serve the existing CAMP2P connector. The four A3/A5
 routed-only CAM operators serve the source-built `CAMAsyncAFDConnector` path.
 The A5 baseline preserves the compact-v2 protocol and eager caller lifecycle;
 see [the A5 baseline record](../../docs/npu/CAM_ASYNC_A5_BASELINE.md) for build
-evidence and the remaining device qualification gates.
+evidence and the remaining device qualification gates. This branch also contains
+[P0 MTE pipelines](../../docs/npu/CAM_ASYNC_A5_MTE_PIPELINE.md) and
+[P1 SIMT routing](../../docs/npu/CAM_ASYNC_A5_SIMT_ROUTING.md), with scalar
+fallback when the additional SIMT resources do not fit.
 
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /
