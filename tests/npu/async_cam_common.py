@@ -569,6 +569,15 @@ def describe_config(config: HarnessConfig) -> dict:
         "unified_buffer_budget_bytes": ub_budget,
         "assumed_aiv_count": aiv_count,
         "resource_validation": "declared planning inputs; not verified on a device",
+        "mte_pipeline_policy": {
+            "candidate_operators": (
+                ("dispatch_recv", "combine_send") if config.soc_version == "950" else ()
+            ),
+            "minimum_ub_contract": "baseline one-row layout",
+            "optional_buffers": "kernel checks spare UB after mandatory buffers",
+            "insufficient_spare_ub": "baseline single-buffer fallback",
+            "device_overlap_validation": "requires NPU execution and profiling",
+        },
         "moe_chunks": [
             [
                 {

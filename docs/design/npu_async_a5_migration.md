@@ -97,6 +97,8 @@ UB 要按阶段计算峰值：combine recv 至少包含约 64KiB 路由缓存、
 
 ### 4.1 P0：保持协议的 MTE 双缓冲
 
+P0实现与编译/调度模型证据见 [流水记录](../npu/CAM_ASYNC_A5_MTE_PIPELINE.md)。
+
 combine send 当前连续 GM→UB→peer 搬运，每批同步后再做下一批。用两个 UB tile：tile n 的 MTE3 发送与 tile n+1 的 MTE2 加载重叠；量化 dispatch 可让下一 token 的 SIMD 量化与当前 token 的发送重叠。dispatch recv/combine recv 可预取下一行或下一 top-k slot，在原顺序下重叠 copy 与 vector compute。
 
 两个 buffer 的容量、event ownership 和复用时点必须显式设计。最后 ready 之前仍等待全部 payload 完成。收益主要面向中大 batch/hidden；小 batch 可能由 launch/peer wait 主导，双 buffer 还会降低 UB 可容纳的行数。分别测一次/两次缓存路径、payload bytes、tile 数与 event wait，确认确实重叠。

@@ -16,6 +16,11 @@
 #include "afd_async_dispatch_recv_tiling.h"
 #include "cam_async_comm_args.h"
 #include "cam_async_window.h"
+// ### PATCH START: A5 MTE event helper
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+#include "cam_async_mte_pipeline.h"
+#endif
+// ### PATCH END: A5 MTE event helper
 
 namespace MoeDistributeDispatchImpl {
 constexpr uint64_t CAM_MAX_RANK_SIZE = 384;  // max NPUs supported by the Cam comm library
@@ -71,6 +76,13 @@ private:
     __aicore__ inline void DispatchRecvRouted(uint32_t tpAttnRankId, uint32_t tpIndex,
                                                uint32_t startExpert, uint32_t endExpert);
 
+    // ### PATCH START: A5 private row pipeline
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    __aicore__ inline void DispatchRecvRowsPipelined(GlobalTensor<ExpandXOutType> &tokenStore,
+        uint32_t tokenStart, uint32_t tokenEnd, uint32_t startExpert, uint64_t secondBufferOffset);
+#endif
+    // ### PATCH END: A5 private row pipeline
+
     __aicore__ inline uint32_t WaitFromAttn();
 
     __aicore__ inline void ClearFlags(uint32_t attnRankId);
@@ -100,6 +112,11 @@ private:
     Cam::AsyncDataWindow dataWindow_;
 
     uint64_t ubReuseSize_{0};
+    // ### PATCH START: Preserve the address-slice UB base
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    uint64_t tokenAddrBufferOffset_{0};
+#endif
+    // ### PATCH END: Preserve the address-slice UB base
 
     TPipe *tpipe_{nullptr};
     TBuf<> ubBuffer_;
@@ -121,6 +138,10 @@ private:
     bool isError_{false};
 };
 
+// Patch reason: B0 gives the address slice all remaining UB, so an optional
+// second row must retain the original slice base and bounds.
+// Patch functionality: record that UB base for the A5-only row pipeline.
+// Signature: matches the original Init; no added parameters.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::Init(
     GM_ADDR x, GM_ADDR expandXOut, GM_ADDR dynamicScalesOut,
@@ -220,6 +241,11 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::Init(
     // remaining reusable UB space
     ubReuseSize_ = totalUbSize_ - bufOffset;
 
+    // ### PATCH START: Record the existing address-slice UB base
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    tokenAddrBufferOffset_ = bufOffset;
+#endif
+    // ### PATCH END: Record the existing address-slice UB base
     bufSize = ubReuseSize_;
     tokenAddrOffsetTensor_ = ubBuffer_.GetWithOffset<uint16_t>(bufSize / sizeof(uint16_t), bufOffset);
 }
@@ -347,6 +373,11 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecv()
     }
 }
 
+// Patch reason: B0 serializes each row through Scalar while MTE2/MTE3 can
+// process separate UB rows concurrently on A5.
+// Patch functionality: use two rows only when the unchanged address slice and
+// extra row fit, then drain before the original chunk/flag lifetime logic.
+// Signature: matches the original DispatchRecvRouted; no added parameters.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRouted(
     uint32_t tpAttnRankId, uint32_t tpIndex, uint32_t startExpert, uint32_t endExpert)
@@ -423,52 +454,68 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
         SyncFunc<HardEvent::S_MTE2>();
     }
 
-    // each aiv starts from startExpert to find its tokenNumPerAivStart; meanwhile determine
-    // which expert each token goes to and how many prior cores sent to each expert, for offset calc
-    uint32_t currExpertId = startExpert;
-    uint32_t currExpertTokenNum = 0;
-    uint32_t nextExpertTokenNum = expertRecvTokenNumTensor_(currExpertId);
-    uint32_t preExpertTokenNum = 0;  // total tokens received by experts before the current one
-    while (nextExpertTokenNum < tokenNumPerAivStart) {
-        preExpertTokenNum += tpExpertRecvTokenNumTensor_(currExpertId);
-        currExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
-        ++currExpertId;
-        nextExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
-    }
-    for (uint32_t expertSlotOffset = tokenNumPerAivStart; expertSlotOffset < tokenNumPerAivEnd; ++expertSlotOffset) {
-        while (expertSlotOffset >= nextExpertTokenNum) {
+    // ### PATCH START: A5 two-row prefetch with an unchanged address slice
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    uint64_t addressSliceBytes = MathCeil(sizeof(uint16_t) * tokenNumPerAiv, UB_ALIGN);
+    uint64_t rowBytes = DynamicQuant
+        ? sizeof(ExpandXOutType) * hiddenSizeQuant_ : sizeof(ExpandXOutType) * hiddenSize_;
+    rowBytes = MathCeil(rowBytes, UB_ALIGN);
+    if (AsyncMte::CanUseReceiveSecondSlot(ubReuseSize_, addressSliceBytes,
+        rowBytes, tokenNumPerAiv)) {
+        DispatchRecvRowsPipelined(dstTokenStoreGMTensor, tokenNumPerAivStart,
+            tokenNumPerAivEnd, startExpert, tokenAddrBufferOffset_ + addressSliceBytes);
+    } else
+#endif
+    {
+        // each aiv starts from startExpert to find its tokenNumPerAivStart; meanwhile determine
+        // which expert each token goes to and how many prior cores sent to each expert, for offset calc
+        uint32_t currExpertId = startExpert;
+        uint32_t currExpertTokenNum = 0;
+        uint32_t nextExpertTokenNum = expertRecvTokenNumTensor_(currExpertId);
+        uint32_t preExpertTokenNum = 0;  // total tokens received by experts before the current one
+        while (nextExpertTokenNum < tokenNumPerAivStart) {
             preExpertTokenNum += tpExpertRecvTokenNumTensor_(currExpertId);
             currExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
             ++currExpertId;
             nextExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
         }
-        // received by prior experts + sent by prior attns to this expert + nth sent by current attn to current expert
-        uint32_t tpExpertSlotOffset = preExpertTokenNum + tpExpertRecvTokenNumTensor_(expertNumPerMoe_ + currExpertId) +
-            (expertSlotOffset - currExpertTokenNum);
+        for (uint32_t expertSlotOffset = tokenNumPerAivStart; expertSlotOffset < tokenNumPerAivEnd; ++expertSlotOffset) {
+            while (expertSlotOffset >= nextExpertTokenNum) {
+                preExpertTokenNum += tpExpertRecvTokenNumTensor_(currExpertId);
+                currExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
+                ++currExpertId;
+                nextExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
+            }
+            // received by prior experts + sent by prior attns to this expert + nth sent by current attn to current expert
+            uint32_t tpExpertSlotOffset = preExpertTokenNum + tpExpertRecvTokenNumTensor_(expertNumPerMoe_ + currExpertId) +
+                (expertSlotOffset - currExpertTokenNum);
 
-        uint16_t moeTokenSendIdx = tokenAddrOffsetTensor_(expertSlotOffset - tokenNumPerAivStart);
+            uint16_t moeTokenSendIdx = tokenAddrOffsetTensor_(expertSlotOffset - tokenNumPerAivStart);
 
-        if constexpr (DynamicQuant) {
-            DataCopy(xOutTensor_, dstTokenStoreGMTensor[hiddenSizeQuant_ * moeTokenSendIdx], hiddenSizeQuant_);
-            SyncFunc<HardEvent::MTE2_S>();
-            SyncFunc<HardEvent::S_MTE2>();
+            if constexpr (DynamicQuant) {
+                DataCopy(xOutTensor_, dstTokenStoreGMTensor[hiddenSizeQuant_ * moeTokenSendIdx], hiddenSizeQuant_);
+                SyncFunc<HardEvent::MTE2_S>();
+                SyncFunc<HardEvent::S_MTE2>();
 
-            SyncFunc<HardEvent::S_MTE3>();
-            DataCopy(xOutGMTensor_[hiddenSize_ * tpExpertSlotOffset], xOutTensor_, hiddenSize_);
-            SyncFunc<HardEvent::MTE3_S>();
-            DataCopyPad(quantScaleGMTensor_[tpExpertSlotOffset], xOutFloatTensor_[hiddenSize_ / sizeof(float)],
-                {1U, sizeof(float), 0U, 0U, 0U});
-            SyncFunc<HardEvent::MTE3_S>();
-        } else {
-            DataCopy(xOutTensor_, dstTokenStoreGMTensor[hiddenSize_ * moeTokenSendIdx], hiddenSize_);
-            SyncFunc<HardEvent::MTE2_S>();
-            SyncFunc<HardEvent::S_MTE2>();
+                SyncFunc<HardEvent::S_MTE3>();
+                DataCopy(xOutGMTensor_[hiddenSize_ * tpExpertSlotOffset], xOutTensor_, hiddenSize_);
+                SyncFunc<HardEvent::MTE3_S>();
+                DataCopyPad(quantScaleGMTensor_[tpExpertSlotOffset], xOutFloatTensor_[hiddenSize_ / sizeof(float)],
+                    {1U, sizeof(float), 0U, 0U, 0U});
+                SyncFunc<HardEvent::MTE3_S>();
+            } else {
+                DataCopy(xOutTensor_, dstTokenStoreGMTensor[hiddenSize_ * moeTokenSendIdx], hiddenSize_);
+                SyncFunc<HardEvent::MTE2_S>();
+                SyncFunc<HardEvent::S_MTE2>();
 
-            SyncFunc<HardEvent::S_MTE3>();
-            DataCopy(xOutGMTensor_[hiddenSize_ * tpExpertSlotOffset], xOutTensor_, hiddenSize_);
-            SyncFunc<HardEvent::MTE3_S>();
+                SyncFunc<HardEvent::S_MTE3>();
+                DataCopy(xOutGMTensor_[hiddenSize_ * tpExpertSlotOffset], xOutTensor_, hiddenSize_);
+                SyncFunc<HardEvent::MTE3_S>();
+            }
         }
+
     }
+    // ### PATCH END: A5 two-row prefetch with an unchanged address slice
 
     if (aivId_ == 0) {
         GlobalTensor<int32_t> dstExpertRecvChunkFlagGMTensor;
@@ -490,6 +537,74 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
         tpExpertRecvTokenNumTensor_(expertNumPerMoe_ + i) += expertRecvTokenNumTensor_(i);
     }
 }
+
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+// ### PATCH START: A5 MTE row handoff
+// Both quantized payload and its scale stay in one leased row slot until MTE3
+// finishes both output copies. Expert/TP/token placement follows the B0 loop.
+// New private-helper parameters: tokenStore is the source wire-row view;
+// [tokenStart, tokenEnd) is this AIV's source-expert row interval; startExpert
+// seeds the original output-index walk; secondBufferOffset is the UB byte
+// offset of row slot 1 after the preserved address slice. No public ABI changes.
+template <TemplateMC2TypeClass>
+__aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRowsPipelined(
+    GlobalTensor<ExpandXOutType> &tokenStore, uint32_t tokenStart, uint32_t tokenEnd,
+    uint32_t startExpert, uint64_t secondBufferOffset)
+{
+    uint32_t rowElements = DynamicQuant ? hiddenSizeQuant_ : hiddenSize_;
+    uint64_t rowBytes = MathCeil(sizeof(ExpandXOutType) * rowElements, UB_ALIGN);
+    LocalTensor<ExpandXOutType> rows[DOUBLE] = {
+        xOutTensor_, ubBuffer_.GetWithOffset<ExpandXOutType>(rowBytes / sizeof(ExpandXOutType),
+            secondBufferOffset)};
+    AsyncMte::TwoSlotPipeline pipeline;
+    pipeline.Init(tpipe_);
+
+    uint32_t currExpertId = startExpert;
+    uint32_t currExpertTokenNum = 0;
+    uint32_t nextExpertTokenNum = expertRecvTokenNumTensor_(currExpertId);
+    uint32_t preExpertTokenNum = 0;
+    while (nextExpertTokenNum < tokenStart) {
+        preExpertTokenNum += tpExpertRecvTokenNumTensor_(currExpertId);
+        currExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
+        ++currExpertId;
+        nextExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
+    }
+    for (uint32_t expertSlotOffset = tokenStart; expertSlotOffset < tokenEnd; ++expertSlotOffset) {
+        while (expertSlotOffset >= nextExpertTokenNum) {
+            preExpertTokenNum += tpExpertRecvTokenNumTensor_(currExpertId);
+            currExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
+            ++currExpertId;
+            nextExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
+        }
+        uint32_t tpExpertSlotOffset = preExpertTokenNum
+            + tpExpertRecvTokenNumTensor_(expertNumPerMoe_ + currExpertId)
+            + (expertSlotOffset - currExpertTokenNum);
+        uint32_t slot = (expertSlotOffset - tokenStart) % DOUBLE;
+        uint16_t moeTokenSendIdx = tokenAddrOffsetTensor_(expertSlotOffset - tokenStart);
+
+        // Reusing this slot waits only for its previous MTE3 payload/scale writes.
+        // The other slot's MTE2 load can proceed while those writes are in flight.
+        pipeline.WaitForReuse(slot);
+        DataCopy(rows[slot], tokenStore[static_cast<uint64_t>(rowElements) * moeTokenSendIdx], rowElements);
+        pipeline.MarkLoaded(slot);
+        pipeline.WaitLoaded(slot);
+        DataCopy(xOutGMTensor_[static_cast<uint64_t>(hiddenSize_) * tpExpertSlotOffset], rows[slot], hiddenSize_);
+        if constexpr (DynamicQuant) {
+            LocalTensor<float> scale = xOutFloatTensor_;
+            if (slot != 0) {
+                scale = ubBuffer_.GetWithOffset<float>(rowBytes / sizeof(float), secondBufferOffset);
+            }
+            DataCopyPad(quantScaleGMTensor_[tpExpertSlotOffset], scale[hiddenSize_ / sizeof(float)],
+                {1U, sizeof(float), 0U, 0U, 0U});
+        }
+        pipeline.MarkWritten(slot);
+    }
+    // Clear all in-flight slot ownership and return event leases before the
+    // original chunk flags and ClearFlags/SyncAll source-window lifetime logic.
+    pipeline.Drain();
+}
+// ### PATCH END: A5 MTE row handoff
+#endif
 
 template <TemplateMC2TypeClass>
 __aicore__ inline uint32_t AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::WaitFromAttn()

@@ -284,6 +284,26 @@ class AsyncCamPlannerTests(unittest.TestCase):
                 replace(config, attn_ranks=MAX_A5_RANKS, lengths=(7,) * MAX_A5_RANKS)
             )
 
+    def test_a5_pipeline_policy_preserves_baseline_ub_acceptance(self):
+        a3 = HarnessConfig()
+        a5 = replace(
+            a3,
+            soc_version="950",
+            aiv_count=MAX_AIV_COUNT,
+            ub_budget_bytes=max(unified_buffer_requirements(a3).values()),
+        )
+        validate_config(a5)
+        self.assertEqual(
+            unified_buffer_requirements(a5), unified_buffer_requirements(a3)
+        )
+        self.assertEqual(
+            describe_config(a5)["mte_pipeline_policy"]["candidate_operators"],
+            ("dispatch_recv", "combine_send"),
+        )
+        self.assertEqual(
+            describe_config(a3)["mte_pipeline_policy"]["candidate_operators"], ()
+        )
+
     def test_a5_cli_dry_run_reports_explicit_resources_without_qualification(self):
         result = subprocess.run(
             [

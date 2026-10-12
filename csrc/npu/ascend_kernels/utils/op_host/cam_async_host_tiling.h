@@ -56,6 +56,8 @@ inline uint64_t DispatchRecvUbBytes(uint64_t localExperts, uint64_t tpSize,
     uint64_t hiddenSize, uint64_t activeAivCount, uint64_t sourceCapacity,
     uint64_t topk, uint64_t receiveCapacity, bool dynamicQuant)
 {
+    // A5 may stage a second row only after the existing address slice fits.
+    // Keep the mandatory one-row bound: insufficient spare UB uses B0 instead.
     uint64_t mandatory = AlignBytes(sizeof(int64_t) * BATCH_INFO_FIELDS)
         + AlignBytes(sizeof(int64_t) * (BATCH_INFO_FIELDS + tpSize + localExperts * tpSize))
         + AlignBytes(sizeof(int64_t) * localExperts)
@@ -71,6 +73,8 @@ inline uint64_t DispatchRecvUbBytes(uint64_t localExperts, uint64_t tpSize,
 inline uint64_t CombineSendUbBytes(uint64_t localExperts, uint64_t tpSize,
     uint64_t moeRanks, uint64_t hiddenSize)
 {
+    // The A5 two-slot pipeline splits spare reusable UB at runtime. Its optional
+    // second row must not raise this baseline acceptance threshold.
     uint64_t metadata = AlignBytes(sizeof(int64_t)
         * (BATCH_INFO_FIELDS + tpSize + localExperts * tpSize))
         + AlignBytes(sizeof(uint32_t) * localExperts * tpSize)

@@ -16,6 +16,9 @@
 #include "afd_async_combine_send_tiling.h"
 #include "cam_async_comm_args.h"
 #include "cam_async_window.h"
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+#include "cam_async_mte_pipeline.h"
+#endif
 
 namespace MoeDistributeCombineSendImpl {
 constexpr uint64_t CAM_MAX_RANK_SIZE = 384;  // max NPUs supported by the Cam comm library
@@ -176,6 +179,9 @@ __aicore__ inline void AfdAsyncCombineSend<TemplateMC2TypeFunc>::Process()
     CombineSend();
 }
 
+// Patch reason: the B0 GM-to-UB-to-peer loop waits on Scalar after each tile.
+// Patch functionality: overlap two A5 MTE slots while retaining B0 fallback and final ready ordering.
+// Signature: matches upstream/B0; no added parameters.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncCombineSend<TemplateMC2TypeFunc>::CombineSend()
 {
@@ -202,6 +208,21 @@ __aicore__ inline void AfdAsyncCombineSend<TemplateMC2TypeFunc>::CombineSend()
         totalTokenNumPerAivStart += totalTokenNumPerAivRemain;
     }
     uint32_t totalTokenNumPerAivEnd = totalTokenNumPerAivStart + totalTokenNumPerAiv;
+
+    // ### PATCH START: A5 tile plan
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    const auto bufferPlan = Cam::AsyncMte::PlanCombineSendBuffers(
+        ubReuseSize_, sizeof(ExpandXType) * hiddenSize_, true);
+    // A single row cannot overlap another transfer, so keep its B0 path.
+    const bool useMtePipeline = bufferPlan.doubleBuffered && totalTokenNumPerAiv > 1;
+    const uint64_t tileRowCapacity = useMtePipeline ? bufferPlan.rowsPerSlot : maxUbTokenNum_;
+    uint32_t bufferSlot = 0;
+    Cam::AsyncMte::TwoSlotPipeline mtePipeline;
+    if (useMtePipeline) {
+        mtePipeline.Init(tpipe_);
+    }
+#endif
+    // ### PATCH END: A5 tile plan
 
     Duplicate(tpExpertTokenSendCntTensor_, (uint32_t)0, tpSize_);
     SyncFunc<HardEvent::V_S>();
@@ -246,7 +267,13 @@ __aicore__ inline void AfdAsyncCombineSend<TemplateMC2TypeFunc>::CombineSend()
             uint32_t sendTokenNumRemain = totalTokenNumPerAivEnd - i;
             uint32_t expertTokenNumRemain = nextTokenNumCnt - i;
             uint32_t cnt = expertTokenNumRemain < sendTokenNumRemain ? expertTokenNumRemain : sendTokenNumRemain;
+            // ### PATCH START: A5 tile capacity
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+            cnt = static_cast<uint32_t>(tileRowCapacity < cnt ? tileRowCapacity : cnt);
+#else
             cnt = maxUbTokenNum_ < cnt ? maxUbTokenNum_ : cnt;
+#endif
+            // ### PATCH END: A5 tile capacity
             // offset on the original attn rank, computed from the total count
             uint32_t moeTokenSendIdx = tpExpertTokenSendCntTensor_(tpIndex);
 
@@ -260,21 +287,53 @@ __aicore__ inline void AfdAsyncCombineSend<TemplateMC2TypeFunc>::CombineSend()
                 resolvedTpIndex = tpIndex;
             }
 
-            // copy input to UB: i is offset, cnt is count, i is per this chunk
-            DataCopy(xTensor_, xGMTensor_[hiddenSize_ * i], hiddenSize_ * cnt);
-            SyncFunc<HardEvent::MTE2_S>();
-            SyncFunc<HardEvent::S_MTE2>();
+            // ### PATCH START: A5 DMA handoff
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+            if (useMtePipeline) {
+                // Slot reuse waits on MTE2; data readiness waits on MTE3. Neither
+                // tile handoff waits on Scalar, so the other slot can overlap.
+                mtePipeline.WaitForReuse(bufferSlot);
+                const uint64_t sourceElementOffset = static_cast<uint64_t>(hiddenSize_) * i;
+                const uint64_t destinationElementOffset =
+                    static_cast<uint64_t>(hiddenSize_) * moeTokenSendIdx;
+                const uint32_t slotElementOffset = static_cast<uint32_t>(
+                    bufferSlot * bufferPlan.bytesPerSlot / sizeof(ExpandXType));
+                const uint32_t transferElementCount = static_cast<uint32_t>(
+                    static_cast<uint64_t>(hiddenSize_) * cnt);
+                LocalTensor<ExpandXType> tileTensor = xTensor_[slotElementOffset];
+                DataCopy(tileTensor, xGMTensor_[sourceElementOffset], transferElementCount);
+                mtePipeline.MarkLoaded(bufferSlot);
+                mtePipeline.WaitLoaded(bufferSlot);
+                DataCopy(dstTokenStoreGM[destinationElementOffset], tileTensor, transferElementCount);
+                mtePipeline.MarkWritten(bufferSlot);
+                bufferSlot = (bufferSlot + 1) % Cam::AsyncMte::BUFFER_COUNT;
+            } else
+#endif
+            {
+                // B0 remains the A3 path and the fallback when two complete rows do not fit.
+                DataCopy(xTensor_, xGMTensor_[hiddenSize_ * i], hiddenSize_ * cnt);
+                SyncFunc<HardEvent::MTE2_S>();
+                SyncFunc<HardEvent::S_MTE2>();
 
-
-            SyncFunc<HardEvent::S_MTE3>();
-            // copy UB back to the target rank; moeTokenSendIdx includes the prior chunk offset
-            DataCopy(dstTokenStoreGM[hiddenSize_ * moeTokenSendIdx], xTensor_, hiddenSize_ * cnt);
-            SyncFunc<HardEvent::MTE3_S>();
+                SyncFunc<HardEvent::S_MTE3>();
+                DataCopy(dstTokenStoreGM[hiddenSize_ * moeTokenSendIdx], xTensor_, hiddenSize_ * cnt);
+                SyncFunc<HardEvent::MTE3_S>();
+            }
+            // ### PATCH END: A5 DMA handoff
 
             tpExpertTokenSendCntTensor_(tpIndex) += cnt;
             i += cnt;
         }
     }
+    // ### PATCH START: A5 transfer drain
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    if (useMtePipeline) {
+        // Drain every peer write before the original cross-core completion and
+        // before the token buffers are reused as completion-prefix scratch.
+        mtePipeline.Drain();
+    }
+#endif
+    // ### PATCH END: A5 transfer drain
     SyncAll<true>();
 
     if (endExpert == expertNumPerMoe_ - 1) {
