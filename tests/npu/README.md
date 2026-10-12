@@ -1,6 +1,7 @@
 # Routed async CAM operator tests
 
-These standalone scripts exercise the four experimental Ascend 910C operators
+These standalone scripts exercise the four experimental A3 operators and the
+A5 source/build baseline
 added by [PR #361](https://github.com/vllm-project/afd-plugin/pull/361):
 `torch.ops.afd_ascend.afd_async_{dispatch,combine}_{send,recv}`.
 Harness and hardware follow-up:
@@ -45,13 +46,21 @@ strict bit comparisons; the other two test modules need only standard Python.
 
 ## Native setup
 
-Use Ascend 910C with the matching PyTorch, torch-npu, CANN/HCCL stack and an
+Use a qualified Ascend target with the matching PyTorch, torch-npu, CANN/HCCL stack and an
 AFD extension built with all four operators. Follow the native build guide:
 
 ```bash
 SOC_VERSION=910c AFD_BUILD_ASCEND_OPS=1 \
   pip install -e . -v --no-build-isolation
 ```
+
+For the A5 baseline, build with `SOC_VERSION=950`. Every harness command must
+include `--soc-version 950 --aiv-count <native-active-aiv>
+--ub-budget-bytes <checked-usable-ub>`. The active count must match native
+`min(platform_aiv, 48)`; the byte budget must come from the target platform.
+These arguments are preflight inputs and do not control kernel launch or query
+hardware. No A5 device correctness or performance is claimed by a dry run.
+See [the A5 baseline record](../../docs/npu/CAM_ASYNC_A5_BASELINE.md).
 
 Launch one process per NPU, with Attention ranks first and MoE ranks second.
 All ranks must receive identical script arguments. The default topology is

@@ -6,7 +6,7 @@ Attention-to-Expert and Expert-to-Attention transfers:
 - `torch.ops.afd_ascend.a2e`
 - `torch.ops.afd_ascend.e2a`
 
-The 910C build also contains four experimental routed-only CAM operators:
+The 910C and 950 builds also contain four experimental routed-only CAM operators:
 `afd_async_dispatch_send`, `afd_async_dispatch_recv`, `afd_async_combine_send`,
 and `afd_async_combine_recv`, under the same `torch.ops.afd_ascend` namespace.
 Their compact protocol and future connector migration are documented in
@@ -68,8 +68,9 @@ Common environment variables:
 - `TORCH_NPU_PATH`: optional path to the `torch_npu` package.
 - `SOC_VERSION`: `910c`, `ascend910_93*`, and `ascend910_9392` build
   A2E/E2A plus the four routed-only CAM operators for Ascend 910C.
-  `950`, `ascend950*`, and `Ascend950*` build only A2E/E2A for Atlas A5
-  (`ascend950`); the new CAM PyTorch registrations are also excluded.
+  `950`, `ascend950*`, and `Ascend950*` build A2E/E2A and the four routed-only
+  CAM operators for Atlas A5 (`ascend950`). This is a source/build baseline;
+  A5 communication correctness and performance still require device qualification.
 - `MAX_JOBS`: number of parallel CMake build jobs for the PyTorch extension.
 - `AFD_BUILD_JOBS`: number of parallel CMake build jobs for the ACLNN operator
   project. Defaults to `8`.
@@ -133,10 +134,11 @@ ensure_afd_ascend_ops_loaded()
 
 ## Current Scope
 
-A2E/E2A continue to serve the existing CAMP2P connector. The four 910C
-routed-only CAM operators are an experimental native integration and are not
-yet selected by `CAMAsyncAFDConnector`, which retains its external legacy CAM
-interface.
+A2E/E2A continue to serve the existing CAMP2P connector. The four A3/A5
+routed-only CAM operators serve the source-built `CAMAsyncAFDConnector` path.
+The A5 baseline preserves the compact-v2 protocol and eager caller lifecycle;
+see [the A5 baseline record](../../docs/npu/CAM_ASYNC_A5_BASELINE.md) for build
+evidence and the remaining device qualification gates.
 
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /

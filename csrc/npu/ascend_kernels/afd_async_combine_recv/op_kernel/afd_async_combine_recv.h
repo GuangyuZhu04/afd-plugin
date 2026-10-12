@@ -15,7 +15,7 @@
 #include "kernel_tiling/kernel_tiling.h"
 #include "afd_async_combine_recv_tiling.h"
 #include "cam_async_comm_args.h"
-#include "cam_async_comm_group.h"
+#include "cam_async_window.h"
 
 #define DATA_FLUSH(_gm_tensor, _type)                                                                      \
     do {                                                                                                   \
@@ -54,19 +54,14 @@ public:
     __aicore__ inline void Process();
 
 private:
-    __aicore__ inline uint32_t MathCeil(uint32_t n, uint32_t align)
+    __aicore__ inline uint64_t MathCeil(uint64_t n, uint64_t align)
     {
         return align * (n / align + (n % align == 0 ? 0 : 1));
     }
 
     __aicore__ inline GM_ADDR GetPeerAddrByRankId(const int32_t rankId)
     {
-        // Match the HCCL windowsIn path in the AFD-bundled CAM package.
-        if (rankId == attnRankId_) {
-            return (GM_ADDR)epWinContext_->localWindowsIn;
-        }
-        return (GM_ADDR)((HcclRankRelationResV2 *)
-            epWinContext_->remoteRes[rankId].nextDevicePtr)->windowsIn;
+        return dataWindow_.GetDataWindow(rankId);
     }
 
     __aicore__ inline int32_t GetIds(uint32_t idsIndex, bool forceLoad = false)
@@ -114,7 +109,7 @@ private:
     GlobalTensor<XOutType> xOutGMTensor_;
     GlobalTensor<int32_t> idsGMTensor_;
     GlobalTensor<float> scalesGMTensor_;
-    __gm__ HcclOpResParam *epWinContext_{nullptr};
+    Cam::AsyncDataWindow dataWindow_;
 
     uint64_t ubReuseSize_{0};
 
@@ -166,7 +161,7 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::Init(GM_ADDR ex
     idsGMTensor_.SetGlobalBuffer((__gm__ int32_t *)expertIds);
     scalesGMTensor_.SetGlobalBuffer((__gm__ float *)expertScales);
     // commArgs is an ABI placeholder; MC2 initializes the HCCL resource context.
-    epWinContext_ = (__gm__ HcclOpResParam *)AscendC::GetHcclContext<HCCL_GROUP_ID_0>();
+    dataWindow_.Init(AscendC::GetHcclContext<HCCL_GROUP_ID_0>(), attnRankId_);
 
     // split work across cores
     uint32_t batchSizePerAiv = batchSize_ / aivNum_;
@@ -323,16 +318,16 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::CombineRecv()
 
 
             Cast(rowTmpFloatLocal_, xOutTensor_, RoundMode::CAST_NONE, hiddenSize_);
-            pipe_barrier(PIPE_V);
+            AscendC::PipeBarrier<PIPE_V>();
             Muls(mulBufLocal_, rowTmpFloatLocal_, scaleVal, hiddenSize_);
-            pipe_barrier(PIPE_V);
+            AscendC::PipeBarrier<PIPE_V>();
             Add(sumFloatBufLocal_, sumFloatBufLocal_, mulBufLocal_, hiddenSize_);
             SyncFunc<HardEvent::V_S>();
 
 
             if (topkIndex == (topk_ - 1)) {
                 // All routed contributions for this token have been accumulated.
-                pipe_barrier(PIPE_V);
+                AscendC::PipeBarrier<PIPE_V>();
 
                 // output
                 Cast(xOutTensor_, sumFloatBufLocal_, RoundMode::CAST_RINT, hiddenSize_);

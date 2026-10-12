@@ -12,6 +12,7 @@
 #include "tiling/hccl/hccl_tiling.h"
 #include "../op_kernel/afd_async_dispatch_recv_tiling.h"
 
+#include "cam_async_host_tiling.h"
 #include "ops_log.h"
 #include "ops_error.h"
 
@@ -62,18 +63,26 @@ constexpr static float EP_BALANCE_FACTOR = 1.2;
 
 constexpr static uint32_t OP_TYPE_ALL_TO_ALL = 8U;
 
-static uint32_t MathCeil(uint32_t n, uint32_t align)
+static uint64_t MathCeil(uint64_t n, uint64_t align)
 {
     return (n + align - 1) / align * align;
 }
 
 namespace optiling {
-static void SetHcommCfg(AfdAsyncDispatchRecvTilingData *tiling, const std::string &groupName)
+static void SetHcommCfg(AfdAsyncDispatchRecvTilingData *tiling, const std::string &groupName, bool isAscend950)
 {
     uint32_t opType1 = OP_TYPE_ALL_TO_ALL;
     std::string algConfigAllToAllStr = "AlltoAll=level0:fullmesh;level1:pairwise";
 
     AscendC::Mc2CcTilingConfig mc2CcTilingConfig(groupName, opType1, algConfigAllToAllStr);
+#ifdef AFD_TILING_HAS_COMM_ENGINE
+    // Match the A5 A2E/E2A MTE resource path: this field is HcclAccelerator::AIV.
+    if (isAscend950) {
+        mc2CcTilingConfig.SetCommEngine(AsyncHost::MTE_HCCL_ACCELERATOR);
+    }
+#else
+    (void)isAscend950;
+#endif
     mc2CcTilingConfig.GetTiling(tiling->mc2InitTiling);
     mc2CcTilingConfig.GetTiling(tiling->mc2CcTiling1);
 }
@@ -97,6 +106,29 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
     int64_t tpSize = *(attrs->GetInt(ATTR_ENUM_TP_SIZE));
     int64_t dynamicQuant = *(attrs->GetInt(ATTR_ENUM_DYNAMIC_QUANT));
     auto groupNamePtr = attrs->GetAttrPointer<char>(ATTR_ENUM_HCCL_GROUP_NAME);
+
+    auto ascendcPlatform = platform_ascendc::PlatformAscendC(context->GetPlatformInfo());
+    bool isAscend950 = false;
+#ifdef AFD_TILING_HAS_COMM_ENGINE
+    isAscend950 = ascendcPlatform.GetSocVersion() == platform_ascendc::SocVersion::ASCEND950;
+#endif
+    uint64_t aivNum = AsyncHost::GetActiveAivCount(ascendcPlatform.GetCoreNumAiv());
+    uint64_t ubSize = 0UL;
+    ascendcPlatform.GetCoreMemSize(platform_ascendc::CoreMemType::UB, ubSize);
+    OPS_ERR_IF(aivNum == 0,
+        OPS_LOG_E(nodeName, "Platform has no active AIV cores."), return ge::GRAPH_FAILED);
+    if (isAscend950) {
+        OPS_ERR_IF(worldSize < 1 || worldSize > AsyncHost::A5_MAX_WORLD_SIZE
+            || moeRankNum < 1 || attnRankNum < 1 || moeRankNum > worldSize || attnRankNum > worldSize,
+            OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires positive A/F ranks and worldSize <= %ld.",
+                AsyncHost::A5_MAX_WORLD_SIZE), return ge::GRAPH_FAILED);
+        OPS_ERR_IF(hiddenSize < LIMIT_HIDDEN_SIZE_MIN || hiddenSize > AsyncHost::MAX_KERNEL_DIMENSION
+            || hiddenSize % static_cast<int64_t>(AsyncHost::UB_ALIGNMENT) != 0 || routeExpertNumPerMoe < 1
+            || routeExpertNumPerMoe > AsyncHost::MAX_KERNEL_DIMENSION / moeRankNum
+            || topk < 1 || topk > AsyncHost::MAX_KERNEL_DIMENSION,
+            OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires aligned hiddenSize and representable expert dimensions."),
+            return ge::GRAPH_FAILED);
+    }
 
     int64_t expertNum = routeExpertNumPerMoe * moeRankNum;
     uint64_t sharedMemSize = GetMaxWindowSize();
@@ -146,6 +178,24 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 
     int64_t limitMaxSeqLenPerRank = maxSeqLen / tpSize;
 
+    float maxSeqLenFactor = GetBatchSizeFactor();
+    OPS_ERR_IF(!(maxSeqLenFactor > 0.0f && maxSeqLenFactor <= 1.0f),
+        OPS_LOG_E(nodeName, "maxSeqLenFactor is invalid, only support (0, 1], but got maxSeqLenFactor=%f.",
+            maxSeqLenFactor), return ge::GRAPH_FAILED);
+    uint64_t maxTokenNum = (int64_t)(LIMIT_MAX_SEQ_LEN_MAX * maxSeqLenFactor);
+
+    OPS_ERR_IF(isAscend950 && (limitMaxSeqLenPerRank < 1 || maxTokenNum < 1),
+        OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires positive source and receive capacities."),
+        return ge::GRAPH_FAILED);
+
+    if (isAscend950) {
+        uint64_t requiredUbSize = AsyncHost::DispatchRecvUbBytes(routeExpertNumPerMoe, tpSize, hiddenSize,
+            aivNum, limitMaxSeqLenPerRank, topk, maxTokenNum, dynamicQuant == 1);
+        OPS_ERR_IF(ubSize < requiredUbSize,
+            OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires %lu UB bytes but platform provides %lu.",
+                requiredUbSize, ubSize), return ge::GRAPH_FAILED);
+    }
+
     // 64 B, info sent by dispatch send
     uint64_t dispatchInfoSize = MathCeil(sizeof(int64_t) * BATCH_INFO_VAL_NUM, UB_ALIGN);
     // max ~96 B, token count received per expert / chunk flag for whether expert already processed
@@ -161,20 +211,15 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
     uint64_t tokenAddrSize = MathCeil(sizeof(uint16_t) * limitMaxSeqLenPerRank * topk, UB_ALIGN);
     // min shared memory needed on the moe side
     uint64_t sharedMemMoeNeedSize =
-        (dispatchInfoSize + expertTokenCntSize * 2 + dispatchTokenSize + tokenAddrSize) * attnRankNum;
+        (dispatchInfoSize + expertTokenCntSize * 2 + dispatchTokenSize + tokenAddrSize) * attnRankNum
+        + AsyncHost::WINDOW_CURSOR_BYTES;
 
     OPS_ERR_IF(sharedMemSize < sharedMemMoeNeedSize,
         OPS_LOG_E(nodeName, "sharedMemSize is %lu but need %lu.", sharedMemSize, sharedMemMoeNeedSize),
         return ge::GRAPH_FAILED);
 
-    float maxSeqLenFactor = GetBatchSizeFactor();
-    OPS_ERR_IF(!(maxSeqLenFactor > 0.0f && maxSeqLenFactor <= 1.0f),
-        OPS_LOG_E(nodeName, "maxSeqLenFactor is invalid, only support (0, 1], but got maxSeqLenFactor=%f.",
-            maxSeqLenFactor), return ge::GRAPH_FAILED);
-    uint64_t maxTokenNum = (int64_t)(LIMIT_MAX_SEQ_LEN_MAX * maxSeqLenFactor);
-
     std::string groupName(groupNamePtr);
-    SetHcommCfg(tilingData, groupName);
+    SetHcommCfg(tilingData, groupName, isAscend950);
 
     tilingData->moeDistributeDispatchInfo.magic = magic;
     tilingData->moeDistributeDispatchInfo.maxSeqLen = maxSeqLen;
@@ -189,12 +234,8 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
     tilingData->moeDistributeDispatchInfo.maxTokenNum = maxTokenNum;
     tilingData->moeDistributeDispatchInfo.dynamicQuant = dynamicQuant;
 
-    uint32_t blockDim = 1U;
-    auto ascendcPlatform = platform_ascendc::PlatformAscendC(context->GetPlatformInfo());
-    uint64_t aivNum = ascendcPlatform.GetCoreNumAiv();
-    uint64_t ubSize = 0UL;
-    ascendcPlatform.GetCoreMemSize(platform_ascendc::CoreMemType::UB, ubSize);
-    blockDim = ascendcPlatform.CalcTschBlockDim(aivNum, 0, aivNum);
+    // Launch the same active AIV count used by the compact statistics and token partitions.
+    uint32_t blockDim = ascendcPlatform.CalcTschBlockDim(aivNum, 0, aivNum);
     context->SetBlockDim(blockDim);
 
     tilingData->moeDistributeDispatchInfo.aivNum = aivNum;
@@ -330,6 +371,7 @@ public:
         this->Attr("hccl_group_name").String();
 
         this->AICore().AddConfig("ascend910_93");
+        this->AICore().AddConfig("ascend950");
         this->MC2().HcclGroup({"hccl_group_name"});
 
         // support graph

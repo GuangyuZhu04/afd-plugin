@@ -1,7 +1,8 @@
 # Routed-only CAM asynchronous operators
 
 The AFD native package contains four experimental asynchronous communication
-operators for Ascend 910C (`ascend910_93`). They use the
+operators for Ascend 910C (`ascend910_93`) and an Ascend 950 (`ascend950`)
+source/build baseline. A5 device communication remains unqualified. They use the
 `cam_async_routed_only_compact_v2` protocol: only routed experts participate
 in dispatch and combine; shared-expert payloads and reserved expert slots are
 absent.
@@ -70,8 +71,9 @@ SOC_VERSION=910c AFD_BUILD_ASCEND_OPS=1 \
 ```
 
 For 910C, the registry selects A2E/E2A and all four routed-only operators.
-For 950, only A2E/E2A are selected, and the new PyTorch registrations are not
-compiled. `setup.py` passes the same `SOC_VERSION` to the ACLNN build and
+For 950, A2E/E2A and all four routed-only operators are selected, and the
+PyTorch registrations are compiled. The A5 baseline uses SDK-mapped MTE data
+windows and at most 48 active AIVs; it introduces no CCU/SIMT performance path. `setup.py` passes the same `SOC_VERSION` to the ACLNN build and
 the extension CMake configuration (`AFD_SOC_VERSION`).
 
 `AFD_SKIP_ACLNN_BUILD=1` still requires an existing, matching AFD vendor
@@ -202,7 +204,8 @@ cleanup results. Validate all four phases together, including:
 - Inference rejection paths, invalid metadata, timeout/abort behavior, and
   completion flags under the intended caller lifecycle.
 - Rebuilding and loading with existing A2E/E2A operators, with the 950 build
-  continuing to exclude these 910C-only operators.
+  selecting and registering all four operators. A5 source/build support does
+  not substitute for the device checks above.
 
 The standalone device check is
 `tests/e2e/operators/async_cam_roundtrip.py`. Run it with `torchrun` using

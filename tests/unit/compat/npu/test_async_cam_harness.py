@@ -15,9 +15,12 @@ from unittest.mock import Mock
 
 from tests.npu.async_cam_common import (
     CONSERVATIVE_UB_BYTES,
+    MAX_A5_RANKS,
+    MAX_AIV_COUNT,
     HarnessConfig,
     NativeHarness,
     chunk_plans,
+    describe_config,
     f32,
     quant_dynamic_scale,
     quant_stored_scale,
@@ -196,6 +199,113 @@ class AsyncCamPlannerTests(unittest.TestCase):
             validate_config(replace(reference, hidden_size=16384))
         with self.assertRaisesRegex(ValueError, "48-AIV owner"):
             validate_config(replace(HarnessConfig(), moe_ranks=49))
+
+    def test_a5_planning_requires_explicit_hardware_limits(self):
+        for overrides in (
+            {},
+            {"aiv_count": 8},
+            {"ub_budget_bytes": CONSERVATIVE_UB_BYTES},
+        ):
+            with (
+                self.subTest(overrides=overrides),
+                self.assertRaisesRegex(ValueError, "950 requires explicit"),
+            ):
+                validate_config(HarnessConfig(soc_version="950", **overrides))
+
+    def test_explicit_resource_plan_keeps_the_routing_contract(self):
+        a3 = HarnessConfig(lengths=(256, 256), max_seq_len=512, capacity=512)
+        # These are synthetic planner inputs, not claimed A5 hardware limits.
+        a5 = replace(
+            a3, soc_version="950", aiv_count=8, ub_budget_bytes=CONSERVATIVE_UB_BYTES
+        )
+        validate_config(a5)
+        self.assertGreater(
+            unified_buffer_requirements(a5)["dispatch_recv"],
+            unified_buffer_requirements(a3)["dispatch_recv"],
+        )
+        self.assertEqual(window_requirements(a5), window_requirements(a3))
+        for owner in range(a3.moe_ranks):
+            self.assertEqual(chunk_plans(a5, owner), chunk_plans(a3, owner))
+        report = describe_config(a5)
+        self.assertEqual(report["assumed_aiv_count"], a5.aiv_count)
+        self.assertEqual(report["unified_buffer_budget_bytes"], a5.ub_budget_bytes)
+        self.assertEqual(report["status"], "plan_only_no_device_validation")
+
+    def test_resource_preflight_enforces_declared_aiv_and_ub_limits(self):
+        config = HarnessConfig(
+            soc_version="950", aiv_count=8, ub_budget_bytes=CONSERVATIVE_UB_BYTES
+        )
+        with self.assertRaisesRegex(ValueError, "48-AIV owner"):
+            validate_config(replace(config, moe_ranks=MAX_AIV_COUNT + 1))
+        with self.assertRaisesRegex(ValueError, "UB bytes"):
+            validate_config(replace(config, ub_budget_bytes=1024))
+        for overrides in ({"aiv_count": 0}, {"ub_budget_bytes": -1}):
+            with (
+                self.subTest(overrides=overrides),
+                self.assertRaisesRegex(ValueError, "must be positive"),
+            ):
+                validate_config(replace(config, **overrides))
+
+    def test_a5_active_aiv_count_can_be_smaller_than_moe_owner_count(self):
+        config = HarnessConfig(
+            soc_version="950", aiv_count=1, ub_budget_bytes=CONSERVATIVE_UB_BYTES
+        )
+        validate_config(config)
+        self.assertEqual(config.moe_ranks, 2)
+        self.assertGreater(config.moe_ranks, config.aiv_count)
+        self.assertEqual(describe_config(config)["assumed_aiv_count"], 1)
+
+    def test_planner_rejects_aiv_count_above_native_launch_cap(self):
+        for soc in ("910c", "950"):
+            with (
+                self.subTest(soc=soc),
+                self.assertRaisesRegex(ValueError, "48-AIV launch cap"),
+            ):
+                validate_config(
+                    HarnessConfig(
+                        soc_version=soc,
+                        aiv_count=MAX_AIV_COUNT + 1,
+                        ub_budget_bytes=CONSERVATIVE_UB_BYTES,
+                    )
+                )
+
+    def test_a5_rank_preflight_matches_window_pointer_capacity(self):
+        config = HarnessConfig(
+            soc_version="950",
+            attn_ranks=MAX_A5_RANKS - 2,
+            lengths=(7,) * (MAX_A5_RANKS - 2),
+            aiv_count=MAX_AIV_COUNT,
+            ub_budget_bytes=CONSERVATIVE_UB_BYTES,
+        )
+        self.assertEqual(config.world_size, MAX_A5_RANKS)
+        validate_config(config)
+        with self.assertRaisesRegex(ValueError, "950 world-size"):
+            validate_config(
+                replace(config, attn_ranks=MAX_A5_RANKS, lengths=(7,) * MAX_A5_RANKS)
+            )
+
+    def test_a5_cli_dry_run_reports_explicit_resources_without_qualification(self):
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(REPOSITORY_ROOT / "tests/npu/async_cam_precision.py"),
+                "--dry-run",
+                "--soc-version",
+                "950",
+                "--aiv-count",
+                "8",
+                "--ub-budget-bytes",
+                str(CONSERVATIVE_UB_BYTES),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["config"]["soc_version"], "950")
+        self.assertEqual(report["assumed_aiv_count"], 8)
+        self.assertEqual(report["status"], "plan_only_no_device_validation")
 
     def test_cli_help_and_dry_run_use_only_standard_library(self):
         script = REPOSITORY_ROOT / "tests/npu/async_cam_precision.py"

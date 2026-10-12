@@ -15,7 +15,7 @@
 #include "kernel_tiling/kernel_tiling.h"
 #include "afd_async_dispatch_recv_tiling.h"
 #include "cam_async_comm_args.h"
-#include "cam_async_comm_group.h"
+#include "cam_async_window.h"
 
 namespace MoeDistributeDispatchImpl {
 constexpr uint64_t CAM_MAX_RANK_SIZE = 384;  // max NPUs supported by the Cam comm library
@@ -57,19 +57,14 @@ public:
     __aicore__ inline void Process();
 
 private:
-    __aicore__ inline uint32_t MathCeil(uint32_t n, uint32_t align)
+    __aicore__ inline uint64_t MathCeil(uint64_t n, uint64_t align)
     {
         return align * (n / align + (n % align == 0 ? 0 : 1));
     }
 
     __aicore__ inline GM_ADDR GetPeerAddrByRankId(const int32_t rankId)
     {
-        // Match the HCCL windowsIn path in the AFD-bundled CAM package.
-        if (rankId == moeRankId_) {
-            return (GM_ADDR)epWinContext_->localWindowsIn;
-        }
-        return (GM_ADDR)((HcclRankRelationResV2 *)
-            epWinContext_->remoteRes[rankId].nextDevicePtr)->windowsIn;
+        return dataWindow_.GetDataWindow(rankId);
     }
 
     __aicore__ inline void DispatchRecv();
@@ -102,7 +97,7 @@ private:
     GlobalTensor<float> quantScaleGMTensor_;
     GlobalTensor<int64_t> epRecvCountRoutedGMTensor_;
     GlobalTensor<int64_t> batchInfoGMTensor_;
-    __gm__ HcclOpResParam *epWinContext_{nullptr};
+    Cam::AsyncDataWindow dataWindow_;
 
     uint64_t ubReuseSize_{0};
 
@@ -169,7 +164,7 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::Init(
     epRecvCountRoutedGMTensor_.SetGlobalBuffer((__gm__ int64_t *)epRecvCountRoutedOut);
     batchInfoGMTensor_.SetGlobalBuffer((__gm__ int64_t *)batchInfoOut);
     // commArgs is an ABI placeholder; MC2 initializes the HCCL resource context.
-    epWinContext_ = (__gm__ HcclOpResParam *)AscendC::GetHcclContext<HCCL_GROUP_ID_0>();
+    dataWindow_.Init(AscendC::GetHcclContext<HCCL_GROUP_ID_0>(), moeRankId_);
 
     tpipe_ = pipe;
     tpipe_->Reset();

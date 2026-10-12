@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
-"""Real dispatcher/Meta tests for the Ascend 910C routed-only CAM extension.
+"""Real dispatcher/Meta tests for the A3/A5 routed-only CAM extension.
 
 Build the extension with SOC_VERSION=910c, then run this file with
-SOC_VERSION=910c pytest tests/unit/compat/npu/test_cam_async_ops.py.
+SOC_VERSION=910c pytest tests/unit/compat/npu/test_cam_async_ops.py. For the A5
+baseline, build and test with SOC_VERSION=950 instead.
 No HCCL group or device kernel is launched. These tests do not qualify NPU
 communication, numerical correctness, synchronization, or the legacy connector.
 """
@@ -25,8 +26,8 @@ pytestmark = pytest.mark.npu
 @pytest.fixture(scope="module")
 def cam_runtime() -> ModuleType:
     soc = os.environ.get("SOC_VERSION", "").lower()
-    if soc != "910c" and not soc.startswith("ascend910_93"):
-        pytest.skip("Set SOC_VERSION=910c to test a compiled Ascend 910C CAM extension")
+    if soc not in ("910c", "950") and not soc.startswith(("ascend910_93", "ascend950")):
+        pytest.skip("Set SOC_VERSION=910c or 950 to test a compiled CAM extension")
     for module in ("torch", "torch_npu", "afd_plugin._C_ascend"):
         if importlib.util.find_spec(module) is None:
             pytest.skip(f"{module} is required for compiled CAM Meta tests")
