@@ -185,3 +185,7 @@ the caller can supply a capacity-sized activation without a group-count read.
 `per_token_scale` is optional at the binding level; A8W4 MSD requires a
 capacity-sized device `float32` tensor. An absent `group_list` and other split
 modes are not supported by this binding.
+
+The [P2 CCU experiment](../../docs/npu/CAM_ASYNC_A5_CCU.md) builds separately
+under `experimental/cam_async_ccu`. It implements device GM descriptors and a
+custom CCU segment kernel; it is not selected by the four routed-only operators.
