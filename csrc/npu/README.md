@@ -153,6 +153,10 @@ The [CR synchronization refinement](../../docs/npu/CAM_ASYNC_A5_COMBINE_SYNC.md)
 removes explicit per-tile Scalar waits from the A5 prefetch arithmetic while
 retaining vector dependencies, output completion, and the final drain.
 
+The [DS sparse rank refinement](../../docs/npu/CAM_ASYNC_A5_SPARSE_RANKS.md)
+uses a token bitmap and a visited list in the existing flag UB arena. It
+preserves payload deduplication, all assignment addresses, and token-end offsets.
+
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /
 A8W4-MSD variants) built for `ascend910_93`. It is registered as

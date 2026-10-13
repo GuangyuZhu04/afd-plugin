@@ -16,6 +16,14 @@
 #include "afd_async_dispatch_send_tiling.h"
 #include "cam_async_comm_args.h"
 #include "cam_async_window.h"
+// ### PATCH START: A5 sparse payload rank bookkeeping
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+#define AFD_ASYNC_DISPATCH_SPARSE_RANKS 1
+#define CAM_ASYNC_SPARSE_RANKS_INLINE __aicore__ inline
+#include "cam_async_sparse_ranks.h"
+#undef CAM_ASYNC_SPARSE_RANKS_INLINE
+#endif
+// ### PATCH END: A5 sparse payload rank bookkeeping
 // ### PATCH START: Isolate SIMT declarations to their selected keys
 #define CAM_ASYNC_ROUTING_BUDGET_INLINE __aicore__ inline
 #include "cam_async_simt_routing_budget.h"
@@ -52,6 +60,27 @@ __aicore__ inline void SyncFunc() {
 
 using namespace AscendC;
 using namespace Cam;
+// ### PATCH START: Reuse the original flag arena for visited ranks
+#if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
+struct SparsePayloadRankBackend {
+    static __aicore__ inline void WriteRank(LocalTensor<uint8_t> &ranks,
+        uint32_t index, uint32_t rank)
+    {
+        ranks.SetValue(index, static_cast<uint8_t>(rank));
+    }
+
+    static __aicore__ inline uint32_t ReadRank(LocalTensor<uint8_t> &ranks, uint32_t index)
+    {
+        return ranks.GetValue(index);
+    }
+
+    static __aicore__ inline void IncrementOffset(LocalTensor<uint16_t> &offsets, uint32_t rank)
+    {
+        offsets.SetValue(rank, static_cast<uint16_t>(offsets.GetValue(rank) + 1));
+    }
+};
+#endif
+// ### PATCH END: Reuse the original flag arena for visited ranks
 template <TemplateMC2TypeClass>
 class AfdAsyncDispatchSend {
 public:
@@ -376,6 +405,11 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Process()
     DispatchSend();
 }
 
+// Patch reason: the original payload loop clears and scans every MoE rank for
+// each token even when routing visits only a few ranks.
+// Patch functionality: A5 records visited ranks in the existing flag UB arena
+// and advances their wire offsets only after all of a token's assignments.
+// Signature: unchanged; no added parameters. A3 keeps the original rank loops.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
 {
@@ -425,6 +459,12 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
 
     GlobalTensor<ExpandXOutType> dstTokenGMTensor;
     GlobalTensor<uint16_t> dstTokenAddrOffsetGMTensor;
+    // ### PATCH START: A5 payload-only token rank tracker
+#if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
+    const bool useSparseRanks = AsyncSparseRanks::CanUseSparseRanks(worldSize_, attnRankNum_, moeRankNum_);
+    AsyncSparseRanks::TokenRankTracker rankTracker(moeRankNum_);
+#endif
+    // ### PATCH END: A5 payload-only token rank tracker
     // Send one address entry per routed assignment and deduplicate payloads per rank.
     for (uint32_t topkId = (topk_ * batchSizePerAivStart_); topkId < (topk_ * batchSizePerAivEnd_); ++topkId) {
         uint32_t tokenId = topkId / topk_;  // corresponding token id
@@ -444,10 +484,19 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
                 SyncFunc<HardEvent::S_MTE3>();
             }
 
-            // clear the send table
-            for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {
-                tokenSentFlagTensor_(moeRankId) = 0;  // whether sent to this moe
+            // ### PATCH START: Reset scalar state instead of all rank flags
+#if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
+            if (useSparseRanks) {
+                rankTracker.BeginToken();
+            } else
+#endif
+            {
+                // clear the send table
+                for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {
+                    tokenSentFlagTensor_(moeRankId) = 0;  // whether sent to this moe
+                }
             }
+            // ### PATCH END: Reset scalar state instead of all rank flags
 
             // First routed destination performs the physical token send.
         }
@@ -467,8 +516,20 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
         uint16_t expertTokenSendIdx = expertSendStartIdxTensor_(expertId);
         uint32_t expertSlotOffset = expertPrefixOffset + expertTokenSendIdx;
 
+        // ### PATCH START: First encounter uses a token-local rank bitmap
+        bool firstRankVisit;
+#if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
+        if (useSparseRanks) {
+            firstRankVisit = rankTracker.RecordRank<SparsePayloadRankBackend>(
+                tokenSentFlagTensor_, moeRankId) == AsyncSparseRanks::Visit::First;
+        } else
+#endif
+        {
+            firstRankVisit = tokenSentFlagTensor_(moeRankId) == 0;
+        }
+        // ### PATCH END: First encounter uses a token-local rank bitmap
         // send only if the token has not been sent to this moe
-        if (tokenSentFlagTensor_(moeRankId) == 0) {
+        if (firstRankVisit) {
             dstTokenGMTensor.SetGlobalBuffer((__gm__ ExpandXOutType*)(dstGM + tokenStoreOffset));
             if constexpr (DynamicQuant) {
                 DataCopy(dstTokenGMTensor[hiddenSizeQuant_ * moeTokenSendIdx], xOutTensor_, hiddenSizeQuant_);
@@ -477,7 +538,14 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
                 DataCopy(dstTokenGMTensor[hiddenSize_ * moeTokenSendIdx], xOutTensor_, hiddenSize_);
                 SyncFunc<HardEvent::MTE3_S>();
             }
-            tokenSentFlagTensor_(moeRankId) = 1;
+            // ### PATCH START: Only the original path writes rank-indexed flags
+#if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
+            if (!useSparseRanks)
+#endif
+            {
+                tokenSentFlagTensor_(moeRankId) = 1;
+            }
+            // ### PATCH END: Only the original path writes rank-indexed flags
         }
 
 
@@ -486,12 +554,22 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
         expertSendStartIdxTensor_(expertId) = expertTokenSendIdx + 1;
 
         if ((topkId + 1) % topk_ == 0) {
-            // refresh offsets from the send table
-            for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {
-                if (tokenSentFlagTensor_(moeRankId) == 1) {
-                    ++moeSendStartOffsetTensor_(moeRankId);
+            // ### PATCH START: Advance only visited ranks at token end
+#if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
+            if (useSparseRanks) {
+                rankTracker.AdvanceOffsets<SparsePayloadRankBackend>(
+                    tokenSentFlagTensor_, moeSendStartOffsetTensor_);
+            } else
+#endif
+            {
+                // refresh offsets from the send table
+                for (uint32_t moeRankId = 0; moeRankId < moeRankNum_; ++moeRankId) {
+                    if (tokenSentFlagTensor_(moeRankId) == 1) {
+                        ++moeSendStartOffsetTensor_(moeRankId);
+                    }
                 }
             }
+            // ### PATCH END: Advance only visited ranks at token end
         }
     }
     for (uint32_t expertId = 0; expertId < expertNum_; ++expertId) {

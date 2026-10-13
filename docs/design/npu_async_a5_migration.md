@@ -1,6 +1,6 @@
 # 四个异步通信算子从 Ascend910C/A3 迁移到 Ascend950/A5 的设计提案
 
-状态：设计提案；2026-10-12。后续实现与编译证据见 [B0基线](../npu/CAM_ASYNC_A5_BASELINE.md)、[P0 MTE流水](../npu/CAM_ASYNC_A5_MTE_PIPELINE.md)、[P1 SIMT路由](../npu/CAM_ASYNC_A5_SIMT_ROUTING.md)、[P2 CCU实验](../npu/CAM_ASYNC_A5_CCU.md)、[P3/P4实验记录](../npu/CAM_ASYNC_A5_PIPELINE_SLOTS.md)、[接收与小批量优化](../npu/CAM_ASYNC_A5_RECEIVE_OPTIMIZATION.md)、[CR同步精简](../npu/CAM_ASYNC_A5_COMBINE_SYNC.md)。源码基线：`bf5bd280b7481358fc0df4a8ec5897b12be73802`。
+状态：设计提案；2026-10-12。后续实现与编译证据见 [B0基线](../npu/CAM_ASYNC_A5_BASELINE.md)、[P0 MTE流水](../npu/CAM_ASYNC_A5_MTE_PIPELINE.md)、[P1 SIMT路由](../npu/CAM_ASYNC_A5_SIMT_ROUTING.md)、[P2 CCU实验](../npu/CAM_ASYNC_A5_CCU.md)、[P3/P4实验记录](../npu/CAM_ASYNC_A5_PIPELINE_SLOTS.md)、[接收与小批量优化](../npu/CAM_ASYNC_A5_RECEIVE_OPTIMIZATION.md)、[CR同步精简](../npu/CAM_ASYNC_A5_COMBINE_SYNC.md)、[DS稀疏rank](../npu/CAM_ASYNC_A5_SPARSE_RANKS.md)。源码基线：`bf5bd280b7481358fc0df4a8ec5897b12be73802`。
 
 本提案先定义功能相同的 A5 基线，再比较 MTE 流水、SIMT、CCU 和分块协议方案。设计阶段仅新增本文档，并在独立远程目录编译接口探针；没有改动四算子实现、A5 注册与构建配置，也没有改动远端已有 A5 工程。后续实现以链接中的基线记录为准。这里的“等价”是 Python ABI、routed-only 路由/布局、量化与累加合同、完成通知和允许的调用生命周期相同，不代表 A3/A5 混合通信已获支持。
 
