@@ -444,6 +444,10 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::LoadCombineTile
         {false, 0U, 0U, 0});
 }
 
+// Patch reason: per-tile Duplicate/Add produce no values read by Scalar.
+// Patch functionality: keep V work asynchronous, capture each scale by value,
+// and retain PIPE_V, input credits, output MTE3_V, and the final Scalar drain.
+// Signature: private helper unchanged; no added parameters.
 // AFD private pipeline: SIMD remains over independent hidden elements. It never
 // reassociates top-k reduction or fuses the separately rounded Muls and Add.
 // Both input slots and all event IDs are drained before the existing SyncAll and
@@ -481,6 +485,9 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::CombineRecvPipe
     while (true) {
         pipeline.WaitLoaded(slot);
         const auto current = tiles[slot];
+        // ### PATCH START: Capture this tile's scalar operand at issue time
+        const float currentScale = scales[slot];
+        // ### PATCH END: Capture this tile's scalar operand at issue time
         const bool nextReady = cursor.HasNext();
         const uint32_t nextSlot = (slot + 1) % AsyncCombine::PREFETCH_SLOT_COUNT;
         if (nextReady) {
@@ -498,14 +505,20 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::CombineRecvPipe
         auto product = mulBufLocal_[current.hiddenOffset];
         if (topkIndex == 0) {
             Duplicate(sum, 0.0F, current.hiddenElements);
-            SyncFunc<HardEvent::V_S>();
+            // ### PATCH START: Keep FP32 scratch owned by the vector pipeline
+            // No Scalar reads sum. The PIPE_V after Cast closes this Duplicate
+            // and preceding vector work before product/sum scratch is reused.
+            // ### PATCH END: Keep FP32 scratch owned by the vector pipeline
         }
         Cast(row, inputs[slot], RoundMode::CAST_NONE, current.hiddenElements);
         AscendC::PipeBarrier<PIPE_V>();
-        Muls(product, row, scales[slot], current.hiddenElements);
+        Muls(product, row, currentScale, current.hiddenElements);
         AscendC::PipeBarrier<PIPE_V>();
         Add(sum, sum, product, current.hiddenElements);
-        SyncFunc<HardEvent::V_S>();
+        // ### PATCH START: Return slot ownership without a per-tile Scalar wait
+        // Scratch is read only by V. Existing PIPE_V fences and the V -> MTE2
+        // credit keep its consumers ordered; final output retains MTE3_V.
+        // ### PATCH END: Return slot ownership without a per-tile Scalar wait
         if (topkIndex == topk_ - 1) {
             AscendC::PipeBarrier<PIPE_V>();
             Cast(inputs[slot], sum, RoundMode::CAST_RINT, current.hiddenElements);

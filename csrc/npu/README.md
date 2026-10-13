@@ -149,6 +149,10 @@ source core selection for small batches. These A5 paths preserve compact-v2,
 operator keys, and baseline minimum resource checks; hardware performance is
 still unmeasured.
 
+The [CR synchronization refinement](../../docs/npu/CAM_ASYNC_A5_COMBINE_SYNC.md)
+removes explicit per-tile Scalar waits from the A5 prefetch arithmetic while
+retaining vector dependencies, output completion, and the final drain.
+
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /
 A8W4-MSD variants) built for `ascend910_93`. It is registered as

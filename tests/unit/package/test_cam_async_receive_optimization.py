@@ -4,7 +4,8 @@
 
 The temporary SDK header only declares names needed to parse the native adapter.
 It provides no implementation and is never evidence of CANN API support. Actual
-MTE2/V/MTE3 work executes through the injected CPU backend; native SDK compilation
+MTE2/V/MTE3 work executes through the injected CPU backend. Separate vector jobs
+compare the former V_S waits with issue-ahead execution; native SDK compilation
 and hardware qualification remain separate checks.
 """
 
@@ -24,7 +25,7 @@ _SDK_DECLARATIONS = """\
 namespace AscendC {
 using TEventID = int32_t;
 enum class HardEvent {
-    MTE2_V, V_MTE2, V_MTE3, MTE3_V, MTE2_MTE3, MTE3_MTE2, MTE2_S
+    MTE2_V, V_MTE2, V_MTE3, MTE3_V, MTE2_MTE3, MTE3_MTE2, MTE2_S, V_S
 };
 class TPipe {
 public:
@@ -92,6 +93,13 @@ def receive_optimization_probe(tmp_path_factory: pytest.TempPathFactory) -> Path
         "prefetch_wrong_output_slot",
         "prefetch_missing_tail_drain",
         "prefetch_fused_arithmetic",
+        "prefetch_async_fp16",
+        "prefetch_async_bf16",
+        "prefetch_async_partial_hidden",
+        "prefetch_async_topk_eight",
+        "prefetch_async_live_scale",
+        "prefetch_async_live_address",
+        "prefetch_async_scalar_scratch",
         "cache_aa",
         "cache_aba",
         "cache_lru",

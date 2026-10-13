@@ -36,6 +36,9 @@ constexpr uint32_t PRECEDING_TOKENS = 3;
 constexpr uint32_t CACHE_HIDDEN = 64;
 constexpr uint64_t SOURCE_ADDRESS = uint64_t{1} << 33;
 constexpr uint64_t SCALE_PADDING = 32;
+constexpr uint64_t NO_SCRATCH_VERSION = 0;
+constexpr float POISON_SCALAR_SCALE = 19.0F;
+constexpr float POISON_SCRATCH_VALUE = 1024.0F;
 
 void Require(bool condition, const char *reason)
 {
@@ -44,7 +47,7 @@ void Require(bool condition, const char *reason)
 
 uint32_t SourcePipe(Event event)
 {
-    if (event == Event::V_MTE2 || event == Event::V_MTE3) return VECTOR_PIPE;
+    if (event == Event::V_MTE2 || event == Event::V_MTE3 || event == Event::V_S) return VECTOR_PIPE;
     if (event == Event::MTE3_V || event == Event::MTE3_MTE2) return STORE_PIPE;
     return LOAD_PIPE;
 }
@@ -94,6 +97,23 @@ public:
         while (tokens_[{Event::MTE2_S, 0}] == 0) Step();
         tokens_[{Event::MTE2_S, 0}] = 0;
     }
+    void FenceVectorToScalar()
+    {
+        Signal(Event::V_S, 0);
+        while (tokens_[{Event::V_S, 0}] == 0) Step();
+        tokens_[{Event::V_S, 0}] = 0;
+        ++vectorScalarWaits_;
+    }
+    uint32_t VectorScalarWaits() const { return vectorScalarWaits_; }
+    bool HasQueuedVectorWork() const
+    {
+        for (const auto &command : queues_[VECTOR_PIPE])
+            if (command.action == Action::Work) return true;
+        return false;
+    }
+    // Test scheduler observation only: advance exactly one engine command so a
+    // fault can be injected between multiplication and its pending Add consumer.
+    void ProgressOneCommand() { Step(); }
     void Release(Event event, int id)
     {
         Require(leases_[{event, id}], "release without a live event lease");
@@ -152,6 +172,7 @@ private:
     std::map<std::pair<Event, int>, bool> leases_{};
     std::map<std::pair<Event, int>, uint32_t> tokens_{};
     bool overlap_{false};
+    uint32_t vectorScalarWaits_{0};
 };
 
 class Backend {
@@ -414,6 +435,219 @@ bool RunPrefetch(const std::string &scenario, uint32_t seed)
     return machine.SawOverlap();
 }
 
+
+struct LoadArguments {
+    uint32_t contribution{0};
+    uint32_t hiddenOffset{0};
+    uint32_t hiddenElements{0};
+    uint64_t sourceAddress{0};
+};
+struct ArithmeticArguments {
+    Cam::AsyncCombine::CombineTile tile{};
+    uint32_t token{0};
+    uint32_t logical{0};
+    float scale{0.0F};
+    uint64_t scratchVersion{NO_SCRATCH_VERSION};
+};
+
+// The former model performed Cast/Mul/Add in one indivisible vector job. This
+// version keeps the native full-H row/product/sum scratch and schedules each
+// operator separately. PIPE_V orders these vector jobs; neither input readiness
+// nor a vector scratch result requires Scalar to finish that job before issuing
+// another command. Issue-time values are copied into the asynchronous packets.
+// Real CANN IR/ISA must independently establish the native operand capture.
+void CheckAsynchronousArithmetic(const std::string &scenario, uint32_t seed, bool waitPerTile)
+{
+    using namespace Cam::AsyncCombine;
+    const Dtype dtype = scenario == "prefetch_async_bf16" ? Dtype::Bf16 : Dtype::Fp16;
+    const uint32_t hidden = scenario == "prefetch_async_partial_hidden" ? PARTIAL_HIDDEN : FULL_HIDDEN;
+    const uint32_t topk = scenario == "prefetch_async_topk_eight" ? 8 : 2;
+    constexpr uint32_t ASYNC_TOKEN_COUNT = 3;
+    const uint32_t contributions = ASYNC_TOKEN_COUNT * topk;
+    const uint32_t contributionBegin = PRECEDING_TOKENS * topk;
+    const auto plan = PlanCombinePrefetch(hidden == PARTIAL_HIDDEN ? 6144 : 2048, hidden, 2, contributions);
+    Require(plan.enabled, "asynchronous case requires a production prefetch plan");
+    std::vector<Bytes> source(contributions, Bytes(hidden * sizeof(uint16_t)));
+    std::vector<float> scales(contributions);
+    for (uint32_t contribution = 0; contribution < contributions; ++contribution) {
+        scales[contribution] = contribution % 2 ? -0.375F : 0.75F;
+        for (uint32_t element = 0; element < hidden; ++element) {
+            const float value = (static_cast<int>(element % 13) - 6) * 0.25F + (contribution % 5) * 0.5F;
+            PutWord(source[contribution], element, Encode(value, dtype));
+        }
+    }
+    const float input = dtype == Dtype::Fp16 ? 1025.0F : 1032.0F;
+    const float weight = std::nextafter(1.0F, 2.0F);
+    scales[0] = -static_cast<float>(static_cast<double>(input) * weight);
+    scales[1] = weight;
+    for (uint32_t element = 0; element < hidden; ++element) {
+        PutWord(source[0], element, Encode(1.0F, dtype));
+        PutWord(source[1], element, Encode(input, dtype));
+    }
+    std::vector<Bytes> golden(ASYNC_TOKEN_COUNT, Bytes(hidden * sizeof(uint16_t)));
+    for (uint32_t token = 0; token < ASYNC_TOKEN_COUNT; ++token) {
+        for (uint32_t element = 0; element < hidden; ++element) {
+            float sum = 0.0F;
+            for (uint32_t logical = 0; logical < topk; ++logical) {
+                const uint32_t contribution = token * topk + logical;
+                sum = GoldenAdd(sum, Decode(GetWord(source[contribution], element), dtype), scales[contribution]);
+            }
+            PutWord(golden[token], element, Encode(sum, dtype));
+        }
+    }
+    CombineTileCursor cursor;
+    cursor.Init(contributionBegin, contributionBegin + contributions, hidden, plan.tileElements);
+    std::vector<CombineTile> tiles;
+    while (cursor.HasNext()) { tiles.push_back(cursor.Current()); cursor.Advance(); }
+    Machine machine(seed);
+    PipelineEvents<Backend> pipeline{Backend{&machine}};
+    pipeline.Init(nullptr);
+    std::array<Slot, SLOT_COUNT> slots{};
+    // Unlike the former per-token sum matrix, these are the three scratch rows
+    // actually reused by the native function, including across token boundaries.
+    std::vector<float> row(hidden), product(hidden), sum(hidden);
+    std::vector<uint64_t> rowVersion(hidden), productVersion(hidden);
+    std::vector<uint32_t> sumToken(hidden), nextLogical(hidden);
+    std::array<uint64_t, SLOT_COUNT> outputVersion{};
+    std::vector<Bytes> output(ASYNC_TOKEN_COUNT, Bytes(hidden * sizeof(uint16_t), 0xA5));
+    LoadArguments liveLoad{};
+    float liveScale = 0.0F;
+    auto load = [&](uint32_t slot, const CombineTile &tile) {
+        pipeline.WaitForReuse(slot);
+        const uint32_t contribution = tile.contributionIndex - contributionBegin;
+        liveLoad = {contribution, tile.hiddenOffset, tile.hiddenElements,
+            SOURCE_ADDRESS + static_cast<uint64_t>(contribution) * hidden * sizeof(uint16_t)
+                + static_cast<uint64_t>(tile.hiddenOffset) * sizeof(uint16_t)};
+        const LoadArguments captured = liveLoad;
+        machine.Work(LOAD_PIPE, [&, slot, captured] {
+            const LoadArguments args = scenario == "prefetch_async_live_address" ? liveLoad : captured;
+            Require(args.contribution < contributions && args.hiddenElements != 0
+                && args.hiddenOffset + args.hiddenElements <= hidden, "DMA used overwritten scalar address arguments");
+            machine.ObserveLoad();
+            slots[slot].bytes.assign(source[args.contribution].begin() + args.hiddenOffset * sizeof(uint16_t),
+                source[args.contribution].begin() + (args.hiddenOffset + args.hiddenElements) * sizeof(uint16_t));
+            slots[slot].address = args.sourceAddress;
+            slots[slot].index = contributionBegin + args.contribution;
+            outputVersion[slot] = NO_SCRATCH_VERSION;
+        });
+        pipeline.MarkLoaded(slot);
+    };
+    load(0, tiles[0]);
+    bool scalarGotAhead = false;
+    bool injectedScratchFault = false;
+    for (size_t tileIndex = 0; tileIndex < tiles.size(); ++tileIndex) {
+        const uint32_t slot = static_cast<uint32_t>(tileIndex % SLOT_COUNT);
+        const auto tile = tiles[tileIndex];
+        const uint32_t contribution = tile.contributionIndex - contributionBegin;
+        liveScale = scales[contribution];
+        const ArithmeticArguments args{tile, contribution / topk, contribution % topk,
+            liveScale, static_cast<uint64_t>(tileIndex) + 1};
+        scalarGotAhead = scalarGotAhead || machine.HasQueuedVectorWork();
+        pipeline.WaitLoaded(slot);
+        if (tileIndex + 1 < tiles.size()) load((slot + 1) % SLOT_COUNT, tiles[tileIndex + 1]);
+        if (args.logical == 0) {
+            machine.Work(VECTOR_PIPE, [&, args] {
+                for (uint32_t local = 0; local < args.tile.hiddenElements; ++local) {
+                    const uint32_t element = args.tile.hiddenOffset + local;
+                    sum[element] = 0.0F;
+                    sumToken[element] = args.token;
+                    nextLogical[element] = 0;
+                }
+            });
+            if (waitPerTile) machine.FenceVectorToScalar();
+        }
+        machine.Work(VECTOR_PIPE, [&, slot, args, contribution] {
+            const uint64_t expectedAddress = SOURCE_ADDRESS
+                + static_cast<uint64_t>(contribution) * hidden * sizeof(uint16_t)
+                + static_cast<uint64_t>(args.tile.hiddenOffset) * sizeof(uint16_t);
+            Require(slots[slot].address == expectedAddress && slots[slot].index == args.tile.contributionIndex
+                && slots[slot].bytes.size() == args.tile.hiddenElements * sizeof(uint16_t),
+                "Cast read data loaded with stale address/width operands");
+            for (uint32_t local = 0; local < args.tile.hiddenElements; ++local) {
+                const uint32_t element = args.tile.hiddenOffset + local;
+                row[element] = Decode(GetWord(slots[slot].bytes, local), dtype);
+                rowVersion[element] = args.scratchVersion;
+            }
+        });
+        // The two FIFO boundaries here represent the retained PIPE_V barriers
+        // between Cast/Muls and Muls/Add, not a Scalar observation of completion.
+        machine.Work(VECTOR_PIPE, [&, args] {
+            const float scale = scenario == "prefetch_async_live_scale" ? liveScale : args.scale;
+            for (uint32_t local = 0; local < args.tile.hiddenElements; ++local) {
+                const uint32_t element = args.tile.hiddenOffset + local;
+                Require(rowVersion[element] == args.scratchVersion, "row scratch overwritten before Muls");
+                volatile float rounded = row[element] * scale;
+                product[element] = rounded;
+                productVersion[element] = args.scratchVersion;
+            }
+        });
+        machine.Work(VECTOR_PIPE, [&, args] {
+            for (uint32_t local = 0; local < args.tile.hiddenElements; ++local) {
+                const uint32_t element = args.tile.hiddenOffset + local;
+                Require(productVersion[element] == args.scratchVersion, "product scratch overwritten before Add");
+                Require(sumToken[element] == args.token && nextLogical[element] == args.logical,
+                    "shared sum scratch reused or top-k arithmetic reordered");
+                volatile float rounded = sum[element] + product[element];
+                sum[element] = rounded;
+                ++nextLogical[element];
+            }
+        });
+        if (scenario == "prefetch_async_scalar_scratch" && !injectedScratchFault && !waitPerTile) {
+            // Deterministically stop at a real pending consumer interval, then
+            // inject an erroneous Scalar write into live FP32 product storage.
+            const uint32_t element = args.tile.hiddenOffset;
+            while (productVersion[element] != args.scratchVersion) machine.ProgressOneCommand();
+            product[element] = POISON_SCRATCH_VALUE;
+            injectedScratchFault = true;
+        }
+        if (waitPerTile) machine.FenceVectorToScalar();
+        if (args.logical + 1 == topk) {
+            machine.Work(VECTOR_PIPE, [&, slot, args] {
+                Bytes converted(args.tile.hiddenElements * sizeof(uint16_t));
+                for (uint32_t local = 0; local < args.tile.hiddenElements; ++local) {
+                    const uint32_t element = args.tile.hiddenOffset + local;
+                    Require(sumToken[element] == args.token && nextLogical[element] == topk,
+                        "final Cast read incomplete or overwritten sum scratch");
+                    PutWord(converted, local, Encode(sum[element], dtype));
+                }
+                slots[slot].bytes = std::move(converted);
+                outputVersion[slot] = args.scratchVersion;
+            });
+            machine.Signal(Event::V_MTE3, 0);
+            machine.Wait(Event::V_MTE3, 0);
+            machine.Work(STORE_PIPE, [&, slot, args] {
+                Require(outputVersion[slot] == args.scratchVersion,
+                    "MTE3 output source overwritten before its read");
+                std::copy(slots[slot].bytes.begin(), slots[slot].bytes.end(),
+                    output[args.token].begin() + args.tile.hiddenOffset * sizeof(uint16_t));
+            });
+            machine.Signal(Event::MTE3_V, 0);
+            machine.Wait(Event::MTE3_V, 0);
+        }
+        pipeline.MarkSourceConsumed(slot);
+        // Scalar moves ahead immediately. Positive packets retain the old scale;
+        // the negative reference-capture mutation observes this replacement.
+        liveScale = POISON_SCALAR_SCALE;
+    }
+    liveLoad = {contributions, hidden, 0, SOURCE_ADDRESS};
+    pipeline.Drain();
+    Require(output == golden, "asynchronous Cast/Muls/Add changed arithmetic or operand capture");
+    machine.Finish();
+    const uint32_t firstKTiles = ASYNC_TOKEN_COUNT * ((hidden + plan.tileElements - 1) / plan.tileElements);
+    Require(machine.VectorScalarWaits() == (waitPerTile ? tiles.size() + firstKTiles : 0),
+        "unexpected per-tile Scalar wait count");
+    if (!waitPerTile) Require(scalarGotAhead, "Scalar never issued ahead of vector completion");
+}
+void RunAsynchronousPrefetch(const std::string &scenario, uint32_t seed)
+{
+    // Each valid schedule is checked both with the former two V_S sites and
+    // without them. Both use the same production cursor/event leases and golden.
+    const bool negative = scenario == "prefetch_async_live_scale"
+        || scenario == "prefetch_async_live_address" || scenario == "prefetch_async_scalar_scratch";
+    if (!negative) CheckAsynchronousArithmetic(scenario, seed, true);
+    CheckAsynchronousArithmetic(scenario, seed, false);
+}
+
 struct WireRow { Cam::AsyncReceiveCache::RowKey key; Bytes bytes; };
 WireRow MakeWireRow(uint64_t source, uint32_t index, bool quantized, uint32_t epoch)
 {
@@ -516,22 +750,34 @@ int main(int argc, char **argv)
                 || scenario == "prefetch_wrong_output_slot" || scenario == "prefetch_missing_tail_drain"
                 || scenario == "prefetch_fused_arithmetic" || scenario == "cache_pending_hit_without_credit"
                 || scenario == "cache_early_scale_credit" || scenario == "cache_missing_reset"
-                || scenario == "cache_missing_tail_drain";
+                || scenario == "cache_missing_tail_drain"
+                || scenario == "prefetch_async_live_scale" || scenario == "prefetch_async_live_address"
+                || scenario == "prefetch_async_scalar_scratch";
             bool detected = false;
             bool overlap = false;
             for (uint32_t seed = 0; seed < SCHEDULE_COUNT; ++seed) {
                 try {
-                    if (scenario.find("prefetch_") == 0) overlap = RunPrefetch(scenario, seed) || overlap;
+                    if (scenario.find("prefetch_async_") == 0) RunAsynchronousPrefetch(scenario, seed);
+                    else if (scenario.find("prefetch_") == 0) overlap = RunPrefetch(scenario, seed) || overlap;
                     else if (scenario.find("cache_") == 0) RunCache(scenario, seed);
                     else throw std::runtime_error("unknown scenario");
-                } catch (const std::runtime_error &) {
+                } catch (const std::runtime_error &error) {
                     if (!negative) throw;
+                    const std::string reason = error.what();
+                    if (scenario == "prefetch_async_live_address")
+                        Require(reason == "DMA used overwritten scalar address arguments"
+                            || reason == "Cast read data loaded with stale address/width operands",
+                            "address mutation failed for an unrelated reason");
+                    if (scenario == "prefetch_async_live_scale" || scenario == "prefetch_async_scalar_scratch")
+                        Require(reason == "asynchronous Cast/Muls/Add changed arithmetic or operand capture",
+                            "arithmetic mutation failed for an unrelated reason");
                     detected = true;
                     break;
                 }
             }
             if (negative) Require(detected, "invalid protocol/arithmetic mutation was not detected");
-            else if (scenario.find("prefetch_") == 0 && scenario != "prefetch_zero")
+            else if (scenario.find("prefetch_") == 0 && scenario.find("prefetch_async_") != 0
+                && scenario != "prefetch_zero")
                 Require(overlap, "all schedules serialized load behind compute/store");
         }
         std::cout << scenario << " passed\n";
