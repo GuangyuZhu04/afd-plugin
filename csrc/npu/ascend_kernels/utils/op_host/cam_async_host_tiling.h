@@ -29,8 +29,15 @@ inline uint64_t AlignBytes(uint64_t bytes)
 
 inline uint64_t GetActiveAivCount(uint64_t platformAivCount)
 {
-    // All four operators share the compact-v2 48-row statistics reservation.
+    // The compact-v2 window reservation stays at 48 rows for every operator.
     return std::min(platformAivCount, MAX_ACTIVE_AIV);
+}
+
+// DS and CR must select this same count for a given source batch. FFN-side
+// DR/CS continue to use GetActiveAivCount; budgets keep the baseline cap.
+inline uint64_t GetSourceActiveAivCount(uint64_t platformAivCount, uint64_t batchTokens)
+{
+    return std::min(GetActiveAivCount(platformAivCount), batchTokens);
 }
 
 inline uint64_t DispatchSendUbBytes(uint64_t moeRanks, uint64_t experts,

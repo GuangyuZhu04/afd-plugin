@@ -560,6 +560,14 @@ def validate_config(config: HarnessConfig) -> None:
         chunk_plans(config, owner)
 
 
+def source_active_aiv_counts(config: HarnessConfig) -> tuple[int, ...]:
+    """Expected DS/CR counts from declared hardware; not device measurements."""
+    platform_aivs, _ = hardware_limits(config)
+    if config.soc_version == "950":
+        return tuple(min(platform_aivs, tokens) for tokens in config.lengths)
+    return (platform_aivs,) * config.attn_ranks
+
+
 def describe_config(config: HarnessConfig) -> dict:
     aiv_count, ub_budget = hardware_limits(config)
     plans = [chunk_plans(config, owner) for owner in range(config.moe_ranks)]
@@ -573,6 +581,27 @@ def describe_config(config: HarnessConfig) -> dict:
         "unified_buffer_bytes": unified_buffer_requirements(config),
         "unified_buffer_budget_bytes": ub_budget,
         "assumed_aiv_count": aiv_count,
+        "assumed_source_aiv_counts": source_active_aiv_counts(config),
+        "assumed_ffn_aiv_count": aiv_count,
+        "source_aiv_policy": {
+            "paired_operators": ("dispatch_send", "combine_recv"),
+            "small_batch_selection": (
+                "min(platform cap, source batch)"
+                if config.soc_version == "950"
+                else "baseline platform cap"
+            ),
+            "budget_basis": "unchanged baseline platform cap",
+            "window_statistics_rows": MAX_AIV_COUNT,
+        },
+        "receive_optimization_policy": {
+            "candidate_operators": (
+                ("combine_recv", "dispatch_recv") if config.soc_version == "950" else ()
+            ),
+            "combine_recv": "ordered SIMD hidden tiles with two MTE2 input slots",
+            "dispatch_recv": "call-local two-row cache for payload and scale",
+            "minimum_ub_contract": "unchanged baseline buffers",
+            "selection_evidence": "native tiling and profiling required",
+        },
         "resource_validation": "declared planning inputs; not verified on a device",
         "mte_pipeline_policy": {
             "candidate_operators": (
@@ -776,6 +805,15 @@ class NativeHarness:
             "device": self.torch.npu.get_device_name(self.local_rank),
             "soc_version": self.config.soc_version,
             "declared_aiv_count": aiv_count,
+            "expected_source_aiv_counts": source_active_aiv_counts(self.config),
+            "expected_operation_aiv_counts": (
+                {
+                    "dispatch_send": source_active_aiv_counts(self.config)[self.rank],
+                    "combine_recv": source_active_aiv_counts(self.config)[self.rank],
+                }
+                if self.rank < self.config.attn_ranks
+                else {"dispatch_recv": aiv_count, "combine_send": aiv_count}
+            ),
             "declared_ub_budget_bytes": ub_budget,
             "hccl_group_name": self.group_name,
             "cann_home": os.environ.get("ASCEND_HOME_PATH"),

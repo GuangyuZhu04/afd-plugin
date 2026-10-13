@@ -27,6 +27,19 @@ int main()
     std::cout << "active_one " << GetActiveAivCount(1) << '\n';
     std::cout << "active_full " << GetActiveAivCount(48) << '\n';
     std::cout << "active_larger_platform " << GetActiveAivCount(96) << '\n';
+    std::cout << "source_one " << GetSourceActiveAivCount(96, 1) << '\n';
+    std::cout << "source_five " << GetSourceActiveAivCount(48, 5) << '\n';
+    std::cout << "source_seven " << GetSourceActiveAivCount(48, 7) << '\n';
+    std::cout << "source_at_cap " << GetSourceActiveAivCount(96, 48) << '\n';
+    std::cout << "source_over_cap " << GetSourceActiveAivCount(96, 49) << '\n';
+    std::cout << "source_no_platform " << GetSourceActiveAivCount(0, 7) << '\n';
+    std::cout << "source_bad_batch " << GetSourceActiveAivCount(48, 0) << '\n';
+    std::cout << "send_budget_baseline "
+        << DispatchSendUbBytes(2, 512, 32, 48, false) << '\n';
+    std::cout << "send_budget_shrunk "
+        << DispatchSendUbBytes(2, 512, 32, 1, false) << '\n';
+    std::cout << "cr_budget_baseline " << CombineRecvUbBytes(2, 512, 32, 48) << '\n';
+    std::cout << "cr_budget_shrunk " << CombineRecvUbBytes(2, 512, 32, 1) << '\n';
     std::cout << "recv_one_core "
         << DispatchRecvUbBytes(4, 2, 64, 1, 65535, 2, 262144, false) << '\n';
     std::cout << "recv_full_cores "
@@ -105,3 +118,27 @@ def test_combine_shared_scratch_fits_completion_flags(
     # use 192; both reuse one region after payload completion. A token-only
     # bound of 256 would accept UB that cannot publish the completion prefix.
     assert host_budget_probe["combine_flag_scratch"] == 384
+
+
+def test_paired_source_core_count_is_bounded_by_tokens(
+    host_budget_probe: dict[str, int],
+):
+    assert host_budget_probe["source_one"] == 1
+    assert host_budget_probe["source_five"] == 5
+    assert host_budget_probe["source_seven"] == 7
+    assert host_budget_probe["source_at_cap"] == 48
+    assert host_budget_probe["source_over_cap"] == 48
+    assert host_budget_probe["source_no_platform"] == 0
+    assert host_budget_probe["source_bad_batch"] == 0
+
+
+def test_source_selection_does_not_redefine_baseline_budget(
+    host_budget_probe: dict[str, int],
+):
+    assert (
+        host_budget_probe["send_budget_baseline"]
+        > host_budget_probe["send_budget_shrunk"]
+    )
+    assert (
+        host_budget_probe["cr_budget_baseline"] > host_budget_probe["cr_budget_shrunk"]
+    )

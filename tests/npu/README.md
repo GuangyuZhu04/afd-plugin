@@ -55,8 +55,8 @@ SOC_VERSION=910c AFD_BUILD_ASCEND_OPS=1 \
 ```
 
 For the A5 baseline, build with `SOC_VERSION=950`. Every harness command must
-include `--soc-version 950 --aiv-count <native-active-aiv>
---ub-budget-bytes <checked-usable-ub>`. The active count must match native
+include `--soc-version 950 --aiv-count <capped-platform-aiv>
+--ub-budget-bytes <checked-usable-ub>`. The count must match native
 `min(platform_aiv, 48)`; the byte budget must come from the target platform.
 These arguments are preflight inputs and do not control kernel launch or query
 hardware. No A5 device correctness or performance is claimed by a dry run.
@@ -65,6 +65,13 @@ See [the A5 baseline record](../../docs/npu/CAM_ASYNC_A5_BASELINE.md) and
 the full native per-core UB size used by the baseline, before the SIMT reserve.
 Native tiling subtracts that reserve for SIMT keys; do not subtract it again
 in the harness argument. The default small lengths exercise scalar fallback.
+
+In [the receive optimization branch](../../docs/npu/CAM_ASYNC_A5_RECEIVE_OPTIMIZATION.md),
+DS/CR launch `min(capped-platform-aiv, source_batch)` cores per source rank;
+DR/CS retain the declared platform count. Reports list these expected counts
+separately. Window reservations and minimum UB preflight still use the original
+platform cap. The default lengths `7,5` therefore select 7/5 source cores when
+the cap is at least 7; odd core counts still require device qualification.
 
 Launch one process per NPU, with Attention ranks first and MoE ranks second.
 All ranks must receive identical script arguments. The default topology is

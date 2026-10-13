@@ -88,7 +88,9 @@ static void SetHcommCfg(AfdAsyncDispatchSendTilingData *tiling, const std::strin
 
 // Patch reason: a SIMT call graph needs an explicit UB reserve and a separate key.
 // Patch functionality: select A5 metadata routing only when its complete UB arena fits;
-// preserve scalar keys and their original shape acceptance otherwise.
+// preserve scalar keys and their original shape acceptance otherwise. A5 small
+// batches use the same source core policy as combine recv while budgets keep
+// the full baseline platform cap and the fixed 48-row window reservation.
 // Signature: matches the original TilingFunc; no added parameters.
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
@@ -117,7 +119,10 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 #ifdef AFD_TILING_HAS_COMM_ENGINE
     isAscend950 = ascendcPlatform.GetSocVersion() == platform_ascendc::SocVersion::ASCEND950;
 #endif
-    uint64_t aivNum = AsyncHost::GetActiveAivCount(ascendcPlatform.GetCoreNumAiv());
+    // ### PATCH START: Keep baseline resource cap separate from source launch
+    const uint64_t platformAivNum = AsyncHost::GetActiveAivCount(ascendcPlatform.GetCoreNumAiv());
+    uint64_t aivNum = platformAivNum;
+    // ### PATCH END: Keep baseline resource cap separate from source launch
     uint64_t ubSize = 0UL;
     ascendcPlatform.GetCoreMemSize(platform_ascendc::CoreMemType::UB, ubSize);
     OPS_ERR_IF(aivNum == 0,
@@ -207,11 +212,17 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
         OPS_LOG_E(nodeName, "Ascend 950 compact-v2 source batch must fit uint16 counters (maximum %ld).",
             AsyncHost::MAX_SOURCE_TOKEN_COUNT), return ge::GRAPH_FAILED);
 
+    // ### PATCH START: Match DS/CR source partitions for A5 small batches
+    if (isAscend950) {
+        aivNum = AsyncHost::GetSourceActiveAivCount(platformAivNum, static_cast<uint64_t>(batchSize));
+    }
+    // ### PATCH END: Match DS/CR source partitions for A5 small batches
+
     // ### PATCH START: Conservative SIMT eligibility without tightening B0
     bool useSimtRouting = false;
     if (isAscend950) {
         uint64_t requiredUbSize = AsyncHost::DispatchSendUbBytes(moeRankNum, expertNum, hiddenSize,
-            aivNum, dynamicQuant == 1);
+            platformAivNum, dynamicQuant == 1);
         OPS_ERR_IF(ubSize < requiredUbSize,
             OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires %lu UB bytes but platform provides %lu.",
                 requiredUbSize, ubSize), return ge::GRAPH_FAILED);

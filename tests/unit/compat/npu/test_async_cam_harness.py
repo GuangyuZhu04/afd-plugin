@@ -247,6 +247,27 @@ class AsyncCamPlannerTests(unittest.TestCase):
             ):
                 validate_config(replace(config, **overrides))
 
+    def test_source_core_policy_reports_per_rank_and_preserves_ffn_budget(self):
+        a3 = HarnessConfig()
+        a5 = replace(
+            a3,
+            soc_version="950",
+            aiv_count=MAX_AIV_COUNT,
+            ub_budget_bytes=CONSERVATIVE_UB_BYTES,
+        )
+        validate_config(a5)
+        report = describe_config(a5)
+        self.assertEqual(report["assumed_source_aiv_counts"], (7, 5))
+        self.assertEqual(report["assumed_ffn_aiv_count"], MAX_AIV_COUNT)
+        self.assertEqual(report["source_aiv_policy"]["window_statistics_rows"], 48)
+        self.assertEqual(
+            unified_buffer_requirements(a5), unified_buffer_requirements(a3)
+        )
+        self.assertEqual(window_requirements(a5), window_requirements(a3))
+        self.assertEqual(
+            describe_config(a3)["assumed_source_aiv_counts"], (MAX_AIV_COUNT,) * 2
+        )
+
     def test_a5_active_aiv_count_can_be_smaller_than_moe_owner_count(self):
         config = HarnessConfig(
             soc_version="950", aiv_count=1, ub_budget_bytes=CONSERVATIVE_UB_BYTES

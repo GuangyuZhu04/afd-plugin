@@ -143,6 +143,12 @@ evidence and the remaining device qualification gates. This branch also contains
 [P1 SIMT routing](../../docs/npu/CAM_ASYNC_A5_SIMT_ROUTING.md), with scalar
 fallback when the additional SIMT resources do not fit.
 
+The [receive optimization](../../docs/npu/CAM_ASYNC_A5_RECEIVE_OPTIMIZATION.md)
+adds ordered CR input prefetch, a local DR two-row cache, and matching DS/CR
+source core selection for small batches. These A5 paths preserve compact-v2,
+operator keys, and baseline minimum resource checks; hardware performance is
+still unmeasured.
+
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /
 A8W4-MSD variants) built for `ascend910_93`. It is registered as

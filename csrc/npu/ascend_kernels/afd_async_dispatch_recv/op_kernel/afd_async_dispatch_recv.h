@@ -19,6 +19,9 @@
 // ### PATCH START: A5 MTE event helper
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
 #include "cam_async_mte_pipeline.h"
+#define CAM_ASYNC_RECEIVE_CACHE_INLINE __aicore__ inline
+#include "cam_async_receive_cache.h"
+#undef CAM_ASYNC_RECEIVE_CACHE_INLINE
 #endif
 // ### PATCH END: A5 MTE event helper
 
@@ -79,7 +82,8 @@ private:
     // ### PATCH START: A5 private row pipeline
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
     __aicore__ inline void DispatchRecvRowsPipelined(GlobalTensor<ExpandXOutType> &tokenStore,
-        uint32_t tokenStart, uint32_t tokenEnd, uint32_t startExpert, uint64_t secondBufferOffset);
+        uint32_t tokenStart, uint32_t tokenEnd, uint32_t startExpert, uint32_t endExpert,
+        uint64_t secondBufferOffset);
 #endif
     // ### PATCH END: A5 private row pipeline
 
@@ -463,7 +467,7 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
     if (AsyncMte::CanUseReceiveSecondSlot(ubReuseSize_, addressSliceBytes,
         rowBytes, tokenNumPerAiv)) {
         DispatchRecvRowsPipelined(dstTokenStoreGMTensor, tokenNumPerAivStart,
-            tokenNumPerAivEnd, startExpert, tokenAddrBufferOffset_ + addressSliceBytes);
+            tokenNumPerAivEnd, startExpert, endExpert, tokenAddrBufferOffset_ + addressSliceBytes);
     } else
 #endif
     {
@@ -541,15 +545,18 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
 // ### PATCH START: A5 MTE row handoff
 // Both quantized payload and its scale stay in one leased row slot until MTE3
-// finishes both output copies. Expert/TP/token placement follows the B0 loop.
+// finishes both output copies. A source-address/wire-index cache reuses real
+// loads only within this routed call; every hit reacquires the prior MTE3 credit.
+// Expert/TP/token placement and every assignment output follow the B0 loop.
 // New private-helper parameters: tokenStore is the source wire-row view;
 // [tokenStart, tokenEnd) is this AIV's source-expert row interval; startExpert
-// seeds the original output-index walk; secondBufferOffset is the UB byte
+// seeds the original output-index walk; the new endExpert parameter disables
+// cache lookup for a single selected expert. secondBufferOffset is the UB byte
 // offset of row slot 1 after the preserved address slice. No public ABI changes.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRowsPipelined(
     GlobalTensor<ExpandXOutType> &tokenStore, uint32_t tokenStart, uint32_t tokenEnd,
-    uint32_t startExpert, uint64_t secondBufferOffset)
+    uint32_t startExpert, uint32_t endExpert, uint64_t secondBufferOffset)
 {
     uint32_t rowElements = DynamicQuant ? hiddenSizeQuant_ : hiddenSize_;
     uint64_t rowBytes = MathCeil(sizeof(ExpandXOutType) * rowElements, UB_ALIGN);
@@ -558,6 +565,9 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
             secondBufferOffset)};
     AsyncMte::TwoSlotPipeline pipeline;
     pipeline.Init(tpipe_);
+    static_assert(AsyncReceiveCache::CACHE_WAYS == DOUBLE,
+        "receive cache must retain the existing two leased row slots");
+    AsyncReceiveCache::TwoRowCache cache;
 
     uint32_t currExpertId = startExpert;
     uint32_t currExpertTokenNum = 0;
@@ -569,6 +579,11 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
         ++currExpertId;
         nextExpertTokenNum += expertRecvTokenNumTensor_(currExpertId);
     }
+    // A single selected expert, or an AIV slice wholly inside the initial
+    // expert, retains P0's alternating slots without source-key/tag operations.
+    // A slice starting exactly on a boundary conservatively keeps the cache.
+    const bool useCache = AsyncReceiveCache::CanUseCache(
+        startExpert, endExpert, tokenEnd, nextExpertTokenNum);
     for (uint32_t expertSlotOffset = tokenStart; expertSlotOffset < tokenEnd; ++expertSlotOffset) {
         while (expertSlotOffset >= nextExpertTokenNum) {
             preExpertTokenNum += tpExpertRecvTokenNumTensor_(currExpertId);
@@ -579,13 +594,27 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
         uint32_t tpExpertSlotOffset = preExpertTokenNum
             + tpExpertRecvTokenNumTensor_(expertNumPerMoe_ + currExpertId)
             + (expertSlotOffset - currExpertTokenNum);
-        uint32_t slot = (expertSlotOffset - tokenStart) % DOUBLE;
         uint16_t moeTokenSendIdx = tokenAddrOffsetTensor_(expertSlotOffset - tokenStart);
+        const uint64_t sourceElementOffset = static_cast<uint64_t>(rowElements) * moeTokenSendIdx;
+        uint32_t slot = (expertSlotOffset - tokenStart) % DOUBLE;
+        bool cacheHit = false;
+        AsyncReceiveCache::RowKey key{};
+        if (useCache) {
+            key = {reinterpret_cast<uint64_t>(tokenStore.GetPhyAddr())
+                + sizeof(ExpandXOutType) * sourceElementOffset, moeTokenSendIdx};
+            const AsyncReceiveCache::RowSelection selection = cache.Select(key);
+            slot = selection.slot;
+            cacheHit = selection.hit;
+        }
 
-        // Reusing this slot waits only for its previous MTE3 payload/scale writes.
-        // The other slot's MTE2 load can proceed while those writes are in flight.
+        // A hit must also finish its earlier MTE3 payload/scale reads. For a
+        // pending hit this credit proves the earlier real row load completed.
         pipeline.WaitForReuse(slot);
-        DataCopy(rows[slot], tokenStore[static_cast<uint64_t>(rowElements) * moeTokenSendIdx], rowElements);
+        if (!cacheHit) {
+            DataCopy(rows[slot], tokenStore[sourceElementOffset], rowElements);
+        }
+        // On a hit this ready pair bridges the acquired MTE3->MTE2 credit back
+        // to MTE3; it protects already-loaded bytes and never invents a new load.
         pipeline.MarkLoaded(slot);
         pipeline.WaitLoaded(slot);
         DataCopy(xOutGMTensor_[static_cast<uint64_t>(hiddenSize_) * tpExpertSlotOffset], rows[slot], hiddenSize_);
@@ -598,6 +627,9 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
                 {1U, sizeof(float), 0U, 0U, 0U});
         }
         pipeline.MarkWritten(slot);
+        if (useCache) {
+            cache.Remember(slot, key);
+        }
     }
     // Clear all in-flight slot ownership and return event leases before the
     // original chunk flags and ClearFlags/SyncAll source-window lifetime logic.

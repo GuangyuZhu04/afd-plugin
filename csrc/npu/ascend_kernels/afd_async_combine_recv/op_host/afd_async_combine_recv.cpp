@@ -79,6 +79,10 @@ static void SetHcommCfg(AfdAsyncCombineRecvTilingData *tiling, const std::string
     mc2CcTilingConfig.GetTiling(tiling->mc2InitTiling);
     mc2CcTilingConfig.GetTiling(tiling->mc2CcTiling1);
 }
+// Patch reason: empty source partitions add launch/synchronization work on A5.
+// Patch functionality: match dispatch send's small-batch core count without
+// reducing baseline UB acceptance or changing compact-v2 window offsets.
+// Signature: matches the original TilingFunc; no added parameters.
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
     const char *nodeName = context->GetNodeName();
@@ -101,7 +105,10 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 #ifdef AFD_TILING_HAS_COMM_ENGINE
     isAscend950 = ascendcPlatform.GetSocVersion() == platform_ascendc::SocVersion::ASCEND950;
 #endif
-    uint64_t aivNum = AsyncHost::GetActiveAivCount(ascendcPlatform.GetCoreNumAiv());
+    // ### PATCH START: Keep baseline resource cap separate from source launch
+    const uint64_t platformAivNum = AsyncHost::GetActiveAivCount(ascendcPlatform.GetCoreNumAiv());
+    uint64_t aivNum = platformAivNum;
+    // ### PATCH END: Keep baseline resource cap separate from source launch
     uint64_t ubSize = 0UL;
     ascendcPlatform.GetCoreMemSize(platform_ascendc::CoreMemType::UB, ubSize);
     OPS_ERR_IF(aivNum == 0,
@@ -190,8 +197,16 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
         OPS_LOG_E(nodeName, "Ascend 950 compact-v2 source batch must fit uint16 counters (maximum %ld).",
             AsyncHost::MAX_SOURCE_TOKEN_COUNT), return ge::GRAPH_FAILED);
 
+    // ### PATCH START: Match DS/CR source partitions for A5 small batches
     if (isAscend950) {
-        uint64_t requiredUbSize = AsyncHost::CombineRecvUbBytes(moeRankNum, expertNum, hiddenSize, aivNum);
+        aivNum = AsyncHost::GetSourceActiveAivCount(platformAivNum, static_cast<uint64_t>(batchSize));
+    }
+    // ### PATCH END: Match DS/CR source partitions for A5 small batches
+
+    if (isAscend950) {
+        // ### PATCH START: Keep the original platform-cap UB acceptance
+        uint64_t requiredUbSize = AsyncHost::CombineRecvUbBytes(moeRankNum, expertNum, hiddenSize, platformAivNum);
+        // ### PATCH END: Keep the original platform-cap UB acceptance
         OPS_ERR_IF(ubSize < requiredUbSize,
             OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires %lu UB bytes but platform provides %lu.",
                 requiredUbSize, ubSize), return ge::GRAPH_FAILED);
