@@ -189,3 +189,8 @@ modes are not supported by this binding.
 The [P2 CCU experiment](../../docs/npu/CAM_ASYNC_A5_CCU.md) builds separately
 under `experimental/cam_async_ccu`. It implements device GM descriptors and a
 custom CCU segment kernel; it is not selected by the four routed-only operators.
+
+The [P3/P4 experiment](../../docs/npu/CAM_ASYNC_A5_PIPELINE_SLOTS.md) adds a
+SIMT descriptor producer and a separately versioned epoch/credit reference
+protocol under `experimental/cam_async_pipeline`. It builds independently and
+does not select a new transport or wire protocol for the existing operators.
