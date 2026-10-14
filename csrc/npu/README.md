@@ -160,6 +160,8 @@ preserves payload deduplication, all assignment addresses, and token-end offsets
 The [payload pipeline and tile work](../../docs/npu/CAM_ASYNC_A5_PAYLOAD_TILING.md)
 adds A5 DS input/wire slots with exclusive quantization-ready events. It retains
 metadata staging fences and the original quantization/resource contracts.
+It also batches contiguous DR wire rows within expert/source/AIV boundaries,
+with exact payload padding removal and scale copies under each tile lease.
 
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /

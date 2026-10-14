@@ -29,6 +29,25 @@ q0 的 input ready 为 `MTE2_MTE3`，q1 为 `MTE2_V`。q1 另为每槽租用独�
 
 DS 包为841567B，SHA256 `70f03f4e21a807bdcb4df1e1a7487b3a9cf44e850e97c95ed87e2be19b0402f8`；A3包647750B，`1542994f4fe115523cbf87cbf88940ee01d8079c04f45fbf344cfc1f1ce5d0ba`；扩展399352B，`844d41f9a3dccc3a03026449d0addd612f588e3e42b64c833184d03f96c419de`。
 
+## DR：同源、同 expert 的连续行
+
+入口：[DR kernel](../../csrc/npu/ascend_kernels/afd_async_dispatch_recv/op_kernel/afd_async_dispatch_recv.h)、[run plan/cursor](../../csrc/npu/ascend_kernels/utils/op_kernel/cam_async_receive_runs.h)。保留 mandatory 输入行及完整地址 slice，只从其后的 spare UB 分配两个独立连续 tile；不能把旧输入行和 P0 第二行当作相邻多行内存。
+
+每 tile 至少容纳两行，结构上限为64KiB/128rows，不是实测最优值。预检存在同 expert 内连续 wire index 后才选择新路径；全随机、单行或空间不足沿 cache/P0。cursor 保持原 expert→TP→token 输出位置，不跨 expert、source call 或 AIV 区间；65535之后不能回卷为0并合并。混合 singleton 仍按原顺序复制。
+
+连续 wire 行用一次 MTE2 读取。q0 payload 连续批量写回；q1 用 `DataCopyPad{rows,H,1,0,0}` 跳过每行32B padding。现场 dav_c310 `CopyUbufToGmAlignV2` 明确 UB source stride 为32B blocks、GM destination stride为bytes，不能把32填入该source参数。每行 scale 仍从完整 wire row 的 H 偏移复制原4B，全部 payload/scale 读取排队后才归还 tile credit，Drain后进入原 chunk flags/ClearFlags。
+
+[新增16项 DR 模型](../../tests/unit/package/test_cam_async_receive_runs.py)执行生产 plan/cursor 和 P0 events，使用独立 raw expert/peer byte oracle。覆盖 empty expert/AIV、expert边界、partial/tail、多个AIV slice、混合 singleton、不同peer、random/UB fallback和uint16边界；遗漏reuse wait、提前scale credit、错误payload/scale stride及tail drain负例均可检出。模型不证明硬件DMA远端可见性或速度。
+
+| DR 独立阶段 | 结果 |
+| --- | --- |
+| A5 / A3 targeted / 扩展 | 六算子完整编译、打包和扩展构建通过；真实 dispatcher/Meta 加载通过 |
+| 完整回归 | **252 passed、46 subtests passed，无 skip**；包含 DS10 和 DR16 项 |
+| 静态 / 预检 | Ruff、Markdown、diff whitespace及三项dry-run通过 |
+| 实际 keys / 输入 | DS/CR key集合保持；435个编译/测试源码指纹一致 |
+
+DR 包为851454B，SHA256 `5fca0af85212de3568f142cf65d26337391f79a73ed1e6c9a6ef332775da4783`；A3包651077B，`4b51e1cc9e4fcedad865d220f7ee726c3086bd0ad595453f9c3eba921bb5d334`；扩展399352B，`6f2bcff455b0e44fd5bf2b48470e56d78202552f39afb5b712cd21ed737afaea`。
+
 ## 构建与隔离
 
 环境：aarch64、CANN9.0.0、BiSheng clang15.0.5（2026-02-12）、A5 宏3101/dav-c310-vec；Python3.11.15、torch2.8.0、torch-npu2.8.0.post4、CPU g++13.3.0。没有更换运行时或 SDK。

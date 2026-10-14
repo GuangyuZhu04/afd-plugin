@@ -22,6 +22,9 @@
 #define CAM_ASYNC_RECEIVE_CACHE_INLINE __aicore__ inline
 #include "cam_async_receive_cache.h"
 #undef CAM_ASYNC_RECEIVE_CACHE_INLINE
+#define CAM_ASYNC_RECEIVE_RUNS_INLINE __aicore__ inline
+#include "cam_async_receive_runs.h"
+#undef CAM_ASYNC_RECEIVE_RUNS_INLINE
 #endif
 // ### PATCH END: A5 MTE event helper
 
@@ -51,6 +54,33 @@ __aicore__ inline void SyncFunc() {
 
 using namespace AscendC;
 using namespace Cam;
+// ### PATCH START: Read the retained metadata for contiguous source runs
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+struct ReceiveRunBackend {
+    LocalTensor<int32_t> *sourceCounts;
+    LocalTensor<uint32_t> *tpCounts;
+    LocalTensor<uint16_t> *wireIndices;
+    uint32_t expertCount;
+
+    __aicore__ inline uint32_t read_count(uint32_t expert) const
+    {
+        return static_cast<uint32_t>(sourceCounts->GetValue(expert));
+    }
+    __aicore__ inline uint32_t read_total(uint32_t expert) const
+    {
+        return tpCounts->GetValue(expert);
+    }
+    __aicore__ inline uint32_t read_prior(uint32_t expert) const
+    {
+        return tpCounts->GetValue(expertCount + expert);
+    }
+    __aicore__ inline uint32_t read_wire(uint32_t index) const
+    {
+        return wireIndices->GetValue(index);
+    }
+};
+#endif
+// ### PATCH END: Read the retained metadata for contiguous source runs
 template <TemplateMC2TypeClass>
 class AfdAsyncDispatchRecv {
 public:
@@ -84,6 +114,9 @@ private:
     __aicore__ inline void DispatchRecvRowsPipelined(GlobalTensor<ExpandXOutType> &tokenStore,
         uint32_t tokenStart, uint32_t tokenEnd, uint32_t startExpert, uint32_t endExpert,
         uint64_t secondBufferOffset);
+    __aicore__ inline bool dispatch_recv_runs_pipelined(GlobalTensor<ExpandXOutType> &tokenStore,
+        uint32_t tokenStart, uint32_t tokenEnd, uint32_t startExpert, uint32_t endExpert,
+        const AsyncReceiveRuns::ReceiveRunPlan &plan, uint64_t firstTileOffset);
 #endif
     // ### PATCH END: A5 private row pipeline
 
@@ -379,8 +412,8 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecv()
 
 // Patch reason: B0 serializes each row through Scalar while MTE2/MTE3 can
 // process separate UB rows concurrently on A5.
-// Patch functionality: use two rows only when the unchanged address slice and
-// extra row fit, then drain before the original chunk/flag lifetime logic.
+// Patch functionality: use independent contiguous-run tiles or the original
+// two-row cache only when spare UB fits, then drain before original flag reuse.
 // Signature: matches the original DispatchRecvRouted; no added parameters.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRouted(
@@ -458,12 +491,20 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
         SyncFunc<HardEvent::S_MTE2>();
     }
 
-    // ### PATCH START: A5 two-row prefetch with an unchanged address slice
+    // ### PATCH START: A5 optional pipelines with an unchanged address slice
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
     uint64_t addressSliceBytes = MathCeil(sizeof(uint16_t) * tokenNumPerAiv, UB_ALIGN);
     uint64_t rowBytes = DynamicQuant
         ? sizeof(ExpandXOutType) * hiddenSizeQuant_ : sizeof(ExpandXOutType) * hiddenSize_;
     rowBytes = MathCeil(rowBytes, UB_ALIGN);
+    // ### PATCH START: Prefer real contiguous runs using two new UB tiles
+    const auto runPlan = AsyncReceiveRuns::plan_receive_runs(
+        ubReuseSize_, addressSliceBytes, rowBytes, tokenNumPerAiv);
+    if (runPlan.enabled && dispatch_recv_runs_pipelined(dstTokenStoreGMTensor, tokenNumPerAivStart,
+        tokenNumPerAivEnd, startExpert, endExpert, runPlan, tokenAddrBufferOffset_ + addressSliceBytes)) {
+        // The complete source slice has been copied and both run tiles drained.
+    } else
+    // ### PATCH END: Prefer real contiguous runs using two new UB tiles
     if (AsyncMte::CanUseReceiveSecondSlot(ubReuseSize_, addressSliceBytes,
         rowBytes, tokenNumPerAiv)) {
         DispatchRecvRowsPipelined(dstTokenStoreGMTensor, tokenNumPerAivStart,
@@ -519,7 +560,7 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
         }
 
     }
-    // ### PATCH END: A5 two-row prefetch with an unchanged address slice
+    // ### PATCH END: A5 optional pipelines with an unchanged address slice
 
     if (aivId_ == 0) {
         GlobalTensor<int32_t> dstExpertRecvChunkFlagGMTensor;
@@ -543,6 +584,68 @@ __aicore__ inline void AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::DispatchRecvRo
 }
 
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+// ### PATCH START: A5 contiguous receive runs
+// Patch reason: row-at-a-time gather emits separate input DMA for adjacent wire
+// rows, even when their output is contiguous inside the same selected expert.
+// Patch functionality: a shared cursor preserves placement and combines only
+// these runs; two independent optional tiles follow the mandatory address slice.
+// New private parameters: plan owns each tile's capacity, firstTileOffset is
+// its UB base. False means no contiguous candidate and retains cache/P0.
+template <TemplateMC2TypeClass>
+__aicore__ inline bool AfdAsyncDispatchRecv<TemplateMC2TypeFunc>::dispatch_recv_runs_pipelined(
+    GlobalTensor<ExpandXOutType> &tokenStore, uint32_t tokenStart, uint32_t tokenEnd,
+    uint32_t startExpert, uint32_t endExpert, const AsyncReceiveRuns::ReceiveRunPlan &plan,
+    uint64_t firstTileOffset)
+{
+    const ReceiveRunBackend metadata{
+        &expertRecvTokenNumTensor_, &tpExpertRecvTokenNumTensor_, &tokenAddrOffsetTensor_, expertNumPerMoe_};
+    if (!AsyncReceiveRuns::has_contiguous_run(metadata, tokenStart, tokenEnd,
+        startExpert, endExpert, plan.rowsPerTile)) return false;
+    static_assert(AsyncReceiveRuns::RUN_TILE_COUNT == AsyncMte::BUFFER_COUNT,
+        "receive run tiles retain the original two-slot event ownership");
+    const uint32_t rowElements = DynamicQuant ? hiddenSizeQuant_ : hiddenSize_;
+    const uint64_t wireRowBytes = sizeof(ExpandXOutType) * static_cast<uint64_t>(rowElements);
+    const uint64_t payloadBytes = sizeof(ExpandXOutType) * static_cast<uint64_t>(hiddenSize_);
+    if (AsyncReceiveRuns::plan_payload_copy(payloadBytes, wireRowBytes, 1).blockCount == 0) return false;
+    LocalTensor<ExpandXOutType> tiles[AsyncReceiveRuns::RUN_TILE_COUNT] = {
+        ubBuffer_.GetWithOffset<ExpandXOutType>(plan.bytesPerTile / sizeof(ExpandXOutType), firstTileOffset),
+        ubBuffer_.GetWithOffset<ExpandXOutType>(plan.bytesPerTile / sizeof(ExpandXOutType),
+            firstTileOffset + plan.bytesPerTile)};
+    AsyncReceiveRuns::ReceiveRunCursor<ReceiveRunBackend> cursor(metadata);
+    cursor.init(tokenStart, tokenEnd, startExpert, endExpert, plan.rowsPerTile);
+    AsyncMte::TwoSlotPipeline pipeline;
+    pipeline.Init(tpipe_);
+    AsyncReceiveRuns::ReceiveRun run;
+    uint32_t slot = 0;
+    while (cursor.next(run)) {
+        pipeline.WaitForReuse(slot);
+        DataCopyPad(tiles[slot], tokenStore[static_cast<uint64_t>(run.wireIndex) * rowElements],
+            {1U, static_cast<uint32_t>(run.rows * wireRowBytes), 0U, 0U, 0U}, {false, 0U, 0U, 0});
+        pipeline.MarkLoaded(slot);
+        pipeline.WaitLoaded(slot);
+        const auto payloadCopy = AsyncReceiveRuns::plan_payload_copy(payloadBytes, wireRowBytes, run.rows);
+        DataCopyPad(xOutGMTensor_[static_cast<uint64_t>(run.outputRow) * hiddenSize_], tiles[slot],
+            {payloadCopy.blockCount, payloadCopy.blockBytes, payloadCopy.sourceStrideBlocks, 0U, 0U});
+        if constexpr (DynamicQuant) {
+            // The payload copy strips one 32B padding block per row. Keep each
+            // original exact 4B scale extraction under the same tile's lease.
+            const uint64_t tileOffset = firstTileOffset + slot * plan.bytesPerTile;
+            auto scales = ubBuffer_.GetWithOffset<float>(plan.bytesPerTile / sizeof(float), tileOffset);
+            for (uint32_t row = 0; row < run.rows; ++row) {
+                const uint64_t scaleIndex = (row * wireRowBytes + payloadBytes) / sizeof(float);
+                DataCopyPad(quantScaleGMTensor_[run.outputRow + row], scales[scaleIndex],
+                    {1U, sizeof(float), 0U, 0U, 0U});
+            }
+        }
+        // A tile remains owned through ALL payload and scale source reads.
+        pipeline.MarkWritten(slot);
+        slot = (slot + 1) % AsyncReceiveRuns::RUN_TILE_COUNT;
+    }
+    pipeline.Drain();
+    return true;
+}
+// ### PATCH END: A5 contiguous receive runs
+
 // ### PATCH START: A5 MTE row handoff
 // Both quantized payload and its scale stay in one leased row slot until MTE3
 // finishes both output copies. A source-address/wire-index cache reuses real
