@@ -22,6 +22,8 @@
 #define CAM_ASYNC_SPARSE_RANKS_INLINE __aicore__ inline
 #include "cam_async_sparse_ranks.h"
 #undef CAM_ASYNC_SPARSE_RANKS_INLINE
+#define AFD_ASYNC_DISPATCH_TOKEN_PIPELINE 1
+#include "cam_async_dispatch_pipeline.h"
 #endif
 // ### PATCH END: A5 sparse payload rank bookkeeping
 // ### PATCH START: Isolate SIMT declarations to their selected keys
@@ -132,7 +134,16 @@ private:
 
     __aicore__ inline void DispatchSend();
 
-    __aicore__ inline void QuantProcess(LocalTensor<XType> &xTensor, LocalTensor<ExpandXOutType> &xOutTensor);
+    // A5-only private parameters tokenPipeline/tokenSlot select exclusive tail
+    // ready events when tokens overlap. A3 retains the original two-parameter
+    // signature; A5 defaults retain existing serial callers and arithmetic.
+    __aicore__ inline void QuantProcess(LocalTensor<XType> &xTensor, LocalTensor<ExpandXOutType> &xOutTensor
+    // ### PATCH START: A5 private ready-event parameters
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+        , AsyncDispatch::TwoSlotPipeline<DynamicQuant> *tokenPipeline = nullptr, uint32_t tokenSlot = 0
+#endif
+    // ### PATCH END: A5 private ready-event parameters
+    );
 
     uint32_t aivId_{0};
     uint32_t aivNum_{0};
@@ -168,6 +179,13 @@ private:
     LocalTensor<XType> xTensor_;                   // output
     LocalTensor<ExpandXOutType> xOutTensor_;       // output
     LocalTensor<float> xOutFloatTensor_;           // output
+    // ### PATCH START: Optional A5 in-place input/wire row slot
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+    LocalTensor<XType> xPrefetchTensor_;
+    LocalTensor<ExpandXOutType> xPrefetchOutTensor_;
+    AsyncDispatch::DispatchBufferPlan dispatchBufferPlan_{};
+#endif
+    // ### PATCH END: Optional A5 in-place input/wire row slot
 
     // prefix token count before each routed expert within its MoE rank
     LocalTensor<uint32_t> expertPrefixOffsetTensor_;
@@ -236,6 +254,8 @@ private:
 // Patch reason: SIMT resources must not overlap native UB or contaminate scalar keys.
 // Patch functionality: reserve the documented SIMT upper bound only for the new
 // metadata specialization and let payload routing reload its normal page cache.
+// Optional A5 spare UB repeats the original in-place input/wire row layout;
+// insufficient spare retains the original arena and minimum UB requirement.
 // Signature: matches the original Init; no added method parameters. The added
 // class template parameter UseSimtRouting is documented at its declaration.
 template <TemplateMC2TypeClass>
@@ -393,6 +413,20 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Init(
 
     // remaining reusable UB space
     ubReuseSize_ = totalUbSize_ - bufOffset;
+    // ### PATCH START: One spare row retains the original UB minimum
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+    const uint32_t wireElements = DynamicQuant ? hiddenSizeQuant_ : hiddenSize_;
+    dispatchBufferPlan_ = AsyncDispatch::plan_dispatch_buffers(ubReuseSize_, hiddenSize_,
+        sizeof(XType), wireElements, sizeof(ExpandXOutType), batchSizePerAivEnd_ - batchSizePerAivStart_);
+    if (dispatchBufferPlan_.enabled) {
+        xPrefetchTensor_ = ubBuffer_.GetWithOffset<XType>(
+            dispatchBufferPlan_.secondSlotBytes / sizeof(XType), bufOffset);
+        xPrefetchOutTensor_ = ubBuffer_.GetWithOffset<ExpandXOutType>(
+            dispatchBufferPlan_.secondSlotBytes / sizeof(ExpandXOutType), bufOffset);
+        ubReuseSize_ -= dispatchBufferPlan_.secondSlotBytes;
+    }
+#endif
+    // ### PATCH END: One spare row retains the original UB minimum
 }
 
 template <TemplateMC2TypeClass>
@@ -409,6 +443,8 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Process()
 // each token even when routing visits only a few ranks.
 // Patch functionality: A5 records visited ranks in the existing flag UB arena
 // and advances their wire offsets only after all of a token's assignments.
+// With spare UB, A5 also prefetches another in-place input/wire slot and returns
+// its credit only after all peer reads; the original quantization is unchanged.
 // Signature: unchanged; no added parameters. A3 keeps the original rank loops.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
@@ -465,10 +501,46 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
     AsyncSparseRanks::TokenRankTracker rankTracker(moeRankNum_);
 #endif
     // ### PATCH END: A5 payload-only token rank tracker
+    // ### PATCH START: Initialize optional A5 token input/wire leases
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+    const bool useTokenPipeline = dispatchBufferPlan_.enabled;
+    AsyncDispatch::TwoSlotPipeline<DynamicQuant> tokenPipeline;
+    LocalTensor<XType> inputRows[AsyncDispatch::TOKEN_SLOT_COUNT] = {xTensor_, xPrefetchTensor_};
+    LocalTensor<ExpandXOutType> wireRows[AsyncDispatch::TOKEN_SLOT_COUNT] = {xOutTensor_, xPrefetchOutTensor_};
+    uint32_t tokenSlot = 0;
+    if (useTokenPipeline) {
+        tokenPipeline.init(tpipe_);
+        DataCopy(inputRows[tokenSlot],
+            xGMTensor_[static_cast<uint64_t>(hiddenSize_) * batchSizePerAivStart_], hiddenSize_);
+        tokenPipeline.mark_loaded(tokenSlot);
+    }
+#endif
+    // ### PATCH END: Initialize optional A5 token input/wire leases
     // Send one address entry per routed assignment and deduplicate payloads per rank.
     for (uint32_t topkId = (topk_ * batchSizePerAivStart_); topkId < (topk_ * batchSizePerAivEnd_); ++topkId) {
         uint32_t tokenId = topkId / topk_;  // corresponding token id
         if (topkId % topk_ == 0) {  // first read of the token
+            // ### PATCH START: Prefetch the next input before current quantization
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+            if (useTokenPipeline) {
+                tokenSlot = (tokenId - batchSizePerAivStart_) % AsyncDispatch::TOKEN_SLOT_COUNT;
+                tokenPipeline.wait_loaded(tokenSlot);
+                if (tokenId + 1 < batchSizePerAivEnd_) {
+                    const uint32_t nextSlot = (tokenSlot + 1) % AsyncDispatch::TOKEN_SLOT_COUNT;
+                    tokenPipeline.wait_for_reuse(nextSlot);
+                    DataCopy(inputRows[nextSlot],
+                        xGMTensor_[static_cast<uint64_t>(hiddenSize_) * (tokenId + 1)], hiddenSize_);
+                    tokenPipeline.mark_loaded(nextSlot);
+                }
+                if constexpr (DynamicQuant) {
+                    // Both original FP32 scratch rows stay on the ordered V
+                    // pipeline; each token's result and scale use its own slot.
+                    QuantProcess(inputRows[tokenSlot], wireRows[tokenSlot], &tokenPipeline, tokenSlot);
+                }
+            } else
+#endif
+            // ### PATCH END: Prefetch the next input before current quantization
+            {
             // read the token
             if constexpr (DynamicQuant) {
                 DataCopy(xTensor_, xGMTensor_[hiddenSize_ * tokenId], hiddenSize_);
@@ -482,6 +554,7 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
                 SyncFunc<HardEvent::MTE2_S>();
                 SyncFunc<HardEvent::S_MTE2>();
                 SyncFunc<HardEvent::S_MTE3>();
+            }
             }
 
             // ### PATCH START: Reset scalar state instead of all rank flags
@@ -531,13 +604,26 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
         // send only if the token has not been sent to this moe
         if (firstRankVisit) {
             dstTokenGMTensor.SetGlobalBuffer((__gm__ ExpandXOutType*)(dstGM + tokenStoreOffset));
+            // ### PATCH START: Hold one wire row for every peer of this token
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+            LocalTensor<ExpandXOutType> &payloadRow = useTokenPipeline ? wireRows[tokenSlot] : xOutTensor_;
+#else
+            LocalTensor<ExpandXOutType> &payloadRow = xOutTensor_;
+#endif
             if constexpr (DynamicQuant) {
-                DataCopy(dstTokenGMTensor[hiddenSizeQuant_ * moeTokenSendIdx], xOutTensor_, hiddenSizeQuant_);
-                SyncFunc<HardEvent::MTE3_S>();
+                DataCopy(dstTokenGMTensor[hiddenSizeQuant_ * moeTokenSendIdx], payloadRow, hiddenSizeQuant_);
             } else {
-                DataCopy(dstTokenGMTensor[hiddenSize_ * moeTokenSendIdx], xOutTensor_, hiddenSize_);
+                DataCopy(dstTokenGMTensor[hiddenSize_ * moeTokenSendIdx], payloadRow, hiddenSize_);
+            }
+            // ### PATCH END: Hold one wire row for every peer of this token
+            // ### PATCH START: A5 replaces peer waits with one whole-token credit
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+            if (!useTokenPipeline)
+#endif
+            {
                 SyncFunc<HardEvent::MTE3_S>();
             }
+            // ### PATCH END: A5 replaces peer waits with one whole-token credit
             // ### PATCH START: Only the original path writes rank-indexed flags
 #if defined(AFD_ASYNC_DISPATCH_SPARSE_RANKS)
             if (!useSparseRanks)
@@ -570,8 +656,18 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::DispatchSend()
                 }
             }
             // ### PATCH END: Advance only visited ranks at token end
+            // ### PATCH START: Credit follows all peer reads, not each assignment
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+            if (useTokenPipeline) tokenPipeline.mark_token_sent(tokenSlot);
+#endif
+            // ### PATCH END: Credit follows all peer reads, not each assignment
         }
     }
+    // ### PATCH START: Retire payload leases before metadata and completion flags
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+    if (useTokenPipeline) tokenPipeline.drain();
+#endif
+    // ### PATCH END: Retire payload leases before metadata and completion flags
     for (uint32_t expertId = 0; expertId < expertNum_; ++expertId) {
         FlushExpertTokenOffset(expertId, tokenAddrStoreOffset);
     }
@@ -861,9 +957,21 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::SetFlags()
     }
 }
 
+// Patch reason: overlapping tokens cannot share a borrowed V/S -> MTE3 flag
+// until the older token's consumer has executed its wait.
+// Patch functionality: optional A5 slot-specific ready events preserve the
+// original arithmetic and four-byte scale; the serial path remains unchanged.
+// Added A5-only private parameters: tokenPipeline supplies exclusive ready IDs;
+// tokenSlot selects the protected in-place row. Defaults keep existing callers.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::QuantProcess(
-    LocalTensor<XType> &xTensor, LocalTensor<ExpandXOutType> &xOutTensor)
+    LocalTensor<XType> &xTensor, LocalTensor<ExpandXOutType> &xOutTensor
+    // ### PATCH START: A5 private ready-event parameters
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+    , AsyncDispatch::TwoSlotPipeline<DynamicQuant> *tokenPipeline, uint32_t tokenSlot
+#endif
+    // ### PATCH END: A5 private ready-event parameters
+    )
 {
     float dynamicScale = 0.0;
 
@@ -902,12 +1010,24 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::QuantProcess(
     AscendC::PipeBarrier<PIPE_V>();
 
     Cast(xOutTensor, halfLocalTemp, RoundMode::CAST_TRUNC, hiddenSize_);
+    // ### PATCH START: Slot-exclusive quantized payload readiness
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+    if (tokenPipeline != nullptr) tokenPipeline->mark_quantized(tokenSlot);
+    else
+#endif
     SyncFunc<HardEvent::V_MTE3>();
+    // ### PATCH END: Slot-exclusive quantized payload readiness
 
     if constexpr (DynamicQuant) {
         LocalTensor<float> floatLocalTemp = xOutTensor.template ReinterpretCast<float>();
         floatLocalTemp.SetValue(hiddenSize_ / sizeof(float), float(1.0) / dynamicScale);
+        // ### PATCH START: Slot-exclusive scale readiness
+#if defined(AFD_ASYNC_DISPATCH_TOKEN_PIPELINE)
+        if (tokenPipeline != nullptr) tokenPipeline->mark_scale_ready(tokenSlot);
+        else
+#endif
         SyncFunc<HardEvent::S_MTE3>();
+        // ### PATCH END: Slot-exclusive scale readiness
     }
 }
 

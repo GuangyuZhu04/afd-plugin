@@ -157,6 +157,10 @@ The [DS sparse rank refinement](../../docs/npu/CAM_ASYNC_A5_SPARSE_RANKS.md)
 uses a token bitmap and a visited list in the existing flag UB arena. It
 preserves payload deduplication, all assignment addresses, and token-end offsets.
 
+The [payload pipeline and tile work](../../docs/npu/CAM_ASYNC_A5_PAYLOAD_TILING.md)
+adds A5 DS input/wire slots with exclusive quantization-ready events. It retains
+metadata staging fences and the original quantization/resource contracts.
+
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /
 A8W4-MSD variants) built for `ascend910_93`. It is registered as
