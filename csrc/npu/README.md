@@ -162,6 +162,9 @@ adds A5 DS input/wire slots with exclusive quantization-ready events. It retains
 metadata staging fences and the original quantization/resource contracts.
 It also batches contiguous DR wire rows within expert/source/AIV boundaries,
 with exact payload padding removal and scale copies under each tile lease.
+CR can select tile-sized FP32 scratch and frozen per-token source descriptors
+when this increases its prefetch tile; every hidden element retains logical
+top-k order and the original output rounding.
 
 `grouped_matmul_swiglu_quant_v2_layered` is a fused
 grouped-matmul + SiLU + dynamic-quantization CAM operator (A8W8 / A4W4 /

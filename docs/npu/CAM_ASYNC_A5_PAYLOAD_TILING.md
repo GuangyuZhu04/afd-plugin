@@ -48,6 +48,37 @@ DS 包为841567B，SHA256 `70f03f4e21a807bdcb4df1e1a7487b3a9cf44e850e97c95ed87e2
 
 DR 包为851454B，SHA256 `5fca0af85212de3568f142cf65d26337391f79a73ed1e6c9a6ef332775da4783`；A3包651077B，`4b51e1cc9e4fcedad865d220f7ee726c3086bd0ad595453f9c3eba921bb5d334`；扩展399352B，`6f2bcff455b0e44fd5bf2b48470e56d78202552f39afb5b712cd21ed737afaea`。
 
+## CR：每个 hidden tile 保持原 K 顺序
+
+入口：[CR kernel](../../csrc/npu/ascend_kernels/afd_async_combine_recv/op_kernel/afd_async_combine_recv.h)、[tile plan/cursor/捕获与退休](../../csrc/npu/ascend_kernels/utils/op_kernel/cam_async_combine_tile_plan.h)。原三个完整 H 的 FP32 scratch 改为三个 tile 大小 scratch；两输入槽也按 tile 分配。K 个 UINT64 地址和 FP32 weights 有 checked、32B 对齐 UB 预算，没有新增固定 top-k 上限。旧 mandatory full-H 布局和预处理峰值仍须满足，不因较小 scratch 放宽 host 接受范围。
+
+仅在 tile<H、输入 tile 至少2048B、且比旧 spare-only 预取 tile 更大时选择新路径；完整行已可双缓冲时保留旧快路径。2048B 是沿用的结构门槛，未测量最优阈值。K 描述符预算不足或不能改善 tile 时沿旧预取/串行路径。
+
+每 token 先按 K 顺序固定 source row/weight，expert occurrence 每贡献仅推进一次。随后 hidden→K 遍历，每元素仍执行独立 `Cast→Muls→Add`，最后 K 使用 `CAST_RINT`；不引入 FMA或重新关联归约。prefix key 保留原 seed，非 prefix 先统计本 AIV 起点之前的路由。
+
+输入槽仍通过 MTE2_V/V_MTE2 租用事件交接，最后 K 的输出复用该输入槽，因此保留 V_MTE3/MTE3_V。每 token 结束消费两槽 free 并 MTE2_S fence，才可重写下一 token 的描述符；event ID 在整调用内保持租用，最终 Drain 后才进入原 SyncAll/flags reset。三份 scratch 在 hidden tile 间复用，不能在旧最终 Cast 读取完之前 Duplicate 下一份 sum。
+
+[新增15项 CR 模型](../../tests/unit/package/test_cam_async_combine_tile_plan.py)执行生产 plan/capture/cursor/retirement/events，独立 raw routing 重建 occurrence、wire 地址和 FP32 分步舍入 golden。覆盖 FP16/BF16、prefix/非prefix、partial hidden、K1/K8、大于4GiB地址和资源回退；晚读地址/weight、缺少token退休、提前输出credit、遗漏tail drain、错误K顺序与FMA负例均可检出。临时 SDK header 是声明 stub，不提供 API 实现。
+
+收益候选来自较大的预取 tile 和较少的 full-H scratch 占用，代价包括 K 描述符读写、token 退休和分块 DMA。部分资源边界下相对原串行路径可能增加 DMA 数，实机必须同时检查新旧路径和整体 cycle。下面是通过原 harness 资源预检的边界例子；48/262144是声明值，需要替换成目标平台核对后的值，不能据 dry-run 推断实际选路：
+
+```bash
+timeout --kill-after=30s 600s torchrun --standalone --nproc_per_node=4 \
+  tests/npu/async_cam_precision.py --soc-version 950 \
+  --aiv-count 48 --ub-budget-bytes 262144 --hidden-size 12288 \
+  --lengths 512 --experts-per-rank 256 --top-k 2 --capacity 1024 \
+  --dtype bf16 --dynamic-quant 1
+```
+
+| CR 独立阶段 | 最终结果 |
+| --- | --- |
+| A5 / A3 targeted / 扩展 | 六算子完整编译、打包及扩展构建通过；真实 dispatcher/Meta 加载回归通过 |
+| 完整回归 | **267 passed、46 subtests passed，无 skip**；新增 DS10、DR16、CR15 共41项 |
+| 静态 / 预检 | Ruff check/format、Markdown、diff whitespace及三个原dry-run、上述资源边界dry-run通过 |
+| keys / 输入 | 实际 DS/CR key集合保持；438个编译/测试源码指纹一致 |
+
+最终 A5包为864369B，SHA256 `6fbba18c2aea91efe75429c73521bef0e8c5cd2a9e8f229664855c27c6196909`；A3包655857B，`0823cfcd00db28022a3e2f23cd9fcf7ec5b78e0fe92d8aa6053d4c34a36fbc22`；扩展399352B，`4a05984023fbde1ee3476bb4b3901f63772b7ceb28888c4f190754626a3d441f`。没有 NPU 执行或可归因的 ISA/IR 指令对照；实际选路、完成语义及收益仍需设备证据。
+
 ## 构建与隔离
 
 环境：aarch64、CANN9.0.0、BiSheng clang15.0.5（2026-02-12）、A5 宏3101/dav-c310-vec；Python3.11.15、torch2.8.0、torch-npu2.8.0.post4、CPU g++13.3.0。没有更换运行时或 SDK。
@@ -61,7 +92,13 @@ SOC_VERSION=950 AFD_BUILD_ASCEND_OPS=1 AFD_SKIP_ACLNN_BUILD=1 \
 
 每项编译快照只包括其父提交与本项文件白名单；三项测试和源码分阶段加入，不将其他未提交改动混入验证。A3 在各阶段独立副本只选择 A2E/E2A 与四 async，未改仓库 registry，未包含无关 GMM。Git archive 使用 `core.autocrlf=false`，Linux 文本按 LF 核对。
 
+独立阶段父提交分别为3a265b4、5574c9e、fbb268b；完整回归包括已有 build/host/P0/P1/P2/P3/P4、receive/sparse 模型、harness/performance/golden 和真实 dispatcher/Meta 测试。本项新增 wrapper 的 SDK header 仅用于 CPU解析；三轮实际 CANN包单独证明 SDK API可编译，不将 stub 当作 SDK证据。
+
 本地工作树为 `.cache/a5-payload-tiling-worktree/`，证据在原仓库忽略目录 `.cache/a5-payload-tiling-validation/`；远端为 `/home/zhuguangyu/afd_async_a5_payload_tiling_20261014_2T0rjz/stage{1,2,3}/`。各阶段保留独立源码、日志、XML、包与扩展，以及 input/artifact/verification manifest。日志和二进制不提交 Git。
+
+日志为各 stage 下的 `aclnn_a5_payload_stageN_build.log`、`aclnn_a3_payload_stageN_regression.log`、`binding_a5_payload_stageN_build.log`、`payload_stageN_checks.log/xml`；`artifact_manifest.json`、`input_manifest.json`、`verification.json`、`git_verification.json` 及 `package_keys.json` 保存指纹和keys。SDK stride/event pool摘录与 `tile_boundary_plan.json` 保存在本地证据目录。
+
+临时启动的 `cam_guangyu_dev_90` 在三项验证和证据收集结束后已恢复为原 `exited` 状态。
 
 ## 实机对照与保留条件
 

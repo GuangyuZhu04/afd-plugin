@@ -20,6 +20,9 @@
 // ### PATCH START: A5-only vector input prefetch
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
 #include "cam_async_combine_prefetch.h"
+#define CAM_ASYNC_COMBINE_TILE_INLINE __aicore__ inline
+#include "cam_async_combine_tile_plan.h"
+#undef CAM_ASYNC_COMBINE_TILE_INLINE
 #endif
 // ### PATCH END: A5-only vector input prefetch
 
@@ -98,6 +101,43 @@ private:
     // ### PATCH START: CR private hidden-tile prefetch
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
     __aicore__ inline void CombineRecvPipelined();
+    __aicore__ inline void combine_recv_tiled();
+    __aicore__ inline void load_tiled_input(LocalTensor<XOutType> &input,
+        const AsyncCombineTiles::HiddenKTile &tile, float &weight);
+    class TokenSourceBackend {
+    public:
+        __aicore__ inline explicit TokenSourceBackend(AfdAsyncCombineRecv *owner) : owner_(owner) {}
+        __aicore__ inline uint32_t route_expert(uint32_t contribution)
+        {
+            return owner_->GetIds(contribution);
+        }
+        __aicore__ inline uint32_t take_occurrence(uint32_t expert)
+        {
+            const uint16_t occurrence = owner_->expertRecvStartIdxTensor_(expert);
+            owner_->expertRecvStartIdxTensor_(expert) = occurrence + 1;
+            return occurrence;
+        }
+        __aicore__ inline uint32_t rank_prefix(uint32_t expert)
+        {
+            return owner_->moePrefixTokenNumTensor_(expert / owner_->routeExpertNumPerMoe_) - 1;
+        }
+        __aicore__ inline uint32_t expert_prefix(uint32_t expert)
+        {
+            return owner_->expertPrefixOffsetTensor_(expert);
+        }
+        __aicore__ inline float weight(uint32_t contribution)
+        {
+            return owner_->scalesGMTensor_(contribution);
+        }
+        __aicore__ inline void store_descriptor(uint32_t logical, uint64_t address, float scale)
+        {
+            owner_->token_source_addresses_.SetValue(logical, address);
+            owner_->token_source_weights_.SetValue(logical, scale);
+        }
+    private:
+        AfdAsyncCombineRecv *owner_;
+    };
+
     __aicore__ inline void LoadCombineTile(LocalTensor<XOutType> &input,
         const AsyncCombine::CombineTile &tile, GM_ADDR sourceWindow,
         float &cachedScale,
@@ -143,6 +183,11 @@ private:
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
     LocalTensor<XOutType> xPrefetchTensor_;
     AsyncCombine::CombinePrefetchPlan combinePrefetchPlan_{};
+    // ### PATCH START: A5 token descriptor and tile-sized FP32 plan
+    AsyncCombineTiles::TileScratchPlan tile_scratch_plan_{};
+    LocalTensor<uint64_t> token_source_addresses_;
+    LocalTensor<float> token_source_weights_;
+    // ### PATCH END: A5 token descriptor and tile-sized FP32 plan
 #endif
     // ### PATCH END: Optional A5 second input tile
 
@@ -158,8 +203,8 @@ private:
 };
 
 // Patch reason: the original input row is serialized with vector arithmetic.
-// Patch functionality: A5 uses spare UB for a second input tile; the original
-// full-hidden scratch layout and minimum UB requirement remain unchanged.
+// Patch functionality: A5 may use checked token descriptors and tile-sized FP32
+// scratch; accepted shapes and the original minimum UB/fallback stay unchanged.
 // Signature: unchanged; no added parameters.
 template <TemplateMC2TypeClass>
 __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::Init(GM_ADDR expandX, GM_ADDR expertIds,
@@ -227,6 +272,37 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::Init(GM_ADDR ex
     bufSize = MathCeil(sizeof(uint16_t) * expertNum_, UB_ALIGN); // 96 B or 544 B
     expertRecvStartIdxTensor_ = ubBuffer_.GetWithOffset<uint16_t>(bufSize / sizeof(uint16_t), bufOffset);
     bufOffset += bufSize;
+
+    // ### PATCH START: Checked A5 tile scratch before the full-H fallback layout
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    if (bufOffset <= totalUbSize_) {
+        const uint64_t prefix_bytes = MathCeil(sizeof(uint32_t) * moeRankNum_, UB_ALIGN);
+        tile_scratch_plan_ = AsyncCombineTiles::plan_tile_scratch(totalUbSize_ - bufOffset,
+            hiddenSize_, sizeof(XOutType), topk_, batchSizePerAivEnd_ - batchSizePerAivStart_, prefix_bytes);
+        if (tile_scratch_plan_.enabled) {
+            const uint64_t base = bufOffset;
+            token_source_addresses_ = ubBuffer_.GetWithOffset<uint64_t>(
+                tile_scratch_plan_.address_bytes / sizeof(uint64_t), base + tile_scratch_plan_.address_offset);
+            token_source_weights_ = ubBuffer_.GetWithOffset<float>(
+                tile_scratch_plan_.scale_bytes / sizeof(float), base + tile_scratch_plan_.scale_offset);
+            moePrefixTokenNumTensor_ = ubBuffer_.GetWithOffset<uint32_t>(
+                prefix_bytes / sizeof(uint32_t), base + tile_scratch_plan_.prefix_offset);
+            rowTmpFloatLocal_ = ubBuffer_.GetWithOffset<float>(
+                tile_scratch_plan_.float_row_bytes / sizeof(float), base + tile_scratch_plan_.row_offset);
+            mulBufLocal_ = ubBuffer_.GetWithOffset<float>(
+                tile_scratch_plan_.float_row_bytes / sizeof(float), base + tile_scratch_plan_.product_offset);
+            sumFloatBufLocal_ = ubBuffer_.GetWithOffset<float>(
+                tile_scratch_plan_.float_row_bytes / sizeof(float), base + tile_scratch_plan_.sum_offset);
+            xOutTensor_ = ubBuffer_.GetWithOffset<XOutType>(
+                tile_scratch_plan_.input_row_bytes / sizeof(XOutType), base + tile_scratch_plan_.input_offset[0]);
+            xPrefetchTensor_ = ubBuffer_.GetWithOffset<XOutType>(
+                tile_scratch_plan_.input_row_bytes / sizeof(XOutType), base + tile_scratch_plan_.input_offset[1]);
+            ubReuseSize_ = totalUbSize_ - base - tile_scratch_plan_.total_bytes;
+            return;
+        }
+    }
+#endif
+    // ### PATCH END: Checked A5 tile scratch before the full-H fallback layout
 
     bufSize = MathCeil(sizeof(float) * hiddenSize_, UB_ALIGN);
     rowTmpFloatLocal_ = ubBuffer_.GetWithOffset<float>(bufSize / sizeof(float), bufOffset); // 28 KB
@@ -322,10 +398,15 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::CombineRecv()
 
     // ### PATCH START: A5 ordered hidden-tile path with native fallback
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
-    if (combinePrefetchPlan_.enabled) {
+    // ### PATCH START: Prefer the larger hidden-first A5 tile when its plan fits
+    if (tile_scratch_plan_.enabled) {
+        DATA_FLUSH(scalesGMTensor_, float);
+        combine_recv_tiled();
+    } else if (combinePrefetchPlan_.enabled) {
         DATA_FLUSH(scalesGMTensor_, float);
         CombineRecvPipelined();
     } else
+    // ### PATCH END: Prefer the larger hidden-first A5 tile when its plan fits
 #endif
     {
     // iterate the routing table
@@ -535,6 +616,103 @@ __aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::CombineRecvPipe
     }
     pipeline.Drain();
 }
+
+// ### PATCH START: Hidden-first CR with frozen per-token source descriptors
+// Patch reason: hidden-first traversal must not advance expert occurrences for
+// every hidden tile. The source row/weight were captured once in Scalar-owned UB.
+// Patch functionality: evaluate each descriptor by value when issuing MTE2; no
+// deferred packet retains a mutable address/weight reference. Private new API.
+template <TemplateMC2TypeClass>
+__aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::load_tiled_input(
+    LocalTensor<XOutType> &input, const AsyncCombineTiles::HiddenKTile &tile, float &weight)
+{
+    const uint64_t address = token_source_addresses_.GetValue(tile.logical_index);
+    const float current_weight = token_source_weights_.GetValue(tile.logical_index);
+    GlobalTensor<XOutType> source;
+    source.SetGlobalBuffer((__gm__ XOutType *)address);
+    DataCopyPad(input, source[tile.hidden_offset],
+        {1U, static_cast<uint32_t>(sizeof(XOutType) * tile.hidden_elements), 0U, 0U, 0U},
+        {false, 0U, 0U, 0});
+    weight = current_weight;
+}
+
+// Patch reason: contribution-major traversal retains three full-H FP32 rows.
+// Patch functionality: freeze K addresses/weights per token, then accumulate each
+// hidden tile in logical K order using one shared tile-sized scratch triplet.
+// Muls and Add remain separately rounded; output remains CAST_RINT. Private API.
+template <TemplateMC2TypeClass>
+__aicore__ inline void AfdAsyncCombineRecv<TemplateMC2TypeFunc>::combine_recv_tiled()
+{
+    if constexpr (!UseDispatchPrefix) {
+        const uint32_t contribution_begin = batchSizePerAivStart_ * topk_;
+        for (uint32_t contribution = 0; contribution < contribution_begin; ++contribution) {
+            const uint32_t expert = GetIds(contribution);
+            expertRecvStartIdxTensor_(expert) = expertRecvStartIdxTensor_(expert) + 1;
+        }
+    }
+    const uint64_t source_window = reinterpret_cast<uint64_t>(GetPeerAddrByRankId(attnRankId_) + dispatchOffset_);
+    const uint64_t wire_header_bytes = MathCeil(sizeof(uint32_t) * moeRankNum_, UB_ALIGN);
+    LocalTensor<XOutType> inputs[AsyncCombineTiles::TILE_INPUT_SLOTS] = {xOutTensor_, xPrefetchTensor_};
+    AsyncCombine::CannPrefetchBackend backend;
+    backend.Init(tpipe_);
+    AsyncCombine::TwoSlotPrefetch pipeline(backend);
+    pipeline.Init(tpipe_);
+    TokenSourceBackend routes(this);
+    for (uint32_t token = batchSizePerAivStart_; token < batchSizePerAivEnd_; ++token) {
+        AsyncCombineTiles::capture_token_sources(token, topk_, hiddenSize_, sizeof(XOutType),
+            source_window, wire_header_bytes, routes);
+        AsyncCombineTiles::HiddenKCursor cursor;
+        cursor.init(hiddenSize_, tile_scratch_plan_.tile_elements, topk_);
+        AsyncCombineTiles::HiddenKTile tiles[AsyncCombineTiles::TILE_INPUT_SLOTS];
+        float weights[AsyncCombineTiles::TILE_INPUT_SLOTS]{};
+        uint32_t slot = 0;
+        tiles[slot] = cursor.current();
+        load_tiled_input(inputs[slot], tiles[slot], weights[slot]);
+        pipeline.MarkLoaded(slot);
+        cursor.advance();
+        while (true) {
+            pipeline.WaitLoaded(slot);
+            const auto current = tiles[slot];
+            const float current_weight = weights[slot];
+            const bool next_ready = cursor.has_next();
+            const uint32_t next_slot = (slot + 1) % AsyncCombineTiles::TILE_INPUT_SLOTS;
+            if (next_ready) {
+                pipeline.WaitForReuse(next_slot);
+                tiles[next_slot] = cursor.current();
+                load_tiled_input(inputs[next_slot], tiles[next_slot], weights[next_slot]);
+                pipeline.MarkLoaded(next_slot);
+                cursor.advance();
+            }
+            if (current.logical_index == 0) {
+                // Prior output's MTE3_V stays ahead of this Duplicate on V; the
+                // new tile cannot overwrite sum while its old final Cast reads it.
+                Duplicate(sumFloatBufLocal_, 0.0F, current.hidden_elements);
+            }
+            Cast(rowTmpFloatLocal_, inputs[slot], RoundMode::CAST_NONE, current.hidden_elements);
+            AscendC::PipeBarrier<PIPE_V>();
+            Muls(mulBufLocal_, rowTmpFloatLocal_, current_weight, current.hidden_elements);
+            AscendC::PipeBarrier<PIPE_V>();
+            Add(sumFloatBufLocal_, sumFloatBufLocal_, mulBufLocal_, current.hidden_elements);
+            if (current.logical_index == topk_ - 1) {
+                AscendC::PipeBarrier<PIPE_V>();
+                Cast(inputs[slot], sumFloatBufLocal_, RoundMode::CAST_RINT, current.hidden_elements);
+                SyncFunc<HardEvent::V_MTE3>();
+                DataCopyPad(xOutGMTensor_[static_cast<uint64_t>(token) * hiddenSize_ + current.hidden_offset],
+                    inputs[slot], {1U, static_cast<uint32_t>(sizeof(XOutType) * current.hidden_elements), 0U, 0U, 0U});
+                SyncFunc<HardEvent::MTE3_V>();
+            }
+            pipeline.MarkSourceConsumed(slot);
+            if (!next_ready) break;
+            slot = next_slot;
+        }
+        // Close late MTE2/V/MTE3 reads before the next token rewrites descriptor
+        // storage. This is a per-token boundary, not a per-K Scalar wait.
+        AsyncCombineTiles::retire_token_descriptor_use(pipeline, backend);
+    }
+    pipeline.Drain();
+}
+// ### PATCH END: Hidden-first CR with frozen per-token source descriptors
+
 #endif
 // ### PATCH END: Ordered A5 CR vector-input pipeline
 
