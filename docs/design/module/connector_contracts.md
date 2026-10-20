@@ -13,6 +13,7 @@ related_code_paths:
   - "afd_plugin/v1/worker/**"
   - "afd_plugin/model_executor/**"
   - "afd_plugin/compat/npu/ops.py"
+  - "afd_plugin/compat/npu/cam_async_a5.py"
 depends_on:
   - "plugin_boundary.md"
   - "execution_platforms.md"
@@ -93,7 +94,7 @@ than an `AFDConfig` field. Unknown fields fail in the selected connector parser.
 | --- | --- |
 | `P2pNcclAFDConnector` | None; the mapping must be empty. |
 | `CAMP2pAFDConnector` | `core_num`, optional `attn_core_num` / `ffn_core_num`, `compute_gate_on_attention`, and `quant_mode`. Core counts must be positive; the current runtime rejects gate-on-Attention and any nonzero quantization mode. |
-| `CAMAsyncAFDConnector` | `dynamicQuant`, `attn_ranks_per_dp`, `async_moe_ubatching`, `async_moe_num_ubatches`, and `async_moe_split`. Runtime validation further limits dynamic quantization and the optional request/token stage pipeline. |
+| `CAMAsyncAFDConnector` | `dynamicQuant`, `attn_ranks_per_dp`, `async_moe_ubatching`, `async_moe_num_ubatches`, `async_moe_split`, `hccl_buffer_size`, `a5_full_features`, and `a5_slot_count`. Runtime validation further limits dynamic quantization and the optional request/token stage pipeline. |
 
 The common `compute_gate_on_attention` field remains on `AFDConfig` and is the
 model-routing selector. CUDA P2P supports both values. CAMP2P also parses a
@@ -277,6 +278,23 @@ the groups/communicators it creates and the control-plane object it exposes;
 the control plane does not have an independent lifetime. Model code may invoke
 connector data-path methods through forward metadata but does not own those
 resources.
+
+## A5 full-profile session
+
+`a5_full_features` defaults to false. When enabled, CAM async creates a dedicated
+`afd_async_cam_a5_full` HCCL domain and keeps a native session owner. The existing
+process-group Store coordinates resource exchange, completed frame initialization,
+and completed registration at setup only; data-plane traffic remains device-side.
+Every DS result carries an opaque ticket to its matching CR, and every DR work item
+retains its ticket and complete compact metadata for CS. Shared experts and model
+forward ownership are unchanged.
+
+The profile provides 2–8 whole-round slots with epoch/credit checks and custom CCU
+combine transport. It requires a single serialized submission stream and eager
+execution. Close drains the session before process-group destruction, then releases
+registration owners. Abort does not return credit or permit in-place recovery.
+See the [A5 full-profile guide](../../npu/CAM_ASYNC_A5_FULL_FEATURES.md) for the wire
+identity, resource requirements and exact hardware-validation gap.
 
 ## Failure behavior
 

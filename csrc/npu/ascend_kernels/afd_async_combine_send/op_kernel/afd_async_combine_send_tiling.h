@@ -11,6 +11,10 @@
 #define ASCENDC_AFD_ASYNC_COMBINE_SEND_TILING_H
 
 #include <cstdint>
+// ### PATCH START: Isolated A5 descriptor preparation keys
+#define AFD_ASYNC_COMBINE_PREPARE_SCALAR_KEY 120
+#define AFD_ASYNC_COMBINE_PREPARE_SIMT_KEY 121
+// ### PATCH END: Isolated A5 descriptor preparation keys
 #include "kernel_tiling/kernel_tiling.h"
 
 namespace Cam {

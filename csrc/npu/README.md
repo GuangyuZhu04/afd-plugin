@@ -209,11 +209,14 @@ the caller can supply a capacity-sized activation without a group-count read.
 capacity-sized device `float32` tensor. An absent `group_list` and other split
 modes are not supported by this binding.
 
-The [P2 CCU experiment](../../docs/npu/CAM_ASYNC_A5_CCU.md) builds separately
-under `experimental/cam_async_ccu`. It implements device GM descriptors and a
-custom CCU segment kernel; it is not selected by the four routed-only operators.
+The [A5 full profile](../../docs/npu/CAM_ASYNC_A5_FULL_FEATURES.md) integrates
+the P2/P3 descriptor algorithms and a whole-round epoch/credit runtime into the
+950 build. It is selected explicitly with `a5_full_features=true`; the default
+MTE path remains available. Its custom CCU transport is linked through a C ABI
+bridge so HCOMM ABI0 and torch ABI1 do not exchange C++ containers.
 
-The [P3/P4 experiment](../../docs/npu/CAM_ASYNC_A5_PIPELINE_SLOTS.md) adds a
-SIMT descriptor producer and a separately versioned epoch/credit reference
-protocol under `experimental/cam_async_pipeline`. It builds independently and
-does not select a new transport or wire protocol for the existing operators.
+The original [P2](../../docs/npu/CAM_ASYNC_A5_CCU.md) and
+[P3/P4](../../docs/npu/CAM_ASYNC_A5_PIPELINE_SLOTS.md) standalone probes remain.
+Their shared planners and record definitions now forward to `utils/op_kernel`.
+The integrated wire identity is AFDA5SLT, distinct from the AFDSLOT4 reference
+codec and legacy compact-v2. NPU communication and performance remain unqualified.

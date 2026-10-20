@@ -16,6 +16,8 @@
 #include <torch/library.h>
 
 #include "pytorch_extension/op_api_common.h"
+#include "torch_binding_cam_async.h"
+#include "utils/op_kernel/cam_async_a5_contract.h"
 #include "afd_async_combine_recv/op_api/aclnn_afd_async_combine_recv.h"
 #include "afd_async_combine_send/op_api/aclnn_afd_async_combine_send.h"
 #include "afd_async_dispatch_recv/op_api/aclnn_afd_async_dispatch_recv.h"
@@ -28,6 +30,17 @@ constexpr int64_t MAX_SEQUENCE_LENGTH = 1024 * 256;
 constexpr int64_t BATCH_INFO_FIELDS = 5;
 constexpr int64_t RESERVED_MAGIC = 0;
 constexpr float DEFAULT_BATCH_SIZE_FACTOR = 1.0f;
+
+int64_t execution_magic(int64_t comm_id, const at::Tensor &arguments) {
+  if (!Cam::AsyncA5::IsFullCall(comm_id)) return RESERVED_MAGIC;
+#ifndef AFD_BUILD_A5_RUNTIME
+  TORCH_CHECK(false, "Full-feature CAM requires the Ascend 950 runtime build");
+#endif
+  TORCH_CHECK(arguments.numel() * arguments.element_size() == sizeof(Cam::AsyncA5::RuntimeArgs),
+              "Full-feature CAM requires a session-owned context tensor");
+  return comm_id;
+}
+
 
 void check_tensor(const at::Tensor &tensor, const at::Tensor &anchor,
                   const char *name) {
@@ -102,7 +115,7 @@ at::Tensor dispatch_send(
     const int64_t tp_size, const int64_t dynamic_quant,
     c10::string_view group_name) {
   // Reserved by the source API: HCCL group_name selects communication resources.
-  (void)comm_id;
+  const int64_t call_magic = execution_magic(comm_id, comm_args);
   check_float_input(x);
   check_tensor(expert_ids, x, "expert_ids");
   check_tensor(comm_args, x, "comm_args");
@@ -128,7 +141,7 @@ at::Tensor dispatch_send(
     std::string group(group_name.data(), group_name.size());
     char *group_ptr = group.data();
     EXEC_NPU_CMD(aclnnAfdAsyncDispatchSend, x, expert_ids, comm_args,
-                 RESERVED_MAGIC, max_seq_len, batch_size, hidden_size, top_k,
+                 call_magic, max_seq_len, batch_size, hidden_size, top_k,
                  moe_rank_num, attn_rank_num, route_expert_num_per_moe,
                  attn_rank_id, world_size, layer_index, tp_size, dynamic_quant,
                  group_ptr, output);
@@ -147,7 +160,7 @@ std::vector<at::Tensor> dispatch_recv(
     const int64_t route_expert_num_per_moe, const int64_t moe_rank_id,
     const int64_t world_size, const int64_t tp_size,
     const int64_t dynamic_quant, c10::string_view group_name) {
-  (void)comm_id;
+  const int64_t call_magic = execution_magic(comm_id, comm_args);
   check_float_input(x);
   check_tensor(comm_args, x, "comm_args");
   check_topology(hidden_size, top_k, moe_rank_num, attn_rank_num,
@@ -175,7 +188,7 @@ std::vector<at::Tensor> dispatch_recv(
     std::string group(group_name.data(), group_name.size());
     char *group_ptr = group.data();
     EXEC_NPU_CMD(aclnnAfdAsyncDispatchRecv, x, comm_args,
-                 RESERVED_MAGIC, max_seq_len, hidden_size, top_k, moe_rank_num,
+                 call_magic, max_seq_len, hidden_size, top_k, moe_rank_num,
                  attn_rank_num, route_expert_num_per_moe, moe_rank_id,
                  world_size, tp_size, dynamic_quant, group_ptr,
                  expanded, scales, batch_info, counts);
@@ -195,7 +208,7 @@ at::Tensor combine_send(
     const int64_t route_expert_num_per_moe, const int64_t moe_rank_id,
     const int64_t world_size, const int64_t tp_size,
     c10::string_view group_name) {
-  (void)comm_id;
+  const int64_t call_magic = execution_magic(comm_id, comm_args);
   check_float_input(expand_x);
   check_tensor(comm_args, expand_x, "comm_args");
   check_tensor(batch_info, expand_x, "batch_info");
@@ -218,7 +231,7 @@ at::Tensor combine_send(
     std::string group(group_name.data(), group_name.size());
     char *group_ptr = group.data();
     EXEC_NPU_CMD(aclnnAfdAsyncCombineSend, expand_x, comm_args, batch_info,
-                 RESERVED_MAGIC, max_seq_len, hidden_size, top_k, moe_rank_num,
+                 call_magic, max_seq_len, hidden_size, top_k, moe_rank_num,
                  attn_rank_num, route_expert_num_per_moe, moe_rank_id,
                  world_size, tp_size, group_ptr, output);
   }
@@ -237,7 +250,7 @@ at::Tensor combine_recv(
     const int64_t top_k, const int64_t moe_rank_num, const int64_t attn_rank_num,
     const int64_t route_expert_num_per_moe, const int64_t attn_rank_id,
     const int64_t world_size, c10::string_view group_name) {
-  (void)comm_id;
+  const int64_t call_magic = execution_magic(comm_id, comm_args);
   check_float_input(expand_x);
   check_tensor(expert_ids, expand_x, "expert_ids");
   check_tensor(expert_scales, expand_x, "expert_scales");
@@ -264,7 +277,7 @@ at::Tensor combine_recv(
     std::string group(group_name.data(), group_name.size());
     char *group_ptr = group.data();
     EXEC_NPU_CMD(aclnnAfdAsyncCombineRecv, expand_x, expert_ids,
-                 expert_scales, comm_args, RESERVED_MAGIC, batch_size,
+                 expert_scales, comm_args, call_magic, batch_size,
                  hidden_size, top_k, moe_rank_num, attn_rank_num,
                  route_expert_num_per_moe, attn_rank_id, world_size,
                  group_ptr, output);

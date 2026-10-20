@@ -12,6 +12,11 @@
 #define OPT_RANK_OFFSET 512
 
 #include "kernel_operator.h"
+// ### PATCH START: A5 session control declarations
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+#include "cam_async_a5_control.h"
+#endif
+// ### PATCH END: A5 session control declarations
 #include "kernel_tiling/kernel_tiling.h"
 #include "afd_async_combine_send_tiling.h"
 #include "cam_async_comm_args.h"
@@ -121,7 +126,13 @@ __aicore__ inline void AfdAsyncCombineSend<TemplateMC2TypeFunc>::Init(GM_ADDR ex
     xGMTensor_.SetGlobalBuffer((__gm__ ExpandXType*)expandX);
     batchInfoGMTensor_.SetGlobalBuffer((__gm__ int64_t *)batchInfo);
     // commArgs is an ABI placeholder; MC2 initializes the HCCL resource context.
-    dataWindow_.Init(AscendC::GetHcclContext<HCCL_GROUP_ID_0>(), moeRankId_);
+    // ### PATCH START: Resolve the owned full-feature frame before numerical work
+    uint64_t frameOffset = 0;
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    frameOffset = AsyncA5::GetFrameOffset(*pipe, commArgs, tilingData->moeDistributeCombineInfo.magic);
+#endif
+    dataWindow_.Init(AscendC::GetHcclContext<HCCL_GROUP_ID_0>(), moeRankId_, frameOffset);
+    // ### PATCH END: Resolve the owned full-feature frame before numerical work
 
     tpipe_ = pipe;
     tpipe_->Reset();

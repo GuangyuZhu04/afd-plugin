@@ -67,6 +67,29 @@ else()
   message(FATAL_ERROR "Unsupported AFD_SOC_VERSION: ${AFD_SOC_VERSION}")
 endif()
 
+if(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
+  # HCOMM's CCU C++ API is ABI0, independently of the torch extension's ABI.
+  # This library exposes only C/POD calls to the ABI1 torch 2.8 build.
+  add_library(afd_cam_async_a5_transport SHARED
+    "${AFD_NPU_CSRC_DIR}/runtime/cam_async_a5_transport.cpp"
+    "${AFD_NPU_CSRC_DIR}/experimental/cam_async_ccu/ccu_segment_kernel.cpp")
+  target_compile_definitions(afd_cam_async_a5_transport PRIVATE _GLIBCXX_USE_CXX11_ABI=0)
+  target_include_directories(afd_cam_async_a5_transport SYSTEM PRIVATE
+    "${ASCEND_HOME_PATH}/aarch64-linux/include"
+    "${ASCEND_HOME_PATH}/aarch64-linux/include/hccl"
+    "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc"
+    "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hccl"
+    "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hcomm/ccu")
+  target_link_directories(afd_cam_async_a5_transport PRIVATE "${ASCEND_HOME_PATH}/lib64")
+  target_link_libraries(afd_cam_async_a5_transport PRIVATE hcomm hccl c_sec)
+  target_link_options(afd_cam_async_a5_transport PRIVATE -Wl,--no-undefined)
+  target_compile_options(afd_cam_async_a5_transport PRIVATE -Wall -Wextra -Werror)
+  target_sources(afd_plugin_ascend_C PRIVATE "${CMAKE_CURRENT_LIST_DIR}/torch_binding_cam_async_a5.cpp")
+  target_compile_definitions(afd_plugin_ascend_C PRIVATE AFD_BUILD_A5_RUNTIME=1)
+  target_link_libraries(afd_plugin_ascend_C PRIVATE afd_cam_async_a5_transport)
+  install(TARGETS afd_cam_async_a5_transport LIBRARY DESTINATION afd_plugin)
+endif()
+
 set_target_properties(afd_plugin_ascend_C PROPERTIES OUTPUT_NAME "_C_ascend")
 target_compile_definitions(afd_plugin_ascend_C PRIVATE TORCH_EXTENSION_NAME=_C_ascend)
 

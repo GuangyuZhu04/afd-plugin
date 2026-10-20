@@ -22,6 +22,32 @@ CAM_OPERATORS = (
     "afd_async_combine_recv",
 )
 
+
+@pytest.mark.parametrize("soc,expected_copy", [("950", True), ("910c", False)])
+def test_inplace_build_keeps_a5_runtime_dependency(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, soc: str, expected_copy: bool
+):
+    root = Path(__file__).resolve().parents[3]
+    monkeypatch.setenv("AFD_BUILD_ASCEND_OPS", "0")
+    monkeypatch.setenv("SOC_VERSION", soc)
+    monkeypatch.setattr(setuptools, "setup", lambda **kwargs: None)
+    namespace = runpy.run_path(str(root / "setup.py"))
+    command = namespace["BuildAscendOps"](setuptools.Distribution())
+    command.build_lib = str(tmp_path / "build")
+    checkout = tmp_path / "checkout"
+    (checkout / "afd_plugin").mkdir(parents=True)
+    library = tmp_path / "build/afd_plugin/libafd_cam_async_a5_transport.so"
+    library.parent.mkdir(parents=True)
+    library.write_bytes(b"required CCU runtime dependency")
+    monkeypatch.setitem(command.copy_extensions_to_source.__globals__, "ROOT", checkout)
+    monkeypatch.setattr(build_ext, "copy_extensions_to_source", lambda self: None)
+    command.copy_extensions_to_source()
+    destination = checkout / "afd_plugin" / library.name
+    assert destination.exists() == expected_copy
+    if expected_copy:
+        assert destination.read_bytes() == library.read_bytes()
+
+
 CAM_MIT_NOTICE = """\
 The MIT License
 

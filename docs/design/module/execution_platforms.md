@@ -9,6 +9,7 @@ primary_code_paths:
   - "afd_plugin/compat/profiler.py"
   - "afd_plugin/compat/npu/forward_context.py"
   - "afd_plugin/compat/npu/ops.py"
+  - "afd_plugin/compat/npu/cam_async_a5.py"
   - "afd_plugin/compat/npu/profiler.py"
   - "afd_plugin/v1/worker/cuda_graph.py"
   - "afd_plugin/v1/worker/dbo.py"
@@ -314,7 +315,12 @@ NPU extension, but the CAMP2P data path cannot run without it.
 `CAMAsyncAFDConnector` loads the same AFD extension and additionally requires
 all four `torch.ops.afd_ascend.afd_async_*` operators. The 910C package uses
 compact routed-only metadata; Attention owns shared experts and FFN owns
-routed experts. The 950 package does not register these async operators.
+routed experts. The 950 package also registers all four async operators. Its
+explicit `a5_full_features` profile adds the native `AsyncCamA5Context`, an
+ABI-isolated HCOMM library, device descriptors and whole-round frame slots.
+The default path retains the accumulated MTE optimizations. See the
+[A5 integration contract](../../npu/CAM_ASYNC_A5_FULL_FEATURES.md); this is a
+source/build lane and has no A5 device or model-E2E qualification.
 See [the routed-only guide](../../npu/CAM_ASYNC_ROUTED_OPS.md) for metadata
 and window lifetime contracts. Device validation remains necessary for each
 target topology.

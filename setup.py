@@ -60,6 +60,21 @@ class CMakeExtension(Extension):
 
 
 class BuildAscendOps(build_ext):
+    def copy_extensions_to_source(self) -> None:
+        super().copy_extensions_to_source()
+        # The CCU bridge has its own libstdc++ ABI and is a runtime dependency
+        # of the 950 extension. setuptools copies only declared extensions.
+        soc = os.environ.get("SOC_VERSION", "910c").lower()
+        if soc == "950" or soc.startswith("ascend950"):
+            transport = (
+                Path(self.build_lib) / "afd_plugin" / "libafd_cam_async_a5_transport.so"
+            )
+            if not transport.is_file():
+                raise RuntimeError(
+                    "A5 extension build is missing its CCU transport library"
+                )
+            shutil.copy2(transport, ROOT / "afd_plugin" / transport.name)
+
     def run(self) -> None:
         if not self.extensions:
             return super().run()

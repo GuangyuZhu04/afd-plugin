@@ -8,6 +8,8 @@
 #include <limits>
 
 #include "../op_kernel/cam_async_simt_routing_budget.h"
+#include "../op_kernel/cam_async_a5_contract.h"
+#include "../op_kernel/cam_async_descriptor_budget.h"
 
 namespace Cam::AsyncHost {
 constexpr uint64_t UB_ALIGNMENT = 32;

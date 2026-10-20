@@ -58,6 +58,22 @@ def _dispatch_recv(torch: ModuleType, *, dynamic_quant: int = 0, moe_rank_id: in
     )
 
 
+def test_full_profile_class_is_build_gated_and_rejects_meta_execution(cam_runtime):
+    torch = cam_runtime
+    soc = os.environ["SOC_VERSION"].lower()
+    if soc == "950" or soc.startswith("ascend950"):
+        constructor = torch.classes.afd_ascend.AsyncCamA5Context
+        with pytest.raises(RuntimeError, match="requires an NPU anchor"):
+            constructor(
+                torch.empty(1, device="meta", dtype=torch.float16),
+                "no_communication",
+                [0, 2, 2, 4, 2, 64, 64, 2, 2, 0],
+            )
+    else:
+        with pytest.raises(RuntimeError, match="does not exist"):
+            torch._C._get_custom_class_python_wrapper("afd_ascend", "AsyncCamA5Context")
+
+
 @pytest.mark.parametrize(
     "name",
     (

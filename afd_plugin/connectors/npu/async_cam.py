@@ -37,6 +37,11 @@ import torch
 from torch import Tensor
 from vllm.logger import init_logger
 
+from afd_plugin.compat.npu.cam_async_a5 import (
+    AsyncCamA5Context,
+    create_async_cam_a5_context,
+    initialize_async_cam_a5_context,
+)
 from afd_plugin.compat.npu.ops import ensure_cam_async_ops_available
 from afd_plugin.config import AFDConfig
 from afd_plugin.config_utils import (
@@ -68,6 +73,9 @@ if TYPE_CHECKING:
     from vllm.model_executor.layers.fused_moe import FusedMoERouter
 
 AFD_ASYNC_CAM_GROUP_NAME = "afd_async_cam"
+AFD_ASYNC_CAM_A5_GROUP_NAME = "afd_async_cam_a5_full"
+A5_DEFAULT_SLOT_COUNT = 2
+A5_MAX_SLOT_COUNT = 8
 CAM_COMM_ID = 0
 ATTN_RANKS_PER_DP_CONFIG_KEY = "attn_ranks_per_dp"
 ASYNC_MOE_NUM_STAGES = 2
@@ -82,6 +90,8 @@ _AFD_ASYNC_EXTRA_CONFIG_FIELDS: Final[frozenset[str]] = frozenset(
         "async_moe_num_ubatches",
         "async_moe_split",
         "hccl_buffer_size",
+        "a5_full_features",
+        "a5_slot_count",
     },
 )
 
@@ -157,6 +167,8 @@ class AFDAsyncExtraInfo(ConnectorExtraInfo):
     async_moe_num_ubatches: int = ASYNC_MOE_NUM_STAGES
     async_moe_split: str = ASYNC_MOE_REQUEST_SPLIT
     hccl_buffer_size: int | None = None
+    a5_full_features: bool = False
+    a5_slot_count: int = A5_DEFAULT_SLOT_COUNT
 
     @classmethod
     def from_mapping(cls, raw: Mapping[str, Any] | None) -> AFDAsyncExtraInfo:
@@ -197,6 +209,14 @@ class AFDAsyncExtraInfo(ConnectorExtraInfo):
                 raw.get("async_moe_split", ASYNC_MOE_REQUEST_SPLIT),
                 field_name="async_moe_split",
             ),
+            a5_full_features=coerce_extra_bool(
+                raw.get("a5_full_features", False),
+                field_name="a5_full_features",
+            ),
+            a5_slot_count=coerce_extra_positive_int(
+                raw.get("a5_slot_count", A5_DEFAULT_SLOT_COUNT),
+                field_name="a5_slot_count",
+            ),
             hccl_buffer_size=coerce_optional_extra_positive_int(
                 raw.get("hccl_buffer_size"),
                 field_name="hccl_buffer_size",
@@ -213,6 +233,9 @@ class AFDAsyncExtraInfo(ConnectorExtraInfo):
         }
         if self.hccl_buffer_size is not None:
             result["hccl_buffer_size"] = self.hccl_buffer_size
+        if self.a5_full_features:
+            result["a5_full_features"] = True
+            result["a5_slot_count"] = self.a5_slot_count
         return result
 
 
@@ -227,6 +250,7 @@ class AFDAsyncTransferState(AFDTransferState):
     token_nums_rankid_layeridx: Tensor | None = None
     group_list: Tensor | None = None
     dynamic_scales: Tensor | None = None
+    transport_ticket: Tensor | None = None
 
 
 @dataclass(slots=True)
@@ -305,6 +329,13 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
         extra_info = cast(AFDAsyncExtraInfo, self.extra_info)
         self.dynamic_quant = extra_info.dynamic_quant
         self.hccl_buffer_size_mb = extra_info.hccl_buffer_size
+        self.a5_full_features = extra_info.a5_full_features
+        self.a5_slot_count = extra_info.a5_slot_count
+        if self.a5_full_features and not (
+            A5_DEFAULT_SLOT_COUNT <= self.a5_slot_count <= A5_MAX_SLOT_COUNT
+        ):
+            raise ValueError("a5_slot_count must be between 2 and 8")
+        self._a5_context: AsyncCamA5Context | None = None
         self.group_name = ""
         self.max_num_batched_tokens = (
             vllm_config.scheduler_config.max_num_batched_tokens
@@ -349,7 +380,11 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             init_method=f"tcp://{self.afd_config.host}:{self.afd_config.port}",
             world_size=self.topology.world_size,
             rank=self.world_rank,
-            group_name=AFD_ASYNC_CAM_GROUP_NAME,
+            group_name=(
+                AFD_ASYNC_CAM_A5_GROUP_NAME
+                if self.a5_full_features
+                else AFD_ASYNC_CAM_GROUP_NAME
+            ),
             timeout=timedelta(minutes=30),
             pg_options=create_hccl_process_group_options(
                 self.hccl_buffer_size_mb,
@@ -364,14 +399,40 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             dtype=self.activation_dtype,
             device=device,
         )
+        if self.a5_full_features:
+            self._a5_context = create_async_cam_a5_context(
+                self._placeholder,
+                self.group_name,
+                rank=self.world_rank,
+                attention_ranks=self.attn_size,
+                moe_ranks=self.ffn_size,
+                experts_per_rank=self.expert_per_rank,
+                tp_size=self.tp_size,
+                max_sequence=self.max_num_batched_tokens,
+                hidden_size=self.hidden_size,
+                topk=self.topk,
+                slot_count=self.a5_slot_count,
+                dynamic_quant=self.dynamic_quant,
+            )
+            initialize_async_cam_a5_context(
+                self._a5_context,
+                self.cam_pg,
+                rank=self.world_rank,
+                world_size=self.topology.world_size,
+            )
         self._initialized = True
 
     def close(self) -> None:
         """Destroy the HCCL process group and clear pending transfer states."""
+        if self._a5_context is not None:
+            self._a5_context.quiesce()
         if self.cam_pg is not None:
             import torch.distributed as dist
 
             dist.destroy_process_group(self.cam_pg)
+        if self._a5_context is not None:
+            self._a5_context.release_after_group_destroyed()
+        self._a5_context = None
         self.cam_pg = None
         self.comm_args = None
         self._placeholder = None
@@ -572,25 +633,32 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             dynamic_quant=self.dynamic_quant,
             group_name=self.group_name,
         )
-        torch.ops.afd_ascend.afd_async_dispatch_send(
-            hidden_states,
-            topk_ids,
-            self.comm_args,
-            self.comm_id,
-            self.max_num_batched_tokens,
-            states.batch_size,
-            states.hidden_size,
-            states.topk,
-            self.ffn_size,
-            self.attn_size,
-            self.expert_per_rank,
-            self.world_rank,
-            self.topology.world_size,
-            states.layer_idx,
-            self.tp_size,
-            self.dynamic_quant,
-            self.group_name,
-        )
+        if self._a5_context is not None:
+            states.transport_ticket = self._a5_context.dispatch_send(
+                hidden_states,
+                topk_ids,
+                states.layer_idx,
+            )
+        else:
+            torch.ops.afd_ascend.afd_async_dispatch_send(
+                hidden_states,
+                topk_ids,
+                self.comm_args,
+                self.comm_id,
+                self.max_num_batched_tokens,
+                states.batch_size,
+                states.hidden_size,
+                states.topk,
+                self.ffn_size,
+                self.attn_size,
+                self.expert_per_rank,
+                self.world_rank,
+                self.topology.world_size,
+                states.layer_idx,
+                self.tp_size,
+                self.dynamic_quant,
+                self.group_name,
+            )
         self._pending_attention_payloads.setdefault(
             context.metadata.stage_idx, []
         ).append(
@@ -662,22 +730,31 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             world_size=self.topology.world_size,
             group_name=self.group_name,
         )
-        output = torch.ops.afd_ascend.afd_async_combine_recv(
-            placeholder,
-            topk_ids,
-            topk_weights,
-            self.comm_args,
-            self.comm_id,
-            states.batch_size,
-            states.hidden_size,
-            states.topk,
-            self.ffn_size,
-            self.attn_size,
-            self.expert_per_rank,
-            self.world_rank,
-            self.topology.world_size,
-            self.group_name,
-        )
+        if self._a5_context is not None:
+            if states.transport_ticket is None:
+                raise RuntimeError("A5 combine is missing its dispatch ticket")
+            output = self._a5_context.combine_recv(
+                topk_ids,
+                topk_weights,
+                states.transport_ticket,
+            )
+        else:
+            output = torch.ops.afd_ascend.afd_async_combine_recv(
+                placeholder,
+                topk_ids,
+                topk_weights,
+                self.comm_args,
+                self.comm_id,
+                states.batch_size,
+                states.hidden_size,
+                states.topk,
+                self.ffn_size,
+                self.attn_size,
+                self.expert_per_rank,
+                self.world_rank,
+                self.topology.world_size,
+                self.group_name,
+            )
         _log_cam_op_values("async_combine_recv", "outputs", output=output)
         return output
 
@@ -725,22 +802,27 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             dynamic_quant=self.dynamic_quant,
             group_name=self.group_name,
         )
-        outputs = torch.ops.afd_ascend.afd_async_dispatch_recv(
-            placeholder,
-            self.comm_args,
-            self.comm_id,
-            self.max_num_batched_tokens,
-            states.hidden_size,
-            states.topk,
-            self.ffn_size,
-            self.attn_size,
-            self.expert_per_rank,
-            self.world_rank,
-            self.topology.world_size,
-            self.tp_size,
-            self.dynamic_quant,
-            self.group_name,
-        )
+        if self._a5_context is not None:
+            received = self._a5_context.dispatch_recv()
+            outputs = received[:4]
+            states.transport_ticket = received[4]
+        else:
+            outputs = torch.ops.afd_ascend.afd_async_dispatch_recv(
+                placeholder,
+                self.comm_args,
+                self.comm_id,
+                self.max_num_batched_tokens,
+                states.hidden_size,
+                states.topk,
+                self.ffn_size,
+                self.attn_size,
+                self.expert_per_rank,
+                self.world_rank,
+                self.topology.world_size,
+                self.tp_size,
+                self.dynamic_quant,
+                self.group_name,
+            )
         hidden_states, dynamic_scales, batch_info, expert_token_nums = outputs
         _log_cam_op_values(
             "async_dispatch_recv",
@@ -799,22 +881,31 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             tp_size=self.tp_size,
             group_name=self.group_name,
         )
-        torch.ops.afd_ascend.afd_async_combine_send(
-            ffn_output,
-            self.comm_args,
-            token_nums_rankid_layeridx,
-            self.comm_id,
-            self.max_num_batched_tokens,
-            states.hidden_size,
-            states.topk,
-            self.ffn_size,
-            self.attn_size,
-            self.expert_per_rank,
-            self.world_rank,
-            self.topology.world_size,
-            self.tp_size,
-            self.group_name,
-        )
+        if self._a5_context is not None:
+            if states.transport_ticket is None:
+                raise RuntimeError("A5 combine is missing its receive ticket")
+            self._a5_context.combine_send(
+                ffn_output,
+                token_nums_rankid_layeridx,
+                states.transport_ticket,
+            )
+        else:
+            torch.ops.afd_ascend.afd_async_combine_send(
+                ffn_output,
+                self.comm_args,
+                token_nums_rankid_layeridx,
+                self.comm_id,
+                self.max_num_batched_tokens,
+                states.hidden_size,
+                states.topk,
+                self.ffn_size,
+                self.attn_size,
+                self.expert_per_rank,
+                self.world_rank,
+                self.topology.world_size,
+                self.tp_size,
+                self.group_name,
+            )
 
     def _require_initialized(self) -> None:
         if not self._initialized:

@@ -25,17 +25,20 @@ static_assert(sizeof(AscendC::HcclCombineOpParam::windowsIn) / sizeof(uint64_t)
 // initialization and remote MTE completion still require device qualification.
 class AsyncDataWindow {
 public:
-    __aicore__ inline void Init(GM_ADDR context, uint32_t localRank)
+    // AFD adds an optional frameOffset to select an owned full-profile slot.
+    // Its zero default retains the original mapped window for legacy callers.
+    __aicore__ inline void Init(GM_ADDR context, uint32_t localRank, uint64_t frameOffset = 0)
     {
         context_ = context;
         localRank_ = localRank;
+        frameOffset_ = frameOffset;
     }
 
     __aicore__ inline GM_ADDR GetDataWindow(const int32_t rankId) const
     {
 #if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
         auto *context = (__gm__ AscendC::HcclCombineOpParam *)context_;
-        return (GM_ADDR)context->windowsIn[rankId];
+        return (GM_ADDR)context->windowsIn[rankId] + frameOffset_;
 #else
         auto *context = (__gm__ HcclOpResParam *)context_;
         if (rankId == localRank_) {
@@ -49,6 +52,7 @@ public:
 private:
     GM_ADDR context_{nullptr};
     uint32_t localRank_{0};
+    uint64_t frameOffset_{0};
 };
 
 } // namespace Cam

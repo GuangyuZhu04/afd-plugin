@@ -12,6 +12,11 @@
 #define OPT_RANK_OFFSET 512
 
 #include "kernel_operator.h"
+// ### PATCH START: A5 session control declarations
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+#include "cam_async_a5_control.h"
+#endif
+// ### PATCH END: A5 session control declarations
 #include "kernel_tiling/kernel_tiling.h"
 #include "afd_async_dispatch_send_tiling.h"
 #include "cam_async_comm_args.h"
@@ -305,7 +310,13 @@ __aicore__ inline void AfdAsyncDispatchSend<TemplateMC2TypeFunc>::Init(
     xGMTensor_.SetGlobalBuffer((__gm__ XType*)x);
     idsGMTensor_.SetGlobalBuffer((__gm__ int32_t *)expertIds);
     // commArgs is an ABI placeholder; MC2 initializes the HCCL resource context.
-    dataWindow_.Init(AscendC::GetHcclContext<HCCL_GROUP_ID_0>(), attnRankId_);
+    // ### PATCH START: Resolve the owned full-feature frame before numerical work
+    uint64_t frameOffset = 0;
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    frameOffset = AsyncA5::GetFrameOffset(*pipe, commArgs, tilingData->moeDistributeDispatchInfo.magic);
+#endif
+    dataWindow_.Init(AscendC::GetHcclContext<HCCL_GROUP_ID_0>(), attnRankId_, frameOffset);
+    // ### PATCH END: Resolve the owned full-feature frame before numerical work
 
     // split work across cores
     uint32_t batchSizePerAiv = batchSize_ / aivNum_;

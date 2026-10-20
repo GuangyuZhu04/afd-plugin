@@ -142,6 +142,20 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 
     int64_t expertNum = routeExpertNumPerMoe * moeRankNum;
     uint64_t sharedMemSize = GetMaxWindowSize();
+    // ### PATCH START: Full-feature domains reserve independent ring frames
+    if (AsyncA5::IsFullCall(magic)) {
+        const auto fullMode = AsyncA5::CallMode(magic);
+        const auto *commShape = context->GetInputShape(2);
+        AsyncPipeline::RingLayout frameLayout;
+        OPS_ERR_IF(!isAscend950 || !(fullMode == AsyncA5::Mode::Initialize || fullMode == AsyncA5::Mode::Dispatch)
+            || commShape == nullptr || commShape->GetStorageShape().GetDimNum() != 1
+            || commShape->GetStorageShape().GetDim(0) != sizeof(AsyncA5::RuntimeArgs) / sizeof(int16_t)
+            || !AsyncA5::PlanLayout(sharedMemSize, worldSize, AsyncA5::CallSlots(magic), 1, frameLayout),
+            OPS_LOG_E(nodeName, "Invalid A5 full-feature mode, context or ring capacity."), return ge::GRAPH_FAILED);
+        sharedMemSize = frameLayout.payloadCapacity;
+    }
+    // ### PATCH END: Full-feature domains reserve independent ring frames
+
 
     const gert::StorageShape *xShape = context->GetInputShape(INPUT_X_INDEX);
     const gert::StorageShape *expertIdsShape = context->GetInputShape(INPUT_EXPERT_IDS_INDEX);

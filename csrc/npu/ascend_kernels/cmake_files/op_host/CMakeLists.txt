@@ -45,7 +45,9 @@ endif()
 # Custom compile options for npu_op_code_gen (passed to
 # compile_ascendc_all_ops_so.py via --compile-options). The current source dir
 # is added so op_host sources resolve the ../op_kernel/ tiling headers.
-set(CODE_GEN_COMPILE_OPTS -I${CMAKE_CURRENT_SOURCE_DIR})
+# The code-generation compiler is separate from the CMake C++ targets. The
+# shared slot/descriptor contracts use C++17 aggregate initialization as well.
+set(CODE_GEN_COMPILE_OPTS -std=c++17 -I${CMAKE_CURRENT_SOURCE_DIR})
 if(DEFINED ASCEND_COMPUTE_UNIT AND "${ASCEND_COMPUTE_UNIT}" MATCHES "ascend950")
     add_definitions(-DAFD_TILING_HAS_COMM_ENGINE=1)
     list(APPEND CODE_GEN_COMPILE_OPTS -DAFD_TILING_HAS_COMM_ENGINE=1)

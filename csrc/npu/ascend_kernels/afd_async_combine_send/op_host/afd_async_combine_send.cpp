@@ -123,6 +123,20 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 
     int64_t expertNum = routeExpertNumPerMoe * moeRankNum;
     uint64_t sharedMemSize = GetMaxWindowSize();
+    // ### PATCH START: Full-feature domains reserve independent ring frames
+    if (AsyncA5::IsFullCall(magic)) {
+        const auto fullMode = AsyncA5::CallMode(magic);
+        const auto *commShape = context->GetInputShape(1);
+        AsyncPipeline::RingLayout frameLayout;
+        OPS_ERR_IF(!isAscend950 || !(fullMode == AsyncA5::Mode::Initialize || fullMode == AsyncA5::Mode::PrepareCombine || fullMode == AsyncA5::Mode::PublishCombine)
+            || commShape == nullptr || commShape->GetStorageShape().GetDimNum() != 1
+            || commShape->GetStorageShape().GetDim(0) != sizeof(AsyncA5::RuntimeArgs) / sizeof(int16_t)
+            || !AsyncA5::PlanLayout(sharedMemSize, worldSize, AsyncA5::CallSlots(magic), 1, frameLayout),
+            OPS_LOG_E(nodeName, "Invalid A5 full-feature mode, context or ring capacity."), return ge::GRAPH_FAILED);
+        sharedMemSize = frameLayout.payloadCapacity;
+    }
+    // ### PATCH END: Full-feature domains reserve independent ring frames
+
 
     const gert::StorageShape *xShape = context->GetInputShape(INPUT_X_INDEX);
     const gert::StorageShape *batchInfoShape = context->GetInputShape(INPUT_BATCH_INFO_INDEX);
@@ -214,6 +228,16 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
         context->SetTilingKey(TILING_KEY_FP16);
     }
 
+    // ### PATCH START: Compile descriptor preparation as isolated scalar/SIMT keys
+    if (AsyncA5::IsFullCall(magic) && AsyncA5::CallMode(magic) == AsyncA5::Mode::PrepareCombine) {
+        OPS_ERR_IF(batchInfoNum * sizeof(int64_t) > AsyncPipeline::METADATA_BUFFER_BYTES
+            || ubSize < AsyncPipeline::SIMT_PRODUCER_ARENA_BYTES,
+            OPS_LOG_E(nodeName, "A5 CCU metadata or producer arena exceeds the UB budget."), return ge::GRAPH_FAILED);
+        context->SetTilingKey(AsyncPipeline::CanUseDescriptorSimt(ubSize) ? AFD_ASYNC_COMBINE_PREPARE_SIMT_KEY : AFD_ASYNC_COMBINE_PREPARE_SCALAR_KEY);
+        context->SetBlockDim(1);
+        tilingData->moeDistributeCombineInfo.aivNum = 1;
+    }
+    // ### PATCH END: Compile descriptor preparation as isolated scalar/SIMT keys
     return ge::GRAPH_SUCCESS;
 }
 }

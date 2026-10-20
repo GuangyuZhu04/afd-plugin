@@ -68,7 +68,7 @@ exclude = ["afd_plugin._cann_ops_custom*"]
 namespaces = false
 
 [tool.setuptools.package-data]
-afd_plugin = ["py.typed", "_cann_ops_custom/**/*"]
+afd_plugin = ["py.typed", "_cann_ops_custom/**/*", "libafd_cam_async_a5_transport.so"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

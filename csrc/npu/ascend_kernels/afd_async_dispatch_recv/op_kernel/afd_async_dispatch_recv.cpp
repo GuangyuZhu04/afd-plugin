@@ -15,6 +15,9 @@ using namespace AscendC;
 using namespace MoeDistributeDispatchImpl;
 using namespace Cam;
 
+// Patch reason: full-profile calls require lease boundaries around the data kernel.
+// Patch functionality: acquire the frame before access and publish completion after drain.
+// Signature: unchanged; legacy calls retain the original data path.
 extern "C" __global__ __aicore__ void afd_async_dispatch_recv(
     GM_ADDR x, GM_ADDR commArgs,
     GM_ADDR expandXOut, GM_ADDR dynamicScalesOut,
@@ -25,6 +28,14 @@ extern "C" __global__ __aicore__ void afd_async_dispatch_recv(
     TPipe pipe;
     int32_t isCamComm = 1;
     GET_TILING_DATA_WITH_STRUCT(AfdAsyncDispatchRecvTilingData, tilingData, tilingGM);
+
+    // ### PATCH START: Full-feature slot acquisition precedes all data access
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    const uint64_t fullCall = tilingData.moeDistributeDispatchInfo.magic;
+    if (!AsyncA5::BeforeCall(pipe, commArgs, fullCall,
+            tilingData.moeDistributeDispatchInfo.totalUbSize, tilingData.moeDistributeDispatchInfo.aivNum)) return;
+#endif
+    // ### PATCH END: Full-feature slot acquisition precedes all data access
 
     int dynamicQuant = tilingData.moeDistributeDispatchInfo.dynamicQuant;
 
@@ -57,4 +68,9 @@ extern "C" __global__ __aicore__ void afd_async_dispatch_recv(
             op.Process();
         }
     }
+    // ### PATCH START: Publish completion only after the original kernel drains
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    AsyncA5::AfterCall(pipe, commArgs, fullCall, batchInfoOut);
+#endif
+    // ### PATCH END: Publish completion only after the original kernel drains
 }

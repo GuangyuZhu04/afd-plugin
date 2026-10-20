@@ -17,7 +17,8 @@ using namespace Cam;
 
 // Patch reason: scalar fallback keys must compile without a SIMT VF call graph.
 // Patch functionality: dispatch new A5 metadata keys to the SIMT specialization;
-// scalar keys retain the original execution path and full UB arena.
+// scalar keys retain the original execution path and full UB arena. Full-profile
+// calls additionally acquire/publish their owned frame around that data path.
 // Signature: matches the original kernel entry; no added parameters.
 extern "C" __global__ __aicore__ void afd_async_dispatch_send(
     GM_ADDR x, GM_ADDR expertIds, GM_ADDR commArgs, GM_ADDR expandXOut,
@@ -28,6 +29,14 @@ extern "C" __global__ __aicore__ void afd_async_dispatch_send(
     TPipe pipe;
     int32_t isCamComm = 1;
     GET_TILING_DATA_WITH_STRUCT(AfdAsyncDispatchSendTilingData, tilingData, tilingGM);
+
+    // ### PATCH START: Full-feature slot acquisition precedes all data access
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    const uint64_t fullCall = tilingData.moeDistributeDispatchInfo.magic;
+    if (!AsyncA5::BeforeCall(pipe, commArgs, fullCall,
+            tilingData.moeDistributeDispatchInfo.totalUbSize, tilingData.moeDistributeDispatchInfo.aivNum)) return;
+#endif
+    // ### PATCH END: Full-feature slot acquisition precedes all data access
 
     int dynamicQuant = tilingData.moeDistributeDispatchInfo.dynamicQuant;
 
@@ -84,4 +93,9 @@ extern "C" __global__ __aicore__ void afd_async_dispatch_send(
     }
 #endif
     // ### PATCH END: Enumerate A5 keys while isolating their VF bodies
+    // ### PATCH START: Publish completion only after the original kernel drains
+#if (defined(__NPU_ARCH__) && (__NPU_ARCH__ == 3101 || __NPU_ARCH__ == 3510)) || defined(__DAV_C310__)
+    AsyncA5::AfterCall(pipe, commArgs, fullCall);
+#endif
+    // ### PATCH END: Publish completion only after the original kernel drains
 }

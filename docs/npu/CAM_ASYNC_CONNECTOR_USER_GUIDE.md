@@ -412,3 +412,15 @@ To revert, set `AFD_ASYNC_CAM_LAYERED_GMM=0` and restart the FFN processes.
 For performance runs, disable `AFD_CAM_OP_IO_LOG` and
 `AFD_FORCE_BALANCED_TOPK_IDS`, retain the actual-path startup log, and measure
 the existing group synchronization separately.
+
+## A5 full-profile opt-in
+
+The 950 build includes an experimental integrated CCU/SIMT descriptor and
+whole-round slot profile. Set `connector_extra_config.a5_full_features=true`
+on every rank and choose `a5_slot_count` in 2–8 (default 2). The default remains
+the accumulated MTE path. Match `HCCL_BUFFSIZE` to the actual domain allocation;
+each slot has a smaller payload budget, and FFN adds a registered output staging
+allocation. Setup uses the existing process-group Store only, with no per-batch
+Store traffic. See [the A5 full-profile guide](CAM_ASYNC_A5_FULL_FEATURES.md) for
+requirements, lifetime rules, build and precision commands. A5 communication,
+concurrent-slot device behavior and model E2E remain unqualified.

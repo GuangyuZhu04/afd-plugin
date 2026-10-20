@@ -107,6 +107,17 @@ an old installed extension contains the new operators. The new binding tests
 check the four registrations explicitly. Importing the Python plugin remains
 safe without the native extension.
 
+## Optional A5 full profile
+
+The 950 build additionally provides `torch.classes.afd_ascend.AsyncCamA5Context`
+and `libafd_cam_async_a5_transport.so`. Set `a5_full_features=true` on every CAM
+connector rank to select custom CCU combine transport and 2–8 epoch/credit frame
+slots. This uses a distinct AFDA5SLT wire identity and a dedicated communication
+domain; legacy calls continue to use the compact-v2 contract below. The native
+session owns registered memory, queued tensors and setup/teardown ordering. See
+[the full-profile guide](CAM_ASYNC_A5_FULL_FEATURES.md) for configuration, source
+locations and the outstanding device qualification.
+
 ## Compact protocol contract
 
 Let `B` be the Attention batch size, `H` the hidden dimension, `K` top-k,
