@@ -4,6 +4,8 @@
 
 分支为 `GuangyuZhu04/a5-async-cam-full-features`。新路径是显式开启的开发版本；编译、CPU 状态机和 Meta 检查不能替代 A5 设备通信验收。当前没有延迟、带宽、吞吐或模型精度提升结论。
 
+本文对应的实现提交为 [`06bd14b`](https://github.com/GuangyuZhu04/afd-plugin/commit/06bd14b7015a5935d2276de15099ded801f3391c)。从 A3 原版到各优化阶段的特性概览、逐项代码改动和分支索引见 [A5 与 A3 对比说明](CAM_ASYNC_A5_VS_A3.md)；该说明已覆盖本次整合。
+
 ## 选择运行路径
 
 | 配置 | 数据路径 | 协议 |
