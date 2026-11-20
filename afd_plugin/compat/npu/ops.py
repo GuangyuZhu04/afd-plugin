@@ -40,15 +40,31 @@ def _prepend_env_path(name: str, path: Path) -> None:
     os.environ[name] = ":".join([path_str, *entries])
 
 
-def ensure_afd_vendor_first_on_path() -> None:
-    """Publish this vendor's OPP ahead of any other custom vendor.
+def _append_env_path(name: str, path: Path) -> None:
+    path_str = str(path)
+    current = os.environ.get(name, "")
+    entries = [entry for entry in current.split(":") if entry]
+    if path_str in entries:
+        return
+    os.environ[name] = ":".join([*entries, path_str])
 
-    CANN resolves a custom operator library by file name across
-    ``ASCEND_CUSTOM_OPP_PATH`` in order. Several Ascend wheels ship their own
-    ``libcust_opmaster_rt2.0.so``, and a wheel that prepends from a ``.pth`` at
-    site initialization always runs before plugin code. Prepending here keeps
-    the AFD vendor first, so the operators this package builds -- including the
-    A2e/E2a tiling registrations CAM P2P calls -- are the ones CANN loads.
+
+def ensure_afd_vendor_on_path() -> None:
+    """Add this vendor's OPP to the custom-vendor search path.
+
+    The entry is appended, never prepended. CANN resolves ``libcust_opapi.so``
+    and ``libcust_opmaster_rt2.0.so`` by file name across
+    ``ASCEND_CUSTOM_OPP_PATH`` in order, and this package ships both with only
+    its own operators. Placing its vendor ahead of the vllm-ascend vendor makes
+    the loader bind that shorter ``libcust_opapi.so`` first, so operators only
+    the vllm-ascend vendor implements -- the W4A8 expert SwigluGroupQuant, for
+    example -- resolve to a library that does not export them and fail at run
+    time with an ACLNN parameter error.
+
+    Appending keeps this vendor reachable for its own operators while every
+    richer vendor earlier in the path still wins the shared file names. The AFD
+    operators register through TORCH_LIBRARY in ``_C_ascend`` and do not depend
+    on this position.
 
     Idempotent: repeated calls leave the entry in place without duplicating it.
     """
@@ -56,11 +72,11 @@ def ensure_afd_vendor_first_on_path() -> None:
     vendor_dir = get_afd_cann_vendor_path()
     if not vendor_dir.exists():
         return
-    _prepend_env_path("ASCEND_CUSTOM_OPP_PATH", vendor_dir)
+    _append_env_path("ASCEND_CUSTOM_OPP_PATH", vendor_dir)
 
 
 def _ensure_afd_custom_opp_env() -> None:
-    ensure_afd_vendor_first_on_path()
+    ensure_afd_vendor_on_path()
     vendor_dir = get_afd_cann_vendor_path()
     if not vendor_dir.exists():
         return

@@ -284,7 +284,8 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
             # ### PATCH START: decoder replay preparation
             # v0.32 prepares the replay window before the model call; the AFD
             # override keeps that order so replay state matches the batch.
-            if self.decoder_replay is not None:
+            decoder_replay = getattr(self, "decoder_replay", None)
+            if decoder_replay is not None:
                 self._prepare_decoder_replay(num_tokens_padded, decoder_replay_dummy)
             # ### PATCH END: decoder replay preparation
             if self.enable_enpu:

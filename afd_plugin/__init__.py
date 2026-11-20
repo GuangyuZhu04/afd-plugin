@@ -162,9 +162,9 @@ def register_afd() -> None:
     # would lose the name resolution and hide this vendor's operators, including
     # the A2e/E2a tiling entries that CAM P2P needs.
     try:
-        from afd_plugin.compat.npu.ops import ensure_afd_vendor_first_on_path
+        from afd_plugin.compat.npu.ops import ensure_afd_vendor_on_path
 
-        ensure_afd_vendor_first_on_path()
+        ensure_afd_vendor_on_path()
     except Exception:
         _logger.debug(
             "AFD plugin: vendor OPP path could not be published",

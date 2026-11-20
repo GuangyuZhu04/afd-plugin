@@ -94,20 +94,16 @@ def build_environment(scenario: str) -> dict[str, str]:
     """
     shape = DSV4_SYNC_SHAPES[scenario]
     env = os.environ.copy()
-    # Publish this plugin's operator vendor ahead of any other custom vendor.
-    # The A2e/E2a tiling entries live in a libcust_opmaster_rt2.0.so that shares
-    # its file name with other Ascend wheels, and those wheels prepend from a
-    # .pth at site initialization, so the child processes must inherit AFD's
-    # vendor first or CANN resolves the wrong library.
+    # Add this plugin's operator vendor last. Its libcust_opapi.so exports only
+    # the AFD operators, so putting it first would shadow the richer vllm-ascend
+    # vendor and break the W4A8 expert SwigluGroupQuant. The AFD operators
+    # register through TORCH_LIBRARY and do not depend on this position.
     afd_vendor = get_afd_cann_vendor_path()
     if afd_vendor.is_dir():
         custom_opp = env.get("ASCEND_CUSTOM_OPP_PATH", "")
         entries = [e for e in custom_opp.split(os.pathsep) if e]
         if str(afd_vendor) not in entries:
-            entries.insert(0, str(afd_vendor))
-        else:
-            entries.remove(str(afd_vendor))
-            entries.insert(0, str(afd_vendor))
+            entries.append(str(afd_vendor))
         env["ASCEND_CUSTOM_OPP_PATH"] = os.pathsep.join(entries)
     if shape.nic_env_required:
         interface = required_env("HCCL_SOCKET_IFNAME")
