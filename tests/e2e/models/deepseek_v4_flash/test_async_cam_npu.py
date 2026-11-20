@@ -77,7 +77,10 @@ def build_environment() -> dict[str, str]:
             "PYTORCH_NPU_ALLOC_CONF": "expandable_segments:True",
             "TASK_QUEUE_ENABLE": "1",
             "AFD_FORCE_BALANCED_TOPK_IDS": "0",
-            "AFD_CAM_OP_IO_LOG": "0",
+            # Read from the environment so a diagnostic run can turn the
+            # connector I/O record on; these operators never appear in the
+            # INFO log otherwise, so their absence proves nothing.
+            "AFD_CAM_OP_IO_LOG": os.environ.get("AFD_CAM_OP_IO_LOG", "0"),
             "AFD_ASYNC_MOE_LAYOUT_LOG": "0",
             "GLOO_SOCKET_IFNAME": interface,
             "TP_SOCKET_IFNAME": interface,
