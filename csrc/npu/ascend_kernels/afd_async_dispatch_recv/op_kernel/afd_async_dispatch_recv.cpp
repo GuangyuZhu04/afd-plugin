@@ -24,6 +24,10 @@ extern "C" __global__ __aicore__ void afd_async_dispatch_recv(
     GM_ADDR batchInfoOut, GM_ADDR epRecvCountRoutedOut,
     GM_ADDR workspaceGM, GM_ADDR tilingGM)
 {
+    // The AFD body is vector-only (SIMT VF_CALL + SyncAll over blockDim AIVs).
+    // Without an explicit type bisheng compiles the entry as MIX and the kernel
+    // is also queued on AIC cores, where the vector path is invalid.
+    KERNEL_TASK_TYPE_DEFAULT(KERNEL_TYPE_AIV_ONLY);
     REGISTER_TILING_DEFAULT(AfdAsyncDispatchRecvTilingData);
     TPipe pipe;
     int32_t isCamComm = 1;

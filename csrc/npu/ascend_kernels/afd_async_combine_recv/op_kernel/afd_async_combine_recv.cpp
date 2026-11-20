@@ -22,6 +22,10 @@ extern "C" __global__ __aicore__ void afd_async_combine_recv(
     GM_ADDR expandX, GM_ADDR expertIds, GM_ADDR expertScales, GM_ADDR commArgs,
     GM_ADDR xOut, GM_ADDR workspaceGM, GM_ADDR tilingGM)
 {
+    // The AFD body is vector-only (SIMT VF_CALL + SyncAll over blockDim AIVs).
+    // Without an explicit type bisheng compiles the entry as MIX and the kernel
+    // is also queued on AIC cores, where the vector path is invalid.
+    KERNEL_TASK_TYPE_DEFAULT(KERNEL_TYPE_AIV_ONLY);
     REGISTER_TILING_DEFAULT(AfdAsyncCombineRecvTilingData);
     REGISTER_TILING_FOR_TILINGKEY("TILING_KEY_VAR < 2000", AfdAsyncCombineRecvTilingData);
     TPipe pipe;
