@@ -223,6 +223,10 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
         positions: torch.Tensor | None = None,
         intermediate_tensors: IntermediateTensors | None = None,
         inputs_embeds: torch.Tensor | None = None,
+        # v0.32 added this keyword. It must stay a named parameter: if it fell
+        # into **model_kwargs it would be forwarded to the model and fail with
+        # "forward() got an unexpected keyword argument 'decoder_replay_dummy'".
+        decoder_replay_dummy: bool = False,
         **model_kwargs: dict[str, Any],
     ):
         assert self.model is not None
@@ -277,6 +281,12 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
         # ### PATCH END: AFD wrapper owns its full-graph update
 
         try:
+            # ### PATCH START: decoder replay preparation
+            # v0.32 prepares the replay window before the model call; the AFD
+            # override keeps that order so replay state matches the batch.
+            if self.decoder_replay is not None:
+                self._prepare_decoder_replay(num_tokens_padded, decoder_replay_dummy)
+            # ### PATCH END: decoder replay preparation
             if self.enable_enpu:
                 # ### PATCH START: AFD wrapper owns its full-graph update
                 if not wrapper_owns_full_graph_update:
