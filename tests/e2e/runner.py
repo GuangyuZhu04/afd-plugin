@@ -27,9 +27,12 @@ from tests.e2e.accuracy.gsm8k import (
 from tests.e2e.models.deepseek_v4_flash import config as dsv4_config
 from tests.e2e.models.deepseek_v4_flash.completions import evaluate_completions
 from tests.e2e.models.deepseek_v4_flash.config import (
+    DSV4_ASYNC_CAM_8DIE_ATTENTION_RANKS,
+    DSV4_ASYNC_CAM_8DIE_FFN_RANKS,
+    DSV4_ASYNC_CAM_8DIE_SCENARIO,
     DSV4_ASYNC_CAM_SCENARIO,
+    DSV4_ASYNC_CAM_SCENARIOS,
     DSV4_ATTENTION_RANKS,
-    DSV4_ATTENTION_TP_SIZE,
     DSV4_FFN_RANKS,
     DSV4_PROCESS_TERMINATION_TIMEOUT_S,
     DSV4_SCENARIOS,
@@ -465,6 +468,13 @@ def configure_scenario(args: argparse.Namespace) -> None:
             DSV4_ATTENTION_RANKS,
             DSV4_FFN_RANKS,
         ),
+        DSV4_ASYNC_CAM_8DIE_SCENARIO: (
+            False,
+            False,
+            False,
+            DSV4_ASYNC_CAM_8DIE_ATTENTION_RANKS,
+            DSV4_ASYNC_CAM_8DIE_FFN_RANKS,
+        ),
         "afd-v2-eager-1a1f": (False, False, False, 1, 1),
         "afd-v2-eager-dp2": (False, False, False, 2, 2),
         "afd-v2-eager-tp2": (False, False, False, 2, 2),
@@ -495,8 +505,8 @@ def configure_scenario(args: argparse.Namespace) -> None:
     args.num_ffn_ranks = ffn_ranks
     args.tp_size = 1
     active_sync_profile = sync_shape(args.scenario)
-    if args.scenario == DSV4_ASYNC_CAM_SCENARIO:
-        args.attention_tp_size = DSV4_ATTENTION_TP_SIZE
+    if args.scenario in DSV4_ASYNC_CAM_SCENARIOS:
+        args.attention_tp_size = dsv4_config.async_cam_shape(args.scenario)[2]
     elif active_sync_profile is not None:
         args.attention_tp_size = active_sync_profile.attention_tp_size
     elif is_async_cam:
@@ -574,7 +584,7 @@ def configure_scenario(args: argparse.Namespace) -> None:
             for arg in args.common_vllm_arg
         ):
             args.common_vllm_arg.extend(["--gpu-memory-utilization", "0.8"])
-    if args.scenario == DSV4_ASYNC_CAM_SCENARIO:
+    if args.scenario in DSV4_ASYNC_CAM_SCENARIOS:
         dsv4_config.configure_scenario(args)
     elif args.scenario in DSV4_SYNC_CAMP2P_SCENARIOS:
         dsv4_config.configure_sync_camp2p_scenario(args)

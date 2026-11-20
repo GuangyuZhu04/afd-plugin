@@ -57,8 +57,10 @@ def test_dsv4_async_requires_attention_side_gate() -> None:
     ("extra_info", "message"),
     [
         (
-            AFDAsyncExtraInfo(dynamic_quant=0),
-            "dynamicQuant=1",
+            # Only 0 and 1 exist in the dispatch kernel: 1 is int8 dynamic
+            # quantization, 0 ships bf16 for experts that quantize themselves.
+            AFDAsyncExtraInfo(dynamic_quant=2),
+            "dynamicQuant to be 0",
         ),
     ],
 )
@@ -71,6 +73,16 @@ def test_dsv4_async_rejects_deferred_features(
             _afd_config(compute_gate_on_attention=True),
             extra_info,
         )
+
+
+def test_dsv4_async_accepts_bf16_dispatch_for_mxfp_experts() -> None:
+    # A5 W4A8MXFP experts consume fp8 activations with e8m0 block scales, which
+    # int8 dispatch cannot carry; they quantize bf16 input with their own MX
+    # kernel, so dynamicQuant=0 is the supported setting.
+    _fail_if_unsupported_dsv4_async_features(
+        _afd_config(compute_gate_on_attention=True),
+        AFDAsyncExtraInfo(dynamic_quant=0),
+    )
 
 
 def test_dsv4_async_accepts_target_baseline_and_async_moe_ubatching() -> None:

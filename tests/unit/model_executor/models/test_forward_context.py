@@ -632,8 +632,16 @@ def test_deepseek_afd_ffn_path_reuses_ascend_moe_mlp_after_attention_gate():
     assert "quant_type == QuantType.W8A8" in compute_moe
     assert 'routed_experts.get_eplb_parameter("w13_weight")' in compute_moe
     assert 'routed_experts.get_eplb_parameter("w2_weight")' in compute_moe
-    assert "experts.w13_weight" not in compute_moe
-    assert "experts.w2_weight" not in compute_moe
+    # Guard against reaching the shared experts' weights by the bare attribute.
+    # routed_experts.w13_weight / .w2_weight are the intended sources and are
+    # matched above, so check the accessor where it is not prefixed by routed_.
+    assert "mlp.experts.w13_weight" not in compute_moe
+    assert "mlp.experts.w2_weight" not in compute_moe
+    for line in compute_moe.splitlines():
+        stripped = line.strip()
+        assert not stripped.startswith(
+            ("w1=experts.", "w2=experts.", "w1_scale=experts.", "w2_scale=experts.")
+        )
     assert "w13_weight_scale_fp32" in compute_moe
     assert "w13_weight_scale_fp32_list" in compute_moe
     assert "w2_weight_scale_list" in compute_moe

@@ -14,16 +14,28 @@ from pathlib import Path
 from typing import NamedTuple
 
 DSV4_ASYNC_CAM_SCENARIO = "afd-dsv4-flash-async-cam-dp2tp4-ep8"
+# The validated deployment above needs 16 dies (Attention DP2 x TP4, FFN EP8).
+# This profile keeps the same asynchronous CAM path -- CAMAsyncAFDConnector and
+# the four afd_async_* operators -- inside 8 dies by halving tensor and expert
+# parallelism. It exercises operator wiring, not the validated 16-die shape.
+DSV4_ASYNC_CAM_8DIE_SCENARIO = "afd-dsv4-flash-async-cam-dp2tp2-ep4"
 DSV4_SYNC_CAMP2P_A5_SCENARIO = "afd-dsv4-flash-sync-camp2p-2a2f"
 DSV4_SYNC_CAMP2P_A3_SCENARIO = "afd-dsv4-flash-sync-camp2p-8a8f"
 DSV4_SYNC_CAMP2P_SCENARIOS = (
     DSV4_SYNC_CAMP2P_A5_SCENARIO,
     DSV4_SYNC_CAMP2P_A3_SCENARIO,
 )
-DSV4_SCENARIOS = (DSV4_ASYNC_CAM_SCENARIO, *DSV4_SYNC_CAMP2P_SCENARIOS)
+DSV4_ASYNC_CAM_SCENARIOS = (DSV4_ASYNC_CAM_SCENARIO, DSV4_ASYNC_CAM_8DIE_SCENARIO)
+DSV4_SCENARIOS = (*DSV4_ASYNC_CAM_SCENARIOS, *DSV4_SYNC_CAMP2P_SCENARIOS)
 DSV4_ATTENTION_RANKS = 8
 DSV4_FFN_RANKS = 8
 DSV4_ATTENTION_TP_SIZE = 4
+# The indexer K cache dtype the 8-die A5 profile uses; A3's scatter only takes
+# int8, and the validated 16-die profiles keep int8.
+DSV4_ASYNC_8DIE_INDEXER_KV_DTYPE = "fp8"
+DSV4_ASYNC_CAM_8DIE_ATTENTION_RANKS = 4
+DSV4_ASYNC_CAM_8DIE_FFN_RANKS = 4
+DSV4_ASYNC_CAM_8DIE_ATTENTION_TP_SIZE = 2
 
 
 DSV4_SYNC_CAMP2P_CONNECTOR = "CAMP2pAFDConnector"
@@ -355,23 +367,59 @@ def _configure_dsv4_arguments(
     ]
 
 
+def async_cam_shape(scenario: str) -> tuple[int, int, int]:
+    """Return (attention_ranks, ffn_ranks, attention_tp_size) for a CAM case."""
+
+    if scenario == DSV4_ASYNC_CAM_8DIE_SCENARIO:
+        return (
+            DSV4_ASYNC_CAM_8DIE_ATTENTION_RANKS,
+            DSV4_ASYNC_CAM_8DIE_FFN_RANKS,
+            DSV4_ASYNC_CAM_8DIE_ATTENTION_TP_SIZE,
+        )
+    return DSV4_ATTENTION_RANKS, DSV4_FFN_RANKS, DSV4_ATTENTION_TP_SIZE
+
+
 def configure_scenario(args: argparse.Namespace) -> None:
-    """Configure the 16-NPU asynchronous CAM deployment."""
+    """Configure an asynchronous CAM deployment.
+
+    The validated host is the 16-die case; the 8-die profile keeps the same
+    connector and operator path with halved tensor and expert parallelism.
+    """
+
+    _, _, attention_tp_size = async_cam_shape(args.scenario)
     args.afd_connector = "CAMAsyncAFDConnector"
     args.afd_async = True
     args.compute_gate_on_attention = True
+    # CAM's dispatch kernel only implements int8 dynamic quantization
+    # (dynamicQuant accepts 0 or 1). The A5 W4A8MXFP experts consume fp8
+    # activations with e8m0 block scales, which int8 cannot express, so this
+    # profile ships bf16 over the a2e channel and lets the expert method
+    # quantize with its own MX kernel.
+    dynamic_quant = 0 if args.scenario == DSV4_ASYNC_CAM_8DIE_SCENARIO else 1
     args.afd_connector_extra_config = [
         json.dumps(
             {
-                "dynamicQuant": 1,
-                "attn_ranks_per_dp": DSV4_ATTENTION_TP_SIZE,
+                "dynamicQuant": dynamic_quant,
+                "attn_ranks_per_dp": attention_tp_size,
                 "async_moe_ubatching": True,
                 "async_moe_num_ubatches": 2,
                 "async_moe_split": "token",
             }
         )
     ]
-    _configure_dsv4_arguments(args, DSV4_ASCEND_QUANTIZATION)
+    # The A5 indexer quantizes to fp8 inside indexer_compress_epilog_v2, while
+    # the A3 scatter only takes int8 updates; vllm_ascend rejects a mismatch
+    # before the model loads. The validated 16-die profiles record int8, so only
+    # the 8-die A5 profile overrides it.
+    _configure_dsv4_arguments(
+        args,
+        DSV4_ASCEND_QUANTIZATION,
+        indexer_kv_dtype=(
+            DSV4_ASYNC_8DIE_INDEXER_KV_DTYPE
+            if args.scenario == DSV4_ASYNC_CAM_8DIE_SCENARIO
+            else "int8"
+        ),
+    )
     args.ffn_vllm_arg = ["--all2all-backend", "flashinfer_all2allv"]
     args.attention_vllm_arg[:0] = ["--all2all-backend", "allgather_reducescatter"]
 
