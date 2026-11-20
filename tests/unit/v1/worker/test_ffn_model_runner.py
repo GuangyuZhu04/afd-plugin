@@ -145,6 +145,14 @@ def _runner_with_connector_and_model(model, *, num_layers=1):
             fast_moe_cold_start=False,
             static_forward_context={},
         ),
+        # v0.32 Ascend quant-method selection reads the model config through
+        # the current VllmConfig, including the effective quant method.
+        model_config=SimpleNamespace(
+            hf_text_config=SimpleNamespace(model_type="deepseek_v4"),
+            enforce_eager=False,
+            quant_config=None,
+            quantization=None,
+        ),
     )
     runner.connector = _FakeConnector()
     runner.model = model

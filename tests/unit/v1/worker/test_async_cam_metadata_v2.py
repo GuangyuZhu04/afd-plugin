@@ -76,6 +76,9 @@ def _runner(*, split="token", sp=False, tp=4):
 
 class _Builder:
     requires_block_table_width = False
+    # v0.32 reads the kernel block size before any setter call, so the fake
+    # builder must start from the same unset state as the native one.
+    kernel_block_size = None
 
     def __init__(self, spec, layer_names, config, device):
         self.spec = spec
@@ -182,8 +185,10 @@ def test_token_stages_preserve_request_prefixes_and_real_attention_span(sp):
     assert not native_builder.calls
     assert len(group.metadata_builders) == 3
     assert group.metadata_builders[1] is not group.metadata_builders[2]
+    # v0.32 passes the selected block size through the copied KV cache spec
+    # instead of setting an attribute on the builder.
     assert all(
-        builder.kernel_block_size == 128 for builder in group.metadata_builders[1:]
+        builder.spec.block_size == 128 for builder in group.metadata_builders[1:]
     )
 
     builders = tuple(group.metadata_builders)
@@ -225,7 +230,7 @@ def test_request_split_and_dsa_caches_are_shared_only_within_each_stage(monkeypa
     assert tables[1].tolist() == [[2], [2], [2]]
     assert [count for _, _, count in materialized] == [2, 5, 2, 5]
     assert all(
-        builder.kernel_block_size == 64
+        builder.spec.block_size == 64
         for builder in groups[1][0].metadata_builders[1:]
     )
     assert result.attn_metadata[1]["b"].common.slot_mapping.tolist() == list(

@@ -40,15 +40,33 @@ Runner = npu_v2.AFDNPUAttentionModelRunnerV2
 
 def _runner(*, async_dp=False):
     runner = object.__new__(Runner)
-    runner.vllm_config = SimpleNamespace(
-        compilation_config=SimpleNamespace(cudagraph_mode=CUDAGraphMode.NONE)
-    )
+    # v0.32 reads the compilation config through a runner attribute that the
+    # real base constructor assigns; constructing with __new__ must mirror it.
+    runner.compilation_config = SimpleNamespace(cudagraph_mode=CUDAGraphMode.NONE)
+    runner.vllm_config = SimpleNamespace(compilation_config=runner.compilation_config)
     runner.afd_config = SimpleNamespace(
         async_dp=async_dp, num_attention_ranks=2, num_ffn_ranks=2
     )
     runner.connector = SimpleNamespace(
         extra_info=SimpleNamespace(async_moe_ubatching=False)
     )
+    # v0.32's native dummy run saves and restores the dummy token count on the
+    # input buffers the real base constructor allocates.
+    runner.input_buffers = SimpleNamespace(dummy_num_tokens=None)
+    # v0.32's dummy run also temporarily detaches the speculator it allocated
+    # during construction.
+    runner.speculator = None
+    # v0.32's native dummy run reads the token budget, the model and parallel
+    # configs, and the Ascend config the base constructor binds.
+    runner.max_num_tokens = 8192
+    runner.model_config = SimpleNamespace()
+    runner.parallel_config = SimpleNamespace()
+    runner.ascend_config = SimpleNamespace()
+    runner.cache_config = SimpleNamespace()
+    runner.speculative_config = None
+    runner.debugger = SimpleNamespace()
+    runner._debugger_started = False
+    runner.use_pp = False
     runner.cudagraph_manager = None
     runner.ubatch_runner = None
     runner.prof = object()
@@ -144,6 +162,7 @@ def test_execute_forwards_dummy_profile_and_context_then_restores(
                 "is_profile": True,
                 "context_len": 17,
                 "valid_dummy_state_slots": True,
+                "randomize_inputs": False,
             },
         )
     ]
@@ -338,6 +357,7 @@ def test_native_dummy_run_reaches_afd_execute_with_context_state(monkeypatch, as
                 "is_profile": True,
                 "context_len": 17,
                 "valid_dummy_state_slots": True,
+                "randomize_inputs": False,
             },
         )
     ]

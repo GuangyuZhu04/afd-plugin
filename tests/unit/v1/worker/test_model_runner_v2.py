@@ -218,6 +218,10 @@ def _runner_for_metadata(
     runner.ubatch_runner = None
     runner.prof = _StepProfiler()
     runner.cudagraph_manager = SimpleNamespace(run_fullgraph=lambda _desc: None)
+    # v0.32's dummy run detaches the speculator the real constructor allocates
+    # and checks the token budget before padding the dummy batch.
+    runner.speculator = None
+    runner.max_num_tokens = 8192
     return runner
 
 
@@ -295,13 +299,15 @@ def test_pinned_worker_init_device_signature_and_internal_runner_import():
             ),
         ],
     )
-    source = inspect.getsource(upstream_init_device)
+    # v0.32 moved the runner selection out of init_device into a dedicated
+    # factory, so pin the import and construction contract there.
+    source = inspect.getsource(inspect.unwrap(Worker._make_model_runner))
     assert "from vllm.v1.worker.gpu.model_runner import" in source
     assert "from vllm.v1.worker.gpu_model_runner import" in source
     assert "GPUModelRunner as GPUModelRunnerV2" in source
     assert "GPUModelRunnerV2(" in source
     assert "GPUModelRunnerV1(" in source
-    assert "self.model_runner = GPUModelRunnerV1" in source
+    assert "return GPUModelRunnerV1" in source
 
 
 def test_v2_fullgraph_replay_hook_restores_manager_instance_after_success():
@@ -1570,6 +1576,7 @@ def test_v2_profile_before_graph_manager_uses_provider_without_replay_hook(
             "is_profile": True,
             "context_len": 0,
             "valid_dummy_state_slots": False,
+            "randomize_inputs": False,
         },
     ]
     assert events == ["control_update", "control_send", "data"]
@@ -1684,6 +1691,7 @@ def test_native_v2_dummy_profile_thin_path_uses_afd_execute_wrapper(
         is_profile=False,
         context_len=0,
         valid_dummy_state_slots=False,
+        randomize_inputs=False,
     ):
         execute_calls.append(
             (dummy_run, skip_attn_for_dummy_run, is_profile),

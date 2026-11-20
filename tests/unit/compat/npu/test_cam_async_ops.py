@@ -61,7 +61,17 @@ def _dispatch_recv(torch: ModuleType, *, dynamic_quant: int = 0, moe_rank_id: in
 def test_full_profile_class_is_build_gated_and_rejects_meta_execution(cam_runtime):
     torch = cam_runtime
     soc = os.environ["SOC_VERSION"].lower()
-    if soc == "950" or soc.startswith("ascend950"):
+    # The full-profile context class ships with the HCOMM CCU transport, which
+    # is only built where those private headers exist. Probe the class instead
+    # of assuming every A5 build carries it.
+    # The custom-class namespace raises instead of returning False for an
+    # unregistered class, so probe it through the wrapper accessor.
+    try:
+        torch._C._get_custom_class_python_wrapper("afd_ascend", "AsyncCamA5Context")
+        has_runtime_class = True
+    except RuntimeError:
+        has_runtime_class = False
+    if has_runtime_class:
         constructor = torch.classes.afd_ascend.AsyncCamA5Context
         with pytest.raises(RuntimeError, match="requires an NPU anchor"):
             constructor(

@@ -1232,7 +1232,7 @@ def test_attention_runner_load_model_initializes_connector_after_weights(
     monkeypatch.setattr(
         GPUModelRunner,
         "load_model",
-        lambda self, load_dummy_weights=False: events.append("model_load"),
+        lambda self, load_dummy_weights=False, *, model=None: events.append("model_load"),
     )
     if use_ubatching:
         monkeypatch.setattr(
