@@ -155,6 +155,22 @@ def register_afd() -> None:
 
     _force_spawn_multiprocessing_if_requested()
     _logger.debug("AFD plugin: register_afd() called")
+
+    # Publish the AFD vendor OPP before any Ascend operator library is resolved.
+    # Another wheel can ship a same-named libcust_opmaster_rt2.0.so and install
+    # its own .pth that prepends at site initialization; appending afterwards
+    # would lose the name resolution and hide this vendor's operators, including
+    # the A2e/E2a tiling entries that CAM P2P needs.
+    try:
+        from afd_plugin.compat.npu.ops import ensure_afd_vendor_first_on_path
+
+        ensure_afd_vendor_first_on_path()
+    except Exception:
+        _logger.debug(
+            "AFD plugin: vendor OPP path could not be published",
+            exc_info=True,
+        )
+
     if importlib.util.find_spec("vllm") is None:
         _logger.debug("AFD plugin: vLLM not found, skipping runtime registration")
         _registered = True

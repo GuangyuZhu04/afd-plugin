@@ -19,6 +19,8 @@ from pathlib import Path
 
 import pytest
 
+from afd_plugin.compat.npu.ops import get_afd_cann_vendor_path
+
 from tests.conftest import run_runner
 from tests.e2e.environment import devices_from_env, required_env
 from tests.e2e.models.deepseek_v4_flash.config import (
@@ -92,6 +94,21 @@ def build_environment(scenario: str) -> dict[str, str]:
     """
     shape = DSV4_SYNC_SHAPES[scenario]
     env = os.environ.copy()
+    # Publish this plugin's operator vendor ahead of any other custom vendor.
+    # The A2e/E2a tiling entries live in a libcust_opmaster_rt2.0.so that shares
+    # its file name with other Ascend wheels, and those wheels prepend from a
+    # .pth at site initialization, so the child processes must inherit AFD's
+    # vendor first or CANN resolves the wrong library.
+    afd_vendor = get_afd_cann_vendor_path()
+    if afd_vendor.is_dir():
+        custom_opp = env.get("ASCEND_CUSTOM_OPP_PATH", "")
+        entries = [e for e in custom_opp.split(os.pathsep) if e]
+        if str(afd_vendor) not in entries:
+            entries.insert(0, str(afd_vendor))
+        else:
+            entries.remove(str(afd_vendor))
+            entries.insert(0, str(afd_vendor))
+        env["ASCEND_CUSTOM_OPP_PATH"] = os.pathsep.join(entries)
     if shape.nic_env_required:
         interface = required_env("HCCL_SOCKET_IFNAME")
         required_env("HCCL_IF_IP")

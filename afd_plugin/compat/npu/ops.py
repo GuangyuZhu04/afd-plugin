@@ -40,12 +40,30 @@ def _prepend_env_path(name: str, path: Path) -> None:
     os.environ[name] = ":".join([path_str, *entries])
 
 
-def _ensure_afd_custom_opp_env() -> None:
+def ensure_afd_vendor_first_on_path() -> None:
+    """Publish this vendor's OPP ahead of any other custom vendor.
+
+    CANN resolves a custom operator library by file name across
+    ``ASCEND_CUSTOM_OPP_PATH`` in order. Several Ascend wheels ship their own
+    ``libcust_opmaster_rt2.0.so``, and a wheel that prepends from a ``.pth`` at
+    site initialization always runs before plugin code. Prepending here keeps
+    the AFD vendor first, so the operators this package builds -- including the
+    A2e/E2a tiling registrations CAM P2P calls -- are the ones CANN loads.
+
+    Idempotent: repeated calls leave the entry in place without duplicating it.
+    """
+
     vendor_dir = get_afd_cann_vendor_path()
     if not vendor_dir.exists():
         return
-
     _prepend_env_path("ASCEND_CUSTOM_OPP_PATH", vendor_dir)
+
+
+def _ensure_afd_custom_opp_env() -> None:
+    ensure_afd_vendor_first_on_path()
+    vendor_dir = get_afd_cann_vendor_path()
+    if not vendor_dir.exists():
+        return
     op_api_lib = vendor_dir / "op_api" / "lib"
     if op_api_lib.exists():
         _prepend_env_path("LD_LIBRARY_PATH", op_api_lib)
