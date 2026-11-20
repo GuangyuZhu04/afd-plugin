@@ -230,10 +230,24 @@ def compute_attention_gate_moe_ffn(
                 w1_scale_bias=[bias1.detach()] if bias1 is not None else None,
                 w2_scale_bias=[bias2.detach()] if bias2 is not None else None,
             )
+    # W4A8MXFP carries the same non-transposed weight/scale payload as W4A8
+    # but no scale bias: its scales are float8_e8m0fnu block scales, not the
+    # per-channel float32 scale plus bias pair W4A8 uses. The fused-expert
+    # kernels read layer.w13_weight and layer.w13_weight_scale directly, so
+    # this payload only has to describe the layer faithfully.
+    elif quant_type == QuantType.W4A8MXFP:
+        moe_weights = MoEWeights(
+            w1=routed_experts.w13_weight,
+            w2=routed_experts.w2_weight,
+            w1_scale=routed_experts.w13_weight_scale,
+            w2_scale=routed_experts.w2_weight_scale,
+            w1_scale_bias=None,
+            w2_scale_bias=None,
+        )
     else:
         raise RuntimeError(
-            "compute_gate_on_attention supports unquantized, W8A8 or W4A8 "
-            f"Ascend MoE experts, got {quant_type}",
+            "compute_gate_on_attention supports unquantized, W8A8, W4A8 or "
+            f"W4A8MXFP Ascend MoE experts, got {quant_type}",
         )
     use_gmmswigluquant_fusion = (
         quant_type in (QuantType.W8A8, getattr(QuantType, "MXFP8", None))
@@ -271,6 +285,20 @@ def compute_attention_gate_moe_ffn(
                 )
                 shared_output = experts.shared_experts._layer(shared_input)
 
+    # CAM reports one scale slot per received token, and with bf16 dispatch
+    # (dynamicQuant=0) a single placeholder. The MXFP expert path derives its
+    # own (tokens, K/32, 2) e8m0 block scales from bf16 activations when no
+    # per-token scale is supplied; passing CAM's scale would skip that
+    # quantization and hand the grouped matmul a tensor of the wrong rank.
+    mxfp_experts = getattr(QuantType, "W4A8MXFP", None)
+    routed_dynamic_scales = dynamic_scales
+    if (
+        mxfp_experts is not None
+        and quant_type == mxfp_experts
+        and hidden_states.dtype != torch.int8
+    ):
+        routed_dynamic_scales = None
+
     if hidden_states.shape[0] == 0:
         routed_output = hidden_states.to(dtype=torch.bfloat16)
     else:
@@ -284,7 +312,7 @@ def compute_attention_gate_moe_ffn(
                 hidden_states=hidden_states,
                 group_list=group_list,
                 group_list_type=int(group_list_type),
-                dynamic_scale=dynamic_scales,
+                dynamic_scale=routed_dynamic_scales,
                 topk_scales=topk_scales,
                 weights=moe_weights,
                 layer=routed_experts,

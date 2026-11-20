@@ -175,7 +175,18 @@ class AFDAttentionModelRunner(AFDMetadataProviderMixin, GPUModelRunner):
             if ubatch_slices is not None and len(ubatch_slices) > 1:
                 for kv_cache_group in self.attn_groups:
                     for attention_group in kv_cache_group:
-                        for ubatch_idx in range(len(ubatch_slices)):
+                        # AFD splits a batch into its own asynchronous MoE
+                        # stages, but vLLM creates one metadata builder per
+                        # parallel_config ubatch, which stays at 1 unless
+                        # DBO or ubatch_size is enabled. Walk the builders
+                        # that exist rather than indexing past them: the
+                        # only purpose here is to disable block-table
+                        # updates on each distinct builder.
+                        builders = getattr(attention_group, "metadata_builders", None)
+                        builder_count = (
+                            len(builders) if builders is not None else len(ubatch_slices)
+                        )
+                        for ubatch_idx in range(builder_count):
                             builder = attention_group.get_metadata_builder(ubatch_idx)
                             if builder.supports_update_block_table:
                                 disabled_metadata_builders[id(builder)] = builder

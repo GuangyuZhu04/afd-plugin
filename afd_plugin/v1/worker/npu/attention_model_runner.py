@@ -135,6 +135,16 @@ ASYNC_MOE_STAGE_METADATA_BUILDER_OFFSET = 1
 _COMMON_METADATA_FIELDS = getattr(AscendCommonAttentionMetadata, "__dataclass_fields__", {})
 
 
+def _return_routed_experts(model_config: object) -> bool:
+    """Whether the model must record routed-expert ids."""
+
+    # vLLM 0.32 moved the flag from ModelConfig to its AuxOutput config.
+    aux = getattr(model_config, "aux_output_config", None)
+    if aux is not None and hasattr(aux, "enable_return_routed_experts"):
+        return bool(aux.enable_return_routed_experts)
+    return bool(getattr(model_config, "enable_return_routed_experts", False))
+
+
 class AFDNPUAttentionModelRunner(NPUModelRunner):
     """NPU model runner that injects AFD metadata into Ascend forward context."""
 
@@ -678,7 +688,7 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
                 slot_mapping[num_tokens:num_tokens_padded].fill_(-1)
                 blk_table_tensor[num_reqs:num_reqs_padded].fill_(0)
             if (
-                self.model_config.enable_return_routed_experts
+                _return_routed_experts(self.model_config)
                 and kv_cache_gid == 0
                 and self.routed_experts_initialized
             ):
@@ -1764,8 +1774,12 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
             return self.model.unwrap()
         return super().get_model()
 
-    def initialize_attn_backend(self, kv_cache_config: KVCacheConfig) -> None:
-        super().initialize_attn_backend(kv_cache_config)
+    def initialize_attn_backend(
+        self,
+        kv_cache_config: KVCacheConfig,
+        is_profiling: bool = False,
+    ) -> None:
+        super().initialize_attn_backend(kv_cache_config, is_profiling=is_profiling)
         if (
             bool(
                 self.vllm_config.parallel_config.use_ubatching,
@@ -1790,6 +1804,23 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
                     self.device,
                     num_metadata_builders=num_metadata_builders,
                 )
+
+    def initialize_metadata_builders(
+        self,
+        kv_cache_config: KVCacheConfig,
+        kernel_block_sizes: list[int],
+    ) -> None:
+        # Ascend recreates the builders here with parallel_config-derived
+        # counts, which drops the Async CAM stage builders added in
+        # initialize_attn_backend. Extend them again so stage ``ubid`` can
+        # reach ASYNC_MOE_STAGE_METADATA_BUILDER_OFFSET + ubid.
+        super().initialize_metadata_builders(kv_cache_config, kernel_block_sizes)
+        if not self.afd_async_extra_info.async_moe_ubatching:
+            return
+        self._ensure_metadata_builders(
+            ASYNC_MOE_STAGE_METADATA_BUILDER_OFFSET
+            + int(self.afd_async_extra_info.async_moe_num_ubatches)
+        )
 
     def _sync_afd_metadata_across_dp(
         self,

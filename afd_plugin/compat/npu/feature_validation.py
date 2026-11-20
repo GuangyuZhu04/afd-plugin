@@ -140,9 +140,15 @@ def _fail_if_unsupported_dsv4_async_features(
             "DSV4 CAMAsyncAFDConnector requires AFDAsyncExtraInfo, got "
             f"{type(extra_info).__name__}",
         )
-    if extra_info.dynamic_quant != 1:
+    # CAM's dispatch kernel implements int8 dynamic quantization only, so an
+    # INT8 expert stack needs dynamicQuant=1 to receive matching activations.
+    # The A5 W4A8MXFP experts are different: they consume fp8 activations with
+    # e8m0 block scales, which int8 cannot carry, and quantize bf16 input with
+    # their own MX kernel. dynamicQuant=0 is the supported setting for them.
+    if extra_info.dynamic_quant not in (0, 1):
         raise RuntimeError(
-            "DSV4 Flash-INT8 CAMAsyncAFDConnector requires dynamicQuant=1",
+            "DSV4 CAMAsyncAFDConnector requires dynamicQuant to be 0 (bf16, "
+            f"W4A8MXFP experts) or 1 (int8), got {extra_info.dynamic_quant}",
         )
     # async_moe_ubatching is validated by
     # _fail_if_unsupported_npu_async_moe_ubatching_features for all async CAM
