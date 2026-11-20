@@ -401,7 +401,15 @@ def configure_scenario(args: argparse.Namespace) -> None:
             {
                 "dynamicQuant": dynamic_quant,
                 "attn_ranks_per_dp": attention_tp_size,
-                "async_moe_ubatching": True,
+                # The 8-die profile runs without async MoE ubatching. Its stages
+                # each need their own metadata builder, and the installed Attention
+                # backend only ever fills the first, so a stage wait fails on an
+                # identity the producer never registered. The connector and the
+                # four afd_async_* operators are unaffected: they run on every
+                # forward either way.
+                "async_moe_ubatching": (
+                    args.scenario != DSV4_ASYNC_CAM_8DIE_SCENARIO
+                ),
                 "async_moe_num_ubatches": 2,
                 "async_moe_split": "token",
             }
