@@ -14,14 +14,12 @@ from afd_plugin.compat.npu.runtime import fix_all2all_backend_for_afd
 
 def _vllm_config(
     *,
-    enable_sp=False,
     use_sequence_parallel_moe=False,
     all2all_backend="allgather_reducescatter",
 ):
+    # vLLM 0.32 removed CompilationConfig.pass_config.enable_sp; Ascend derives
+    # SP from the parallel config alone, so that is the only input here.
     return SimpleNamespace(
-        compilation_config=SimpleNamespace(
-            pass_config=SimpleNamespace(enable_sp=enable_sp),
-        ),
         parallel_config=SimpleNamespace(
             all2all_backend=all2all_backend,
             use_sequence_parallel_moe=use_sequence_parallel_moe,
@@ -30,7 +28,7 @@ def _vllm_config(
 
 
 def test_fix_all2all_backend_overrides_to_flashinfer_when_sp_disabled():
-    config = _vllm_config(enable_sp=False, all2all_backend="allgather_reducescatter")
+    config = _vllm_config(all2all_backend="allgather_reducescatter")
 
     fix_all2all_backend_for_afd(config)
 
@@ -38,7 +36,9 @@ def test_fix_all2all_backend_overrides_to_flashinfer_when_sp_disabled():
 
 
 def test_fix_all2all_backend_skips_when_sp_enabled():
-    config = _vllm_config(enable_sp=True, all2all_backend="allgather_reducescatter")
+    config = _vllm_config(
+        use_sequence_parallel_moe=True, all2all_backend="allgather_reducescatter"
+    )
 
     fix_all2all_backend_for_afd(config)
 
@@ -46,7 +46,7 @@ def test_fix_all2all_backend_skips_when_sp_enabled():
 
 
 def test_fix_all2all_backend_skips_when_already_flashinfer():
-    config = _vllm_config(enable_sp=False, all2all_backend="flashinfer_all2allv")
+    config = _vllm_config(all2all_backend="flashinfer_all2allv")
 
     fix_all2all_backend_for_afd(config)
 

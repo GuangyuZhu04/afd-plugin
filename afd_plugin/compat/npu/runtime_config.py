@@ -54,9 +54,11 @@ def fix_all2all_backend_for_afd(vllm_config: VllmConfig) -> None:
     when EP/DP/TP requested it. Non-SP workers keep the legacy backend fix.
     """
     parallel_config = vllm_config.parallel_config
+    # vLLM 0.32 removed CompilationConfig.pass_config.enable_sp, and
+    # vLLM-Ascend's enable_sp() now derives SP solely from the parallel
+    # config, so the two former conditions collapse into one.
     if (
         not parallel_config.use_sequence_parallel_moe
-        and not vllm_config.compilation_config.pass_config.enable_sp
         and parallel_config.all2all_backend != FLASHINFER_ALL2ALLV_BACKEND
     ):
         parallel_config.all2all_backend = FLASHINFER_ALL2ALLV_BACKEND

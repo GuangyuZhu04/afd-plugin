@@ -32,9 +32,9 @@ def test_target_config_switch_survives_afd_worker_fix(monkeypatch, enabled, work
     config = SimpleNamespace(
         parallel_config=parallel,
         additional_config={},
-        compilation_config=SimpleNamespace(
-            pass_config=SimpleNamespace(enable_sp=False)
-        ),
+        # vLLM 0.32 dropped pass_config.enable_sp; SP is derived from the
+        # parallel config alone.
+        compilation_config=SimpleNamespace(),
     )
     monkeypatch.setenv("VLLM_ASCEND_ENABLE_FLASHCOMM1", "1" if enabled else "0")
     # Execute the actual pinned upstream switch without initializing hardware,

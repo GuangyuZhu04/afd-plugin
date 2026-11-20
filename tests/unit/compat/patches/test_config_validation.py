@@ -192,10 +192,7 @@ def _install_fake_npu_config(monkeypatch):
             cls.last_config = vllm_config
             cls._fix_incompatible_config(vllm_config)
             parallel_config = vllm_config.parallel_config
-            if (
-                parallel_config.worker_cls == "auto"
-                and not vllm_config.compilation_config.pass_config.enable_sp
-            ):
+            if parallel_config.worker_cls == "auto":
                 parallel_config.all2all_backend = "flashinfer_all2allv"
                 parallel_config.worker_cls = VLLM_ASCEND_NPU_WORKER_FQCN
             events.append(
@@ -231,9 +228,8 @@ def _install_fake_npu_config(monkeypatch):
             all2all_backend=engine_args.all2all_backend,
             worker_cls=engine_args.worker_cls,
         )
-        config.compilation_config = SimpleNamespace(
-            pass_config=SimpleNamespace(enable_sp=engine_args.enable_sp),
-        )
+        # vLLM 0.32 removed pass_config.enable_sp.
+        config.compilation_config = SimpleNamespace()
         config.fail_update = engine_args.fail_update
         config.__post_init__()
         return config

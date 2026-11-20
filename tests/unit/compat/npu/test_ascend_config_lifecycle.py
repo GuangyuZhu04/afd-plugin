@@ -342,7 +342,6 @@ class AscendConfigLifecycleTests(unittest.TestCase):
                     cudagraph_mode=graph,
                     splitting_ops=copy.deepcopy(splitting),
                     pass_config=SimpleNamespace(
-                        enable_sp=sp,
                         fuse_gemm_comms=False,
                         fuse_attn_quant=False,
                         fuse_rope_kvcache=False,

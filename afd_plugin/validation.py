@@ -88,8 +88,9 @@ def validate_gpu_model_runner_v2_config(
         or parallel.enable_elastic_ep
         or parallel.enable_eplb
         or parallel.use_sequence_parallel_moe
-        or vllm_config.compilation_config.pass_config.enable_sp
     ):
+        # vLLM 0.32 removed pass_config.enable_sp, and Ascend derives SP from
+        # use_sequence_parallel_moe alone, which this check already covers.
         raise RuntimeError("AFD ModelRunnerV2 requires static expert parallelism")
     if parallel.enable_dbo or parallel.use_ubatching:
         if parallel.num_ubatches != GPU_MRV2_NUM_UBATCHES:
@@ -170,10 +171,7 @@ def validate_npu_model_runner_v2_config(
         or parallel.enable_eplb
         or (
             afd_config.connector != AFD_ASYNC_CONNECTOR
-            and (
-                parallel.use_sequence_parallel_moe
-                or vllm_config.compilation_config.pass_config.enable_sp
-            )
+            and parallel.use_sequence_parallel_moe
         )
     ):
         raise RuntimeError("AFD ModelRunnerV2 requires static expert parallelism")

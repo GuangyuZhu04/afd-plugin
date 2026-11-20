@@ -561,20 +561,17 @@ def test_npu_v2_validator_accepts_async_cam(dp_size, tp_size, use_sp):
         connector="CAMAsyncAFDConnector", async_dp=True, compute_gate_on_attention=True
     )
     config.parallel_config.use_sequence_parallel_moe = use_sp
-    config.compilation_config.pass_config.enable_sp = use_sp
     validate_npu_model_runner_v2_config(
         config, expected_role="attention", device_type="npu"
     )
 
 
-@pytest.mark.parametrize("layout", ["moe_sp", "pass_sp"])
-def test_npu_v2_validator_keeps_synchronous_sp_rejection(layout):
+def test_npu_v2_validator_keeps_synchronous_sp_rejection():
+    # vLLM 0.32 dropped pass_config.enable_sp, so use_sequence_parallel_moe is
+    # the only SP layout the validator can still observe.
     config = _v2_config()
     config.additional_config["afd"]["connector"] = "CAMP2pAFDConnector"
-    if layout == "moe_sp":
-        config.parallel_config.use_sequence_parallel_moe = True
-    else:
-        config.compilation_config.pass_config.enable_sp = True
+    config.parallel_config.use_sequence_parallel_moe = True
     with pytest.raises(RuntimeError, match="static expert"):
         validate_npu_model_runner_v2_config(
             config, expected_role="attention", device_type="npu"
@@ -723,10 +720,6 @@ def test_npu_v2_validator_rejects_non_full_acl_graph(cudagraph_mode):
         ),
         (
             lambda c: setattr(c.parallel_config, "enable_expert_parallel", False),
-            "static expert",
-        ),
-        (
-            lambda c: setattr(c.compilation_config.pass_config, "enable_sp", True),
             "static expert",
         ),
         (

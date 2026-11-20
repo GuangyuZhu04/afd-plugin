@@ -184,7 +184,6 @@ def mrv2_config(monkeypatch):
         model_config=SimpleNamespace(enforce_eager=True),
         compilation_config=SimpleNamespace(
             cudagraph_mode="FULL_DECODE_ONLY",
-            pass_config=SimpleNamespace(enable_sp=False),
         ),
     )
 
