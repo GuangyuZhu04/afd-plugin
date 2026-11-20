@@ -43,12 +43,15 @@ def test_target_config_switch_survives_afd_worker_fix(monkeypatch, enabled, work
         textwrap.dedent(inspect.getsource(ascend.AscendConfig.derive_and_validate))
     )
     statements = cast(ast.FunctionDef, tree.body[0]).body
+    # v0.32 collapsed the explicit/default FlashComm split into one effective
+    # switch, so anchor on the assignment that computes it and stop at the
+    # backend writeback the switch drives.
     start = next(
         i
         for i, node in enumerate(statements)
         if isinstance(node, ast.Assign)
         and any(
-            isinstance(target, ast.Name) and target.id == "flashcomm_explicitly_enabled"
+            isinstance(target, ast.Name) and target.id == "effective_flashcomm"
             for target in node.targets
         )
     )

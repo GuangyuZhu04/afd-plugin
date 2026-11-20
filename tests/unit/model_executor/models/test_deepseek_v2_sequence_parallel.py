@@ -31,7 +31,9 @@ from afd_plugin.model_executor.npu.async_cam_ubatching import (  # noqa: E402
 )
 
 
-@pytest.mark.parametrize("dp_size,expected", [(1, False), (2, True)])
+# v0.32's Ascend parallel-config patch drops upstream's data-parallel>1
+# requirement so FlashComm can run the TP/EP, DP=1 topology.
+@pytest.mark.parametrize("dp_size,expected", [(1, True), (2, True)])
 def test_target_sp_requires_dp_and_tp(dp_size, expected):
     # Exercise the pinned property's derivation without starting distributed
     # groups or running ParallelConfig's environment-dependent initialization.

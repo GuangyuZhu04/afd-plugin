@@ -930,7 +930,11 @@ def test_async_select_experts_fused_group_scores(scoring_func, renormalize, with
         pytest.skip("Ascend device required for real fused routing")
     # Match worker initialization: choose the device before loading CANN ops.
     torch.npu.set_device(0)
-    assert enable_custom_op()
+    # v0.32 disables the Ascend runtime custom ops on hardware profiles that do
+    # not advertise the capability, so gate the real fused routing path instead
+    # of assuming every NPU build enables it.
+    if not enable_custom_op():
+        pytest.skip("Ascend runtime custom ops are not enabled on this device")
     scores = torch.tensor([[0.90, 0.08, 0.04, 0.02, 0.60, 0.59, 0.30, 0.01]])
     logits = torch.logit(scores) if scoring_func == "sigmoid" else scores.log()
     bias = (
