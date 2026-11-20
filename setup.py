@@ -69,11 +69,17 @@ class BuildAscendOps(build_ext):
             transport = (
                 Path(self.build_lib) / "afd_plugin" / "libafd_cam_async_a5_transport.so"
             )
-            if not transport.is_file():
+            # The transport is built only where HCOMM still ships its private
+            # CCU C++ headers (CANN 9.0 under pkg_inc); CANN 9.2 removed them,
+            # and CMake then skips the target so the default MTE kernel path
+            # remains usable. An absent library is therefore only an error
+            # when CMake was expected to have produced it.
+            if transport.is_file():
+                shutil.copy2(transport, ROOT / "afd_plugin" / transport.name)
+            elif os.environ.get("AFD_A5_RUNTIME_REQUIRED", "0") == "1":
                 raise RuntimeError(
                     "A5 extension build is missing its CCU transport library"
                 )
-            shutil.copy2(transport, ROOT / "afd_plugin" / transport.name)
 
     def run(self) -> None:
         if not self.extensions:

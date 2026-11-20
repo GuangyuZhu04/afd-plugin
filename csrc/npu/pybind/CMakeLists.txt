@@ -68,6 +68,22 @@ else()
 endif()
 
 if(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
+  # The full-feature CAM transport needs HCOMM's private CCU C++ headers.
+  # CANN 9.0 shipped them under pkg_inc/hcomm/ccu; CANN 9.2 removed
+  # ccu_kernel.h and ccu_assist_pub.h entirely, so the transport cannot be
+  # compiled there. Probe for that API and fall back to the default MTE
+  # kernels, which the same package still ships.
+  find_path(AFD_CCU_KERNEL_HEADER ccu_kernel.h
+    PATHS "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hcomm/ccu"
+          "${ASCEND_HOME_PATH}/aarch64-linux/include/hcomm/ccu"
+    NO_DEFAULT_PATH)
+  find_path(AFD_CCU_ASSIST_HEADER ccu_assist_pub.h
+    PATHS "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hcomm"
+          "${ASCEND_HOME_PATH}/aarch64-linux/include/hcomm"
+          "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hcomm/ccu"
+          "${ASCEND_HOME_PATH}/aarch64-linux/include/hcomm/ccu"
+    NO_DEFAULT_PATH)
+  if(AFD_CCU_KERNEL_HEADER AND AFD_CCU_ASSIST_HEADER)
   # HCOMM's CCU C++ API is ABI0, independently of the torch extension's ABI.
   # This library exposes only C/POD calls to the ABI1 torch 2.8 build.
   add_library(afd_cam_async_a5_transport SHARED
@@ -79,7 +95,11 @@ if(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
     "${ASCEND_HOME_PATH}/aarch64-linux/include/hccl"
     "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc"
     "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hccl"
-    "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hcomm/ccu")
+    # CANN 9.0 keeps the CCU C++ API headers under pkg_inc; 9.2 moved the full
+    # set to include/hcomm/ccu and left only the primitive impl behind, so both
+    # roots are searched and either layout resolves the same symbols.
+    "${ASCEND_HOME_PATH}/aarch64-linux/pkg_inc/hcomm/ccu"
+    "${ASCEND_HOME_PATH}/aarch64-linux/include/hcomm/ccu")
   target_link_directories(afd_cam_async_a5_transport PRIVATE "${ASCEND_HOME_PATH}/lib64")
   target_link_libraries(afd_cam_async_a5_transport PRIVATE hcomm hccl c_sec)
   target_link_options(afd_cam_async_a5_transport PRIVATE -Wl,--no-undefined)
@@ -88,6 +108,10 @@ if(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
   target_compile_definitions(afd_plugin_ascend_C PRIVATE AFD_BUILD_A5_RUNTIME=1)
   target_link_libraries(afd_plugin_ascend_C PRIVATE afd_cam_async_a5_transport)
   install(TARGETS afd_cam_async_a5_transport LIBRARY DESTINATION afd_plugin)
+  else()
+    message(STATUS "AFD: CCU C++ headers not found; building without the A5 "
+                   "full-feature transport (default MTE kernel path only)")
+  endif()
 endif()
 
 set_target_properties(afd_plugin_ascend_C PROPERTIES OUTPUT_NAME "_C_ascend")
