@@ -114,6 +114,7 @@ class AFDQwen3MoeDecoderLayer(native.Qwen3MoeDecoderLayer):
         vllm_config: VllmConfig,
         prefix: str = "",
         is_fused_checkpoint_transposed: bool = False,
+        mrope_positions_factor: int = 4,
     ) -> None:
         # ### PATCH START: initialize the role-aware layer without native allocation.
         nn.Module.__init__(self)

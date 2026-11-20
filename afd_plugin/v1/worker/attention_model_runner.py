@@ -102,10 +102,10 @@ class AFDAttentionModelRunner(AFDMetadataProviderMixin, GPUModelRunner):
     # the same guard), and the rendezvous completes before memory profiling or
     # the first model forward. The connector itself is idempotent.
     # Signature: matches upstream; no added parameters.
-    def load_model(self, load_dummy_weights: bool = False) -> None:
+    def load_model(self, load_dummy_weights: bool = False, *, model=None) -> None:
         use_ubatching = bool(self.vllm_config.parallel_config.use_ubatching)
         with _use_afd_ubatch_wrapper_during_load(use_ubatching):
-            super().load_model(load_dummy_weights)
+            super().load_model(load_dummy_weights, model=model)
         if use_ubatching:
             self._install_afd_ubatch_wrapper()
         # Wrapper installation is local and non-blocking; the connector
@@ -163,7 +163,6 @@ class AFDAttentionModelRunner(AFDMetadataProviderMixin, GPUModelRunner):
         use_spec_decode: bool = False,
         for_cudagraph_capture: bool = False,
         num_scheduled_tokens: dict[str, int] | None = None,
-        cascade_attn_prefix_lens: list[list[int]] | None = None,
         slot_mappings: dict[int, torch.Tensor] | None = None,
     ) -> tuple[PerLayerAttnMetadata, CommonAttentionMetadata | None]:
         # ### PATCH START: stage AFD metadata and avoid cross-ubatch cache reuse.
@@ -193,7 +192,6 @@ class AFDAttentionModelRunner(AFDMetadataProviderMixin, GPUModelRunner):
                 use_spec_decode=use_spec_decode,
                 for_cudagraph_capture=for_cudagraph_capture,
                 num_scheduled_tokens=num_scheduled_tokens,
-                cascade_attn_prefix_lens=cascade_attn_prefix_lens,
                 slot_mappings=slot_mappings,
             )
         finally:
@@ -207,7 +205,8 @@ class AFDAttentionModelRunner(AFDMetadataProviderMixin, GPUModelRunner):
         num_reqs: int,
         num_scheduled_tokens_np: np.ndarray,
         max_num_scheduled_tokens: int,
-        use_cascade_attn: bool,
+        # Deprecated and ignored upstream; kept for out-of-tree model runners.
+        use_cascade_attn: bool = False,
         allow_microbatching: bool = True,
         force_eager: bool = False,
         force_uniform_decode: bool | None = None,

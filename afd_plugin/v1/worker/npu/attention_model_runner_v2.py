@@ -141,9 +141,9 @@ def _use_camp2p_dp_padding(attention_size: int, ffn_size: int) -> Iterator[None]
     # Patch reason: native execute calls this module-level function before input
     # preparation; no runner method exposes that boundary.
     # Patch functionality: apply CAMP2P group padding to the agreed eager batch.
-    # Signature: matches vLLM v0.30.0 dispatch_cg_and_sync_dp exactly.
+    # Signature: matches vLLM v0.32.0 dispatch_cg_and_sync_dp exactly.
     # Upstream source: vllm/v1/worker/gpu/dp_utils.py;
-    # ced6857afa0ea7b2e3f0846a62e1394e90f15607.
+    # 5df63a7203cdb9328d824a27b682e77c7b9928be.
     # Delegation exception: preserve native graph selection and DP collectives.
     # Removal plan: replace when native dispatch exposes a padding callback.
     def dispatch_cg_and_sync_dp(
@@ -159,7 +159,7 @@ def _use_camp2p_dp_padding(attention_size: int, ffn_size: int) -> Iterator[None]
         parallel_config: ParallelConfig | None = None,
         allow_ubatching: bool = False,
         uniform_decode: bool = False,
-        dp_sync: DPSyncState | None = None,
+        dp_sync_state: DPSyncState | None = None,
     ) -> tuple[v2_cudagraph_utils.BatchExecutionDescriptor, DPSyncState | None]:
         desc, sync = original_dispatch(
             cudagraph_manager,
@@ -174,7 +174,7 @@ def _use_camp2p_dp_padding(attention_size: int, ffn_size: int) -> Iterator[None]
             parallel_config=parallel_config,
             allow_ubatching=allow_ubatching,
             uniform_decode=uniform_decode,
-            dp_sync=dp_sync,
+            dp_sync_state=dp_sync_state,
         )
         # ### PATCH START: equal CAMP2P strides for eager and graph fallback.
         if desc.cg_mode == CUDAGraphMode.NONE and sync is not None:
@@ -466,6 +466,7 @@ class AFDNPUAttentionModelRunnerV2(AFDMetadataProviderMixin, NPUModelRunnerV2):
         is_profile: bool = False,
         context_len: int = 0,
         valid_dummy_state_slots: bool = False,
+        randomize_inputs: bool = False,
     ) -> ModelRunnerOutput | IntermediateTensors | None:
         # ### PATCH START: scope AFD metadata provider/replay and profiler step.
         step_afd_npu_profiler(self.prof)
@@ -522,6 +523,7 @@ class AFDNPUAttentionModelRunnerV2(AFDMetadataProviderMixin, NPUModelRunnerV2):
                     is_profile=is_profile,
                     context_len=context_len,
                     valid_dummy_state_slots=valid_dummy_state_slots,
+                    randomize_inputs=randomize_inputs,
                 )
         finally:
             self._afd_pending_metadata = previous_metadata

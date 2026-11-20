@@ -146,6 +146,7 @@ class AFDUBatchWrapper(UBatchWrapper):
         dp_metadata,
         batch_descriptor,
         cudagraph_runtime_mode,
+        is_padding,
     ) -> list[UbatchMetadata]:
         # ### PATCH START: resolve and validate the parent AFD context.
         parent_forward_context = get_forward_context()
@@ -167,6 +168,7 @@ class AFDUBatchWrapper(UBatchWrapper):
                         dp_metadata,
                         batch_descriptor,
                         cudagraph_runtime_mode,
+                        is_padding,
                     )
                 finally:
                     self._afd_use_native_ubatch_metadata = False
@@ -192,6 +194,7 @@ class AFDUBatchWrapper(UBatchWrapper):
                     dp_metadata=dp_metadata[idx],
                     batch_descriptor=batch_descriptor,
                     cudagraph_runtime_mode=cudagraph_runtime_mode,
+                    is_padding=is_padding,
                     slot_mapping=slot_mapping[idx] if has_slot_mapping else None,
                     additional_kwargs=build_ubatch_additional_kwargs(
                         parent_additional_kwargs,
