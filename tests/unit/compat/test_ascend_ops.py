@@ -10,6 +10,7 @@ import pytest
 
 from afd_plugin.compat.npu import ops
 from afd_plugin.compat.npu.ops import (
+    AFD_CUST_OPAPI_LIB_NAME,
     ensure_afd_ascend_ops_loaded,
     ensure_cam_async_ops_available,
     ensure_cam_p2p_ops_available,
@@ -41,14 +42,19 @@ def test_ascend_ops_paths_are_plugin_owned():
 
     assert vendor_path.parts[-3:] == ("_cann_ops_custom", "vendors", "afd-plugin")
     assert "vllm-ascend" not in vendor_path.parts
-    assert cust_opapi_path.name == "libcust_opapi.so"
+    # The vendored ACLNN library must not carry CANN's shared name: CANN scans
+    # every vendor for "libcust_opapi.so" and loading it that way redirects
+    # aclnnSparseFlashMlaMetadata to a variant that rejects the metadata tensor
+    # the packaged operator allocates.
+    assert cust_opapi_path.name == AFD_CUST_OPAPI_LIB_NAME
+    assert cust_opapi_path.name != "libcust_opapi.so"
     assert cust_opapi_path.parts[-6:] == (
         "_cann_ops_custom",
         "vendors",
         "afd-plugin",
         "op_api",
         "lib",
-        "libcust_opapi.so",
+        AFD_CUST_OPAPI_LIB_NAME,
     )
 
 
@@ -69,7 +75,11 @@ def test_ascend_ops_loader_sets_explicit_cust_opapi_path(tmp_path, monkeypatch):
     ops._ensure_afd_custom_opp_env()
 
     assert str(vendor_path) in ops.os.environ["ASCEND_CUSTOM_OPP_PATH"]
-    assert str(op_api_lib) in ops.os.environ["LD_LIBRARY_PATH"]
+    # The op_api directory must stay out of LD_LIBRARY_PATH: installing it in
+    # the process-wide loader namespace makes CANN resolve
+    # aclnnSparseFlashMlaMetadata to a variant that rejects the 2048-element
+    # metadata tensor the packaged operator allocates.
+    assert str(op_api_lib) not in ops.os.environ.get("LD_LIBRARY_PATH", "")
     assert ops.os.environ["AFD_CUST_OPAPI_LIB_PATH"] == str(cust_opapi_path)
 
 

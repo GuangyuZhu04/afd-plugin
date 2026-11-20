@@ -27,8 +27,25 @@ def get_afd_cann_vendor_path() -> Path:
     )
 
 
+# This vendor's ACLNN library is installed under a name of its own. CANN scans
+# every vendor directory for "libcust_opapi.so" by file name, so keeping that
+# name here makes CANN load this library as if it were the shared op_api for all
+# custom operators. It only exports this package's operators, and once loaded
+# that way CANN resolves aclnnSparseFlashMlaMetadata to a variant that rejects
+# the 2048-element metadata tensor the packaged operator allocates, failing
+# every DSV4 attention step. A distinct file name keeps the library reachable
+# through AFD_CUST_OPAPI_LIB_PATH without joining CANN's name-based scan.
+AFD_CUST_OPAPI_LIB_NAME = "libafd_cust_opapi.so"
+# Name produced by older installs and by the upstream run package installer.
+_AFD_LEGACY_CUST_OPAPI_LIB_NAME = "libcust_opapi.so"
+
+
 def get_afd_cust_opapi_path() -> Path:
-    return get_afd_cann_vendor_path() / "op_api" / "lib" / "libcust_opapi.so"
+    lib_dir = get_afd_cann_vendor_path() / "op_api" / "lib"
+    preferred = lib_dir / AFD_CUST_OPAPI_LIB_NAME
+    if preferred.exists():
+        return preferred
+    return lib_dir / _AFD_LEGACY_CUST_OPAPI_LIB_NAME
 
 
 def _prepend_env_path(name: str, path: Path) -> None:
@@ -80,9 +97,14 @@ def _ensure_afd_custom_opp_env() -> None:
     vendor_dir = get_afd_cann_vendor_path()
     if not vendor_dir.exists():
         return
-    op_api_lib = vendor_dir / "op_api" / "lib"
-    if op_api_lib.exists():
-        _prepend_env_path("LD_LIBRARY_PATH", op_api_lib)
+    # Publish this vendor's op_api library through the explicit variable only.
+    # Adding its directory to LD_LIBRARY_PATH also installs it into the
+    # process-wide dynamic loader namespace, and CANN then routes
+    # aclnnSparseFlashMlaMetadata to a variant that expects a 1024-element
+    # metadata tensor while the packaged operator allocates 2048, which fails
+    # every DSV4 attention step with "incorrect shape size 2048". The explicit
+    # variable is resolved by this package's own loader, so the AFD operators
+    # stay reachable without changing how CANN resolves its own operators.
     cust_opapi = get_afd_cust_opapi_path()
     if cust_opapi.exists():
         os.environ[AFD_CUST_OPAPI_ENV] = str(cust_opapi)

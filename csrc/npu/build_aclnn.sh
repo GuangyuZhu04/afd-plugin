@@ -38,3 +38,16 @@ if [ ! -f "${run_file}" ]; then
   exit 1
 fi
 "${run_file}" --install-path="${INSTALL_PATH}"
+
+# Give the vendor ACLNN library a name of its own. CANN scans every custom
+# vendor for "libcust_opapi.so" and loads the first hit as the shared op_api
+# for all custom operators. This package's library only exports its own
+# operators, and once CANN loads it that way aclnnSparseFlashMlaMetadata
+# resolves to a variant that rejects the 2048-element metadata tensor the
+# packaged operator allocates. The Python loader points
+# AFD_CUST_OPAPI_LIB_PATH at the new name instead.
+VENDOR_LIB_DIR="${INSTALL_PATH}/vendors/afd-plugin/op_api/lib"
+if [ -f "${VENDOR_LIB_DIR}/libcust_opapi.so" ]; then
+  mv "${VENDOR_LIB_DIR}/libcust_opapi.so" "${VENDOR_LIB_DIR}/libafd_cust_opapi.so"
+  echo "renamed vendor op_api library to libafd_cust_opapi.so"
+fi
