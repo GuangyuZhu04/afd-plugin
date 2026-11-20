@@ -83,7 +83,11 @@ def test_dsv4_sync_fixed_deployment(monkeypatch, tmp_path, scenario):
         assert command[command.index("--data-parallel-size") + 1] == dp
         assert command[command.index("--tensor-parallel-size") + 1] == tp
         assert command[command.index("--max-model-len") + 1] == profile.max_model_len
-        assert _flag_value(command, "--attention_config.indexer_kv_dtype") == "int8"
+        # A5 implements the fp8 indexer K cache and A3 the int8 one.
+        assert (
+            _flag_value(command, "--attention_config.indexer_kv_dtype")
+            == profile.indexer_kv_dtype
+        )
         assert (
             _flag_value(command, "--max-num-batched-tokens")
             == profile.max_num_batched_tokens
@@ -153,7 +157,8 @@ def test_dsv4_sync_fixed_deployment(monkeypatch, tmp_path, scenario):
         assert config["enable_force_eplb"] is False
         assert config["enable_flashcomm1"] is False
         assert config["multistream_dsv4_dsa_overlap"] is False
-        assert config["enable_dsa_cp"] is False
+        # vLLM 0.32 rejects enable_dsa_cp, so the case must not send it.
+        assert "enable_dsa_cp" not in config
         assert config["enable_cpu_binding"] is True
         # Exact equality also pins the absent keys: CAMP2P rejects both the
         # asynchronous mode and gate-on-Attention.

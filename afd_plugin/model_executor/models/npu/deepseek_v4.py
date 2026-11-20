@@ -330,9 +330,10 @@ class AFDDeepseekV4DecoderLayer(native.DeepseekV4DecoderLayer):
         self.layer_idx = layer_idx
         self.norm_eps = config.rms_norm_eps
         self.use_sequence_parallel_moe = parallel_config.use_sequence_parallel_moe
-        self.enable_dsa_cp = (
-            native.enable_dsa_cp()
-        )  # TODO: delete this when native.enable_dsa_cp is sunset.
+        # vLLM-Ascend removed the DSA context-parallel interfaces together with
+        # native.enable_dsa_cp, so the path is permanently off here. Keeping the
+        # attribute preserves the forward code that reads it on every layer.
+        self.enable_dsa_cp = False
 
         # ### PATCH START: role-local Attention and remote experts
         if afd_config.role == _ATTENTION_ROLE:
@@ -345,7 +346,6 @@ class AFDDeepseekV4DecoderLayer(native.DeepseekV4DecoderLayer):
                 prefix=f"{prefix}.self_attn",
                 topk_indices_buffer=topk_indices_buffer,
                 reduce_results=not self.use_sequence_parallel_moe,
-                need_gather_q_kv=self.use_sequence_parallel_moe and self.enable_dsa_cp,
             )
             if self.compute_gate_on_attention:
                 self.mlp = AFDDeepseekV4AttentionGateRemoteMoE(

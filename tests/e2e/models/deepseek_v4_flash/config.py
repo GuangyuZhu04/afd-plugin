@@ -114,6 +114,10 @@ class DSV4SyncShape(NamedTuple):
     max_num_seqs: str | None = DSV4_MAX_NUM_SEQS
     memory_utilization: str | None = DSV4_MEMORY_UTILIZATION
     multithread_load: bool = True
+    # Ascend implements the DeepSeek V4 indexer K cache per part: A5 quantizes
+    # to fp8 inside indexer_compress_epilog_v2, while A3's scatter only takes
+    # int8 updates. vllm_ascend rejects a mismatch before the model loads.
+    indexer_kv_dtype: str = "int8"
     connector_extra_config: dict[str, int] | None = DSV4_SYNC_CONNECTOR_EXTRA_CONFIG
     quantization_from_checkpoint: bool = True
     # A profile whose host does not return reliable answers yet sets this false:
@@ -162,6 +166,8 @@ DSV4_SYNC_SHAPES = {
         # case pins on both hosts.
         disable_prefix_caching=True,
         block_size=DSV4_BLOCK_SIZE,
+        # A5 is the fp8 indexer part; passing int8 here is rejected at load.
+        indexer_kv_dtype="fp8",
         compilation_config={
             "cudagraph_capture_sizes": [DSV4_SYNC_A5_CUDAGRAPH_CAPTURE_SIZE],
             "cudagraph_mode": "FULL_DECODE_ONLY",
@@ -252,6 +258,7 @@ def _configure_dsv4_arguments(
     verbatim_launch: bool = False,
     disable_prefix_caching: bool = False,
     block_size: str | None = None,
+    indexer_kv_dtype: str = "int8",
 ) -> None:
     """Apply the fixed model arguments shared by every DSV4 scenario.
 
@@ -316,7 +323,7 @@ def _configure_dsv4_arguments(
         ),
         *(["--quantization", quantization] if quantization is not None else []),
         "--attention_config.indexer_kv_dtype",
-        "int8",
+        indexer_kv_dtype,
         "--tokenizer-mode",
         "deepseek_v4",
         *(
@@ -402,6 +409,7 @@ def configure_sync_camp2p_scenario(args: argparse.Namespace) -> None:
         verbatim_launch=shape.verbatim_launch,
         disable_prefix_caching=shape.disable_prefix_caching,
         block_size=shape.block_size,
+        indexer_kv_dtype=shape.indexer_kv_dtype,
     )
 
 
@@ -418,6 +426,8 @@ def additional_config(role: str, *, async_cam: bool) -> dict[str, bool]:
         "enable_flashcomm1": async_cam and role == "attention",
         "enable_cpu_binding": True,
         "enable_force_eplb": False,
-        "enable_dsa_cp": False,
+        # vLLM 0.32 removed enable_dsa_cp from VllmConfig; passing it now fails
+        # validation. The DSA context-parallel path this switch disabled is gone
+        # with it, so only the remaining model-path switches are pinned.
         "multistream_dsv4_dsa_overlap": False,
     }
