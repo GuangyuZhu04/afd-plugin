@@ -110,9 +110,14 @@ namespace optiling {
         return ge::GRAPH_SUCCESS;
     }
 
-    IMPL_OP_OPTILING(E2a)
-        .Tiling(E2aTilingFunc)
-        .TilingParse<E2aInfo>(TilingParseForE2a);
+    // Same reason as A2e: -fvisibility=hidden would make this registration
+    // object GLOBAL HIDDEN and the linker would drop it from the tiling
+    // library. Keep default visibility so the entry survives.
+    __attribute__((visibility("default")))
+    gert::OpImplRegisterV2 op_impl_register_optiling_E2a =
+        gert::OpImplRegisterV2("E2a")
+            .Tiling(E2aTilingFunc)
+            .TilingParse<E2aInfo>(TilingParseForE2a);
 }
 
 namespace ge {

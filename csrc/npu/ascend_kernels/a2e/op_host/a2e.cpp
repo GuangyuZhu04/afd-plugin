@@ -121,9 +121,17 @@ namespace optiling {
         return ge::GRAPH_SUCCESS;
     }
 
-    IMPL_OP_OPTILING(A2e)
-        .Tiling(A2eTilingFunc)
-        .TilingParse<A2eInfo>(TilingParseForA2e);
+    // The tiling library is built with -fvisibility=hidden, so the macro's
+    // registration object becomes GLOBAL HIDDEN and the linker drops it,
+    // leaving libcust_opmaster without this operator's tiling entry and the
+    // runtime reporting "The tiling function does not exist". Declare it with
+    // default visibility so the registration survives into the shared object.
+    // The operator name and the tiling callbacks are unchanged.
+    __attribute__((visibility("default")))
+    gert::OpImplRegisterV2 op_impl_register_optiling_A2e =
+        gert::OpImplRegisterV2("A2e")
+            .Tiling(A2eTilingFunc)
+            .TilingParse<A2eInfo>(TilingParseForA2e);
 }
 
 namespace ge {
