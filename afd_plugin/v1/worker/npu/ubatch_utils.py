@@ -18,6 +18,10 @@ from vllm.v1.worker.ubatch_utils import (
 )
 from vllm_ascend.attention.utils import AscendCommonAttentionMetadata
 
+from afd_plugin.model_executor.models.npu.deepseek_attention_metadata import (
+    SFA_GROUP_FIELDS,
+)
+
 
 def is_last_ubatch_empty(
     orig_num_tokens: int,
@@ -179,6 +183,25 @@ def slice_query_start_locs(
         query_start_loc[request_slice.start : request_slice.stop + 1]
         - query_start_loc[request_slice.start]
     )
+
+
+def _sfa_group_metadata_kwargs(attn_metadata, request_slice) -> dict[str, object]:
+    """Slice the SFA grouped cache-write metadata this runtime publishes.
+
+    The grouped cache-write path and its three metadata arrays were removed
+    upstream with the StoreKVBlock optimization.  Probing the live field set
+    keeps one call site working for runtimes that still carry them and for the
+    backends, such as DeepSeek V4 DSA, that never set them.
+    """
+
+    accepted = getattr(AscendCommonAttentionMetadata, "__dataclass_fields__", {})
+    kwargs: dict[str, object] = {}
+    for name in SFA_GROUP_FIELDS:
+        if accepted and name not in accepted:
+            continue
+        values = getattr(attn_metadata, name, None)
+        kwargs[name] = None if values is None else values[request_slice]
+    return kwargs
 
 
 def _make_metadata_with_slice(
@@ -343,21 +366,10 @@ def _make_metadata_with_slice(
             else None
         ),
         context_parallel_metadata=attn_metadata.context_parallel_metadata,
-        group_len=(
-            attn_metadata.group_len[request_slice]
-            if attn_metadata.group_len is not None
-            else None
-        ),
-        group_key_idx=(
-            attn_metadata.group_key_idx[request_slice]
-            if attn_metadata.group_key_idx is not None
-            else None
-        ),
-        group_key_cache_idx=(
-            attn_metadata.group_key_cache_idx[request_slice]
-            if attn_metadata.group_key_cache_idx is not None
-            else None
-        ),
+        # SFA grouped cache-write metadata is sliced only when the running
+        # Ascend runtime still publishes it; upstream removed the fields with
+        # the StoreKVBlock optimization, and other backends never set them.
+        **_sfa_group_metadata_kwargs(attn_metadata, request_slice),
     )
     metadata.encoder_seq_lens = (
         attn_metadata.encoder_seq_lens[request_slice]

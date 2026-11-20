@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import Final
 
 import torch
 from vllm.v1.attention.backend import AttentionMetadata, AttentionMetadataBuilder
@@ -19,6 +20,11 @@ from vllm_ascend.attention.sfa_v1 import (
 )
 from vllm_ascend.attention.utils import AscendCommonAttentionMetadata
 from vllm_ascend.ops.rope_dsv4 import get_cos_and_sin_dsa
+
+# Grouped cache-write metadata that SFA builds read and write in place.  The
+# upstream Ascend runtime removed them with the StoreKVBlock optimization; probe
+# the live field set instead of assuming one Ascend revision.
+SFA_GROUP_FIELDS: Final = ("group_len", "group_key_idx", "group_key_cache_idx")
 
 
 def isolate_deepseek_attention_builder_inputs(
@@ -36,13 +42,14 @@ def isolate_deepseek_attention_builder_inputs(
 
     if isinstance(builder, AscendSFAMetadataBuilder):
         # SFA C8 reshape writes all three arrays through
-        # store_kv_block_metadata().
-        if metadata.group_len is not None:
-            metadata.group_len = metadata.group_len.clone()
-        if metadata.group_key_idx is not None:
-            metadata.group_key_idx = metadata.group_key_idx.clone()
-        if metadata.group_key_cache_idx is not None:
-            metadata.group_key_cache_idx = metadata.group_key_cache_idx.clone()
+        # store_kv_block_metadata().  The grouped cache-write optimization was
+        # removed upstream together with those fields, so detach them only when
+        # the running Ascend runtime still publishes the group metadata.  The
+        # fusable-attention build therefore keeps working with or without it.
+        for name in SFA_GROUP_FIELDS:
+            group_tensor = getattr(metadata, name, None)
+            if group_tensor is not None:
+                setattr(metadata, name, group_tensor.clone())
     elif isinstance(builder, AscendDSAMetadataBuilder):
         # DSA clears padded request rows while building prefill/decode
         # metadata.  Keep those writes local to this stage and cache group.

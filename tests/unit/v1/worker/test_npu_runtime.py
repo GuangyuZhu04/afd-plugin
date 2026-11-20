@@ -312,7 +312,7 @@ def _require_npu_runtime():
 
 def test_npu_v1_runner_signatures_match_pinned_ascend():
     _require_npu_runtime()
-    from vllm_ascend.worker.model_runner_v1 import NPUModelRunner
+    from vllm_ascend.worker.v1.model_runner import NPUModelRunner
 
     from afd_plugin.v1.worker.npu.attention_model_runner import (
         AFDNPUAttentionModelRunner,
@@ -332,7 +332,7 @@ def test_npu_dummy_gdn_skip_uses_native_runner(monkeypatch):
     _require_npu_runtime()
     import torch
     from vllm.v1.worker.ubatch_utils import UBatchSlice
-    from vllm_ascend.worker.model_runner_v1 import NPUModelRunner
+    from vllm_ascend.worker.v1.model_runner import NPUModelRunner
 
     runner = _new_attention_runner()
     runner.vllm_config = _vllm_config(use_ubatching=True)
@@ -370,7 +370,7 @@ def test_npu_dummy_gdn_skip_uses_native_runner(monkeypatch):
 
 def test_npu_target_dummy_metadata_is_forwarded_to_native_builder(monkeypatch):
     _require_npu_runtime()
-    from vllm_ascend.worker.model_runner_v1 import NPUModelRunner
+    from vllm_ascend.worker.v1.model_runner import NPUModelRunner
 
     runner = _new_attention_runner()
     runner._build_afd_metadata = lambda *_args: "afd"
@@ -1512,7 +1512,7 @@ def test_npu_attention_runner_builds_stage_metadata(
     _require_npu_runtime()
     import numpy as np
     import torch
-    from vllm_ascend.worker.model_runner_v1 import NPUModelRunner
+    from vllm_ascend.worker.v1.model_runner import NPUModelRunner
 
     from afd_plugin.connectors.npu.async_cam import AFDAsyncExtraInfo
     from afd_plugin.model_executor.models.npu.async_cam_layout import (
@@ -1688,7 +1688,7 @@ def test_npu_attention_runner_isolates_dsa_caches_per_stage(
     )
     monkeypatch.setattr(
         attention_model_runner,
-        "AscendDSACPMetadataBuilder",
+        "AscendDSAPCPMetadataBuilder",
         FakeDSACPBuilder,
     )
     monkeypatch.setattr(
@@ -1891,7 +1891,7 @@ def test_npu_attention_runner_async_moe_allocates_three_metadata_builders(
     monkeypatch,
 ):
     _require_npu_runtime()
-    from vllm_ascend.worker.model_runner_v1 import NPUModelRunner
+    from vllm_ascend.worker.v1.model_runner import NPUModelRunner
 
     from afd_plugin.connectors.npu.async_cam import AFDAsyncExtraInfo
 
