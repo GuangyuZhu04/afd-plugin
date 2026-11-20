@@ -412,6 +412,10 @@ def configure_scenario(args: argparse.Namespace) -> None:
                 ),
                 "async_moe_num_ubatches": 2,
                 "async_moe_split": "token",
+                # CAM builds its own HCCL process group; size its domain the
+                # way the synchronous profiles do instead of leaving it to the
+                # runtime default.
+                "hccl_buffer_size": DSV4_SYNC_HCCL_BUFFER_SIZE_MB,
             }
         )
     ]

@@ -77,6 +77,7 @@ def test_dsv4_fixed_deployment_and_cleanup(monkeypatch, tmp_path):
                 "async_moe_ubatching": True,
                 "async_moe_num_ubatches": 2,
                 "async_moe_split": "token",
+                "hccl_buffer_size": 2048,
             },
         }
         env = runner.build_env("0", args, role=role, e2e_run_id="test")
