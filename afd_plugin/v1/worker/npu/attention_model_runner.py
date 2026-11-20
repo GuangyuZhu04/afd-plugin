@@ -36,7 +36,7 @@ from vllm.v1.worker.ubatch_utils import UBatchSlice, UBatchSlices
 from vllm_ascend.ascend_forward_context import set_ascend_forward_context
 from vllm_ascend.attention.attention_v1 import AscendAttentionState
 from vllm_ascend.attention.context_parallel.dsa_cp import (
-    AscendDSACPMetadataBuilder,
+    AscendDSAPCPMetadataBuilder,
 )
 from vllm_ascend.attention.context_parallel.sfa_cp import (
     AscendSFADCPMetadataBuilder,
@@ -49,11 +49,11 @@ from vllm_ascend.attention.utils import (
 from vllm_ascend.compilation.acl_graph import ACLGraphWrapper
 from vllm_ascend.ops.fused_moe.force_eplb import build_force_eplb_topk
 from vllm_ascend.ops.rotary_embedding import update_cos_sin
-from vllm_ascend.spec_decode.dflash_proposer import AscendDflashProposer
-from vllm_ascend.spec_decode.draft_proposer import AscendDraftModelProposer
-from vllm_ascend.spec_decode.dspark_proposer import AscendDSparkProposer
-from vllm_ascend.spec_decode.eagle_proposer import AscendEagleProposer
-from vllm_ascend.spec_decode.step3p5 import AscendStep3p5MTPProposer
+from vllm_ascend.worker.v1.spec_decode.dflash_proposer import AscendDflashProposer
+from vllm_ascend.worker.v1.spec_decode.draft_proposer import AscendDraftModelProposer
+from vllm_ascend.worker.v1.spec_decode.dspark_proposer import AscendDSparkProposer
+from vllm_ascend.worker.v1.spec_decode.eagle_proposer import AscendEagleProposer
+from vllm_ascend.worker.v1.spec_decode.step3p5 import AscendStep3p5MTPProposer
 from vllm_ascend.utils import (
     embedding_tp_enable,
     enable_sp,
@@ -62,7 +62,7 @@ from vllm_ascend.utils import (
     should_skip_allreduce_across_dp_group,
 )
 from vllm_ascend.worker.dcp_utils import DCPDummyRunMetadata
-from vllm_ascend.worker.model_runner_v1 import (
+from vllm_ascend.worker.v1.model_runner import (
     SEQ_LEN_WITH_MAX_PA_WORKSPACE,
     NPUModelRunner,
     PerLayerAttnMetadata,
@@ -97,6 +97,7 @@ from afd_plugin.model_executor.models.npu.async_cam_layout import (
     AsyncMoeUbatchMetadata,
 )
 from afd_plugin.model_executor.models.npu.deepseek_attention_metadata import (
+    SFA_GROUP_FIELDS,
     isolate_deepseek_attention_builder_inputs,
     materialize_deepseek_attention_metadata,
     materialize_deepseek_attention_metadata_by_layer,
@@ -128,6 +129,10 @@ logger = init_logger(__name__)
 # Async CAM extends that list, and stage ``ubid`` uses builder
 # ``ASYNC_MOE_STAGE_METADATA_BUILDER_OFFSET + ubid``.
 ASYNC_MOE_STAGE_METADATA_BUILDER_OFFSET = 1
+
+# The SFA grouped cache-write fields live in one place; the runner keeps its own
+# view of what the installed common metadata actually declares.
+_COMMON_METADATA_FIELDS = getattr(AscendCommonAttentionMetadata, "__dataclass_fields__", {})
 
 
 class AFDNPUAttentionModelRunner(NPUModelRunner):
@@ -553,6 +558,22 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
     # Signature: adds plugin-owned ``is_async_moe_stage_build`` and
     # ``cudagraph_runtime_mode`` parameters. Native DBO keeps the default
     # builder range.
+    def _sfa_group_fields(self, num_reqs_padded: int) -> dict[str, torch.Tensor]:
+        """Return the SFA grouped cache-write metadata this runtime publishes.
+
+        vLLM-Ascend removed the grouped cache-write buffers together with the
+        StoreKVBlock optimization.  Building the common metadata from the live
+        attribute and target field sets keeps the DeepSeek V4 DSA path working
+        on either runtime and lets a runtime that restores the path opt in
+        without another edit here.
+        """
+
+        return {
+            name: getattr(self, name).gpu[:num_reqs_padded]
+            for name in SFA_GROUP_FIELDS
+            if hasattr(self, name) and name in _COMMON_METADATA_FIELDS
+        }
+
     def _build_attention_metadata_with_ubatches(
         self,
         num_tokens: int,
@@ -696,9 +717,11 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
             attn_state=self.attn_state,
             decode_token_per_req=self.decode_token_per_req,
             context_parallel_metadata=self.long_seq_metadata,
-            group_len=self.group_len.gpu[:num_reqs_padded],
-            group_key_idx=self.group_key_idx.gpu[:num_reqs_padded],
-            group_key_cache_idx=self.group_key_cache_idx.gpu[:num_reqs_padded],
+            # The SFA grouped cache-write buffers left the Ascend model runner
+            # with the StoreKVBlock optimization.  Forward them only when this
+            # runtime still allocates and the target metadata still declares
+            # them, so a runtime that reintroduces the path keeps working.
+            **self._sfa_group_fields(num_reqs_padded),
         )
 
         if logits_indices is not None and self.cache_config.kv_sharing_fast_prefill:
@@ -741,7 +764,7 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
 
             if isinstance(
                 builder,
-                AscendDSAMetadataBuilder | AscendDSACPMetadataBuilder,
+                AscendDSAMetadataBuilder | AscendDSAPCPMetadataBuilder,
             ):
                 if for_cudagraph_capture:
                     common_ratio_to_sas_metadata = {}
@@ -756,7 +779,7 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
             if for_cudagraph_capture and not isinstance(
                 builder,
                 AscendDSAMetadataBuilder
-                | AscendDSACPMetadataBuilder
+                | AscendDSAPCPMetadataBuilder
                 | AscendSFADCPMetadataBuilder,
             ):
                 attn_metadata_i = builder.build_for_cudagraph_capture(
@@ -940,6 +963,7 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
         profile_seq_lens: int | None = None,
         profile_cpp: bool = False,
         skip_gdn_state_update: bool = False,
+        randomize_inputs: bool = False,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         with torch.inference_mode():
             return self._dummy_run_inference_mode(
@@ -958,6 +982,7 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
                 profile_seq_lens=profile_seq_lens,
                 profile_cpp=profile_cpp,
                 skip_gdn_state_update=skip_gdn_state_update,
+                randomize_inputs=randomize_inputs,
             )
 
     def _dummy_run_inference_mode(
@@ -977,6 +1002,7 @@ class AFDNPUAttentionModelRunner(NPUModelRunner):
         profile_seq_lens: int | None = None,
         profile_cpp: bool = False,
         skip_gdn_state_update: bool = False,
+        randomize_inputs: bool = False,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         previous = self._afd_is_graph_capturing
         self._afd_is_graph_capturing = bool(is_graph_capturing)

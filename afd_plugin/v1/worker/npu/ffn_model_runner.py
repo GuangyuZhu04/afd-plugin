@@ -14,7 +14,7 @@ from vllm.logger import init_logger
 from vllm.platforms import current_platform
 from vllm_ascend import ascend_forward_context as ascend_context
 from vllm_ascend.utils import AscendDeviceType, get_ascend_device_type
-from vllm_ascend.worker.model_runner_v1 import NPUModelRunner, graph_capture
+from vllm_ascend.worker.v1.model_runner import NPUModelRunner, graph_capture
 
 from afd_plugin.compat.npu import (
     ascend_forward_context,
