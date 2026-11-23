@@ -49,8 +49,8 @@ if TYPE_CHECKING:
     from vllm.tasks import SupportedTask
     from vllm.v1.kv_cache_interface import KVCacheConfig, KVCacheSpec
 
-    from afd_plugin.connectors.npu.async_cam_runtime.async_cam_mxfp import (
-        AsyncCAMMXFPExecutor,
+    from afd_plugin.connectors.npu.async_cam_runtime.afd_async_mxfp import (
+        AfdAsyncMXFPExecutor,
     )
 
 
@@ -84,7 +84,7 @@ class AsyncNPUFFNModelRunner:
         self.layer_ids: tuple[int, ...] = ()
         self._layered_executor: AsyncCAMLayeredExecutor | None = None
         self._umdk_executor: UmdkExpertExecutor | None = None
-        self._mxfp_executor: AsyncCAMMXFPExecutor | None = None
+        self._mxfp_executor: AfdAsyncMXFPExecutor | None = None
         self._mega_executor: AsyncCAMMegaExecutor | None = None
         self.session = self.connector.ffn_session()
         self._first_step = True
@@ -331,8 +331,8 @@ class AsyncNPUFFNModelRunner:
     def _initialize_ffn_executor(self) -> str:
         assert self.model is not None
         if self.connector.dynamic_quant == 0:
-            from afd_plugin.connectors.npu.async_cam_runtime.async_cam_mxfp import (
-                AsyncCAMMXFPExecutor,
+            from afd_plugin.connectors.npu.async_cam_runtime.afd_async_mxfp import (
+                AfdAsyncMXFPExecutor,
             )
             from afd_plugin.model_executor.models.npu.deepseek_v4 import (
                 AFDDeepseekV4ForCausalLM,
@@ -345,7 +345,7 @@ class AsyncNPUFFNModelRunner:
             layers_by_id = self.model.get_mxfp_expert_layers()
             if tuple(sorted(layers_by_id)) != self.layer_ids:
                 raise ValueError("MXFP4 weights do not cover the remote MoE layer IDs")
-            self._mxfp_executor = AsyncCAMMXFPExecutor(
+            self._mxfp_executor = AfdAsyncMXFPExecutor(
                 layers_by_id, self.connector.expert_per_rank
             )
             return self._mxfp_executor.signature
