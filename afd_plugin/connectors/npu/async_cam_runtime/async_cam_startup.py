@@ -154,7 +154,7 @@ class AsyncCAMGraphStartup:
             ffn_plan = plans[0]
             self.layer_ids = ffn_plan.layer_ids
             validate_transport = self.mode == "full" or any(
-                entry["transport"].startswith(("pull_v1:", "umdk_v2:"))
+                entry["transport"].startswith(("pull_v1:", "umdk_v2:", "bf16_push:"))
                 for entry in entries
             )
             if (
