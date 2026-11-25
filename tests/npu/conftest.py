@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
 # Description: Optional runtime setup shared by the compiled Ascend dispatcher tests.
 # Create: 2026-11-05
-# Note: The 950 fixture selects the compact dispatcher tests for that build.
+# Note: Compact CAM belongs to 910C. Ascend 950 has separate UMDK Meta tests.
 # History: 2026-11-05 create
 """Optional runtime setup shared by the compiled Ascend dispatcher tests."""
 
@@ -41,6 +41,6 @@ def ascend_ops_runtime() -> ModuleType:
 @pytest.fixture(scope="module")
 def afd_async_ops_runtime() -> ModuleType:
     soc = os.environ.get("SOC_VERSION", "").lower()
-    if soc not in {"910c", "950"} and not soc.startswith(("ascend910_93", "ascend950")):
-        pytest.skip("Set SOC_VERSION to 910c or ascend950 to test compact CAM")
+    if soc != "910c" and not soc.startswith("ascend910_93"):
+        pytest.skip("Compact CAM is built for 910C; 950 uses the UMDK Meta suites")
     return _load_compiled_ops()

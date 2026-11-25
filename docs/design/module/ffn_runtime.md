@@ -32,6 +32,7 @@ validation_paths:
   - "tests/unit/ffn_faas/test_*.py"
   - "tests/gpu/test_ffn_faas_gpu.py"
   - "tests/unit/connectors/npu/async_cam_runtime/test_async_cam_layered.py"
+  - "tests/unit/connectors/npu/async_cam_runtime/test_umdk_layout.py"
   - "tests/unit/v1/worker/test_async_ffn_runtime.py"
   - "tests/unit/v1/worker/test_async_ffn_graph.py"
   - "tests/npu/test_afd_async_layered_w8a8.py"

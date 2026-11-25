@@ -1,5 +1,5 @@
 {
-  "_comment": "soc_versions lists source directories under ascend_kernels/. The _arch35 suffix identifies the 950 implementation. operator_meta keys and runtime names are shared between SoCs.",
+  "_comment": "The 910C async operators use the compact ABI. The 950 _arch35 directories contain the UMDK registered-buffer implementation, including their own ACLNN headers.",
   "soc_versions": {
     "ascend910_93": [
       "a2e",

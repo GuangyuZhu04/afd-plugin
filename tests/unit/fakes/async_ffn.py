@@ -45,7 +45,6 @@ def load_async_modules(monkeypatch):
         "vllm.utils.torch_utils",
         "vllm_ascend.utils",
         "vllm.v1.worker.gpu.shutdown",
-        "afd_plugin.compat.npu.ops",
         "afd_plugin.compat.npu.forward_context",
         "afd_plugin.compat.npu.profiler",
         "afd_plugin.connectors.npu.async_cam_runtime.async_cam_layered",
@@ -54,6 +53,7 @@ def load_async_modules(monkeypatch):
         "afd_plugin.v1.worker.ffn_metadata",
     ):
         stub(name)
+    stub("afd_plugin.compat.npu.ops", uses_umdk_async=lambda: False)
     stub("vllm.forward_context")
     load_host_module(monkeypatch, "afd_plugin.connectors.metadata")
     load_host_module(monkeypatch, "afd_plugin.connectors.base")

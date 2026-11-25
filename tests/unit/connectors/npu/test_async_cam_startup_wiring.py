@@ -109,7 +109,7 @@ def test_sync_camp2p_does_not_require_layered_async_weights(
 
 @pytest.fixture
 def layered_startup_runner(modules, monkeypatch, mode, invalid):
-    _, _, runtime = modules
+    _, cam, runtime = modules
 
     def executor(layers):
         signature = repr(tuple(layer.layer_idx for layer in layers))
@@ -154,6 +154,7 @@ def layered_startup_runner(modules, monkeypatch, mode, invalid):
         [connector.graph_startup.plan]
     )
     runner.connector = connector
+    runner.session = cam.PushCAMSession(runtime.torch.bfloat16)
     runner._failure = runner._layered_executor = runner._mega_executor = None
     runner.requested_mode = mode
     return runner, connector

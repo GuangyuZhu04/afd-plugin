@@ -127,12 +127,7 @@ def test_selected_afd_async_sources_do_not_overwrite_other_operators_when_staged
         staged: dict[str, Path] = {}
         for operator in ("utils", *result.stdout.split()):
             part_dir = root / operator / part
-            if (
-                part == "op_api"
-                and operator.endswith("_arch35")
-                and not part_dir.is_dir()
-            ):
-                part_dir = root / operator.removesuffix("_arch35") / part
+            if part == "op_api" and operator.endswith("_arch35"):
                 assert part_dir.is_dir(), part_dir
             for path in part_dir.rglob("*"):
                 if not path.is_file():

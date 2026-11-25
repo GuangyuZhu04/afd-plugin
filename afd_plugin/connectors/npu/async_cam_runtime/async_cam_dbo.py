@@ -3,6 +3,7 @@
 """Single-window CAM handoff through the native DBO receive hook."""
 
 from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 import torch
 from vllm.v1.worker.ubatching import (
@@ -13,12 +14,17 @@ from vllm.v1.worker.ubatching import (
 
 from afd_plugin.connectors import AFDConnectorBase, AFDTransferContext
 
+if TYPE_CHECKING:
+    from afd_plugin.connectors.npu.async_cam_runtime.async_cam_layout import (
+        CAMDispatchLayout,
+    )
+
 
 def send_async_cam_remote_call(
     connector: AFDConnectorBase,
     hidden_states: torch.Tensor,
     context: AFDTransferContext,
-    **send_kwargs: torch.Tensor | None,
+    **send_kwargs: "torch.Tensor | CAMDispatchLayout | None",
 ) -> Callable[[], torch.Tensor]:
     """Send once and let the peer submit raw receive before its next send.
 

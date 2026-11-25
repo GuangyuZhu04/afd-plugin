@@ -33,6 +33,11 @@ from afd_plugin.connectors.npu.async_cam_runtime.async_cam_startup import (
     POLL_SECONDS,
     FFNGraphPlan,
 )
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_experts import UmdkExpertExecutor
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_session import (
+    UmdkSession,
+    UmdkSlice,
+)
 from afd_plugin.model_executor.ffn.npu.expert_weights import (
     QuantizedExpertWeights,
     expert_weight_signature,
@@ -74,6 +79,7 @@ class AsyncNPUFFNModelRunner:
         self.model_memory_usage = 0
         self.layer_ids: tuple[int, ...] = ()
         self._layered_executor: AsyncCAMLayeredExecutor | None = None
+        self._umdk_executor: UmdkExpertExecutor | None = None
         self._mega_executor: AsyncCAMMegaExecutor | None = None
         self.session = self.connector.ffn_session()
         self._first_step = True
@@ -342,6 +348,9 @@ class AsyncNPUFFNModelRunner:
                 capacity=capacity,
             )
             return "native_mc2:" + expert_weight_signature(layers, capacity)
+        if isinstance(self.session, UmdkSession):
+            self._umdk_executor = UmdkExpertExecutor(layers)
+            return "umdk:" + expert_weight_signature(layers, capacity)
         self._layered_executor = AsyncCAMLayeredExecutor(layers)
         logger.info(
             "Async CAM layered GMM quant=%s layers=%d mode=%s layer_mapping=%s "
@@ -403,9 +412,23 @@ class AsyncNPUFFNModelRunner:
 
     def _run_ffn_transaction(
         self, *, retained_tensors: list[torch.Tensor] | None = None
-    ) -> torch.Tensor:
+    ) -> torch.Tensor | None:
         if self._mega_executor is not None:
             return self._mega_executor()
+        if isinstance(self.session, UmdkSession):
+            assert self._umdk_executor is not None
+            payload = self.session.receive(wait=False)
+            if payload is None:
+                return None
+            state = payload.context.states
+            assert isinstance(state, UmdkSlice)
+            output = self._umdk_executor(
+                payload.hidden_states,
+                state.groups,
+                self.session.result_buffer(payload.context),
+            )
+            self.connector.send_ffn_output(output, payload.context)
+            return output
         assert self._layered_executor is not None
         payload = self.connector.recv_attn_output()
         if retained_tensors is not None:
@@ -464,6 +487,7 @@ class AsyncNPUFFNModelRunner:
         self.connector.close()
         self._mega_executor = None
         self._layered_executor = None
+        self._umdk_executor = None
         free_before_shutdown(self.vllm_config)
         self.model = None
         self.draft_model = None

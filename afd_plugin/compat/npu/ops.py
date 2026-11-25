@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import ctypes
 import os
+import sys
 from functools import lru_cache
 from pathlib import Path
 from typing import Final
@@ -19,6 +20,7 @@ AFD_ASCEND_OPS_NAMESPACE = "afd_ascend"
 AFD_ASCEND_VENDOR_NAME = "afd-plugin"
 AFD_CUST_OPAPI_ENV = "AFD_CUST_OPAPI_LIB_PATH"
 _A5_CUST_OPAPI_NAME = "libafd_cust_opapi.so"
+_UMDK_OPAPI_NAME = "libafd_umdk_opapi.so"
 AFD_ASYNC_OP_NAMESPACE = AFD_ASCEND_OPS_NAMESPACE
 AFD_ASYNC_DISPATCH_SEND = "afd_async_dispatch_send"
 AFD_ASYNC_DISPATCH_RECV = "afd_async_dispatch_recv"
@@ -37,14 +39,16 @@ def get_afd_cann_vendor_path() -> Path:
 
 def get_afd_cust_opapi_path() -> Path:
     lib_dir = get_afd_cann_vendor_path() / "op_api" / "lib"
-    private_api = lib_dir / _A5_CUST_OPAPI_NAME
-    return private_api if private_api.is_file() else lib_dir / "libcust_opapi.so"
+    for name in (_UMDK_OPAPI_NAME, _A5_CUST_OPAPI_NAME):
+        if (lib_dir / name).is_file():
+            return lib_dir / name
+    return lib_dir / "libcust_opapi.so"
 
 
 def prepare_afd_ascend950_vendor() -> bool:
     """Publish the A5 wheel's private API before Ascend loads custom operators."""
     library = get_afd_cust_opapi_path()
-    if library.name != _A5_CUST_OPAPI_NAME:
+    if library.name not in (_UMDK_OPAPI_NAME, _A5_CUST_OPAPI_NAME):
         return False
     vendor = str(get_afd_cann_vendor_path())
     # Native vendors provide operators such as SwigluGroupQuant and must keep
@@ -166,6 +170,38 @@ def _assert_afd_async_namespace_registered(torch: object) -> None:
             )
 
 
+def uses_umdk_async() -> bool:
+    """Identify the 950 package during admission and its extension after loading."""
+    extension = sys.modules.get("afd_plugin._C_ascend")
+    if extension is None:
+        return get_afd_cust_opapi_path().name == _UMDK_OPAPI_NAME
+    return bool(getattr(extension, "uses_umdk_async", False))
+
+
+def _check_umdk_async(torch: object) -> None:
+    try:
+        import deep_ep
+    except ImportError as exc:
+        raise RuntimeError("Ascend 950 requires the matching AFD DeepEP owner") from exc
+    if not hasattr(deep_ep, "AFDBuffer"):
+        raise RuntimeError("Ascend 950 requires a DeepEP build exporting AFDBuffer")
+    namespace = vars(torch)["ops"].umdk_cam_op_lib
+    for name, arity, outputs, marker in (
+        (AFD_ASYNC_DISPATCH_SEND, 23, 1, "send_status"),
+        (AFD_ASYNC_DISPATCH_RECV, 28, 3, "recv_src_metadata"),
+        (AFD_ASYNC_COMBINE_SEND, 22, 1, "completion"),
+        (AFD_ASYNC_COMBINE_RECV, 24, 5, "return_progress"),
+    ):
+        schema = getattr(namespace, name).default._schema
+        args = {a.name for a in schema.arguments}
+        if (
+            len(schema.arguments) != arity
+            or len(schema.returns) != outputs
+            or not {"context", "group_ep", marker} <= args
+        ):
+            raise RuntimeError(f"Incompatible UMDK registered-buffer ABI: {schema}")
+
+
 @lru_cache(maxsize=1)
 def ensure_cam_p2p_ops_available() -> None:
     """Import the custom operators used by ``CAMP2pAFDConnector``.
@@ -178,6 +214,14 @@ def ensure_cam_p2p_ops_available() -> None:
     try:
         import torch
 
+        if (
+            get_afd_cust_opapi_path().name == _UMDK_OPAPI_NAME
+            and "afd_plugin._C_ascend" not in sys.modules
+            and hasattr(torch.ops.umdk_cam_op_lib, AFD_ASYNC_DISPATCH_SEND)
+        ):
+            raise RuntimeError(
+                "An external UMDK dispatcher already owns the AFD schemas"
+            )
         import afd_plugin._C_ascend  # noqa: F401
     except ImportError as exc:
         raise RuntimeError(
@@ -203,21 +247,26 @@ def has_afd_ascend_ops() -> bool:
 
 @lru_cache(maxsize=1)
 def ensure_afd_async_ops_available() -> None:
-    """Check the compact schemas and their native entry points before CAM startup."""
+    """Resolve the matching transport before constructing the HCCL domain."""
     ensure_cam_p2p_ops_available()
     import torch
 
     try:
-        _assert_afd_async_namespace_registered(torch)
+        if uses_umdk_async():
+            _check_umdk_async(torch)
+        else:
+            _assert_afd_async_namespace_registered(torch)
     except AttributeError as exc:
         raise RuntimeError(
-            "Async CAM requires all four torch.ops.afd_ascend.afd_async_* "
-            "operators. Rebuild AFD with AFD_BUILD_ASCEND_OPS=1."
+            "Async CAM requires the four target-specific afd_async operators "
+            "(umdk_cam_op_lib on 950, afd_ascend on 910C). Rebuild the AFD extension."
         ) from exc
 
     # The bindings open the configured vendor by path, or libopapi.so when
     # none is configured. A rebuilt extension alone cannot verify its vendor.
     path = os.environ.get(AFD_CUST_OPAPI_ENV) or "libopapi.so"
+    if uses_umdk_async() and Path(path).name != _UMDK_OPAPI_NAME:
+        raise RuntimeError(f"Ascend 950 requires {_UMDK_OPAPI_NAME}, got {path}")
     try:
         library = ctypes.CDLL(path)
     except OSError as exc:

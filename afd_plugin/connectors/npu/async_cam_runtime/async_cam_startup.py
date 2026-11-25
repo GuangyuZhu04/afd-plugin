@@ -60,6 +60,7 @@ class AsyncCAMGraphStartup:
         self.plan = FFNGraphPlan()
         self.mode = "eager"
         self.warmup_layer_id: int | None = None
+        self.layer_ids: tuple[int, ...] = ()
         self.session_epoch = 0
         self._store: Store | None = None
         self._prefix = ""
@@ -103,9 +104,11 @@ class AsyncCAMGraphStartup:
         if self._store is not None:
             self._publish("error", str(error))
 
-    def _wait(self, keys: list[str]) -> None:
+    def _wait(
+        self, keys: list[str], timeout_seconds: float = GRAPH_STARTUP_TIMEOUT_SECONDS
+    ) -> None:
         assert self._store is not None
-        deadline = time.monotonic() + GRAPH_STARTUP_TIMEOUT_SECONDS
+        deadline = time.monotonic() + timeout_seconds
         while True:
             self.check_failure()
             if self._store.check(keys):
@@ -116,9 +119,11 @@ class AsyncCAMGraphStartup:
                 )
             time.sleep(POLL_SECONDS)
 
-    def phase(self, stage: str) -> None:
+    def phase(
+        self, stage: str, *, timeout_seconds: float = GRAPH_STARTUP_TIMEOUT_SECONDS
+    ) -> None:
         self._publish(stage)
-        self._wait(self._keys(stage, range(self.world_size)))
+        self._wait(self._keys(stage, range(self.world_size)), timeout_seconds)
 
     def _negotiate(self, plan: FFNGraphPlan | None, transport_signature: str) -> None:
         assert self._store is not None
@@ -147,8 +152,10 @@ class AsyncCAMGraphStartup:
                 plans.append(FFNGraphPlan(**fields))
             self.mode = resolve_ffn_mode(plans)
             ffn_plan = plans[0]
+            self.layer_ids = ffn_plan.layer_ids
             validate_transport = self.mode == "full" or any(
-                entry["transport"].startswith("pull_v1:") for entry in entries
+                entry["transport"].startswith(("pull_v1:", "umdk_v2:"))
+                for entry in entries
             )
             if (
                 validate_transport

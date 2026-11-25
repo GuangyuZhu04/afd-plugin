@@ -58,14 +58,10 @@ copy_ops_include() {
         if [ -d "$subdir/op_kernel" ]; then
             cp -rf "$subdir/op_kernel/"* "$dst_dir/op_kernel/"
         fi
-        # SoC variants with a shared ACLNN ABI use the common op_api.
         local api_dir="$subdir/op_api"
-        if [[ ! -d "$api_dir" && "$name" == *_arch35 ]]; then
-            api_dir="$src_dir/${name%_arch35}/op_api"
-            if [[ ! -d "$api_dir" ]]; then
-                echo "ERROR: shared ACLNN sources missing: $api_dir" >&2
-                return 1
-            fi
+        if [[ "$name" == afd_async_*_arch35 && ! -d "$api_dir" ]]; then
+            echo "ERROR: missing UMDK registered-buffer ACLNN sources: $api_dir" >&2
+            return 1
         fi
         if [ -d "$api_dir" ]; then
             cp -rf "$api_dir/"* "$dst_dir/pregen/build_out/autogen/"

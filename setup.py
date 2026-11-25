@@ -122,5 +122,11 @@ if _should_build_ascend_ops():
 
 setup(
     ext_modules=ext_modules,
+    py_modules=(
+        ["umdk_cam_op_lib"]
+        if ext_modules
+        and os.environ.get("SOC_VERSION", "").lower().startswith(("950", "ascend950"))
+        else []
+    ),
     cmdclass={"build_ext": BuildAscendOps},
 )

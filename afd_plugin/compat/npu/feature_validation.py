@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from afd_plugin.compat.npu.ops import uses_umdk_async
 from afd_plugin.config import (
     AFD_ASYNC_CONNECTOR,
     CAMP2P_CONNECTOR,
@@ -228,7 +229,11 @@ def _fail_if_unsupported_npu_afd_async_features(
                 f"{draft_rows} > {max_num_batched_tokens}"
             )
     # Push chunks whole experts. Pull can split one expert across receive rounds.
-    if not extra_info.ffn_mega_moe and receive_capacity < max_num_batched_tokens:
+    if (
+        not extra_info.ffn_mega_moe
+        and not uses_umdk_async()
+        and receive_capacity < max_num_batched_tokens
+    ):
         raise RuntimeError(
             "CAMAsyncAFDConnector requires BATCH_SIZE_FACTOR to allocate at least "
             f"max_num_batched_tokens={max_num_batched_tokens} "

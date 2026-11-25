@@ -33,6 +33,12 @@ class CAMDispatchLayout:
     def local_tokens(self) -> int:
         return int(self.local_token_slice.stop) - int(self.local_token_slice.start)
 
+    @property
+    def valid_local_tokens(self) -> int:
+        return max(
+            0, min(self.local_tokens, self.parent_tokens - self.local_token_slice.start)
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class CAMDispatchPayload:

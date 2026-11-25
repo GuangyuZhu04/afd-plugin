@@ -278,6 +278,7 @@ class AFDDeepseekV4AttentionGateRemoteMoE(RemoteFFNProxy):
             context,
             topk_weights=dispatch_payload.topk_weights,
             topk_ids=dispatch_payload.topk_ids,
+            dispatch_layout=dispatch_payload.layout,
         )
         shared_output = (
             self.shared_experts(hidden_states)

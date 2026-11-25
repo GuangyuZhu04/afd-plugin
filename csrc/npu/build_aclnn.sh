@@ -43,5 +43,5 @@ if [ "$SOC_ARG" = "ascend950" ]; then
     # CANN also searches the generic filename for native model operators. The
     # AFD torch extension opens the private name via AFD_CUST_OPAPI_LIB_PATH.
     api_dir="${INSTALL_PATH}/vendors/afd-plugin/op_api/lib"
-    mv "${api_dir}/libcust_opapi.so" "${api_dir}/libafd_cust_opapi.so"
+    mv "${api_dir}/libcust_opapi.so" "${api_dir}/libafd_umdk_opapi.so"
 fi
