@@ -10,15 +10,11 @@
 
 from __future__ import annotations
 
+from enum import Enum
 from typing import TYPE_CHECKING
 
 import torch
 import torch_npu
-from vllm_ascend.ops.fused_moe.dataclass.fused_experts import MoEWeights
-from vllm_ascend.ops.fused_moe.dataclass.moe_mlp import MoEMlpComputeInput
-from vllm_ascend.ops.fused_moe.dataclass.moe_quant import MoEMxfpParams, MoEQuantParams
-from vllm_ascend.ops.fused_moe.moe_mlp import apply_moe_mlp
-from vllm_ascend.quantization.quant_type import QuantType
 
 if TYPE_CHECKING:
     from vllm_ascend.models.deepseek_v4.model import DeepseekV4MoE
@@ -26,10 +22,37 @@ if TYPE_CHECKING:
     from afd_plugin.connectors.npu.async_cam_runtime.umdk_layout import LayerRows
 
 
+def mxfp4_grouped_matmul(
+    x: torch.Tensor,
+    x_scale: torch.Tensor,
+    weight: torch.Tensor,
+    weight_scale: torch.Tensor,
+    counts: torch.Tensor,
+) -> torch.Tensor:
+    """Multiply native FP8 activations by post-load packed FP4 expert weights."""
+    # torch-npu infers E4M3FN from x. Its x_dtype override is for packed FP4
+    # and HIFLOAT8. Supplying E4M3FN as an override fails on CANN 9.2.
+    return torch_npu.npu_grouped_matmul(
+        x=[x],
+        weight=[weight],
+        antiquant_scale=[weight_scale],
+        per_token_scale=[x_scale],
+        group_list=counts,
+        split_item=2,
+        group_type=0,
+        group_list_type=1,
+        output_dtype=torch.bfloat16,
+        weight_dtype=torch_npu.float4_e2m1fn_x2,
+        per_token_scale_dtype=torch_npu.float8_e8m0fnu,
+    )[0]
+
+
 class AfdAsyncMXFPExecutor:
     """Select the received layer and run its native, routed-only W4A8MXFP MLP."""
 
     def __init__(self, layers: dict[int, DeepseekV4MoE], local_experts: int) -> None:
+        from vllm_ascend.quantization.quant_type import QuantType
+
         if not layers:
             raise ValueError("Ascend 950 Async CAM requires loaded MXFP4 expert layers")
         self.layers = layers
@@ -38,14 +61,21 @@ class AfdAsyncMXFPExecutor:
         for index, moe in sorted(layers.items()):
             experts = moe.experts
             owner = experts.routed_experts
+            activation = (
+                owner.activation.value
+                if isinstance(owner.activation, Enum)
+                else owner.activation
+            )
             if (
                 experts.quant_type != QuantType.W4A8MXFP
                 or owner.dynamic_eplb
                 or experts._shared_experts is not None
+                or activation != "silu"
+                or owner.quant_method.quant_method.group_size != 32
             ):
                 raise ValueError(
                     f"Ascend 950 Async CAM layer {index} requires static routed-only "
-                    "W4A8MXFP experts"
+                    "W4A8MXFP SiLU experts with group size 32"
                 )
             # Native post-load may retain only Mega's per-expert lists. Eager GMM
             # consumes the finalized non-Mega tensors and their block scales.
@@ -107,8 +137,6 @@ class AfdAsyncMXFPExecutor:
                 raise ValueError("UMDK expert counts do not match the physical slice")
             if end == cursor:
                 continue
-            # The native method can dispose its input via Tensor.set_(). Give
-            # it a separate view; the owner retains the registered allocation.
             rows = hidden_states[cursor:end]
             counts = torch.tensor(group.counts, dtype=torch.int64, device=rows.device)
             value = self._run_layer(self.layers[group.layer_id], rows, counts)
@@ -131,44 +159,33 @@ class AfdAsyncMXFPExecutor:
     def _run_layer(
         moe: DeepseekV4MoE, rows: torch.Tensor, group_list: torch.Tensor
     ) -> torch.Tensor:
-        experts = moe.experts
-        owner, config = experts.routed_experts, experts.moe_config
-        # See vllm-ascend bd42eea0's w4a8_mxfp4.py::apply_gmm1_act_quant.
-        # With dynamic_scale=None the native method derives MXFP8 block scales
-        # from the BF16 UMDK rows. Counts include each expert's alignment padding.
-        output, _ = apply_moe_mlp(
-            mlp_compute_input=MoEMlpComputeInput(
-                hidden_states=rows,
-                group_list=group_list,
-                group_list_type=1,
-                dynamic_scale=None,
-                topk_scales=None,
-                weights=MoEWeights(
-                    w1=owner.w13_weight,
-                    w2=owner.w2_weight,
-                    w1_scale=owner.w13_weight_scale,
-                    w2_scale=owner.w2_weight_scale,
-                ),
-                layer=owner,
-                quant=MoEQuantParams(
-                    quant_type=QuantType.W4A8MXFP,
-                    mxfp=MoEMxfpParams(
-                        act_quant_type=torch.float8_e4m3fn,
-                        weight_quant_type=torch_npu.float4_e2m1fn_x2,
-                        scale_dtype=torch_npu.float8_e8m0fnu,
-                        per_token_scale_dtype=torch_npu.float8_e8m0fnu,
-                        use_bf16=True,
-                    ),
-                ),
-                activation=owner.activation,
-                swiglu_limit=config.swiglu_limit or 0.0,
-                swiglu_alpha=config.swiglu_alpha or 1.0,
-                swiglu_beta=config.swiglu_beta or 0.0,
-                activation_situ_beta=config.activation_situ_beta,
-                activation_situ_linear_beta=config.activation_situ_linear_beta,
-                fusion=False,
-            ),
-            quant_method=owner.quant_method.quant_method,
+        from vllm_ascend.ops.fused_moe.moe_utils import (
+            maybe_normalize_mxfp_scale_layout,
         )
-        # Attention's top-k weights carry the routed scaling factor. CR applies it.
-        return output
+
+        # Matches bd42eea0's W4A8MXFP SiLU path. UMDK supplies BF16, and
+        # group_list_type=1 already gives the counts required by SwiGLU.
+        owner = moe.experts.routed_experts
+        x, scale = torch_npu.npu_dynamic_mx_quant(rows, dst_type=torch.float8_e4m3fn)
+        gate_up = mxfp4_grouped_matmul(
+            x,
+            maybe_normalize_mxfp_scale_layout(scale),
+            owner.w13_weight,
+            owner.w13_weight_scale,
+            group_list,
+        )
+        activation, scale, _ = torch.ops._C_ascend.npu_swiglu_group_quant(
+            gate_up,
+            topk_weight=None,
+            group_index=group_list,
+            dst_type=torch.float8_e4m3fn,
+            quant_mode=2,
+            clamp_value=moe.experts.moe_config.swiglu_limit or 0.0,
+        )
+        return mxfp4_grouped_matmul(
+            activation,
+            maybe_normalize_mxfp_scale_layout(scale),
+            owner.w2_weight,
+            owner.w2_weight_scale,
+            group_list,
+        )

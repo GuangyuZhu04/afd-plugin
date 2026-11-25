@@ -74,30 +74,45 @@ def load_async_modules(monkeypatch):
 def mxfp_runtime(monkeypatch, torch):
     """Isolate the native MX kernels while running layer/row selection on CPU."""
 
-    def local_mlp(*, mlp_compute_input, quant_method):
-        args = mlp_compute_input
-        if args.dynamic_scale is not None or args.group_list_type != 1:
-            raise ValueError(
-                "the native BF16 path requires expert counts and no CAM scales"
-            )
-        gains = torch.repeat_interleave(args.weights.w1, args.group_list)
-        output = args.hidden_states * gains[:, None]
-        # The pinned Ascend W4A8MXFP method calls dispose_tensor on this input.
-        args.hidden_states.set_(args.hidden_states.new_empty(0))
-        return output, None
+    def quantize(rows, *, dst_type):
+        return rows.to(dst_type), rows.new_ones((len(rows), 1))
 
+    def grouped_matmul(
+        *,
+        x,
+        weight,
+        antiquant_scale,
+        per_token_scale,
+        group_list,
+        split_item,
+        group_type,
+        group_list_type,
+        output_dtype,
+        weight_dtype,
+        per_token_scale_dtype,
+    ):
+        assert group_list_type == 1 and x[0].dtype == torch.float8_e4m3fn
+        gains = torch.repeat_interleave(weight[0], group_list)
+        return [(x[0].to(output_dtype) * gains[:, None]).to(output_dtype)]
+
+    def swiglu(rows, *, topk_weight, group_index, dst_type, quant_mode, clamp_value):
+        assert topk_weight is None and quant_mode == 2
+        quant, scales = quantize(rows, dst_type=dst_type)
+        return quant, scales, None
+
+    monkeypatch.setattr(
+        torch.ops._C_ascend, "npu_swiglu_group_quant", swiglu, raising=False
+    )
     modules: dict[str, dict[str, object]] = {
-        "torch_npu": dict(float4_e2m1fn_x2="fp4", float8_e8m0fnu="e8m0"),
-        "vllm_ascend.ops.fused_moe.dataclass.fused_experts": dict(
-            MoEWeights=SimpleNamespace
+        "torch_npu": dict(
+            float4_e2m1fn_x2="fp4",
+            float8_e8m0fnu="e8m0",
+            npu_dynamic_mx_quant=quantize,
+            npu_grouped_matmul=grouped_matmul,
         ),
-        "vllm_ascend.ops.fused_moe.dataclass.moe_mlp": dict(
-            MoEMlpComputeInput=SimpleNamespace
+        "vllm_ascend.ops.fused_moe.moe_utils": dict(
+            maybe_normalize_mxfp_scale_layout=lambda s: s
         ),
-        "vllm_ascend.ops.fused_moe.dataclass.moe_quant": dict(
-            MoEMxfpParams=SimpleNamespace, MoEQuantParams=SimpleNamespace
-        ),
-        "vllm_ascend.ops.fused_moe.moe_mlp": dict(apply_moe_mlp=local_mlp),
         "vllm_ascend.quantization.quant_type": dict(
             QuantType=SimpleNamespace(W4A8MXFP="fp4")
         ),
@@ -122,12 +137,16 @@ def mxfp_runtime(monkeypatch, torch):
         owner = torch.nn.Module()
         for name in ("w13_weight", "w2_weight", "w13_weight_scale", "w2_weight_scale"):
             weight = torch.tensor([index, index + 1], dtype=torch.bfloat16)
+            if name == "w2_weight":
+                weight = torch.ones_like(weight)
             owner.register_parameter(
                 name, torch.nn.Parameter(weight, requires_grad=False)
             )
         owner.dynamic_eplb = False
         owner.activation = "silu"
-        owner.quant_method = SimpleNamespace(quant_method=None)
+        owner.quant_method = SimpleNamespace(
+            quant_method=SimpleNamespace(group_size=32)
+        )
         layers[index] = SimpleNamespace(
             experts=SimpleNamespace(
                 quant_type="fp4",

@@ -1,0 +1,5 @@
+# DeepSeek-V4-Flash UMDK MXFP4 deployment on Ascend 950.
+# vllm-project/vllm at 5df63a7203cdb9328d824a27b682e77c7b9928be
+vllm==0.32.0+empty.g5df63a7
+# vllm-project/vllm-ascend at bd42eea01d8312c4df469fabaed45f77a12df4d3
+vllm-ascend==0.32.0.dev0+gbd42eea

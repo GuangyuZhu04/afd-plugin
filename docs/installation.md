@@ -49,6 +49,11 @@ and firmware, then confirm device visibility with `npu-smi info`.
 See the [support reference](support.md#validation-limits) for hardware coverage
 and known shutdown limitations.
 
+The Ascend 950 UMDK DeepSeek-V4-Flash MXFP4 deployment uses the exact local
+builds `vllm==0.32.0+empty.g5df63a7` and `vllm-ascend==0.32.0.dev0+gbd42eea`
+from the two revisions above. Use the [model deployment requirements](../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk_requirements.txt)
+and the [worker preflight](../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk.md).
+
 ### Environment
 
 The recorded A3 environment uses the pinned pair and stack above. The

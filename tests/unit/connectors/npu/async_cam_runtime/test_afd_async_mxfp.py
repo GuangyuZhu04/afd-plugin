@@ -31,7 +31,7 @@ def runtime(monkeypatch):
 
 def test_mixed_layer_slice_and_empty_slice_return_registered_rows(monkeypatch, runtime):
     runner, _, layers = runtime
-    hidden = torch.arange(16, dtype=torch.bfloat16).view(8, 2)
+    hidden = (2.0 ** (torch.arange(16) % 4)).bfloat16().view(8, 2)
     original = hidden.clone()
     output = torch.full_like(hidden, -1)
     groups = (LayerRows(3, 0, (2, 2)), LayerRows(7, 4, (0, 4)))
@@ -84,7 +84,7 @@ def test_950_rejects_inconsistent_slice(runtime, groups, error):
         executor(layers, 2)(hidden, groups, torch.empty_like(hidden))
 
 
-@pytest.mark.parametrize("bad", ["quant", "shared", "mega"])
+@pytest.mark.parametrize("bad", ["quant", "shared", "mega", "group_size", "activation"])
 def test_950_rejects_unsupported_expert_weights_at_startup(runtime, bad):
     _, executor, layers = runtime
     experts = layers[7].experts
@@ -92,6 +92,10 @@ def test_950_rejects_unsupported_expert_weights_at_startup(runtime, bad):
         experts.quant_type = "w4a8"
     elif bad == "shared":
         experts._shared_experts = object()
+    elif bad == "group_size":
+        experts.routed_experts.quant_method.quant_method.group_size = 64
+    elif bad == "activation":
+        experts.routed_experts.activation = "gelu"
     else:
         experts.routed_experts.w13_weight = None
     with pytest.raises(ValueError, match="layer 7 requires"):

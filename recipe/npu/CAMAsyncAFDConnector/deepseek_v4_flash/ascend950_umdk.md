@@ -11,13 +11,18 @@
 | --- | --- |
 | 算子基线 | afd-plugin `codex/ascend950-umdk-afd@b1eb133`，算子来自 UMDK `cam_feature@dcc0350e` |
 | 框架适配 | `codex/ascend950-umdk-dsv4-flash`，重放 [PR #628](https://github.com/vllm-project/afd-plugin/pull/628) 的模型侧改动 |
-| 推理栈 | vLLM `0.32.0@5df63a72`、vLLM-Ascend `bd42eea0`、匹配的 torch-npu 和 CANN 950 环境 |
+| vLLM | `0.32.0+empty.g5df63a7`，源码 [5df63a7203cd](https://github.com/vllm-project/vllm/commit/5df63a7203cdb9328d824a27b682e77c7b9928be) |
+| vLLM-Ascend | `0.32.0.dev0+gbd42eea`，源码 [bd42eea01d83](https://github.com/vllm-project/vllm-ascend/commit/bd42eea01d8312c4df469fabaed45f77a12df4d3) |
 | 注册缓冲区与 FFN 调度 | [支持 AFDBuffer 的 DeepEP-Ascend](https://github.com/puxiaokun3721/DeepEP-Ascend/tree/25b5153eb2549107c13c8d462e325ac28cea8dea) `25b5153e` 与该版本的 DeepJIT 子模块 `65f51395` |
 | 权重 | 本地 DeepSeek-V4-Flash W4A8MXFP/FP4 完整 checkpoint，包括 tokenizer 和专家块尺度 |
 
 先合入算子分支，再合入框架分支。如果第一条分支在上游采用 squash merge，第二条分支的模型改动范围是 `b1eb133..HEAD`，可以将这个范围重放到新的上游合入点。
 
 两侧 worker 使用同一套环境。从本分支源码执行测试时，在已经初始化 CANN 的环境中安装插件和匹配的 owner，保证 Python 可以从当前 checkout 加载原生扩展。
+
+已有这两个精确制品时可直接运行下方预检。从内部 wheelhouse 安装时，在依赖已准备好的
+目标环境执行 `python -m pip install --no-index --no-deps --find-links "$WHEELHOUSE" -r recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk_requirements.txt`。
+两侧 worker 都会核对包版本；通过 Git 安装且带有 PEP 610 记录的制品还会核对完整提交号。
 
 ```bash
 SOC_VERSION=950 AFD_BUILD_ASCEND_OPS=1 python -m pip install --no-deps --no-build-isolation -e .
@@ -26,7 +31,9 @@ import torch
 import torch_npu
 import deep_ep
 from afd_plugin.compat.npu.ops import ensure_afd_async_ops_available, get_afd_cust_opapi_path, uses_umdk_async
+from afd_plugin.compat.npu.umdk_mxfp_stack import check_umdk_mxfp_stack
 
+print(check_umdk_mxfp_stack())
 ensure_afd_async_ops_available()
 assert uses_umdk_async() and hasattr(deep_ep, "AFDBuffer")
 print(get_afd_cust_opapi_path())
@@ -44,6 +51,11 @@ PY
 FFN 根据每层的本地专家物理行数和对齐偏移调用原生 W4A8MXFP MLP，由 BF16
 激活生成组大小为 32 的 MX 块尺度，并写入已注册的 `combine_x`。零行切片也执行
 ComputeReady 和 CombineSend。Attention 将路由权重应用一次。
+
+两次 grouped matmul 从激活张量推断原生 E4M3FN 类型，显式指定 packed FP4 权重和
+E8M0 尺度。中间的原生 `npu_swiglu_group_quant` 接收当前层的专家行数与模型的
+SwiGLU clamp。安装后可用 `SOC_VERSION=950 python -m pytest -q tests/npu/test_umdk_experts.py`
+在无卡主机核对投影的 Meta 合同。
 
 本用例设置 2048 MiB 的 HCCL 域、每个 Attention rank 4096 行的源容量、
 FP8 indexer K cache 和线性专家分区。FFN 的 `enable_fused_mc2=0` 保留普通

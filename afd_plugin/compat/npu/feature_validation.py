@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from afd_plugin.compat.npu.ops import uses_umdk_async
+from afd_plugin.compat.npu.umdk_mxfp_stack import check_umdk_mxfp_stack
 from afd_plugin.config import (
     AFD_ASYNC_CONNECTOR,
     CAMP2P_CONNECTOR,
@@ -231,6 +232,8 @@ def _fail_if_unsupported_npu_afd_async_features(
             raise RuntimeError(
                 "Ascend 950 Async CAM requires eager execution without DBO or ubatching"
             )
+        if extra_info.dynamic_quant == 0:
+            check_umdk_mxfp_stack()
     elif registered:
         raise RuntimeError(
             "The UMDK registered-buffer plugin build requires Ascend 950/A5"

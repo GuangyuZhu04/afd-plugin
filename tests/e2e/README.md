@@ -589,6 +589,8 @@ computes routing and shared experts, sends BF16 rows and applies top-k
 weights during CombineRecv. FFN runs native W4A8MXFP on the layer/expert
 groups in each UMDK slice, deriving MX block scales from the BF16 activations. The
 transport and executor are shipped in the same plugin wheel.
+Use vLLM `0.32.0+empty.g5df63a7` and vLLM-Ascend `0.32.0.dev0+gbd42eea`
+on both roles. The worker checks these versions before HCCL setup.
 [Build, preflight and board instructions](../../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk.md)
 
 Provide eight device IDs, the local FP4 checkpoint and the routable interface

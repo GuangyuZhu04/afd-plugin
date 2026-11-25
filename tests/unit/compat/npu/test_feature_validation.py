@@ -9,6 +9,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from contextlib import nullcontext
 from importlib import import_module
@@ -19,6 +20,7 @@ import pytest
 from afd_plugin.compat.npu import (
     fail_if_unsupported_npu_afd_features,
     npu_afd_num_ubatches,
+    umdk_mxfp_stack,
 )
 from afd_plugin.validation import validate_npu_model_runner_v2_config
 from tests.unit.fakes.async_ffn import load_async_modules, load_host_module
@@ -51,6 +53,12 @@ def _admit(config):
 
 @pytest.fixture
 def a5_bf16(monkeypatch):
+    pinned = {name: version for name, version, _ in umdk_mxfp_stack.UMDK_MXFP_STACK}
+    monkeypatch.setattr(
+        umdk_mxfp_stack,
+        "distribution",
+        lambda name: SimpleNamespace(version=pinned[name], read_text=lambda _: None),
+    )
     monkeypatch.setattr(
         "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: True
     )
@@ -62,12 +70,38 @@ def a5_bf16(monkeypatch):
     return torch.bfloat16
 
 
+@pytest.mark.parametrize("name", ["vllm", "vllm-ascend"])
+@pytest.mark.parametrize("change", ["release", "commit", "matching"])
+def test_umdk_mxfp_stack_checks_exact_build_and_recorded_source(
+    monkeypatch, name, change
+):
+    installed = {}
+    for package, version, commit in umdk_mxfp_stack.UMDK_MXFP_STACK:
+        actual = "0.32.0" if (package == name and change == "release") else version
+        source = "0" * 40 if (package == name and change == "commit") else commit
+        installed[package] = SimpleNamespace(
+            version=actual,
+            read_text=lambda _, sha=source: json.dumps(
+                {"vcs_info": {"vcs": "git", "commit_id": sha}}
+            ),
+        )
+    monkeypatch.setattr(umdk_mxfp_stack, "distribution", installed.__getitem__)
+    if change == "matching":
+        assert umdk_mxfp_stack.check_umdk_mxfp_stack() == {
+            package: dist.version for package, dist in installed.items()
+        }
+    else:
+        with pytest.raises(RuntimeError, match=name):
+            umdk_mxfp_stack.check_umdk_mxfp_stack()
+
+
 @pytest.mark.parametrize(
     ("change", "message"),
     [
         (None, None),
         ("integer_experts", None),
         ("wrong_build", "registered-buffer plugin build"),
+        ("wrong_stack", "UMDK MXFP4 requires vllm"),
         ("placement", "linear expert placement"),
         ("dtype", "BF16"),
         ("target", "DeepseekV4ForCausalLM"),
@@ -93,6 +127,10 @@ def test_a5_bf16_eager_admission(a5_bf16, monkeypatch, change, message):
     if change == "wrong_build":
         monkeypatch.setattr(
             "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: False
+        )
+    if change == "wrong_stack":
+        monkeypatch.setattr(
+            umdk_mxfp_stack, "distribution", lambda _: SimpleNamespace(version="0.32.0")
         )
     if change == "placement":
         config.parallel_config.expert_placement_strategy = "round_robin"

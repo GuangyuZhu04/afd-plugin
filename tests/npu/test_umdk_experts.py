@@ -11,7 +11,29 @@ if not os.environ.get("SOC_VERSION", "").lower().startswith(("950", "ascend950")
     pytest.skip("UMDK FFN is built for Ascend 950", allow_module_level=True)
 
 torch = importlib.import_module("torch")
-importlib.import_module("torch_npu")
+torch_npu = importlib.import_module("torch_npu")
+
+
+@pytest.mark.parametrize("k,n", [(256, 384), (192, 256)])
+def test_flash_mxfp4_projections_accept_native_fp8_activations(k, n):
+    from afd_plugin.connectors.npu.async_cam_runtime.afd_async_mxfp import (
+        mxfp4_grouped_matmul,
+    )
+
+    rows, experts = 32, 2
+    x = torch.empty((rows, k), device="meta", dtype=torch.bfloat16)
+    quantized, scales = torch_npu.npu_dynamic_mx_quant(x, dst_type=torch.float8_e4m3fn)
+    weight = torch.empty(
+        (experts, n, k // 2), device="meta", dtype=torch.uint8
+    ).transpose(1, 2)
+    weight_scale = torch.empty(
+        (experts, n, k // 64, 2), device="meta", dtype=torch.uint8
+    ).transpose(1, 2)
+    counts = torch.empty(experts, device="meta", dtype=torch.int64)
+    result = mxfp4_grouped_matmul(
+        quantized, scales.reshape(rows, -1, 2), weight, weight_scale, counts
+    )
+    assert result.shape == (rows, n) and result.dtype == torch.bfloat16
 
 
 @pytest.mark.parametrize("quantization", ["W8A8", "W4A8"])

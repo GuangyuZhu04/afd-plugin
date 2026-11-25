@@ -90,7 +90,9 @@ For serving, install the pinned DeepEP owner and its matching DeepJIT build
 on each rank. Select `CAMAsyncAFDConnector`, eager execution and BF16 routed
 transport. The W4A8/W8A8 FFN quantizes the received BF16 rows locally.
 For DeepSeek-V4-Flash FP4, `dynamicQuant=0` selects the loaded native W4A8MXFP
-method. It processes one layer interval at a time, including each expert's
+SiLU path on vLLM `0.32.0+empty.g5df63a7` and vLLM-Ascend
+`0.32.0.dev0+gbd42eea`. Both workers check the installed build versions
+before creating the HCCL group. It processes one layer interval at a time, including each expert's
 aligned rows, and fills the caller's registered result. See the
 [eight-device deployment and acceptance case](../../../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk.md).
 The connector negotiates the model's layer IDs, divides Attention ranks
