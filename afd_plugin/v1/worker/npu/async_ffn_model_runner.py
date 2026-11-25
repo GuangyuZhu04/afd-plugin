@@ -1,11 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
-# Description: MRV2 Async CAM FFN runtime, composed from the model loader and
-#              connector.
-# Create: 2026-10-19
-# Note: Each FFN transaction returns the received compact descriptor with its expert
-#       output.
-# History: 2026-10-19 create
 """MRV2 Async CAM FFN runtime, composed from the model loader and connector."""
 
 from __future__ import annotations
@@ -39,6 +33,7 @@ from afd_plugin.connectors.npu.async_cam_runtime.async_cam_startup import (
     POLL_SECONDS,
     FFNGraphPlan,
 )
+from afd_plugin.connectors.npu.async_cam_runtime.io_log import cam_logger
 from afd_plugin.connectors.npu.async_cam_runtime.umdk_experts import UmdkExpertExecutor
 from afd_plugin.connectors.npu.async_cam_runtime.umdk_session import (
     UmdkSession,
@@ -89,8 +84,7 @@ class AsyncNPUFFNModelRunner:
         self.model_memory_usage = 0
         self.layer_ids: tuple[int, ...] = ()
         self._layered_executor: AsyncCAMLayeredExecutor | None = None
-        self._umdk_executor: UmdkExpertExecutor | None = None
-        self._mxfp_executor: AfdAsyncMXFPExecutor | None = None
+        self._umdk_executor: UmdkExpertExecutor | AfdAsyncMXFPExecutor | None = None
         self._mega_executor: AsyncCAMMegaExecutor | None = None
         self.session = self.connector.ffn_session()
         self._first_step = True
@@ -344,17 +338,25 @@ class AsyncNPUFFNModelRunner:
                 AFDDeepseekV4ForCausalLM,
             )
 
+            if not isinstance(self.session, UmdkSession):
+                raise ValueError("MXFP4 BF16 Push requires the Ascend 950 UMDK session")
             if not isinstance(self.model, AFDDeepseekV4ForCausalLM):
-                raise ValueError(
-                    "Ascend 950 Async CAM requires the DeepSeek-V4 FFN adapter"
-                )
+                raise ValueError("MXFP4 requires the DeepSeek-V4 FFN model adapter")
             layers_by_id = self.model.get_mxfp_expert_layers()
             if tuple(sorted(layers_by_id)) != self.layer_ids:
-                raise ValueError("MXFP4 weights do not cover the remote MoE layer IDs")
-            self._mxfp_executor = AfdAsyncMXFPExecutor(
+                raise ValueError(
+                    "MXFP4 weights do not cover the negotiated MoE layer IDs"
+                )
+            self._umdk_executor = AfdAsyncMXFPExecutor(
                 layers_by_id, self.connector.expert_per_rank
             )
-            return self._mxfp_executor.signature
+            cam_logger.info(
+                "UMDK W4A8MXFP executor: world_rank=%d layers=%d local_experts=%d",
+                self.connector.world_rank,
+                len(layers_by_id),
+                self.connector.expert_per_rank,
+            )
+            return self._umdk_executor.signature
         layers, reason = self.model.get_quantized_expert_weights()
         if not layers:
             raise ValueError(f"layered GMM target weights are unsupported: {reason}")
@@ -435,6 +437,9 @@ class AsyncNPUFFNModelRunner:
         single: bool = False,
     ) -> torch.Tensor | None:
         assert self.model is not None
+        if isinstance(self.session, UmdkSession):
+            # UMDK selects a transaction slice across layers on each poll.
+            return self._run_ffn_transaction()
         rank_ffn_output = None
         for _ in self.layer_ids[:1] if single else self.layer_ids:
             rank_ffn_output = self._run_ffn_transaction()
@@ -459,7 +464,7 @@ class AsyncNPUFFNModelRunner:
             )
             self.connector.send_ffn_output(output, payload.context)
             return output
-        assert self._layered_executor is not None or self._mxfp_executor is not None
+        assert self._layered_executor is not None
         payload = self.connector.recv_attn_output()
         if retained_tensors is not None:
             # A partial capture may already reference the received device buffers.
@@ -467,22 +472,14 @@ class AsyncNPUFFNModelRunner:
         states = cast(AFDAsyncTransferState, payload.context.states)
         assert states.token_nums_rankid_layeridx is not None
         assert states.group_list is not None
-        if self._layered_executor is not None:
-            assert states.dynamic_scales is not None
-            output = self._layered_executor(
-                payload.hidden_states,
-                states.dynamic_scales,
-                states.group_list,
-                states.token_nums_rankid_layeridx,
-                retained_tensors=retained_tensors,
-            )
-        else:
-            assert self._mxfp_executor is not None
-            output = self._mxfp_executor(
-                payload.hidden_states,
-                states.group_list,
-                states.token_nums_rankid_layeridx,
-            )
+        assert states.dynamic_scales is not None
+        output = self._layered_executor(
+            payload.hidden_states,
+            states.dynamic_scales,
+            states.group_list,
+            states.token_nums_rankid_layeridx,
+            retained_tensors=retained_tensors,
+        )
         if retained_tensors is not None:
             self._graph_output = output
         self.connector.send_ffn_output(output, payload.context)
@@ -526,7 +523,6 @@ class AsyncNPUFFNModelRunner:
         self._mega_executor = None
         self._layered_executor = None
         self._umdk_executor = None
-        self._mxfp_executor = None
         free_before_shutdown(self.vllm_config)
         self.model = None
         self.draft_model = None

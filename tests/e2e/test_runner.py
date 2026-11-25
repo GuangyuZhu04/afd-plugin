@@ -832,17 +832,21 @@ def test_async_cam_mega_selection_reaches_both_role_commands(tmp_path, case_id):
     assert case.phases[0].task == CompletionTask(check_answer=True)
 
 
-def test_dsv4_a5_compact_launch_profile(
-    monkeypatch, tmp_path
+@pytest.mark.parametrize("quant_method", ["fp8", "ascend"])
+def test_dsv4_a5_umdk_launch_profile(
+    monkeypatch, tmp_path, quant_method
 ):  # long-test: verify both resolved service commands and the device entrypoint
     scenario = dsv4_cases.config.DSV4_ASYNC_CAM_A5_SCENARIO
     host = "192.0.2.30"
     devices = "7,5,3,1,6,4,2,0"
     monkeypatch.setenv("AFD_E2E_BACKEND", "npu")
     monkeypatch.setenv("AFD_E2E_DEVICES", devices)
-    monkeypatch.setenv(
-        "AFD_NPU_E2E_MODEL", str(tmp_path / "DeepSeek-V4-Flash-W4A8MXFP")
+    checkpoint = tmp_path / "DeepSeek-V4-Flash-W4A8MXFP"
+    checkpoint.mkdir()
+    (checkpoint / "config.json").write_text(
+        json.dumps({"quantization_config": {"quant_method": quant_method}})
     )
+    monkeypatch.setenv("AFD_NPU_E2E_MODEL", str(checkpoint))
     monkeypatch.setenv("HCCL_IF_IP", host)
     monkeypatch.setenv("HCCL_SOCKET_IFNAME", "eth0")
     monkeypatch.delenv("AFD_CAM_OP_IO_LOG", raising=False)
@@ -867,17 +871,26 @@ def test_dsv4_a5_compact_launch_profile(
     assert case["deployment"]["cleanup_profile"] == CLEANUP_PROFILE_STRICT
     assert case["phases"][0]["task"]["check_answer"] is True
     assert case["phases"][0]["task"]["num_requests"] == 10
+    assert case["phases"][0]["task"]["umdk_rank_counts"] == [4, 4]
     for role, (dp, tp) in {"attention": ("2", "2"), "ffn": ("4", "1")}.items():
         command = record["commands"][role]
         assert command[command.index("--data-parallel-size") + 1] == dp
         assert command[command.index("--tensor-parallel-size") + 1] == tp
         assert command[command.index("--dtype") + 1] == "bfloat16"
+        if quant_method == "fp8":
+            assert "--quantization" not in command
+        else:
+            assert command[command.index("--quantization") + 1] == "ascend"
         assert (
             command[command.index("--attention_config.indexer_kv_dtype") + 1] == "fp8"
         )
         assert "--enable-expert-parallel" in command and "--enforce-eager" in command
         assert "--enable-dbo" not in command and "--speculative-config" not in command
-        afd = json.loads(command[command.index("--additional-config") + 1])["afd"]
+        additional = json.loads(command[command.index("--additional-config") + 1])
+        afd = additional["afd"]
+        if role == "ffn":
+            assert additional["enable_fused_mc2"] == 0
+            assert command[command.index("--expert-placement-strategy") + 1] == "linear"
         assert (afd["num_attention_ranks"], afd["num_ffn_ranks"]) == (4, 4)
         assert afd["role"] == role and afd["host"] == host
         assert afd["compute_gate_on_attention"] and afd["async"]
@@ -889,6 +902,40 @@ def test_dsv4_a5_compact_launch_profile(
         }
     attention = record["commands"]["attention"]
     assert attention[attention.index("--data-parallel-address") + 1] == host
+
+
+@pytest.mark.parametrize("ffn_mxfp_ranks", [(4, 5, 6, 7), (4, 5, 6)])
+def test_a5_acceptance_attributes_answers_to_registered_mxfp_workers(
+    tmp_path, monkeypatch, ffn_mxfp_ranks
+):
+    monkeypatch.setattr(
+        "tests.e2e.models.deepseek_v4_flash.completions.evaluate_completions",
+        lambda **kwargs: None,
+    )
+    for role, ranks in (("attention", range(4)), ("ffn", range(4, 8))):
+        lines = [
+            f"UMDK AFD registered buffers: role={role} world_rank={rank}"
+            for rank in ranks
+        ]
+        if role == "ffn":
+            lines.extend(
+                f"UMDK W4A8MXFP executor: world_rank={rank} layers=43"
+                for rank in ffn_mxfp_ranks
+            )
+        (tmp_path / f"{role}.log").write_text("\n".join(lines))
+    task = CompletionTask(umdk_rank_counts=(4, 4))
+    args = dict(
+        base_url="", model_name="", checkpoint="", output_path=tmp_path / "evaluation"
+    )
+    if len(ffn_mxfp_ranks) != 4:
+        with pytest.raises(RuntimeError, match="Incomplete UMDK evidence for ffn"):
+            task.execute(**args)
+    else:
+        assert task.execute(**args)["umdk"] == {
+            "attention": list(range(4)),
+            "ffn": list(range(4, 8)),
+            "mxfp4": list(ffn_mxfp_ranks),
+        }
 
 
 @pytest.mark.parametrize(

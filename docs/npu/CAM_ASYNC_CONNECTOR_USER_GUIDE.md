@@ -10,8 +10,8 @@ Use the pinned dependency pair in the
 Current runtime constraints and validation evidence are summarized in the
 [runtime matrix](../support.md#tested-runtime-matrix).
 
-The [eight-die DeepSeek-V4-Flash case](../../tests/e2e/README.md#dsv4-flash-compact-async-cam-on-ascend-950-local-8-npus)
-targets compact Push/MTE on Ascend 950. It selects BF16 dispatch
+The [eight-die DeepSeek-V4-Flash case](../../tests/e2e/README.md#dsv4-flash-umdk-async-cam-on-ascend-950-local-8-npus)
+uses the UMDK registered-buffer operators on Ascend 950. It selects BF16 dispatch
 (`dynamicQuant=0`) and W4A8MXFP experts, with eager ModelRunnerV2 on both
 roles, no DBO, and a 2048 MiB HCCL domain. The case guide includes the role
 layout, checkpoint and network settings, answer oracle and validation status.
@@ -120,7 +120,7 @@ DP replicas, each replica can continue its CAM dispatch/combine work without
 waiting for every other replica to reach the same communication point. This
 eliminates unnecessary idle time caused by DP request imbalance.
 
-One MoE layer follows this sequence:
+On 910C, one MoE layer follows this sequence:
 
 1. Attention computes top-k expert IDs and weights.
 2. `afd_async_dispatch_send` sends hidden states and routing IDs into the CAM group.
@@ -302,7 +302,7 @@ all-gather/reduce-scatter for TP-sharded weights with SP and all-reduce without
 SP. Replicated weights use local SP tokens or split/gather full tokens. Shared
 weights and intermediates are included in Attention memory profiling.
 
-Set `connector_extra_config.hccl_buffer_size` when the CAM domain needs a
+On the 910C compact path, set `connector_extra_config.hccl_buffer_size` when the CAM domain needs a
 larger buffer. Also set `HCCL_BUFFSIZE` to that same effective size on every
 rank: Async CAM host tiling reads the environment, whereas HCCL allocation
 can use the domain override. For the JSON example above, export
@@ -310,23 +310,21 @@ can use the domain override. For the JSON example above, export
 capacity and tail-state address. `HCCL_BUFFSIZE` also affects unrelated groups
 without explicit overrides; see the [operator window contract](../design/npu/cam_async_routed_ops.md#communication-window-configuration).
 
-For Ascend 950 BF16 Push, Attention and FFN agree on the window size through
-the rendezvous Store before creating the CAM group. Set `HCCL_BUFFSIZE` to an
-integer from 1 to 32768 MiB. Its unset value for the tiler is 408 MiB. If
-provided, `hccl_buffer_size` must match that effective value. The connector
-passes the agreed size explicitly to HCCL, including when both settings are unset.
-
-Each Attention rank can send at most 65,535 rows in a batch. With Attention
-TP2, the largest divisible `max_num_batched_tokens` is 131,070. Both roles
-validate this limit using `attn_ranks_per_dp`, including FFN workers with local TP1.
+On Ascend 950, the Store handshake checks the UMDK protocol, lane and receive
+capacities, model geometry, and effective HCCL group size across A/F ranks.
+`deep_ep.AFDBuffer` owns the registered data and control windows. The eight-rank
+case uses a 2048 MiB HCCL domain. UMDK admits up to 32,768 source rows on
+each Attention rank (65,536 divisible batch tokens at TP2). The case uses
+8,192 batch tokens and 4,096 rows per source.
 
 For the experimental FlashComm1/SP cases, set
 `VLLM_ASCEND_ENABLE_FLASHCOMM1=1` only on Attention. Set it to `0` for plain TP
 Attention and on every FFN process.
 
 At initialization, the runtime verifies all four
-`torch.ops.afd_ascend.afd_async_*` operators and logs the plugin version and
-actual vendor library path. Missing source operators fail startup.
+`torch.ops.afd_ascend.afd_async_*` operators on 910C, or the four
+`torch.ops.umdk_cam_op_lib.afd_async_*` operators and the registered-buffer
+vendor library on Ascend 950. Missing source operators fail startup.
 
 ## Current limitations
 

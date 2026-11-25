@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
-# Description: Eager Ascend 950 expert computation on rows already routed by CAM.
+# Description: DeepSeek-V4-Flash MXFP4 experts on Ascend 950 UMDK slices.
 # Create: 2026-11-17
 # Note: The native MXFP4 expert method derives its block scales from the received BF16
 #       rows.
 # History: 2026-11-17 create
 # Adapted from the A5 eager executor in afd-plugin commit bd1e4d28271a.
-# This version selects the received layer and bounds work to the compact chunk.
-"""Eager Ascend 950 expert computation on rows already routed by CAM."""
+"""Compute the (layer, local expert) groups selected by a UMDK transaction."""
 
 from __future__ import annotations
 
@@ -21,10 +20,10 @@ from vllm_ascend.ops.fused_moe.dataclass.moe_quant import MoEMxfpParams, MoEQuan
 from vllm_ascend.ops.fused_moe.moe_mlp import apply_moe_mlp
 from vllm_ascend.quantization.quant_type import QuantType
 
-from afd_plugin.connectors.npu.async_cam_runtime import AFD_ASYNC_LAYER_INDEX
-
 if TYPE_CHECKING:
     from vllm_ascend.models.deepseek_v4.model import DeepseekV4MoE
+
+    from afd_plugin.connectors.npu.async_cam_runtime.umdk_layout import LayerRows
 
 
 class AfdAsyncMXFPExecutor:
@@ -76,44 +75,70 @@ class AfdAsyncMXFPExecutor:
                     experts.moe_config.swiglu_limit,
                 )
             )
-        self.signature = "compact_mxfp4:" + repr(signatures)
+        self.signature = "umdk_mxfp4:" + repr(signatures)
 
     def __call__(
         self,
         hidden_states: torch.Tensor,
-        group_list: torch.Tensor,
-        batch_info: torch.Tensor,
+        groups: tuple[LayerRows, ...],
+        output: torch.Tensor,
     ) -> torch.Tensor:
-        if hidden_states.dtype != torch.bfloat16:
-            raise ValueError("Ascend 950 Async CAM requires BF16 received activations")
-        if group_list.numel() != self.local_experts:
-            raise ValueError("CAM group list must contain one count per local expert")
-        # Compact DR's first word is rank-wide. Only this chunk's expert counts
-        # describe its valid rows. Eager mode allows one host read for both values.
-        layer_id, rows = (
-            torch.stack(
-                (batch_info[AFD_ASYNC_LAYER_INDEX], group_list.sum(dtype=torch.int64))
+        if (
+            hidden_states.dtype != torch.bfloat16
+            or hidden_states.ndim != 2
+            or output.shape != hidden_states.shape
+            or output.device != hidden_states.device
+            or output.dtype != torch.bfloat16
+        ):
+            raise ValueError(
+                "UMDK MXFP4 requires matching BF16 receive and return slices"
             )
-            .cpu()
-            .tolist()
-        )
-        if layer_id not in self.layers:
-            raise ValueError(f"CAM received an unknown FFN layer {layer_id}")
-        if not 0 <= rows <= hidden_states.size(0):
-            raise ValueError("CAM expert row count exceeds dispatch-receive capacity")
-        if rows == 0:
-            # CS must still retire the original chunk. Its ABI requires a
-            # nonempty floating tensor, and its metadata specifies zero payload.
-            return hidden_states.new_zeros((1, hidden_states.size(1)))
+        cursor = 0
+        for group in groups:
+            end = group.end
+            if group.layer_id not in self.layers:
+                raise ValueError(f"UMDK selected an unknown FFN layer {group.layer_id}")
+            if (
+                len(group.counts) != self.local_experts
+                or any(n < 0 for n in group.counts)
+                or group.begin != cursor
+                or end > hidden_states.shape[0]
+            ):
+                raise ValueError("UMDK expert counts do not match the physical slice")
+            if end == cursor:
+                continue
+            # The native method can dispose its input via Tensor.set_(). Give
+            # it a separate view; the owner retains the registered allocation.
+            rows = hidden_states[cursor:end]
+            counts = torch.tensor(group.counts, dtype=torch.int64, device=rows.device)
+            value = self._run_layer(self.layers[group.layer_id], rows, counts)
+            target = output[cursor:end]
+            if (
+                value.shape != target.shape
+                or value.dtype != target.dtype
+                or value.device != target.device
+            ):
+                raise ValueError(
+                    "MXFP4 output does not match the registered return rows"
+                )
+            target.copy_(value)
+            cursor = end
+        if cursor != output.size(0):
+            raise ValueError("UMDK expert groups do not cover the physical slice")
+        return output
 
-        experts = self.layers[layer_id].experts
+    @staticmethod
+    def _run_layer(
+        moe: DeepseekV4MoE, rows: torch.Tensor, group_list: torch.Tensor
+    ) -> torch.Tensor:
+        experts = moe.experts
         owner, config = experts.routed_experts, experts.moe_config
         # See vllm-ascend bd42eea0's w4a8_mxfp4.py::apply_gmm1_act_quant.
         # With dynamic_scale=None the native method derives MXFP8 block scales
-        # from BF16. The single scale slot of a quant0 CAM receive is unused.
+        # from the BF16 UMDK rows. Counts include each expert's alignment padding.
         output, _ = apply_moe_mlp(
             mlp_compute_input=MoEMlpComputeInput(
-                hidden_states=hidden_states[:rows],
+                hidden_states=rows,
                 group_list=group_list,
                 group_list_type=1,
                 dynamic_scale=None,

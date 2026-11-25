@@ -1,17 +1,18 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
-# Description: Host tests for compact receive/compute/return and MXFP4 layer
+# Description: Host tests for registered-buffer receive/compute/return and MXFP4 layer
 #              selection.
 # Create: 2026-11-23
 # Note: The native expert compute boundary is stubbed for host execution.
 # History: 2026-11-23 add to the Ascend 950 port
-"""Host tests for compact receive/compute/return and MXFP4 layer selection."""
+"""Host checks for eager MXFP4 execution on UMDK transaction slices."""
 
 from types import SimpleNamespace
 
 import pytest
 
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_layout import LayerRows
 from tests.unit.fakes.async_ffn import (
     eager_mxfp_runner,
     load_async_modules,
@@ -28,59 +29,59 @@ def runtime(monkeypatch):
     return runner, executor, layers
 
 
-@pytest.mark.parametrize(
-    "layer_id,counts,expected",
-    [(7, [2, 1], [7, 7, 8]), (3, [0, 2], [4, 4]), (3, [0, 0], [0])],
-)
-def test_950_push_returns_only_received_rows_and_the_original_header(
-    monkeypatch, runtime, layer_id, counts, expected
-):
+def test_mixed_layer_slice_and_empty_slice_return_registered_rows(monkeypatch, runtime):
     runner, _, layers = runtime
-    header = torch.tensor([12, 0, layer_id, 0, 1])
-    states = SimpleNamespace(
-        token_nums_rankid_layeridx=header,
-        group_list=torch.tensor(counts),
-        dynamic_scales=None,
-    )
-    context = SimpleNamespace(states=states)
-    payload = SimpleNamespace(
-        hidden_states=torch.ones((6, 2), dtype=torch.bfloat16), context=context
-    )
-    sends = []
-    session = eager_mxfp_runner(
+    hidden = torch.arange(16, dtype=torch.bfloat16).view(8, 2)
+    original = hidden.clone()
+    output = torch.full_like(hidden, -1)
+    groups = (LayerRows(3, 0, (2, 2)), LayerRows(7, 4, (0, 4)))
+
+    def packet(index, rows, work):
+        state = runner.UmdkSlice(transaction=19, index=index, groups=work)
+        context = SimpleNamespace(
+            metadata=SimpleNamespace(total_tokens=len(rows)), states=state
+        )
+        return SimpleNamespace(hidden_states=rows, context=context)
+
+    packets = [packet(0, hidden, groups), packet(1, hidden[:0], ())]
+    returns = []
+    model = eager_mxfp_runner(
         monkeypatch,
         torch,
         runner,
         layers,
-        lambda: payload,
-        lambda rows, ctx: sends.append((rows, ctx)),
+        packets,
+        output,
+        lambda rows, ctx: returns.append((rows, ctx)),
     )
-    assert session.execute_connector_driven_step()
-    assert len(sends) == len(layers)
-    rows, returned = sends[0]
-    assert all(ctx is context for _, ctx in sends)
-    torch.testing.assert_close(
-        rows, torch.tensor(expected, dtype=torch.bfloat16)[:, None].expand(-1, 2)
+    assert model.execute_connector_driven_step()
+    assert model.execute_connector_driven_step()
+    assert model.execute_connector_driven_step()  # idle poll
+    assert not model.execute_connector_driven_step(shutdown_requested=True)
+    assert [ctx for _, ctx in returns] == [p.context for p in packets]
+    assert all(
+        rows.is_set_to(output[: len(p.hidden_states)])
+        for (rows, _), p in zip(returns, packets, strict=True)
     )
-    assert torch.equal(returned.states.token_nums_rankid_layeridx, header)
+    torch.testing.assert_close(hidden, original)
+    factors = torch.tensor([3, 3, 4, 4, 8, 8, 8, 8], dtype=torch.bfloat16)
+    torch.testing.assert_close(output, original * factors[:, None])
 
 
 @pytest.mark.parametrize(
-    "layer,counts,error",
+    "groups,error",
     [
-        (1, [2, 1], "unknown FFN layer"),
-        (3, [2, 4], "receive capacity"),
-        (3, [1], "one count per local expert"),
+        ((LayerRows(1, 0, (2, 1)),), "unknown FFN layer"),
+        ((LayerRows(3, 0, (2, 4)),), "physical slice"),
+        ((LayerRows(7, 0, (2,)),), "physical slice"),
+        ((LayerRows(7, 0, (2, 0)),), "cover the physical slice"),
     ],
 )
-def test_950_rejects_invalid_received_metadata(runtime, layer, counts, error):
+def test_950_rejects_inconsistent_slice(runtime, groups, error):
     _, executor, layers = runtime
+    hidden = torch.ones((4, 2), dtype=torch.bfloat16)
     with pytest.raises(ValueError, match=error):
-        executor(layers, 2)(
-            torch.ones((4, 2), dtype=torch.bfloat16),
-            torch.tensor(counts),
-            torch.tensor([9, 0, layer]),
-        )
+        executor(layers, 2)(hidden, groups, torch.empty_like(hidden))
 
 
 @pytest.mark.parametrize("bad", ["quant", "shared", "mega"])

@@ -120,7 +120,7 @@ initialization; a missing rank prevents the CAM collective from completing.
 
 ## CAM async fails with `507015` or an AI Core timeout
 
-Do not reduce `HCCL_BUFFSIZE` below the value used by the validated recipe. CAM
+For the compact 910C transport, do not reduce `HCCL_BUFFSIZE` below the value used by the validated recipe. CAM
 dispatch uses capacity-sized buffers, so a small request can still require the
 full communication buffer.
 
@@ -142,7 +142,7 @@ topology first.
 
 ## FFN workers do not exit
 
-An idle async FFN worker can remain blocked in `afd_async_dispatch_recv` during
+An idle compact 910C FFN worker can remain blocked in `afd_async_dispatch_recv` during
 shutdown. Allow the normal service shutdown to finish before forcing process
 termination. Before restarting the deployment, use `npu-smi info` to confirm
 that the old workers no longer hold device memory. A process left in an

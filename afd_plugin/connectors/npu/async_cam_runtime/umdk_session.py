@@ -19,12 +19,17 @@ from afd_plugin.connectors.metadata import (
     AFDTransferMetadata,
     AFDTransferState,
 )
+from afd_plugin.connectors.npu.async_cam_runtime.io_log import (
+    cam_logger,
+    log_cam_op_values,
+)
 from afd_plugin.connectors.npu.async_cam_runtime.umdk_layout import (
     COMPLETE,
     IDLE,
     SELECTED,
     SLICE,
     TRANSACTION_MAGIC,
+    UMDK_MAX_SOURCE_ROWS,
     LayerRows,
     TransactionLayout,
 )
@@ -38,7 +43,6 @@ if TYPE_CHECKING:
 _TASK = Struct("<16I")
 _ABI_VERSION = 2
 _LOCAL_ROUNDS = 1
-_MAX_LANE_ROWS = 32768
 _EXPERT_ALIGNMENT = 32
 _AIV_CORES = 32
 _TIMEOUT_SECONDS = 120
@@ -85,11 +89,12 @@ class UmdkSession(FFNExecutionSession):
     ):
         self.startup, self.topology = startup, topology
         self.hidden, self.topk, self.capacity, self.tp = hidden, topk, capacity, tp
-        if not 0 < capacity <= _MAX_LANE_ROWS:
-            raise ValueError("UMDK CombineRecv admits 1..32768 rows per Attention rank")
+        if not 0 < capacity <= UMDK_MAX_SOURCE_ROWS:
+            raise ValueError(
+                f"UMDK CombineRecv admits 1..{UMDK_MAX_SOURCE_ROWS} source rows"
+            )
         self.window = min(
             capacity,
-            _MAX_LANE_ROWS,
             (backend_rows // _EXPERT_ALIGNMENT * _EXPERT_ALIGNMENT)
             // topology.attn_size,
         )
@@ -108,6 +113,13 @@ class UmdkSession(FFNExecutionSession):
 
     def attention_step(self):
         return nullcontext()
+
+    def keep_serving(self, shutdown_requested: bool) -> bool:
+        return (
+            not shutdown_requested
+            or self.continuation
+            or self.current_slice is not None
+        )
 
     def initialize(self, device: str, group_name: str) -> None:
         import deep_ep
@@ -165,6 +177,13 @@ class UmdkSession(FFNExecutionSession):
             o.compileFFNSchedulerOnly()
             o.compileComputeReadyOnly()
         self.cfg = o.camConfig()
+        cam_logger.info(
+            "UMDK AFD registered buffers: role=%s world_rank=%d lane_rows=%d layers=%d",
+            t.role,
+            t.world_rank,
+            self.window,
+            len(self.layout.layers),
+        )
 
     def dispatch(
         self,
@@ -221,6 +240,14 @@ class UmdkSession(FFNExecutionSession):
         with torch.npu.stream(self.send_stream):
             self.send_stream.wait_event(ready)
             n = hidden.size(0)
+            log_cam_op_values(
+                "afd_async_dispatch_send",
+                "inputs",
+                x=hidden,
+                task_info=task,
+                valid_rows=valid_rows,
+                rounds=rounds,
+            )
             self.ops.afd_async_dispatch_send(
                 hidden,
                 self.sf,
@@ -259,6 +286,13 @@ class UmdkSession(FFNExecutionSession):
         o, c = self.owner, self.cfg
         # A multi-round send may need credit from this very receive before it finishes.
         torch.npu.current_stream(self.device).wait_event(p.inputs_ready)
+        log_cam_op_values(
+            "afd_async_combine_recv",
+            "inputs",
+            task_info=p.task,
+            combined_x=p.output,
+            stage=stage,
+        )
         self.ops.afd_async_combine_recv(
             o.payload,
             p.task,
@@ -292,8 +326,10 @@ class UmdkSession(FFNExecutionSession):
             raise RuntimeError(
                 f"UMDK transfer failed: dispatch={send_status}, combine={recv_status}"
             )
+        combined = p.output[: p.rows]
+        log_cam_op_values("afd_async_combine_recv", "outputs", combined_x=combined)
         self.pending = None
-        return p.output[: p.rows]
+        return combined
 
     def _transaction(self) -> list[int]:
         return (
@@ -332,6 +368,12 @@ class UmdkSession(FFNExecutionSession):
                     return None
                 if monotonic() >= deadline:
                     raise TimeoutError("UMDK timed out waiting for an FFN transaction")
+        log_cam_op_values(
+            "afd_async_dispatch_recv",
+            "inputs",
+            active=o.active,
+            execution_state=o.execution_state,
+        )
         self.ops.afd_async_dispatch_recv(
             o.payload,
             o.context,
@@ -386,6 +428,14 @@ class UmdkSession(FFNExecutionSession):
         self.current_slice = AFDTransferContext(
             metadata, UmdkSlice(tx[1], tx[7], groups)
         )
+        log_cam_op_values(
+            "afd_async_dispatch_recv",
+            "outputs",
+            transaction=tx[1],
+            slice_index=tx[7],
+            valid_rows=header[7],
+            physical_rows=header[8],
+        )
         return AFDA2FTransferPayload(o.recv_x[: header[8]], self.current_slice)
 
     def result_buffer(self, context: AFDTransferContext) -> torch.Tensor:
@@ -407,6 +457,13 @@ class UmdkSession(FFNExecutionSession):
         if not result.is_set_to(target):
             target.copy_(result)
         o.computeReady()
+        log_cam_op_values(
+            "afd_async_combine_send",
+            "inputs",
+            combine_x=target,
+            transaction=context.states.transaction,
+            slice_index=context.states.index,
+        )
         self.ops.afd_async_combine_send(
             o.combine_x,
             o.recv_src_metadata,

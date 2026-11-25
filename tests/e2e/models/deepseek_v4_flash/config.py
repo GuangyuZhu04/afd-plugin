@@ -35,7 +35,7 @@ DSV4_ATTENTION_TP_SIZE = 4
 
 
 DSV4_SYNC_CAMP2P_CONNECTOR = "CAMP2pAFDConnector"
-# Recorded size of the CAMP2P and A5 compact CAM HCCL domains, in MiB.
+# HCCL process-group size used by the CAMP2P and A5 UMDK profiles, in MiB.
 DSV4_HCCL_BUFFER_SIZE_MB = 2048
 DSV4_SYNC_QUANT_MODE = 0
 DSV4_ASCEND_QUANTIZATION = "ascend"
@@ -156,7 +156,6 @@ class DSV4SyncShape(NamedTuple):
     max_num_seqs: str | None = DSV4_MAX_NUM_SEQS
     memory_utilization: str | None = DSV4_MEMORY_UTILIZATION
     multithread_load: bool = True
-    indexer_kv_dtype: str = "int8"
     connector_extra_config: dict[str, int] | None = DSV4_SYNC_CONNECTOR_EXTRA_CONFIG
     quantization_from_checkpoint: bool = True
     # A profile whose host does not return reliable answers yet sets this false:
@@ -200,7 +199,6 @@ DSV4_SYNC_SHAPES = {
         multithread_load=False,
         connector_extra_config=None,
         quantization_from_checkpoint=False,
-        indexer_kv_dtype="fp8",
         verbatim_launch=True,
         # The script leaves prefix caching and the block size at vLLM's defaults.
         # Its ten concurrent chat requests share one template prefix, and that
@@ -319,6 +317,10 @@ def sync_camp2p_quantization(model: str, shape: DSV4SyncShape) -> str | None:
     """
     if not shape.quantization_from_checkpoint:
         return None
+    return _ascend_quantization_for_checkpoint(model)
+
+
+def _ascend_quantization_for_checkpoint(model: str) -> str | None:
     declared = _declared_quant_method(model)
     if declared is not None and declared != DSV4_ASCEND_QUANTIZATION:
         return None
@@ -431,7 +433,7 @@ def _configure_dsv4_arguments(
 
 
 def configure_scenario(args: argparse.Namespace) -> None:
-    """Configure the compact CAM deployment for the scenario's target SoC."""
+    """Configure a 910C compact or a 950 UMDK transport deployment."""
     shape = DSV4_ASYNC_SHAPES[args.scenario]
     args.afd_connector = "CAMAsyncAFDConnector"
     args.afd_async = True
@@ -443,13 +445,21 @@ def configure_scenario(args: argparse.Namespace) -> None:
     if shape.hccl_buffer_size is not None:
         extra["hccl_buffer_size"] = shape.hccl_buffer_size
     args.afd_connector_extra_config = [json.dumps(extra)]
+    # A native FP4 checkpoint may declare fp8; ModelSlim uses ascend.
+    quantization = (
+        _ascend_quantization_for_checkpoint(args.model)
+        if shape.dynamic_quant == 0
+        else DSV4_ASCEND_QUANTIZATION
+    )
     _configure_dsv4_arguments(
-        args, DSV4_ASCEND_QUANTIZATION, indexer_kv_dtype=shape.indexer_kv_dtype
+        args, quantization, indexer_kv_dtype=shape.indexer_kv_dtype
     )
     if shape.dynamic_quant == 0:
         # A5 sends BF16 rows. W4A8MXFP experts compute their own block scales.
         args.common_vllm_arg.extend(["--dtype", "bfloat16"])
     args.ffn_vllm_arg = ["--all2all-backend", "flashinfer_all2allv"]
+    if shape.dynamic_quant == 0:
+        args.ffn_vllm_arg.extend(["--expert-placement-strategy", "linear"])
     args.attention_vllm_arg[:0] = [
         *(["--enable-dbo"] if shape.attention_dbo else []),
         "--all2all-backend",

@@ -46,6 +46,7 @@ def npu_parallel_config(**overrides):
         "use_sequence_parallel_moe": False,
         "enable_eplb": False,
         "enable_expert_parallel": True,
+        "expert_placement_strategy": "linear",
         "enable_elastic_ep": False,
         "prefill_context_parallel_size": 1,
         "decode_context_parallel_size": 1,

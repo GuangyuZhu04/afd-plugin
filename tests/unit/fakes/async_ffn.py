@@ -81,7 +81,10 @@ def mxfp_runtime(monkeypatch, torch):
                 "the native BF16 path requires expert counts and no CAM scales"
             )
         gains = torch.repeat_interleave(args.weights.w1, args.group_list)
-        return args.hidden_states * gains[:, None], None
+        output = args.hidden_states * gains[:, None]
+        # The pinned Ascend W4A8MXFP method calls dispose_tensor on this input.
+        args.hidden_states.set_(args.hidden_states.new_empty(0))
+        return output, None
 
     modules: dict[str, dict[str, object]] = {
         "torch_npu": dict(float4_e2m1fn_x2="fp4", float8_e8m0fnu="e8m0"),
@@ -136,13 +139,12 @@ def mxfp_runtime(monkeypatch, torch):
     return executor, layers
 
 
-def eager_mxfp_runner(monkeypatch, torch, runtime, layers, receive, send):
-    """Start the actual eager runner with a host model/connector boundary."""
+def eager_mxfp_runner(monkeypatch, torch, runtime, layers, payloads, registered, send):
+    """Start the eager runner with a host UMDK queue and registered return buffer."""
     from afd_plugin.connectors.npu.async_cam_runtime.async_cam_startup import (
         AsyncCAMGraphStartup,
         resolve_ffn_mode,
     )
-    from tests.unit.fakes.connector import FakeFFNSession
     from tests.unit.fakes.vllm_config import npu_vllm_config
 
     class Model:
@@ -156,14 +158,26 @@ def eager_mxfp_runner(monkeypatch, torch, runtime, layers, receive, send):
     module.__dict__["AFDDeepseekV4ForCausalLM"] = Model
     monkeypatch.setitem(sys.modules, module.__name__, module)
     graph_startup = AsyncCAMGraphStartup(1, 1, 2)
+    transport = runtime.UmdkSession(
+        graph_startup, SimpleNamespace(attn_size=1), 2, 1, 32, 1, 32
+    )
+    transport.owner = SimpleNamespace(combine_x=registered)
+    queued = iter(payloads)
+
+    def receive(*, wait):
+        payload = next(queued, None)
+        transport.current_slice = None if payload is None else payload.context
+        return payload
+
+    monkeypatch.setattr(transport, "receive", receive)
     connector = SimpleNamespace(
         dynamic_quant=0,
+        world_rank=1,
         expert_per_rank=2,
         is_initialized=False,
         graph_startup=graph_startup,
-        ffn_session=FakeFFNSession,
+        ffn_session=lambda: transport,
         init_afd_connector=lambda: resolve_ffn_mode([graph_startup.plan]),
-        recv_attn_output=receive,
         send_ffn_output=send,
     )
     cfg = npu_vllm_config(

@@ -154,11 +154,11 @@ def test_register_afd_preserves_native_models_and_is_idempotent(registration):
     assert sorted(registration.sent) == sorted(expected.items())
 
 
-@pytest.mark.parametrize("registration", ["npu"], indirect=True)
+@pytest.mark.parametrize("registration", [("npu", True)], indirect=True)
 def test_register_publishes_a5_vendor_before_runtime_setup(
     registration, monkeypatch, tmp_path
 ):
-    library = tmp_path / "op_api/lib/libafd_cust_opapi.so"
+    library = tmp_path / "op_api/lib/libafd_umdk_opapi.so"
     library.parent.mkdir(parents=True)
     library.touch()
     monkeypatch.setattr(ops, "get_afd_cann_vendor_path", lambda: tmp_path)

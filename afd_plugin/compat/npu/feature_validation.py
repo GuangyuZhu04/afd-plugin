@@ -17,7 +17,8 @@ from afd_plugin.config import (
     AFDConfig,
     parse_afd_config,
 )
-from afd_plugin.validation import CAM_MAX_SOURCE_ROWS, cam_receive_capacity
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_layout import UMDK_MAX_SOURCE_ROWS
+from afd_plugin.validation import cam_receive_capacity
 
 if TYPE_CHECKING:
     from vllm.config import VllmConfig
@@ -186,9 +187,14 @@ def _fail_if_unsupported_npu_afd_async_features(
     parallel_config = vllm_config.parallel_config
     speculative_config = vllm_config.speculative_config
     max_num_batched_tokens = vllm_config.scheduler_config.max_num_batched_tokens
+    registered = uses_umdk_async()
     if get_ascend_device_type() == AscendDeviceType.A5:
         import torch
 
+        if not registered:
+            raise RuntimeError(
+                "Ascend 950 Async CAM requires the UMDK registered-buffer plugin build"
+            )
         architectures = vllm_config.model_config.hf_config.architectures
         if architectures not in (
             ["DeepseekV4ForCausalLM"],
@@ -199,29 +205,36 @@ def _fail_if_unsupported_npu_afd_async_features(
             raise RuntimeError(
                 "Ascend 950 Async CAM requires F TP=1 with static expert parallelism"
             )
-        if max_num_batched_tokens > CAM_MAX_SOURCE_ROWS * extra_info.attn_ranks_per_dp:
+        if (
+            afd_config.is_ffn_server
+            and parallel_config.expert_placement_strategy != "linear"
+        ):
+            raise RuntimeError("UMDK requires linear expert placement on each FFN rank")
+        if max_num_batched_tokens > UMDK_MAX_SOURCE_ROWS * extra_info.attn_ranks_per_dp:
             raise RuntimeError(
-                f"Ascend 950 Async CAM supports at most {CAM_MAX_SOURCE_ROWS} "
+                f"Ascend 950 UMDK supports at most {UMDK_MAX_SOURCE_ROWS} "
                 f"source rows per Attention rank (max_num_batched_tokens="
                 f"{max_num_batched_tokens}, TP={extra_info.attn_ranks_per_dp})"
             )
-        if (
-            extra_info.dynamic_quant != 0
-            or vllm_config.model_config.dtype != torch.bfloat16
-        ):
-            raise RuntimeError("Ascend 950 Async CAM requires BF16 and dynamicQuant=0")
-        if extra_info.ffn_mega_moe or speculative_config is not None:
+        if vllm_config.model_config.dtype != torch.bfloat16:
+            raise RuntimeError("Ascend 950 UMDK transport requires BF16 activations")
+        if extra_info.ffn_mega_moe:
+            raise RuntimeError("Ascend 950 UMDK requires Push transport")
+        if extra_info.dynamic_quant == 0 and speculative_config is not None:
             raise RuntimeError(
-                "Ascend 950 Async CAM requires Push without draft models"
+                "DeepSeek-V4-Flash MXFP4 requires eager Push without draft models"
             )
-        if (
-            not vllm_config.model_config.enforce_eager
-            or parallel_config.enable_dbo
-            or parallel_config.use_ubatching
+        if not vllm_config.model_config.enforce_eager or (
+            extra_info.dynamic_quant == 0
+            and (parallel_config.enable_dbo or parallel_config.use_ubatching)
         ):
             raise RuntimeError(
                 "Ascend 950 Async CAM requires eager execution without DBO or ubatching"
             )
+    elif registered:
+        raise RuntimeError(
+            "The UMDK registered-buffer plugin build requires Ascend 950/A5"
+        )
     elif extra_info.dynamic_quant != 1:
         raise RuntimeError(
             "DSV4 Flash-INT8 CAMAsyncAFDConnector requires dynamicQuant=1"
@@ -275,7 +288,7 @@ def _fail_if_unsupported_npu_afd_async_features(
     # Push chunks whole experts. Pull can split one expert across receive rounds.
     if (
         not extra_info.ffn_mega_moe
-        and not uses_umdk_async()
+        and not registered
         and receive_capacity < max_num_batched_tokens
     ):
         raise RuntimeError(

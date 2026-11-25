@@ -304,9 +304,9 @@ FFN cleanup exception above and is not selected by the four-device PR gate.
 
 `afd-dsv4-flash-async-cam-dp2tp2-ep4` uses eight Ascend 950 dies for a
 DeepSeek-V4-Flash W4A8MXFP checkpoint. It uses eager MRV2 on both roles,
-Attention-side routing, BF16 compact Push, and strict cleanup. It accepts
+Attention-side routing, BF16 UMDK registered-buffer transport, and strict cleanup. It accepts
 ten overlapping requests only when every answer matches the expected sum.
-See the [A5 case and source evidence](../../../tests/e2e/README.md#dsv4-flash-compact-async-cam-on-ascend-950-local-8-npus).
+See the [A5 case and source evidence](../../../tests/e2e/README.md#dsv4-flash-umdk-async-cam-on-ascend-950-local-8-npus).
 
 `afd-dsv4-flash-sync-camp2p-2a2f` (A5) and `afd-dsv4-flash-sync-camp2p-8a8f`
 (A3) are local synchronous DSV4 Flash profiles using `CAMP2pAFDConnector` and

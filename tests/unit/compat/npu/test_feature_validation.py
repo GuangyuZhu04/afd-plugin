@@ -51,6 +51,9 @@ def _admit(config):
 
 @pytest.fixture
 def a5_bf16(monkeypatch):
+    monkeypatch.setattr(
+        "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: True
+    )
     torch = sys.modules["torch"]
     monkeypatch.setattr(torch, "bfloat16", "bf16")
     utils = sys.modules["vllm_ascend.utils"]
@@ -63,7 +66,9 @@ def a5_bf16(monkeypatch):
     ("change", "message"),
     [
         (None, None),
-        ("quant", "dynamicQuant=0"),
+        ("integer_experts", None),
+        ("wrong_build", "registered-buffer plugin build"),
+        ("placement", "linear expert placement"),
         ("dtype", "BF16"),
         ("target", "DeepseekV4ForCausalLM"),
         ("ffn_tp", "F TP=1"),
@@ -72,9 +77,11 @@ def a5_bf16(monkeypatch):
         ("spec", "without draft models"),
     ],
 )
-def test_a5_bf16_eager_admission(a5_bf16, change, message):
+def test_a5_bf16_eager_admission(a5_bf16, monkeypatch, change, message):
     config = _config_with(
-        role="ffn", extra_config={"dynamicQuant": int(change == "quant")}, **ASYNC_CAM
+        role="ffn",
+        extra_config={"dynamicQuant": int(change == "integer_experts")},
+        **ASYNC_CAM,
     )
     config.model_config.hf_config.architectures = [
         "DeepseekV4ForCausalLM" if change != "target" else "DeepseekV41ForCausalLM"
@@ -83,6 +90,12 @@ def test_a5_bf16_eager_admission(a5_bf16, change, message):
     config.model_config.enforce_eager = change != "graph"
     config.parallel_config.use_ubatching = change == "ubo"
     config.parallel_config.tensor_parallel_size = 2 if change == "ffn_tp" else 1
+    if change == "wrong_build":
+        monkeypatch.setattr(
+            "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: False
+        )
+    if change == "placement":
+        config.parallel_config.expert_placement_strategy = "round_robin"
     config.speculative_config = object() if change == "spec" else None
     if message:
         with pytest.raises(RuntimeError, match=message):
@@ -95,11 +108,10 @@ def test_a5_bf16_eager_admission(a5_bf16, change, message):
 @pytest.mark.parametrize(
     "attn_tp,batch,allowed",
     [
-        (1, 65_535, True),
-        (1, 65_536, False),
-        (2, 131_070, True),
-        (2, 131_071, False),
-        (2, 131_072, False),
+        (1, 32_768, True),
+        (1, 32_769, False),
+        (2, 65_536, True),
+        (2, 65_537, False),
     ],
 )
 def test_a5_eager_source_rows_per_attention_rank(
@@ -115,7 +127,7 @@ def test_a5_eager_source_rows_per_attention_rank(
         **ASYNC_CAM,
     )
     config.model_config.hf_config.architectures = ["DeepseekV4ForCausalLM"]
-    with nullcontext() if allowed else pytest.raises(RuntimeError, match="65535"):
+    with nullcontext() if allowed else pytest.raises(RuntimeError, match="32768"):
         fail_if_unsupported_npu_afd_features(config)
 
 

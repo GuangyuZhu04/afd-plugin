@@ -1,7 +1,7 @@
 # DeepSeek-V4-Flash DSpark A/F execution
 
 For the Ascend 950 W4A8MXFP checkpoint, use the
-[eight-die compact CAM eager case](../../../../tests/e2e/README.md#dsv4-flash-compact-async-cam-on-ascend-950-local-8-npus).
+[eight-device UMDK eager deployment](ascend950_umdk.md).
 
 This recipe configures target and draft A/F execution using the existing
 Async CAM transport. Attention retains attention, routing, shared experts,

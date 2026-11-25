@@ -197,14 +197,21 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
         else {}
     )
     worker_environment: tuple[tuple[str, str], ...] = ()
+    ffn_config: dict[str, bool | int] = dict(
+        config.additional_config("ffn", async_cam=asynchronous)
+    )
     if case_id == config.DSV4_ASYNC_CAM_A5_SCENARIO:
         address = ip_address(environment.afd_host)
         if address.is_loopback or address.is_unspecified or address.is_multicast:
             raise ValueError(
                 "A5 async CAM requires --afd-host to advertise the HCCL interface IP"
             )
-        # Direct case invocations must give host tiling the same window as HCCL.
+        # UMDK owns the registered data windows. This setting sizes the HCCL domain.
+        # Load ordinary packed weights and scales for the local MXFP4 MLP.
+        ffn_config["enable_fused_mc2"] = 0
         worker_environment = (
+            ("VLLM_LOGGING_LEVEL", "INFO"),
+            ("BATCH_SIZE_FACTOR", "1.0"),
             ("HCCL_BUFFSIZE", str(connector_extra_config["hccl_buffer_size"])),
             ("HCCL_IF_IP", environment.afd_host),
         )
@@ -238,9 +245,7 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
                 ffn_tp,
                 execution,
                 vllm_args=tuple(args.ffn_vllm_arg),
-                additional_config=tuple(
-                    config.additional_config("ffn", async_cam=asynchronous).items()
-                ),
+                additional_config=tuple(ffn_config.items()),
             ),
             connector=args.afd_connector,
             compute_gate_on_attention=args.compute_gate_on_attention,
@@ -276,7 +281,10 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
             Phase(
                 "evaluation",
                 CompletionTask(
-                    check_answer=True if shape is None else shape.check_answer
+                    check_answer=True if shape is None else shape.check_answer,
+                    umdk_rank_counts=(attention_ranks, ffn_ranks)
+                    if case_id == config.DSV4_ASYNC_CAM_A5_SCENARIO
+                    else None,
                 ),
                 checks,
             ),

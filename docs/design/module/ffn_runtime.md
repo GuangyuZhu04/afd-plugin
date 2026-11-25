@@ -356,16 +356,13 @@ The Ascend worker checks `connector.control_plane`. When it is `None`, as for
 CAM async, the worker calls `execute_connector_driven_step(shutdown_requested)`
 instead of a control-plane receive. The runner asks the execution session once
 per step whether to keep serving, so Pull adds no extra Store round trip to the
-loop. For each layer, the runner:
-
-1. receives a capacity-sized payload and its original CAM metadata through
-   `connector.recv_attn_output()`;
-2. on A3, passes activations, dynamic scales, expert counts and the device
-   layer ID to `AsyncCAMLayeredExecutor`. On A5, the eager MXFP4 executor
-   selects the received layer, processes the BF16 rows counted for this
-   chunk and lets the native expert method derive its MX block scales;
-3. returns the routed output and original context with
-   `connector.send_ffn_output()`.
+loop. On A3 the layered executor consumes compact dispatch metadata, the
+device layer ID, expert counts and dynamic scales. The original context
+goes back to CombineSend. On A5 the UMDK runner polls one slice at a time.
+It selects one native expert MLP per represented layer and supplies physical
+per-expert row counts. W4A8MXFP derives group-32 activation scales from BF16
+and writes the layer interval to registered `combine_x`. ComputeReady and
+CombineSend retire the slice, including zero-row slices.
 
 Async eager does not use the synchronous DP-metadata graph cache. Its FULL
 mode captures a complete original DR/FFN/CS transaction with device-side layer

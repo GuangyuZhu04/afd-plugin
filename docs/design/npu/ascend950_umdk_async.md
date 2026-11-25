@@ -89,6 +89,10 @@ provider of the four UMDK schemas per process.
 For serving, install the pinned DeepEP owner and its matching DeepJIT build
 on each rank. Select `CAMAsyncAFDConnector`, eager execution and BF16 routed
 transport. The W4A8/W8A8 FFN quantizes the received BF16 rows locally.
+For DeepSeek-V4-Flash FP4, `dynamicQuant=0` selects the loaded native W4A8MXFP
+method. It processes one layer interval at a time, including each expert's
+aligned rows, and fills the caller's registered result. See the
+[eight-device deployment and acceptance case](../../../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk.md).
 The connector negotiates the model's layer IDs, divides Attention ranks
 into TP members of each DP, and enables independent communication rounds.
 The first integration reuses a single physical slot per Attention rank.
