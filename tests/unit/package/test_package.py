@@ -15,12 +15,21 @@ import os
 import sys
 from collections.abc import Callable
 from importlib.machinery import ModuleSpec
+from pathlib import Path
 from types import ModuleType, SimpleNamespace
 
 import pytest
+from setuptools import Distribution
 
 import afd_plugin
 from afd_plugin.compat.npu import ops
+
+
+def test_wheel_discovers_the_npu_worker_patches(monkeypatch):
+    monkeypatch.chdir(Path(__file__).resolve().parents[3])
+    distribution = Distribution()
+    distribution.parse_config_files()
+    assert "afd_plugin.compat.patches.npu" in distribution.packages
 
 
 def test_models_metadata_compat_export(monkeypatch):
