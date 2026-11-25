@@ -12,7 +12,7 @@
 #include <torch/extension.h>
 #include <torch/csrc/autograd/custom_function.h>
 #include "torch_npu/csrc/core/npu/NPUStream.h"
-#include "op_api_common.h"
+#include "pytorch_npu_helper.hpp"
 
 using torch::autograd::AutogradContext;
 using torch::autograd::Function;

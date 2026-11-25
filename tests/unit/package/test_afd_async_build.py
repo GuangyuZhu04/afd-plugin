@@ -9,6 +9,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import runpy
 import subprocess
 from pathlib import Path
@@ -72,6 +74,47 @@ def test_afd_async_arch35_selector_is_specific_to_950():
     assert result.returncode == 0, result.stderr
     assert result.stdout.splitlines() == [directory]
     assert _run_select_ops("--soc", "ascend910_93", *args).returncode != 0
+
+
+def test_950_native_sources_match_the_pinned_umdk_git_blobs():
+    """Compare shipped sources to upstream Git IDs, including uncommitted edits."""
+    reference = json.loads(
+        (Path(__file__).parent / "fixtures/umdk_afd_sources.json").read_text("utf-8")
+    )
+    root = Path(__file__).resolve().parents[3] / "csrc/npu"
+    patterns = [
+        *(f"ascend_kernels/{op}_arch35/**/*" for op in AFD_ASYNC_OPERATORS),
+        "ascend_kernels/utils/op_kernel/afd_async/**/*",
+        "ascend_kernels/utils/op_kernel/afd_async_rt_common.h",
+        "ascend_kernels/utils/op_host/afd_async_opdef.h",
+        "ascend_kernels/utils/op_host/error_log.h",
+        "pybind/umdk/afd_async_*.cpp",
+    ]
+    blobs = {}
+    for pattern in patterns:
+        for path in root.glob(pattern):
+            if path.suffix.lower() not in {
+                ".c",
+                ".cc",
+                ".cpp",
+                ".cxx",
+                ".h",
+                ".hpp",
+                ".inc",
+                ".inl",
+                ".s",
+            }:
+                continue
+            # Git stores LF in the upstream text blobs, also on CRLF checkouts.
+            content = path.read_bytes().replace(b"\r\n", b"\n")
+            header = f"blob {len(content)}\0".encode("ascii")
+            name = path.relative_to(root).as_posix().replace("pybind/umdk/", "pybind/")
+            blobs[name] = hashlib.sha1(
+                header + content, usedforsecurity=False
+            ).hexdigest()
+    assert blobs == reference["blobs"], (
+        f"Sources differ from UMDK {reference['commit']}"
+    )
 
 
 def test_afd_async_selection_preserves_registry_order_with_legacy_operators():

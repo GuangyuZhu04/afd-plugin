@@ -28,6 +28,47 @@ slot and independent valid and physical row counts. Reusing the legacy third
 receive output as routing metadata would return expert results to incorrect
 tokens.
 
+## UMDK implementation baseline
+
+The four Ascend 950 operators are mirrored from
+[`openeuler/umdk@dcc0350e`](https://gitcode.com/openeuler/umdk/commit/dcc0350e149955fcb2d1975bab189749aa9aaba9).
+The 43 kernel, shared device, host tiling and ACLNN source files and the four
+PyTorch binding translation units have the same Git blob IDs as the originals.
+This includes the dispatch and combine algorithms, record layouts, FFN
+transaction logic and ACK publication. The plugin supplies the upstream
+include name `pytorch_npu_helper.hpp` through a local header that resolves
+the packaged ACLNN library and retains workspace during queued submission.
+
+The CPU package test reads the working files and checks their paths and blobs
+against a [manifest from the pinned UMDK tree](../../../tests/unit/package/fixtures/umdk_afd_sources.json).
+Run it after changing the vendored sources or updating the pin.
+
+```bash
+python -m pytest -q tests/unit/package/test_afd_async_build.py -k pinned_umdk_git_blobs
+```
+
+In the AArch64 CANN 9.2.0 build, the complete device ELF objects and their
+adjacent CANN JSON descriptors matched byte for byte between the upstream
+UMDK OPP, the plugin OPP and the plugin wheel.
+
+| Device kernel | ELF bytes | SHA-256 of the complete ELF |
+| --- | ---: | --- |
+| `afd_async_dispatch_send` | 41,360 | `9c557911656627dad1cf10a53e53e5a26dadcdc73d61460e1d950cf4f79765b1` |
+| `afd_async_dispatch_recv` | 28,576 | `80c18ce36181dc8421c46cfcb4af15673a1873f73121067529dc775781aeac93` |
+| `afd_async_combine_send` | 34,024 | `f5657e01d0b5f2f3feda6324b4711e44f6850cbd285afba937c1e36face7c191` |
+| `afd_async_combine_recv` | 15,768 | `4d1457c4c7937dbb95a4e2f17fe9495e5a2a09f7ee3bcf83fdce8dd7ab0834c5` |
+
+To repeat the binary comparison, set `UMDK_VENDOR` and `AFD_VENDOR` to the
+extracted `vendors/CAM` and `vendors/afd-plugin` directories from builds made
+with the same toolchain. Each operator directory contains its ELF and descriptor.
+
+```bash
+kernel_dir=op_impl/ai_core/tbe/kernel/ascend950
+for op in dispatch_send dispatch_recv combine_send combine_recv; do
+    diff -r "$UMDK_VENDOR/$kernel_dir/afd_async_$op" "$AFD_VENDOR/$kernel_dir/afd_async_$op" || exit 1
+done
+```
+
 ## Build and run
 
 Build the A5 package in a CANN 9.2 development environment with matching
