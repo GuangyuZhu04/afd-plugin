@@ -15,7 +15,7 @@ from types import ModuleType
 
 import pytest
 
-from afd_plugin.compat.npu.ops import ensure_afd_ascend_ops_loaded
+from afd_plugin.compat.npu.ops import ensure_afd_ascend_ops_loaded, uses_umdk_async
 
 
 def _load_compiled_ops() -> ModuleType:
@@ -28,6 +28,16 @@ def _load_compiled_ops() -> ModuleType:
     importlib.import_module("torch_npu")
     ensure_afd_ascend_ops_loaded()
     return torch
+
+
+@pytest.fixture(scope="module")
+def umdk_meta_runtime() -> None:
+    # A 950 Meta run needs the packaged dispatcher, but no DeepEP owner or NPU.
+    # Fail a requested 950 build if the installed wheel supplies another backend.
+    importlib.import_module("torch_npu")
+    ensure_afd_ascend_ops_loaded()
+    if not uses_umdk_async():
+        pytest.fail("SOC_VERSION=950 requires the plugin's registered-buffer extension")
 
 
 @pytest.fixture(scope="module")

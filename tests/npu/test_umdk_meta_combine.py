@@ -22,10 +22,8 @@ if not os.environ.get("SOC_VERSION", "").lower().startswith(("950", "ascend950")
     )
 
 torch = importlib.import_module("torch")
-importlib.import_module("torch_npu")
-importlib.import_module("umdk_cam_op_lib")
 
-pytestmark = pytest.mark.npu
+pytestmark = [pytest.mark.npu, pytest.mark.usefixtures("umdk_meta_runtime")]
 
 
 def meta_tensor(shape, dtype):

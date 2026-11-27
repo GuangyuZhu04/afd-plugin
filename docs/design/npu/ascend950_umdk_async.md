@@ -104,8 +104,10 @@ transaction headers on the host in eager mode. The owner admits capacity for
 a whole expert group and its aligned rows. It enforces its own rank, shape,
 memory and AIV limits.
 
-With four 950 devices and the serving dependencies installed, run the
-deterministic two-Attention/two-FFN check from the plugin checkout.
+Use the [Ascend 950 hardware procedure](../../npu/ascend950_umdk_bringup.md)
+for the container prerequisites, persistent rank logs, eight-device Flash
+geometry and the pinned DeepEP CAM reference. From a tests-only directory
+with this revision's installed wheel, the four-device control is
 
 ```bash
 torchrun --standalone --nproc-per-node=4 tests/npu/umdk_roundtrip.py
