@@ -50,8 +50,8 @@ FFN slice allocation has 16384 rows. The first step puts every source on
 the same layer with the dummy gate's balanced IDs. Later steps exercise
 mixed layers, empty sources/destinations and slot reuse. Each source compares
 every returned BF16 element with an independent expert-weighted reference.
-It also checks the last published round's metadata byte for byte, including
-INT64 expert IDs, FP32 weights, relative token index, mask and padding.
+It also checks every defined byte of the last round's metadata at its wire
+offset for INT64 expert IDs, FP32 weights, the relative token index and the mask.
 
 ```bash
 export ASCEND_RT_VISIBLE_DEVICES=0,1,2,3
@@ -140,6 +140,15 @@ entire 64-byte record matched the expected bytes. In a separate two-row
 CombineSend test, the old kernel returned execution state `ABORTED/BAD_ABI`.
 The repaired kernel returned `COMMITTED/OK`, and its two 512-byte WRITE
 descriptors contained the expected BF16 source and destination addresses.
+Replaying the captured Flash source with 32 AIVs also produced the expected
+IDs, weights, relative token indices and masks for all 64 six-route records,
+plus all 256 expert counts and all four destination-rank counts.
+After the sender fixes, the first full simulator replay reached CombineRecv.
+The old object emitted UB address `0x1c1bf` for a control block whose 32-byte
+aligned offset is `0x1c1c0`. The simulator reported unaligned 32-bit loads
+and timed out. The receiver now converts integer zero to a UB pointer
+explicitly, so every field starts at its declared physical offset.
+
 These tests used real ACLNN kernels on simulated device memory, with software
 queue completions. Use the four- and eight-device cases above to verify the
 physical transport, then run the model acceptance on the framework branch.

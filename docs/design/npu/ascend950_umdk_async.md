@@ -32,10 +32,11 @@ tokens.
 
 The four Ascend 950 operators are mirrored from
 [`openeuler/umdk@fee97356`](https://gitcode.com/openeuler/umdk/commit/fee97356e28f9945b44ceb3372bac89f9332a515).
-Of the 47 pinned files, 44 retain their upstream Git blob IDs. The shared
+Of the 47 pinned files, 43 retain their upstream Git blob IDs. The shared
 runtime header and the two sender bodies explicitly align the 950 scalar
 workers on their local stacks. DispatchSend uses natural alignment for its
 private parameter object and independently aligns its UB allocation to 32 bytes.
+CombineRecv uses physical UB offset zero for its preallocated reduction buffer.
 All four PyTorch schemas, ACLNN signatures, tiling and registered wire layouts
 use the upstream contract. The plugin supplies the upstream
 include name `pytorch_npu_helper.hpp` through a local header that resolves
@@ -49,7 +50,7 @@ continues to use `torch.ops.afd_ascend.afd_async_dispatch_send`. The November
 
 The CPU package test reads the working files and checks their paths and blobs
 against a [manifest from the pinned UMDK tree](../../../tests/unit/package/fixtures/umdk_afd_sources.json).
-Each of the three local fixes records both its upstream and its shipped blob.
+Each of the four locally changed files records both its upstream and its shipped blob.
 Run it after changing the vendored sources or updating the pin.
 
 ```bash
@@ -73,9 +74,7 @@ with the same toolchain. Each operator directory contains its ELF and descriptor
 
 ```bash
 kernel_dir=op_impl/ai_core/tbe/kernel/ascend950
-for op in dispatch_recv combine_recv; do
-    diff -r "$UMDK_VENDOR/$kernel_dir/afd_async_$op" "$AFD_VENDOR/$kernel_dir/afd_async_$op" || exit 1
-done
+diff -r "$UMDK_VENDOR/$kernel_dir/afd_async_dispatch_recv" "$AFD_VENDOR/$kernel_dir/afd_async_dispatch_recv"
 ```
 
 ## Build and run

@@ -71,7 +71,13 @@ def check_last_dispatch_records(session, ids, weights):
     expected[:, token_offset + 4 : token_offset + 8] = torch.full(
         (count, 1), mask, dtype=torch.int32
     ).view(torch.uint8)
-    torch.testing.assert_close(actual.view_as(expected), expected, rtol=0, atol=0)
+    actual = actual.view_as(expected)
+    # The alignment gaps have no wire value. MTE can fill them with a byte
+    # from the source burst (observed for K=6 on 3510).
+    for fields in (slice(0, 8 * k), slice(weight_offset, token_offset + 8)):
+        torch.testing.assert_close(
+            actual[:, fields], expected[:, fields], rtol=0, atol=0
+        )
 
 
 def source_round(session, profile, rank, step, rows, device):
