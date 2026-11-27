@@ -147,7 +147,9 @@ struct CombineReceiver {
         AscendC::InitSocState();
         vec_core_idx = AscendC::GetBlockIdx();
         task = recv_read(task_info); // replay must not reuse scalar DCache task fields
-        ub = nullptr;
+        // The 3510 UB address space has a distinct null representation. This
+        // layout starts at physical offset zero, including the first BF16 tile.
+        ub = reinterpret_cast<__ubuf__ CombineRecvUBRT *>(uintptr_t{0});
         stage = ub->control_stage;
         words = reinterpret_cast<__ubuf__ uint32_t *>(stage);
         ctx = reinterpret_cast<__gm__ const uint8_t *>(context);

@@ -1,6 +1,10 @@
 {
   "commit": "fee97356e28f9945b44ceb3372bac89f9332a515",
   "plugin_fixes": {
+    "ascend_kernels/afd_async_combine_recv_arch35/op_kernel/afd_async_combine_recv_rt.h": {
+      "upstream_blob": "658b4bbb78dc74868e4bf77063af0380f1846224",
+      "plugin_blob": "1e32fe248d18e856e262203df917b0c7b527d4ba"
+    },
     "ascend_kernels/afd_async_combine_send_arch35/op_kernel/afd_async_combine_send_rt.h": {
       "upstream_blob": "64cd90f2a4bcc66ab1a29bd25db1a65308533400",
       "plugin_blob": "2b75f787b095b3c4b577b78cb15e584841585c35"

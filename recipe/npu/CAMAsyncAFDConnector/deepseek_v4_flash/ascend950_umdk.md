@@ -137,8 +137,9 @@ AIV 0 的 MTE 错误码 95 同时涵盖非法 GM 地址和跨设备访问超时�
 
 ## 11 月 27 日修复后的八卡验收
 
-框架分支已引入算子修复 `f4b1f20`。950 的 DispatchSend 和 CombineSend
-在设备标量栈上显式对齐本地工作对象。四个 `_arch35` 入口继续使用 !3969
+框架分支已引入算子提交 `243aec6`。950 的 DispatchSend 和 CombineSend
+在设备标量栈上显式对齐本地工作对象。CombineRecv 使用物理 UB 起始偏移零，
+确保读取返回控制字时使用正确的 32 字节对齐地址。四个 `_arch35` 入口继续使用 !3969
 的接口，源端 lane、record、ledger 和 FFN transaction 保持相同布局。
 新上传的 DeepEP 参考实现在旧内核上也报 507035；它的原始 plog 将
 MTE 的故障 PC 从 `0x1b20` 修正为 `0x1714`。
