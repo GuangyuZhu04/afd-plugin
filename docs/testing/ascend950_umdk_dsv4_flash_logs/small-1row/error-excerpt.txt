@@ -1,0 +1,29 @@
+### rank session configs and first dispatch
+[default0]:rank=0 profile=small cfg={'combine_chunk': 256, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 64, 'ffn_transaction': 0, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 32768, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default1]:rank=1 profile=small cfg={'combine_chunk': 256, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 64, 'ffn_transaction': 0, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 32768, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default2]:rank=2 profile=small cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 64, 'ffn_group_row_bound': 64, 'ffn_transaction': 1, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 66176, 'recv_alignment': 32, 'recv_q': 64, 'recv_q_alloc': 64, 'recv_rank': 0, 'recv_tile': 16, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default3]:rank=3 profile=small cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 64, 'ffn_group_row_bound': 64, 'ffn_transaction': 1, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 66176, 'recv_alignment': 32, 'recv_q': 64, 'recv_q_alloc': 64, 'recv_rank': 1, 'recv_tile': 16, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+
+### dispatch and error excerpt
+2337:[default0]:rank=0 step=0 layer=2 valid_rows=1 dispatch
+2339:[default1]:rank=1 step=0 layer=2 valid_rows=1 dispatch
+76:[default3]:[rank3]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+77-[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+78-[default3]:[rank3]: [ERROR] 2026-11-27-06:03:28 (PID:15215, Device:1, RankID:1) ERR00100 PTA call acl api failed
+79-[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+--
+277:[default1]:[rank1]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+278-[default3]:[rank3]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 48, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03ffe5b8d,0xffefc9af1800401c, mte error info: 0x5b8d, vec error info: 0x778f3ede005df4ff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+279-[default2]:[rank2]:     return f(*args, **kwargs)
+280-[default3]:[rank3]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+--
+325:[default2]:[rank2]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+326-[default2]:[rank2]: [ERROR] 2026-11-27-06:03:28 (PID:15215, Device:1, RankID:1) ERR00100 PTA call acl api failed
+327-[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+328-[default2]:[rank2]: [Error]: The vector core execution is abnormal. 
+--
+653:[default0]:[rank0]: RuntimeError: UMDK DispatchSend synchronization failed on rank 0, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+654-[default0]:[rank0]: [ERROR] 2026-11-27-06:03:28 (PID:15214, Device:0, RankID:0) ERR00100 PTA call acl api failed
+655-[default0]:[rank0]: [Error]: The vector core execution is abnormal. 
+656-[default0]:[rank0]:         Rectify the fault based on the error information in the ascend log.
+--

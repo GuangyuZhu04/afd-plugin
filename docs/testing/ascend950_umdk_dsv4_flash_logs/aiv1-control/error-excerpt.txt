@@ -1,0 +1,29 @@
+### rank session configs and first dispatch
+[default2]:rank=2 profile=small cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 64, 'ffn_group_row_bound': 64, 'ffn_transaction': 1, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 1, 'payload_bytes': 66176, 'recv_alignment': 32, 'recv_q': 64, 'recv_q_alloc': 64, 'recv_rank': 0, 'recv_tile': 16, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default3]:rank=3 profile=small cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 64, 'ffn_group_row_bound': 64, 'ffn_transaction': 1, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 1, 'payload_bytes': 66176, 'recv_alignment': 32, 'recv_q': 64, 'recv_q_alloc': 64, 'recv_rank': 1, 'recv_tile': 16, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default0]:rank=0 profile=small cfg={'combine_chunk': 256, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 64, 'ffn_transaction': 0, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 1, 'payload_bytes': 32768, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default1]:rank=1 profile=small cfg={'combine_chunk': 256, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 192, 'context_bytes': 832, 'control_bytes': 256, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 64, 'ffn_transaction': 0, 'num_experts': 4, 'num_hidden_bytes': 512, 'num_layers': 2, 'num_ranks': 2, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 2, 'num_src_ranks': 2, 'num_token_capacity': 65, 'num_tokens_per_tile': 256, 'num_topk': 2, 'num_ub_bytes': 221184, 'num_vec_cores': 1, 'payload_bytes': 32768, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+
+### dispatch and error excerpt
+279:[default0]:rank=0 step=0 layer=2 valid_rows=1 dispatch
+281:[default1]:rank=1 step=0 layer=2 valid_rows=1 dispatch
+76:[default3]:[rank3]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+77-[default1]:[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 181, in <module>
+78-[default1]:[rank1]:     main()
+79-[default3]:[rank3]: [ERROR] 2026-11-27-06:04:52 (PID:20982, Device:1, RankID:1) ERR00100 PTA call acl api failed
+--
+130:[default1]:[rank1]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+131-[default1]:[rank1]: [ERROR] 2026-11-27-06:04:52 (PID:20982, Device:1, RankID:1) ERR00100 PTA call acl api failed
+132-[default2]:[rank2]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+133-[default0]:[rank0]:        rtEventSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+--
+137:[default2]:[rank2]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+138-[default1]:[rank1]:         Rectify the fault based on the error information in the ascend log.
+139-[default0]:
+140-[default2]:[rank2]: [ERROR] 2026-11-27-06:04:52 (PID:20982, Device:1, RankID:1) ERR00100 PTA call acl api failed
+--
+178:[default0]:[rank0]: RuntimeError: UMDK DispatchSend synchronization failed on rank 0, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+179-[default1]:terminate called after throwing an instance of 'std::runtime_error'
+180-[default0]:[rank0]: [ERROR] 2026-11-27-06:04:52 (PID:20981, Device:0, RankID:0) ERR00100 PTA call acl api failed
+181-[default1]:[rank1]:W1127 06:04:52.976000 20982 site-packages/torch_npu/distributed/distributed_c10d.py:582] Failed to shutdown process group during NPU exit.
+--
