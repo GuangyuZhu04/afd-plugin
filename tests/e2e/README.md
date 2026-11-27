@@ -590,7 +590,9 @@ weights during CombineRecv. FFN runs native W4A8MXFP on the layer/expert
 groups in each UMDK slice, deriving MX block scales from the BF16 activations. The
 transport and executor are shipped in the same plugin wheel.
 Use vLLM `0.32.0+empty.g5df63a7` and vLLM-Ascend `0.32.0.dev0+gbd42eea`
-on both roles. The worker checks these versions before HCCL setup.
+on both roles. The worker checks the versions and source provenance before HCCL
+setup. Preserve the run directory on a host volume for the CANN logs, packaged
+kernel objects and exact-answer evaluation.
 [Build, preflight and board instructions](../../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk.md)
 
 Provide eight device IDs, the local FP4 checkpoint and the routable interface
@@ -673,7 +675,7 @@ Deployment differences worth knowing:
   `connector_extra_config`, and requires `HCCL_IF_IP` and `HCCL_SOCKET_IFNAME`.
 - `--quantization` is resolved from the checkpoint: A5's FP8/W4A8 checkpoint
   decides, A3's int8 W8A8 loads through `ascend`.
-- Both disable `multistream_dsv4_dsa_overlap` and `enable_dsa_cp` and leave
+- Both disable `multistream_dsv4_dsa_overlap`, use the default DSA CP setting and leave
   the gate on FFN; KV transfer is not enabled. Shutdown allows 60 seconds, and
   the async FFN cleanup exception does not apply because no CAM receive is
   pending.

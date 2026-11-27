@@ -128,7 +128,7 @@ vllm serve "$MODEL" "${COMMON_ARGS[@]}" "${FFN_EXEC_ARGS[@]}" \
   --all2all-backend flashinfer_all2allv --speculative-config "$DSPARK_CONFIG" \
   --additional-config "{
     \"enable_cpu_binding\":false,\"enable_force_eplb\":false,
-    \"enable_dsa_cp\":false,\"multistream_dsv4_dsa_overlap\":false,
+    \"multistream_dsv4_dsa_overlap\":false,
     \"afd\":{
       \"role\":\"ffn\",\"connector\":\"CAMAsyncAFDConnector\",\"async_dp\":true,
       \"host\":\"$LOCAL_IP\",\"port\":12499,
@@ -147,7 +147,7 @@ vllm serve "$MODEL" "${COMMON_ARGS[@]}" "${A_EXEC_ARGS[@]}" \
   --all2all-backend allgather_reducescatter --speculative-config "$A_DSPARK_CONFIG" \
   --additional-config "{
     \"enable_cpu_binding\":false,\"enable_force_eplb\":false,
-    \"enable_dsa_cp\":false,\"multistream_dsv4_dsa_overlap\":false,
+    \"multistream_dsv4_dsa_overlap\":false,
     \"afd\":{
       \"role\":\"attention\",\"connector\":\"CAMAsyncAFDConnector\",\"async_dp\":true,
       \"host\":\"$LOCAL_IP\",\"port\":12499,

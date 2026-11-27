@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
 """A rejected single-round send must surface before a blocking receive."""
 
+import logging
 import sys
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -25,6 +26,10 @@ def test_failed_single_round_reports_source_before_waiting_for_return(
         sys.modules, "vllm.forward_context", SimpleNamespace(DPMetadata=DPMetadata)
     )
     load_host_module(monkeypatch, "afd_plugin.connectors.metadata")
+    monkeypatch.setitem(
+        sys.modules, "vllm.logger", SimpleNamespace(init_logger=logging.getLogger)
+    )
+    load_host_module(monkeypatch, "afd_plugin.connectors.npu.async_cam_runtime.io_log")
     runtime = load_host_module(
         monkeypatch, "afd_plugin.connectors.npu.async_cam_runtime.umdk_session"
     )

@@ -61,6 +61,15 @@ def load_async_modules(monkeypatch):
     stub("vllm.forward_context")
     load_host_module(monkeypatch, "afd_plugin.connectors.metadata")
     load_host_module(monkeypatch, "afd_plugin.connectors.base")
+    # These modules capture torch at import time. Scope their module entries
+    # and parent attributes to the same fixture as the substituted runtime.
+    load_host_module(monkeypatch, "afd_plugin.connectors.npu.async_cam_runtime.io_log")
+    load_host_module(
+        monkeypatch, "afd_plugin.connectors.npu.async_cam_runtime.umdk_session"
+    )
+    load_host_module(
+        monkeypatch, "afd_plugin.connectors.npu.async_cam_runtime.umdk_experts"
+    )
     load_host_module(monkeypatch, "tests.unit.fakes.connector")
     group = load_host_module(monkeypatch, "afd_plugin.distributed.afd_process_group")
     stub("afd_plugin.distributed", init_afd_process_group=group.init_afd_process_group)

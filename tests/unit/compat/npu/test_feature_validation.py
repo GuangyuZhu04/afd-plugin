@@ -40,6 +40,7 @@ from tests.unit.fakes.vllm_config import (  # noqa: E402
 def host_dependencies(monkeypatch):
     load_async_modules(monkeypatch)
     load_host_module(monkeypatch, "afd_plugin.model_executor.models.model_utils")
+    load_host_module(monkeypatch, "afd_plugin.connectors.npu.camp2p.mxfp8_transport")
     load_host_module(monkeypatch, "afd_plugin.connectors.npu.camp2p.connector")
     load_host_module(monkeypatch, "afd_plugin.connectors.factory")
 
@@ -53,11 +54,19 @@ def _admit(config):
 
 @pytest.fixture
 def a5_bf16(monkeypatch):
-    pinned = {name: version for name, version, _ in umdk_mxfp_stack.UMDK_MXFP_STACK}
+    pinned = {
+        name: SimpleNamespace(
+            version=version,
+            read_text=lambda _, sha=commit: json.dumps(
+                {"vcs_info": {"vcs": "git", "commit_id": sha}}
+            ),
+        )
+        for name, version, commit in umdk_mxfp_stack.UMDK_MXFP_STACK
+    }
     monkeypatch.setattr(
         umdk_mxfp_stack,
         "distribution",
-        lambda name: SimpleNamespace(version=pinned[name], read_text=lambda _: None),
+        pinned.__getitem__,
     )
     monkeypatch.setattr(
         "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: True

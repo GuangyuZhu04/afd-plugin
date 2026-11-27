@@ -15,8 +15,13 @@ are also used by the unmigrated dedicated and multi-pod executors.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
+from importlib.metadata import version
 from ipaddress import ip_address
+from pathlib import Path
+from shutil import copyfile
 
 from tests.e2e.case import (
     CLEANUP_PROFILE_NPU_ASYNC_CAM_LEGACY,
@@ -213,6 +218,7 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
             ("VLLM_LOGGING_LEVEL", "INFO"),
             ("BATCH_SIZE_FACTOR", "1.0"),
             ("HCCL_BUFFSIZE", str(connector_extra_config["hccl_buffer_size"])),
+            ("HCCL_OP_EXPANSION_MODE", "AIV"),
             ("HCCL_IF_IP", environment.afd_host),
         )
     checks: tuple[Mrv2Check | PullMegaCheck, ...] = ()
@@ -222,7 +228,8 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
     elif graph:
         checks = (Mrv2Check(("attention", "ffn"), graph=True),)
     compilation = None if shape is None else config.sync_compilation_config(shape)
-    return Case(
+    case_type = UmdkFlashCase if case_id == config.DSV4_ASYNC_CAM_A5_SCENARIO else Case
+    return case_type(
         id=case_id,
         model="DeepSeek-V4-Flash",
         served_model_name_prefix="dsv4-flash" if asynchronous else "dsv4-flash-sync",
@@ -290,6 +297,71 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
             ),
         ),
     )
+
+
+class UmdkFlashCase(Case):
+    def prepare_worker_environment(
+        self, environment: CaseEnvironment
+    ) -> dict[str, str]:
+        # Resolve the installed packages only on the launch host. --describe
+        # remains usable on a CPU-only machine without vLLM or the plugin wheel.
+        from afd_plugin.compat.npu.ops import (
+            AFD_CUST_OPAPI_ENV,
+            get_afd_cann_vendor_path,
+        )
+        from afd_plugin.compat.npu.umdk_mxfp_stack import (
+            UMDK_MXFP_STACK,
+            check_umdk_mxfp_stack,
+            umdk_worker_environment,
+        )
+
+        vendors = umdk_worker_environment()
+        versions = check_umdk_mxfp_stack()
+        versions.update(
+            {pkg: version(pkg) for pkg in ("vllm-afd-plugin", "torch", "torch-npu")}
+        )
+        out = environment.output_path.resolve()
+        logs = {}
+        for key, default in (
+            ("ASCEND_WORK_PATH", out),
+            ("ASCEND_PROCESS_LOG_PATH", out / "plog"),
+            ("ASCEND_DUMP_PATH", out / "extra-info"),
+        ):
+            path = Path(os.environ.get(key) or default).resolve()
+            path.mkdir(parents=True, exist_ok=True)
+            logs[key] = str(path)
+
+        kernels = get_afd_cann_vendor_path() / "op_impl/ai_core/tbe/kernel/ascend950"
+        saved = out / "packaged-kernels"
+        saved.mkdir(parents=True, exist_ok=True)
+        digests = {}
+        for op in ("dispatch_send", "dispatch_recv", "combine_send", "combine_recv"):
+            objects = sorted((kernels / ("afd_async_" + op)).glob("*.o"))
+            if not objects:
+                raise RuntimeError(
+                    f"950 wheel has no device object for {op} under {kernels}"
+                )
+            for obj in objects:
+                for source in (obj, obj.with_suffix(".json")):
+                    dest = saved / source.name
+                    copyfile(source, dest)
+                    digests[dest.name] = hashlib.sha256(dest.read_bytes()).hexdigest()
+        (out / "umdk-runtime.json").write_text(
+            json.dumps(
+                {
+                    "packages": versions,
+                    "source_commits": {name: sha for name, _, sha in UMDK_MXFP_STACK},
+                    "packaged_kernel_sha256": digests,
+                    "plugin_opapi": vendors[AFD_CUST_OPAPI_ENV],
+                    "vendor_search_path": vendors["ASCEND_CUSTOM_OPP_PATH"],
+                    "devices": environment.devices,
+                    "cann_log_paths": logs,
+                },
+                indent=2,
+            )
+            + "\n"
+        )
+        return {**dict(self.worker_environment), **vendors, **logs}
 
 
 if __name__ == "__main__":

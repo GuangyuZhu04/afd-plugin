@@ -9,6 +9,7 @@
 """Host-only harness integration: real sockets, processes and signals; no devices."""
 
 import contextlib
+import hashlib
 import json
 import os
 import signal
@@ -832,6 +833,59 @@ def test_async_cam_mega_selection_reaches_both_role_commands(tmp_path, case_id):
     assert case.phases[0].task == CompletionTask(check_answer=True)
 
 
+def test_flash_preflight_archives_the_wheel_kernels(tmp_path, monkeypatch):
+    from afd_plugin.compat.npu import ops, umdk_mxfp_stack
+
+    vendor = tmp_path / "wheel/vendor"
+    kernels = vendor / "op_impl/ai_core/tbe/kernel/ascend950"
+    for op in ("dispatch_send", "dispatch_recv", "combine_send", "combine_recv"):
+        directory = kernels / ("afd_async_" + op)
+        directory.mkdir(parents=True)
+        (directory / f"{op}.o").write_bytes(op.encode())
+        (directory / f"{op}.json").write_text("{}")
+    monkeypatch.setattr(ops, "get_afd_cann_vendor_path", lambda: vendor)
+    monkeypatch.setattr(
+        umdk_mxfp_stack,
+        "umdk_worker_environment",
+        lambda: {
+            ops.AFD_CUST_OPAPI_ENV: "private.so",
+            "ASCEND_CUSTOM_OPP_PATH": "native:plugin",
+        },
+    )
+    monkeypatch.setattr(umdk_mxfp_stack, "check_umdk_mxfp_stack", lambda: {})
+    monkeypatch.setattr(dsv4_cases, "version", lambda _: "test")
+    for key in ("ASCEND_WORK_PATH", "ASCEND_PROCESS_LOG_PATH", "ASCEND_DUMP_PATH"):
+        monkeypatch.delenv(key, raising=False)
+    environment = CaseEnvironment(
+        model=str(tmp_path),
+        vllm_bin="vllm",
+        device_backend="npu",
+        devices=tuple(map(str, range(8))),
+        output_path=tmp_path / "run",
+        afd_host="192.0.2.8",
+    )
+    case = dsv4_cases.build_case(
+        dsv4_cases.config.DSV4_ASYNC_CAM_A5_SCENARIO, environment
+    )
+    env = case.prepare_worker_environment(environment)
+    assert env["ASCEND_PROCESS_LOG_PATH"] == str(environment.output_path / "plog")
+    report = json.loads((environment.output_path / "umdk-runtime.json").read_text())
+    assert report["devices"] == list(environment.devices)
+    expected = {
+        src.name: hashlib.sha256(src.read_bytes()).hexdigest()
+        for src in kernels.glob("*/*")
+    }
+    saved = environment.output_path / "packaged-kernels"
+    assert (
+        report["packaged_kernel_sha256"]
+        == expected
+        == {
+            file.name: hashlib.sha256(file.read_bytes()).hexdigest()
+            for file in saved.iterdir()
+        }
+    )
+
+
 @pytest.mark.parametrize("quant_method", ["fp8", "ascend"])
 def test_dsv4_a5_umdk_launch_profile(
     monkeypatch, tmp_path, quant_method
@@ -867,6 +921,7 @@ def test_dsv4_a5_umdk_launch_profile(
     assert record["bindings"]["devices"] == devices.split(",")
     case = record["effective"]
     assert dict(case["worker_environment"])["HCCL_BUFFSIZE"] == "2048"
+    assert dict(case["worker_environment"])["HCCL_OP_EXPANSION_MODE"] == "AIV"
     assert dict(case["worker_environment"])["HCCL_IF_IP"] == host
     assert case["deployment"]["cleanup_profile"] == CLEANUP_PROFILE_STRICT
     assert case["phases"][0]["task"]["check_answer"] is True
@@ -887,6 +942,7 @@ def test_dsv4_a5_umdk_launch_profile(
         assert "--enable-expert-parallel" in command and "--enforce-eager" in command
         assert "--enable-dbo" not in command and "--speculative-config" not in command
         additional = json.loads(command[command.index("--additional-config") + 1])
+        assert "enable_dsa_cp" not in additional
         afd = additional["afd"]
         if role == "ffn":
             assert additional["enable_fused_mc2"] == 0

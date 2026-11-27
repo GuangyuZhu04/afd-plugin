@@ -1310,7 +1310,7 @@ def run_case(case: Case, environment: CaseEnvironment) -> dict:
                 else ()
             )
             services.probe_environment = {
-                **dict(effective.worker_environment),
+                **effective.prepare_worker_environment(environment),
                 **probe.worker_environment,
             }
             services.start()
