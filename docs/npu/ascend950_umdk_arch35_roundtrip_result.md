@@ -97,6 +97,48 @@ register the 4096-row source capacity and 43 layer IDs for the Flash geometry,
 and reach the first dispatch. The fault is therefore in the operator data path,
 not in buffer registration or link setup.
 
+## Independent reference pipeline traps at the same relative PC
+
+The plugin path and the DeepEP reference path are separate implementations that
+share only the four operators. Running the reference pipeline is therefore a
+direct control on the operator, independent of `umdk_session.py` and of the
+plugin's geometry code.
+
+Apply `tests/npu/deepep_pipeline_cam.patch` to a pinned DeepEP test tree
+(`25b5153e`) and run its own scheduler over the installed extension:
+
+```bash
+git -C "$DEEPEP_SOURCE" archive 25b5153eb2549107c13c8d462e325ac28cea8dea tests/afd | tar -x -C "$ref"
+(cd "$ref" && git apply tests/npu/deepep_pipeline_cam.patch)
+ASCEND_RT_VISIBLE_DEVICES=0,1,2,3 torchrun --standalone --nproc-per-node=4 \
+  "$ref/tests/afd/run_pipeline_cam.py" \
+  --ffn-transaction --local-comm-rounds --hidden 7168 --topk 2 --experts 8 \
+  --batch 64 --window 64 --backend-max-rows 4096 --routes balanced --weights nonunit
+```
+
+The patch applies cleanly and DeepEP keeps ownership of buffers and scheduling.
+The run traps with the same 507035 while reading back
+`owner.recv_status.cpu()`, that is, inside the same `CombineRecv` status
+publication the plugin path fails on.
+
+The decisive detail is the trap address. Both paths stop at relative offset
+`0x1b20` from their kernel entry; only the load address differs, because the
+two runs mapped the kernel at different bases:
+
+| Path | Kernel entry | Trap PC | Relative |
+| --- | --- | --- | --- |
+| Plugin `umdk_roundtrip.py` | `0x120040819000` | `0x12004081ab20` | `0x1b20` |
+| DeepEP `run_pipeline_cam.py` | `0x120040810000` | `0x120040811b20` | `0x1b20` |
+
+Two implementations that share only the operator binary, launched by different
+schedulers at different geometries, trap on the same instruction. That removes
+the plugin's session setup, its geometry derivation and its call ordering from
+the suspect list, and places the defect in the operator kernel itself.
+
+This is also the control the bringup note asks for and could not complete: its
+reference attempt is described as a different execution from the service run.
+Here both executions are on the same host, same CANN, same wheel and same day.
+
 ## Retained evidence
 
 ```text

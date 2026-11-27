@@ -1,0 +1,171 @@
+[default0]:[W1127 07:32:22.617627642 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 600000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 2000000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:PREFLIGHT_OK [{"rank": 0, "role": "A", "required_bytes": 1842320, "payload_bytes": 1835008, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 320, "caller_estimate_bytes": 1836704, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}, {"rank": 1, "role": "A", "required_bytes": 1842320, "payload_bytes": 1835008, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 320, "caller_estimate_bytes": 1836704, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}, {"rank": 2, "role": "F", "required_bytes": 5582800, "payload_bytes": 1901696, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 3674112, "caller_estimate_bytes": 0, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}, {"rank": 3, "role": "F", "required_bytes": 5582800, "payload_bytes": 1901696, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 3674112, "caller_estimate_bytes": 0, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}]
+[default0]:RUNCFG {"rank": 0, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default0]:MEM {"stage": "pg_ready", "rank": 0, "role": "A", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default1]:RUNCFG {"rank": 1, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default1]:MEM {"stage": "pg_ready", "rank": 1, "role": "A", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default3]:RUNCFG {"rank": 3, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default3]:MEM {"stage": "pg_ready", "rank": 3, "role": "F", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default2]:RUNCFG {"rank": 2, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default2]:MEM {"stage": "pg_ready", "rank": 2, "role": "F", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default0]:MEM {"stage": "constructed", "rank": 0, "role": "A", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1841936, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default0]:CAMCFG {"rank": 0, "role": "A", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1835008, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": -1, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default0]:CAMJETTY {"rank": 0, "n": 3, "dtype": "torch.int64"}
+[default0]:STRIDEDIR {"tag": "constructed", "rank": 0, "role": "A", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": 1835008, "a_expected_slots_c_k_stride": 1835008, "a_payload_matches_expected": 1, "f_layout_unchanged": null}
+[default1]:MEM {"stage": "constructed", "rank": 1, "role": "A", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1841936, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default1]:CAMCFG {"rank": 1, "role": "A", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1835008, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": -1, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+[default0]:  return func(*args, **kwargs)
+[default1]:[rank1]: Traceback (most recent call last):
+[default1]:[rank1]:   File "/tmp/deepep-ref/tests/afd/run_pipeline_cam.py", line 763, in <module>
+[default1]:[rank1]:     main()
+[default1]:[rank1]:   File "/tmp/deepep-ref/tests/afd/run_pipeline_cam.py", line 604, in main
+[default1]:[rank1]:     status = owner.recv_status.cpu().tolist()
+[default1]:[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^
+[default1]:[rank1]: RuntimeError: copy_between_host_and_device_opapi:../torch_npu/csrc/aten/ops/op_api/CopyKernelOpApi.cpp:94 NPU function error: device error type 3, error code is 507035
+[default1]:[rank1]: [ERROR] 2026-11-27-07:32:40 (PID:39867, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[default1]:[rank1]: [Error]: The vector core execution is abnormal. 
+[default1]:[rank1]:         Rectify the fault based on the error information in the ascend log.
+[default1]:[rank1]: EZ9999: Internal error!
+[default1]:[rank1]: EZ9999[PID: 39867] 2026-11-27-07:32:40.119.074 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 233, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040810000, current: 0x120040811b20, sc error info: 0xffffffffffff, su error info: 0x12521dc02ffe1978,0xde4177df1800401c, mte error info: 0x245c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]: TraceBack (most recent call last):
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 234, the error is aivec error, core id is 1, error code = 263, dump info: pc start: 0x120040819000, current: 0x120040819608, sc error info: 0xffffffffffff, su error info: 0x12521dc03cfe6578,0xd6e57e771800401c, mte error info: 0x520c9d00002fc40, vec error info: 0x3b3fb9ff003eef5f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066800000, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(263) errorStr: The address for scalar to use is unaligned or out of bounds The GM address exceeds 48 bits, or the on-chip buffer address exceeds the size of the buffer. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[default1]:[rank1]:        rtStreamSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default1]:
+[default0]:[rank0]: Traceback (most recent call last):
+[default0]:[rank0]:   File "/tmp/deepep-ref/tests/afd/run_pipeline_cam.py", line 763, in <module>
+[default0]:[rank0]:     main()
+[default0]:[rank0]:   File "/tmp/deepep-ref/tests/afd/run_pipeline_cam.py", line 604, in main
+[default0]:[rank0]:     status = owner.recv_status.cpu().tolist()
+[default0]:[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^
+[default0]:[rank0]: RuntimeError: copy_between_host_and_device_opapi:../torch_npu/csrc/aten/ops/op_api/CopyKernelOpApi.cpp:94 NPU function error: device error type 3, error code is 507035
+[default0]:[rank0]: [ERROR] 2026-11-27-07:32:40 (PID:39866, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[default0]:[rank0]: [Error]: The vector core execution is abnormal. 
+[default0]:[rank0]:         Rectify the fault based on the error information in the ascend log.
+[default0]:[rank0]: EZ9999: Internal error!
+[default0]:[rank0]: EZ9999[PID: 39866] 2026-11-27-07:32:40.188.527 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 296, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040810000, current: 0x120040811b20, sc error info: 0xffffffffffff, su error info: 0x12521dc01ff41978,0xeffffef61800401c, mte error info: 0x245c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]: TraceBack (most recent call last):
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 297, the error is aivec error, core id is 1, error code = 263, dump info: pc start: 0x120040819000, current: 0x120040819608, sc error info: 0xffffffffffff, su error info: 0x12521dc019aa6578,0x646c52f21800401c, mte error info: 0x6a00002d9c3, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066800000, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(263) errorStr: The address for scalar to use is unaligned or out of bounds The GM address exceeds 48 bits, or the on-chip buffer address exceeds the size of the buffer. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[default0]:[rank0]:        rtStreamSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default0]:
+[default0]:[rank0]:[W1127 07:32:40.620334258 Logger.cpp:75] Warning: Failed to generate log message. (function operator())
+[default0]:[rank0]:[E1127 07:32:40.620397948 ProcessGroupHCCL.cpp:2104] [Rank 0] HCCL watchdog thread terminated with exception: 
+[default0]:[ERROR] 2026-11-27-07:32:40 (PID:39866, Device:0, RankID:0) ERR02005 DIST internal error
+[default0]:terminate called after throwing an instance of 'std::runtime_error'
+[default0]:  what():  [Rank 0] HCCL watchdog thread terminated with exception: 
+[default0]:[ERROR] 2026-11-27-07:32:40 (PID:39866, Device:0, RankID:0) ERR02005 DIST internal error
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] Failed to shutdown process group during NPU exit.
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] Traceback (most recent call last):
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582]   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/distributed/distributed_c10d.py", line 580, in _destructor_process_group
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582]     pg_to_shutdown.shutdown()
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUStream.cpp:414 NPU function error: device error type 3, error code is 507035
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] [ERROR] 2026-11-27-07:32:40 (PID:39867, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] [Error]: The vector core execution is abnormal. 
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582]         Rectify the fault based on the error information in the ascend log.
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999: Internal error!
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999[PID: 39867] 2026-11-27-07:32:40.128.823 (EE9999):  rtStreamSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] TraceBack (most recent call last):
+[default1]:[rank1]:W1127 07:32:40.129000 39867 site-packages/torch_npu/distributed/distributed_c10d.py:582] 
+W1127 07:32:42.140000 39850 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 39867 closing signal SIGTERM
+W1127 07:32:42.141000 39850 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 39868 closing signal SIGTERM
+W1127 07:32:42.142000 39850 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 39869 closing signal SIGTERM
+E1127 07:32:42.530000 39850 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: -6) local_rank: 0 (pid: 39866) of binary: /usr/local/python3.12.16/bin/python3
+[default3]:MEM {"stage": "constructed", "rank": 3, "role": "F", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1908624, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default3]:CAMCFG {"rank": 3, "role": "F", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1901696, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": 1, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default3]:CAMJETTY {"rank": 3, "n": 3, "dtype": "torch.int64"}
+[default3]:STRIDEDIR {"tag": "constructed", "rank": 3, "role": "F", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": null, "a_expected_slots_c_k_stride": null, "a_payload_matches_expected": null, "f_layout_unchanged": true}
+[default3]:MEM {"stage": "prepared", "rank": 3, "role": "F", "torch_alloc": 3684864, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default1]:CAMJETTY {"rank": 1, "n": 3, "dtype": "torch.int64"}
+[default1]:STRIDEDIR {"tag": "constructed", "rank": 1, "role": "A", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": 1835008, "a_expected_slots_c_k_stride": 1835008, "a_payload_matches_expected": 1, "f_layout_unchanged": null}
+[default2]:MEM {"stage": "constructed", "rank": 2, "role": "F", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1908624, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default2]:CAMCFG {"rank": 2, "role": "F", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1901696, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": 0, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default2]:CAMJETTY {"rank": 2, "n": 3, "dtype": "torch.int64"}
+[default2]:STRIDEDIR {"tag": "constructed", "rank": 2, "role": "F", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": null, "a_expected_slots_c_k_stride": null, "a_payload_matches_expected": null, "f_layout_unchanged": true}
+[default2]:MEM {"stage": "prepared", "rank": 2, "role": "F", "torch_alloc": 3684864, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default0]:MEM {"stage": "prepared", "rank": 0, "role": "A", "torch_alloc": 1847296, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default1]:MEM {"stage": "prepared", "rank": 1, "role": "A", "torch_alloc": 1847296, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default1]:MEM {"stage": "prewarmed", "rank": 1, "role": "A", "torch_alloc": 1847808, "torch_reserved": 20971520, "torch_peak": 18626048, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default0]:MEM {"stage": "prewarmed", "rank": 0, "role": "A", "torch_alloc": 1847808, "torch_reserved": 20971520, "torch_peak": 18626048, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default3]:POLL_JIT {"rank": 3, "artifact": "/root/.dj/cache/afd_ffn_poll.bb98a81f1a628c6155fe2703ab2c49aa"}
+[default3]:MEM {"stage": "prewarmed", "rank": 3, "role": "F", "torch_alloc": 3685376, "torch_reserved": 39845888, "torch_peak": 20463616, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default3]:FFN_TX {"event": "poll", "f_rank": 3, "ready": [], "pending": [], "missing_members": [], "host_wait_ns": 1576970}
+[default2]:POLL_JIT {"rank": 2, "artifact": "/root/.dj/cache/afd_ffn_poll.bb98a81f1a628c6155fe2703ab2c49aa"}
+[default2]:MEM {"stage": "prewarmed", "rank": 2, "role": "F", "torch_alloc": 3685376, "torch_reserved": 39845888, "torch_peak": 20463616, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default2]:FFN_TX {"event": "poll", "f_rank": 2, "ready": [], "pending": [], "missing_members": [], "host_wait_ns": 1717711}
+Traceback (most recent call last):
+  File "/usr/local/python3.12.16/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 317, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=======================================================
+tests/afd/run_pipeline_cam.py FAILED
+-------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-27_07:32:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 1 (local_rank: 1)
+  exitcode  : -15 (pid: 39867)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 39867
+[2]:
+  time      : 2026-11-27_07:32:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 2 (local_rank: 2)
+  exitcode  : -15 (pid: 39868)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 39868
+[3]:
+  time      : 2026-11-27_07:32:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 3 (local_rank: 3)
+  exitcode  : -15 (pid: 39869)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 39869
+-------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-27_07:32:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 0 (local_rank: 0)
+  exitcode  : -6 (pid: 39866)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 39866
+=======================================================
+[ERROR] 2026-11-27-07:32:42 (PID:39850, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception

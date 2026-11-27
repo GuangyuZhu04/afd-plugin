@@ -11,6 +11,7 @@ plus the compact extracts the earlier revision carried.
 | `small-1row-full/` | 2 | `small` | 4 | 1 | 14 |
 | `aiv1-control-full/` | 1' | `small` with `_AIV_CORES = 1` | 4 | 1 | 14 |
 | `small-64rows-repeat-full/` | 4 | `small`, fresh container | 4 (2A2F) | 64 | 10 |
+| `deepep-reference-full/` | 5 | DeepEP reference pipeline | 4 | 64 | 3 |
 | `dsv4-flash-64rows/` `small-65rows/` `small-1row/` `aiv1-control/` `small-64rows-repeat/` | extracts | — | — | — | — |
 
 Each `*-full/` directory is the complete run directory as the test wrote it:
@@ -37,6 +38,13 @@ without downloading the binaries:
   `AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f`.
 - `combine-recv-descriptor.json` — the CombineRecv descriptor from the same
   dump, for the paired operator.
+
+`deepep-reference-full/` is the independent control: the pinned DeepEP test tree
+(`25b5153e`) with `tests/npu/deepep_pipeline_cam.patch` applied, so DeepEP owns
+the buffers and scheduler and the plugin only supplies the translated operator
+calls. It traps with the same 507035 while reading back `owner.recv_status`,
+and at the same relative PC offset as the plugin runs. See the report section
+[Independent reference pipeline](../../npu/ascend950_umdk_arch35_roundtrip_result.md#independent-reference-pipeline-traps-at-the-same-relative-pc).
 
 ## Why the log files are force-added
 

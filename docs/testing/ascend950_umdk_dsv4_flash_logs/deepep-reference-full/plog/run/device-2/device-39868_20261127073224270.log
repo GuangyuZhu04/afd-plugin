@@ -1,0 +1,144 @@
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.684.174 [main.cpp:323][main][tid:2909] Start parameter. deviceId=0, hostPid=3101072, pidSign=, profilingMode=0, vfId=0, logLevel=3, ccecpulogLevel=-1, aicpulogLevel=-1, deviceMode=0, hostProcName=, grpNameNum=0, aicpuProcNum=0, grpNameList=[]
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.761.563 [aicpusd_resource_limit.cpp:60][AddToCgroup][tid:2909] Add to cgroup finished, cmd:[cd /var/ && sudo ./tsdaemon_add_to_usermemory.sh memory 2909 0 0].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.761.795 [aicpusd_interface_process.cpp:615][GetCurrentRunMode][tid:2909] Current aicpu mode is online (call from host).
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.039 [aicpusd_feature_ctrl.cpp:243][InitMsqEnableStatus][tid:2909] The aicpu schedule mode is interrupt
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.059 [aicpusd_drv_manager.cpp:165][GetNormalAicpuInfo][tid:2909] aicpuBitMap[504], aicpuNum[6].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.079 [aicpusd_drv_manager.cpp:198][GetCcpuInfo][tid:2909] ccpuBitMap[1].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.166 [aicpusd_drv_manager.cpp:116][GetNormalAicpuDCpuInfo][tid:2909] GetNormalAicpuDCpuInfo, deviceId[0], aicpu_num[6], aicpu_os_sched[1], ccpu_num[1], ccpu_os_sched[1], dcpu_num[2], dcpu_os_sched[1], tscpu_num[0], tscpu_os_sched[0].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.179 [aicpusd_drv_manager.cpp:281][InitDrvMgrCaluniqueVfId][tid:2909] InitDrvMgr uniqueVfId=0, deviceId=0
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.187 [aicpusd_drv_manager.cpp:350][InitDrvMgr][tid:2909] host pid[3101072], host proc name[], vf id[0], first aicpu index[0], aicpu num[6], dcpu base index[1], dcpu num[2].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.202 [aicpusd_drv_manager.cpp:546][CheckBindHostPid][tid:2909] Start query process host pid
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.551 [aicpusd_drv_manager.cpp:559][CheckBindHostPid][tid:2909] Query process host pid end, ret=0, hostpid=3101072, expect=3101072, cpType=0
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.762.564 [aicpusd_drv_manager.cpp:574][CheckBindHostPid][tid:2909] call drvQueryProcessHostPid successfully, hostpid[3101072], cpType[0].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.763.163 [aicpusd_resource_manager.cpp:264][InitBufManager][tid:2909] Aicpu schedule SetBuffCfg successfully!
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.765.208 [aicpusd_drv_manager.cpp:419][InitDrvSchedModule][tid:2909] Enable process drv queue msg on ccpu, ret is 0.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.765.340 [aicpusd_monitor.cpp:228][SetModelTimeoutFlag][tid:2909] Not set aicpu model timeout. Env is not set.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.765.957 [aicpusd_monitor.cpp:158][InitMonitor][tid:2909] Init aicpu monitor successfully, taskTimeout=28s, tickFreq=1000000000.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.767.321 [prof_so_manager.cpp:32][tid:2909]:The new profiling so had taken effect.
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:19.774.139 [drv_share_log.c:233][devmm] [share_log_read_in_single_module] Open. (udevid=0; tgid=2909)
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:19.782.155 [grp_mng.c:84][bufmng] [halGrpCreate] Create grp. (grp_name=svm_share_grp_2909; grp_id=3657; max_size=0; cache_flag=0)
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:19.782.276 [grp_mng.c:147][bufmng] [halGrpAddProc] add grp succ, name:svm_share_grp_2909, pid:2909, grp_id:3657, admin:1 alloc:1 read:1 write:1 
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:19.782.883 [buff_recycle_ctx.c:88][bufmng] [pool_ctx_init] pool_id 3657 add task node uid 3879 pid 2909
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:19.783.134 [drv_buff_mbuf.c:68][bufmng] [mbuf_set_priv_flag] Set mbuf priv flag success. (flag=0, g_mbuf_priv_flag=0)
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:19.783.150 [grp_mng.c:208][bufmng] [halGrpAttach] grp attach, grp_name:svm_share_grp_2909, grp_id:3657, timeout:0ms
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.783.203 [aicpusd_worker.cpp:73][ThreadPool][tid:2909] ThreadPool
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.783.219 [aicpusd_worker.cpp:181][WaitForStop][tid:2909] Wait for stop begin.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.783.230 [aicpusd_worker.cpp:188][WaitForStop][tid:2909] Wait for stop end.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.804.901 [aicpusd_threads_process.cpp:62][LoadKernelSo][tid:2909] Start to preload aicpu so.
+[WARNING] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:19.805.313 [ae_kernel_lib_fwk.cc:298][LoadTfSo][tid:2909][AICPU_PROCESSER] load tensorflow so failed, ret is[11002]
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.139.333 [aicpusd_threads_process.cpp:66][LoadKernelSo][tid:2909] End to preload aicpu so.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.139.633 [aicpusd_threads_process.cpp:82][LoadExtendKernelSo][tid:2909] Start to preload extend kernel so.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.219.614 [aicpusd_threads_process.cpp:86][LoadExtendKernelSo][tid:2909] End to preload extend kernel so.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.221.701 [aicpusd_period_statistic.cpp:133][SetThreadAffinity][tid:2927] aicpu bind by self success
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.224.848 [aicpusd_cust_so_manager.cpp:83][InitAicpuCustSoManager][tid:2909] Cust so manager init successfully, dir=/home/CustAiCpuUser/cust_aicpu_0_0_3101072/, runMode=0, schedMode=0.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.225.130 [main.cpp:352][main][tid:2909] Aicpu schedule start successfully, LD_LIBRARY_PATH=/usr/lib64/aicpu_kernels/0/aicpu_kernels_device/:/usr/lib64/aicpu_kernels/0/aicpu_kernels_device/sand_box/:/home/HwHiAiUser/hs/0/runtime/lib64/:/usr/lib64/device-compat-plugin/0/:/usr/lib64/device-sw-plugin/0/device-sw-plugin/:
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.225.155 [main.cpp:363][main][tid:2909] Aicpu schedule attach and init successfully.
+[INFO] TDT(2909,aicpu_scheduler):2026-11-27-15:32:21.225.194 [tsd_event_client.cpp:404][ReportMsgToTsd][tid:2909] [TsdEventClient] Enter ReportMsgToTsd deviceid[0],hostPid[3101072],vfId[0].
+[INFO] TDT(2909,aicpu_scheduler):2026-11-27-15:32:21.225.214 [tsd_event_client.cpp:420][ReportMsgToTsd][tid:2909] [TsdEventClient] subCapabilityType[8], value[1]
+[INFO] TDT(2909,aicpu_scheduler):2026-11-27-15:32:21.227.243 [tsd_event_client.cpp:427][ReportMsgToTsd][tid:2909] [TsdEventClient] Submit event ReportMsgToTsd to tsd successfully.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.234.222 [main.cpp:205][RegQueueScheduleModuleCallBack][tid:2909] Register queue schedule module callback successfully.
+[INFO] TDT(2909,aicpu_scheduler):2026-11-27-15:32:21.234.599 [tsd_event_client.cpp:257][TsdStartupResponse][tid:2909] [TsdEventClient] TsdStartupResponseProc to dev[0] pid[4125] hostpid[3101072] vfId[0] is running.
+[INFO] TDT(2909,aicpu_scheduler):2026-11-27-15:32:21.239.059 [tsd_event_client.cpp:276][TsdStartupResponse][tid:2909] [TsdEventClient] Submit event TSD_EVENT_START_RSP to tsd successfully.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.239.816 [main.cpp:380][main][tid:2909] Aicpu startup response return successfully.
+[INFO] TDT(2909,aicpu_scheduler):2026-11-27-15:32:21.239.830 [tsd_event_client.cpp:221][DoLoopProcessEvent][tid:2909] [TsdEventClient] Start waiting event, deviceId=0.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.509.028 [hwts_kernel_model_process.cpp:108][Compute][tid:2925] Begin to process kernel CheckKernelSupported event.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.509.074 [hwts_kernel_model_process.cpp:123][Compute][tid:2925] Finish to process kernel CheckKernelSupported event retCode[21001].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.509.175 [hwts_kernel_model_process.cpp:108][Compute][tid:2925] Begin to process kernel CheckKernelSupported event.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.509.189 [hwts_kernel_model_process.cpp:123][Compute][tid:2925] Finish to process kernel CheckKernelSupported event retCode[21001].
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.513.991 [aicpusd_event_process.cpp:383][ProcessSetTimeoutEvent][tid:2925] Get opTimeoutEnable[0] value[0] waitTimeoutEnable[1] value[2030] from ts success.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:21.514.003 [aicpusd_event_process.cpp:407][ProcessSetTimeoutEvent][tid:2925] Reopen aicpu op timer, waitTimeVal[2030s], curTimeVal[28s].
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:21.683.374 [ra_adp.c:2145]tid:2949,HccpSetAffinity: chipId:0 phyDevid:0 ccpuNum:1, dcpuNum:2, acpuNum:6, cpuId:0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:21.684.567 [ra_adp.c:1874]tid:2954,RaPthread: pthread[ra_thread] is alive!
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:21.687.829 [rs_tls.c:1951]tid:2949,rs_ssl_init: TLS SWITCH (1)
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:21.687.992 [rs_tls.c:1670]tid:2949,rs_tls_get_product_type: get product type:4, logic_id:0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.137.001 [rs_tls.c:1408]tid:2949,rs_check_key_without_priv: ssl ctx use pridata success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.137.056 [rs_tls.c:1415]tid:2949,rs_check_key_without_priv: ssl ctx check pridata success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.575.132 [rs_tls.c:1408]tid:2949,rs_check_key_without_priv: ssl ctx use pridata success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.575.214 [rs_tls.c:1415]tid:2949,rs_check_key_without_priv: ssl ctx check pridata success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.575.664 [rs_epoll.c:680]tid:2975,RsConnectHandle: pthread[connect_pthread] is alive!
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.576.073 [rs.c:450]tid:2949,RsInit: rs init success, chipId[0]
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.576.236 [main.c:156]tid:2949,main: hccp init ok cost [892.952026] ms logic_id[0], tgid[3101072]
+[INFO] TDT(2949,hccp_service.bin):2026-11-27-15:32:22.576.275 [tsd_event_client.cpp:257][TsdStartupResponse][tid:2949] [TsdEventClient] TsdStartupResponseProc to dev[0] pid[4125] hostpid[3101072] vfId[0] is running.
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.576.345 [rs_ping.c:100]tid:2976,RsPingHandle: pthread[ping_pthread] is alive!
+[INFO] TDT(2949,hccp_service.bin):2026-11-27-15:32:22.577.931 [tsd_event_client.cpp:276][TsdStartupResponse][tid:2949] [TsdEventClient] Submit event TSD_EVENT_START_RSP to tsd successfully.
+[INFO] TDT(2949,hccp_service.bin):2026-11-27-15:32:22.577.952 [tsd_event_client.cpp:221][DoLoopProcessEvent][tid:2949] [TsdEventClient] Start waiting event, deviceId=0.
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.578.817 [buff_recycle_ctx.c:88][bufmng] [pool_ctx_init] pool_id 3658 add task node uid 0 pid 2949
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.578.985 [drv_buff_mbuf.c:68][bufmng] [mbuf_set_priv_flag] Set mbuf priv flag success. (flag=0, g_mbuf_priv_flag=0)
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.579.043 [grp_mng.c:272][bufmng] [buff_private_grp_create_add_attach] grp create add attach success, grp_name:private_buff_grp_2949, grp_id:3658, attach timeout:1000ms
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.584.169 [hdc_ub_common.c:457][hdc] [hdc_get_send_time_cost] hdc send exceed 10 us.(dev_id=0; l_id=22; type='service_rdma_v2'; jfs_id=9865; jfc_s=5566; find_block:0; memcpy=1; post_jfs_wr=4; wait_jfc=20; poll_jfc:1; ack_rearm_jfc=1; send=27; exceed_times=1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.593.214 [ra_adp_async.c:117]tid:2981,RaAsyncPthread: pthread[ra_async_thread] is alive!
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.594.726 [rs_epoll.c:551]tid:2974,RsEpollHandle: pthread[epoll_pthread] is alive!
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.708.982 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.711.515 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.711.593 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.723.648 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.725.732 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.725.797 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.738.702 [drv_share_log.c:233][devmm] [share_log_read_in_single_module] Open. (udevid=0; tgid=2949)
+[INFO] DRV(2909,aicpu_scheduler):2026-11-27-15:32:22.743.779 [grp_mng.c:147][bufmng] [halGrpAddProc] add grp succ, name:svm_share_grp_2909, pid:2949, grp_id:3657, admin:0 alloc:1 read:1 write:1 
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.743.889 [buff_recycle_ctx.c:88][bufmng] [pool_ctx_init] pool_id 3657 add task node uid 3880 pid 2949
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.744.070 [grp_mng.c:208][bufmng] [halGrpAttach] grp attach, grp_name:svm_share_grp_2909, grp_id:3657, timeout:1000ms
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.744.149 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] DRV(2949,hccp_service.bin):2026-11-27-15:32:22.746.926 [dms_fault.c:584][devmng] [halSensorNodeRegister] Sensor node register success. (devid=0; name=roce_rs_2949; NodeType=1551; SensorType=195; AssertEventMask=0x100; DeassertEventMask=0x0)
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.749.063 [rs_ub.c:446]tid:2954,RsUbCtxInit: phy_id:2, eidIndex:0, devIndex:0x10003 init success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.749.261 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.751.552 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.751.649 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.764.070 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.767.952 [rs_ub.c:446]tid:2954,RsUbCtxInit: phy_id:2, eidIndex:2, devIndex:0x20003 init success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.768.144 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.770.408 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.770.516 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.782.265 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.786.031 [rs_ub.c:446]tid:2954,RsUbCtxInit: phy_id:2, eidIndex:3, devIndex:0x30003 init success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.786.226 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.788.771 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.788.862 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.800.460 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.804.342 [rs_ub.c:446]tid:2954,RsUbCtxInit: phy_id:2, eidIndex:1, devIndex:0x40102 init success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.805.000 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.807.398 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.807.494 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:7
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.819.419 [dl_urma_function.c:372]tid:2954,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.823.466 [rs_ub.c:446]tid:2954,RsUbCtxInit: phy_id:2, eidIndex:1, devIndex:0x50002 init success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.827.821 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x10003 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec038ff0 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.828.414 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x20003 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03a4e0 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.828.939 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x30003 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03b9f0 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.829.447 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x40102 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03cf00 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:22.829.961 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x50002 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03e410 register success
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:22.833.956 [aicpusd_event_process.cpp:383][ProcessSetTimeoutEvent][tid:2925] Get opTimeoutEnable[1] value[547] waitTimeoutEnable[0] value[0] from ts success.
+[INFO] CCECPU(2909,aicpu_scheduler):2026-11-27-15:32:22.833.971 [aicpusd_monitor.cpp:436][SetOpExecuteTimeOut][tid:2925] Get enable op execute timeout config from ts. timeout[547]s tickFrequency[547000000000]
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.206.815 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:4852, port 16666
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.843.868 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x10003 addr:0x12006cc00000, len[0x1d0480], flag[0x29c1] segment:0x3ffec03ec50 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.844.153 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x20003 addr:0x12006cc00000, len[0x1d0480], flag[0x29c1] segment:0x3ffec03ee80 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.844.265 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x30003 addr:0x12006cc00000, len[0x1d0480], flag[0x29c1] segment:0x3ffec03efa0 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.844.675 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:4152, port 0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.844.965 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:4952, port 0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.845.180 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:4852, port 0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.852.498 [rs_ub.c:1778]tid:2979,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:10764 mode:3 create success, jettyCnt:1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.860.083 [rs_ub.c:1778]tid:2979,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:10765 mode:3 create success, jettyCnt:1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:23.867.129 [rs_ub.c:1778]tid:2979,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10766 mode:3 create success, jettyCnt:1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.120.562 [rs_ub.c:1382]tid:2954,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec03fe10 import success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.121.142 [rs_ub.c:2000]tid:2979,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10513 rjettyHandle:0x8 mode:1 import success, rjettyCnt:1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.127.049 [rs_ub.c:1382]tid:2954,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec03ff00 import success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.127.217 [rs_ub.c:1382]tid:2954,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec03fff0 import success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.128.170 [rs_ub.c:2000]tid:2979,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:10693 rjettyHandle:0x8 mode:1 import success, rjettyCnt:1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.128.722 [rs_ub.c:2000]tid:2979,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:9587 rjettyHandle:0x8 mode:1 import success, rjettyCnt:1
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.226.360 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x10003 addr:0x120000050000, len[0x100], flag[0x29c1] segment:0x3ffec0400e0 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.226.522 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x20003 addr:0x120000050000, len[0x100], flag[0x29c1] segment:0x3ffec040200 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.226.627 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x30003 addr:0x120000050000, len[0x100], flag[0x29c1] segment:0x3ffec040320 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.227.050 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:4152, port 0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.227.388 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:4952, port 0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.227.619 [rs_socket.c:588]tid:2954,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:4852, port 0
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.230.319 [rs_ub.c:1778]tid:2979,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:10767 mode:3 create success, jettyCnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.233.595 [rs_ub.c:1778]tid:2979,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:10768 mode:3 create success, jettyCnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.236.593 [rs_ub.c:1778]tid:2979,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10769 mode:3 create success, jettyCnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.537.549 [rs_ub.c:1382]tid:2954,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec043270 import success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.537.818 [rs_ub.c:2000]tid:2979,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10516 rjettyHandle:0xa mode:1 import success, rjettyCnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.542.102 [rs_ub.c:1382]tid:2954,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec043360 import success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.542.291 [rs_ub.c:2000]tid:2979,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:10696 rjettyHandle:0xa mode:1 import success, rjettyCnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.553.117 [rs_ub.c:1382]tid:2954,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec043450 import success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.553.256 [rs_ub.c:2000]tid:2979,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:9590 rjettyHandle:0xa mode:1 import success, rjettyCnt:2
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.564.588 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x10003 addr:0x1200677c0000, len[0x1c0000], flag[0x29c1] segment:0x3ffec043540 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.564.874 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x20003 addr:0x1200677c0000, len[0x1c0000], flag[0x29c1] segment:0x3ffec043660 register success
+[INFO] HCCP(2949,hccp_service.bin):2026-11-27-15:32:24.565.070 [rs_ub.c:1311]tid:2954,RsUbCtxLmemReg: devIndex:0x30003 addr:0x1200677c0000, len[0x1c0000], flag[0x29c1] segment:0x3ffec043780 register success

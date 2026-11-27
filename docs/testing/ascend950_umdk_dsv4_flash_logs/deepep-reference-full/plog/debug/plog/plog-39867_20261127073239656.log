@@ -1,0 +1,209 @@
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:39.611.539 [task_recycle_cqrpt_base.cc:91]40039 PrintTaskErrorMsg:Task run failed, stream_id=57, pos=0, task_sn=73, sqe_type=1(aiv), errType=0x1(task exception), sqSwStatus=0.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:39.618.793 [device_error_proc_c.cc:573]40039 ProcessCoreErrorClass:comm_flag=AIX_LINK_ERROR(8)
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.118.930 [device_error_proc_c.cc:410]40039 AiCoreUnknownErrProc:unknown aicore error, stream_id=58, task_id=0.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.054 [device_error_proc_c.cc:642]40039 AddExceptionRegInfo:add error register: core_id=0, stream_id=58, task_sn=70
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.069 [device_error_proc_c.cc:720]40039 PrintDavidCoreInfo:An error occurs on the device(chipId:0, dieId:0), the serial number is 233, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040810000, current: 0x120040811b20, sc error info: 0xffffffffffff, su error info: 0x12521dc02ffe1978,0xde4177df1800401c, mte error info: 0x245c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0. The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4. For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.727 [device_error_proc_c.cc:573]40039 ProcessCoreErrorClass:comm_flag=AIX_S_ERROR(4)
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.777 [device_error_proc_c.cc:530]40039 SetDeviceFaultTypeByAixErrClass:software error, stream_id=57, task_id=0.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.784 [device_error_proc_c.cc:642]40039 AddExceptionRegInfo:add error register: core_id=1, stream_id=57, task_sn=73
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.791 [device_error_proc_c.cc:720]40039 PrintDavidCoreInfo:An error occurs on the device(chipId:0, dieId:0), the serial number is 234, the error is aivec error, core id is 1, error code = 263, dump info: pc start: 0x120040819000, current: 0x120040819608, sc error info: 0xffffffffffff, su error info: 0x12521dc03cfe6578,0xd6e57e771800401c, mte error info: 0x520c9d00002fc40, vec error info: 0x3b3fb9ff003eef5f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066800000, mte error: 0, aic cond: 0. The extend info: errcode:(263) errorStr: The address for scalar to use is unaligned or out of bounds The GM address exceeds 48 bits, or the on-chip buffer address exceeds the size of the buffer. subErrType: 0x4. For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.812 [davinci_kernel_task_v200_base.cc:245]40039 SetStarsResultByErrorType:Vector Core kernel execution failed, retCode=0x31.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.818 [davinci_kernel_task.cc:1030]40039 PreCheckTaskErr:An error occurred in the kernel task, retCode=0x31, [vector core exception].
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.874 [davinci_kernel_task.cc:839]40039 GetArgsInfo:[AIC_INFO] args(0 to 19) after execute:0x12006cc00000, 0x1200674e2c00, 0x120067400000, 0x120000050000, 0x120067401a00, 0x120067401e00, 0x1200674e2a00, 0x1200674e2e00, 0x1200674e2400, 0x1200674e2800, 0x120067402000, 0, 0, 0x120066800080, 0x120000016000, 0, 0x800000001, 0x200000002, 0x1c0000001c00, 0x3e00000000001.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.878 [davinci_kernel_task.cc:839]40039 GetArgsInfo:[AIC_INFO] args(20 to 26) after execute:0, 0x8bb2c97000, 0, 0xa5a5a5a5000000b0, 0, 0, 0.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.880 [davinci_kernel_task.cc:847]40039 GetArgsInfo:tilingKey = 0, print 2 Times totalLen=(27*8), argsSize=216, schemMode=0, blockDim=1, gridDim3=[0,0,0], blockDim3=[0,0,0]
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.119.888 [davinci_kernel_task.cc:935]40039 PrintErrorInfoForDavinciTask:[AIC_INFO] after execute:args print end
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.120.395 [davinci_kernel_task.cc:972]40039 PrintErrorInfoForDavinciTask:[DFX_INFO]AI Core kernel execution failed, device_id=1, stream_id=57, report_stream_id=57, task_id=0, flip_num=0, fault kernel_name=AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0, fault kernel info ext=none, program id=20, hash=15864232759182369878.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.601 [exception_dumper.cpp:191][tid:40039] [Dump][Exception] Begin to dump exception. dumpScene=aic_err_brief_dump, deviceId=1, streamId=57, taskId=73, exceptionType=2(aicore), kernelName=AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.678 [kernel_info_collector.cpp:296][tid:40039] [Dump][Exception] dump host kernel to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0_host.o
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.803 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=1, coreType=1, SU_ERR_INFO_T0_0=0x3cfe6578 SU_ERR_INFO_T0_1=0x12521dc0 SU_ERR_INFO_T0_2=0x1800401c SU_ERR_INFO_T0_3=0xd6e57e77 MTE_ERR_INFO_T0_0=0x2fc40 MTE_ERR_INFO_T0_1=0x520c9d0 MTE_ERR_INFO_T0_2=0x90 MTE_ERR_INFO_T1_0=0x0 MTE_ERR_INFO_T1_1=0x0 MTE_ERR_INFO_T1_2=0x0 VEC_ERR_INFO_T0_0=0x3eef5f VEC_ERR_INFO_T0_1=0x3b3fb9ff 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.806 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=1, coreType=1, VEC_ERR_INFO_T0_2=0x1ba3f VEC_ERR_INFO_T0_3=0x4f4edfde VEC_ERR_INFO_T0_4=0xfeda VEC_ERR_INFO_T0_5=0x5f CUBE_ERR_INFO_T0_0=0x0 CUBE_ERR_INFO_T0_1=0x0 L1_ERR_INFO_T0_0=0x0 L1_ERR_INFO_T0_1=0x0 SC_ERROR_T0_0=0x0 SU_ERROR_T0_0=0x80 MTE_ERROR_T0_0=0x0 MTE_ERROR_T1_0=0x0 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.808 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=1, coreType=1, VEC_ERROR_T0_0=0x0 VEC_ERROR_T0_2=0x0 CUBE_ERROR_T0_0=0x0 CUBE_ERROR_T0_1=0x0 L1_ERROR_T0_0=0x0 L1_ERROR_T0_1=0x0 SC_ERR_INFO_T0_0=0xffffffff SC_ERR_INFO_T0_1=0xffff SU_SPR_CONDITION_0=0x0 SU_SPR_CONDITION_1=0x0 SU_ERR_INFO_T0_4=0x0 SU_ERR_INFO_T0_5=0x0 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.809 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=1, coreType=1, SU_ERR_INFO_T0_6=0x0 SU_ERR_INFO_T0_7=0x0 VEC_ERR_INFO_T0_6=0x0 SU_ERROR_T0_1=0x0 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.812 [kernel_pc_fixer.cpp:102][tid:40039] [Dump][Exception] Fix PC with module=SU, originalPC=0x120040819608, fixedPC=0x1200408195e0.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.815 [kernel_symbol_locator.cpp:725][tid:40039] [Dump][Exception] Error PC information. coreId=1, coreType=1, originalStartPC=0x120040819000, fixedStartPC=0x120040819000, originalCurrentPC=0x120040819608, fixedCurrentPC=0x1200408195e0, fixedPCOffset=0x5e0.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.817 [kernel_symbol_locator.cpp:744][tid:40039] [Dump][Exception] Error symbol information. coreId=1, coreType=1, symbol=AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0+0x5e0.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.896 [kernel_symbol_locator.cpp:845][tid:40039] [Dump][Exception][Symbolize] classification summary. cores=1, groups=1.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.904 [kernel_symbol_locator.cpp:520][tid:40039] [Dump][Exception][Symbolize] Group[0] summary (cores=1):
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.906 [kernel_symbol_locator.cpp:522][tid:40039] Group[0] oFile=unknown fixedPCOffset=0x5e0 symbol=AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0+0x5e0
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.908 [kernel_symbol_locator.cpp:522][tid:40039] Group[0] outerSrc=unknown innerSrc=unknown
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.909 [kernel_symbol_locator.cpp:522][tid:40039] Group[0] cores=[{id=1,type=1}]
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.969 [dfx_args_parser.cpp:98][tid:40039] [AIC_INFO] args(0 to 20) after execute:0x12006cc00000, 0x1200674e2c00, 0x120067400000, 0x120000050000, 0x120067401a00, 0x120067401e00, 0x1200674e2a00, 0x1200674e2e00, 0x1200674e2400, 0x1200674e2800, 0x120067402000, 0, 0, 0x120066800080, 0x120000016000, 0, 0x800000001, 0x200000002, 0x1c0000001c00, 0x3e00000000001, 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.978 [dfx_args_parser.cpp:98][tid:40039] [AIC_INFO] args(20 to 27) after execute:0, 0x8bb2c97000, 0, 0xa5a5a5a5000000b0, 0, 0, 0, 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.120.980 [dfx_args_parser.cpp:93][tid:40039] [AIC_INFO] after execute:args print end
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.118 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:0, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.121 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.123 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x12006cc00000; size:1835008 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.125 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:0
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.153 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:1, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.155 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.157 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2c00; size:64 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.158 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:1
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.170 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:2, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.171 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.173 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067400000; size:832 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.175 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:2
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.185 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:3, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.187 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.188 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120000050000; size:256 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.190 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:3
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.200 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:4, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.201 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.203 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067401a00; size:128 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.204 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:4
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.213 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:5, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.220 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.222 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067401e00; size:288 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.223 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:5
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.232 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:6, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.233 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.234 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2a00; size:64 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.236 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:6
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.243 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:7, tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.245 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.246 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2e00; size:917504 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.248 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:7
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.254 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:8, tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.256 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.257 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2400; size:1024 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.259 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:8
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.265 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:9, tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.266 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.268 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2800; size:512 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.269 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:9
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.274 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:10, tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.276 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.277 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067402000; size:32 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.279 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:10
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.288 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:11, tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.289 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.294 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:(nil); size:0 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.296 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:11
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.299 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load workspace, index:12
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.301 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump workspace data, addr:(nil); size:0 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.303 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load workspace, index:12
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.305 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load tiling data, index:13
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.308 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump tiling data, addr:0x120066800080; size:64 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.121.309 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load tiling data, index:13
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.124.795 [dump_args.cpp:494][tid:40039] [Dump][Exception] dump exception to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/exception_info.57.73.20261127073240121
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.209 [stream.cc:1834]40039 GetError:Stream Synchronize failed, stream_id=57, retCode=0x31, [vector core exception].
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.212 [stream.cc:1837]40039 GetError:Vector Core kernel execution failed, retCode=0x31.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.230 [stream.cc:1837]40039 GetError:[AIC_INFO] after execute:args print end
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.237 [stream.cc:1837]40039 GetError:[DFX_INFO]AI Core kernel execution failed, device_id=1, stream_id=57, report_stream_id=57, task_id=0, flip_num=0, fault kernel_name=AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0, fault kernel info ext=none, program id=20, hash=15864232759182369878.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.244 [stream.cc:4536]40039 EnterFailureAbort:stream_id=57 enter failure abort.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.320 [stream.cc:2005]39867 SynchronizeExecutedTask:Context is abort, status=0x715005e.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.327 [stream.cc:2066]39867 SynchronizeImpl:failed, stream_id=57, error=0x715005e
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.331 [api_error.cc:1490]39867 StreamSynchronize:Stream synchronize failed, stream_id=57, timeout=-1ms.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.339 [api_c_stream.cc:172]39867 rtStreamSynchronize:ErrCode=507035, desc=[vector core exception], InnerCode=0x715005e
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.343 [error_message_manage.cc:76]39867 FuncErrorReason:rtStreamSynchronize execution failed, reason=vector core exception
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.379 [task_recycle_cqrpt_base.cc:210]40039 StarsResumeRtsq:stop scheduling in abort failure mode: stream_id=57, sq_id=6, sq_head=0, task_id=0, taskType=KERNEL_AIVEC(66).
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.125.538 [task_recycle_cqrpt_base.cc:91]40039 PrintTaskErrorMsg:Task run failed, stream_id=58, pos=0, task_sn=70, sqe_type=1(aiv), errType=0x1(task exception), sqSwStatus=0.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.126.889 [davinci_kernel_task_v200_base.cc:245]40039 SetStarsResultByErrorType:Vector Core kernel execution failed, retCode=0x31.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.126.892 [davinci_kernel_task.cc:1030]40039 PreCheckTaskErr:An error occurred in the kernel task, retCode=0x31, [vector core exception].
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.126.930 [davinci_kernel_task.cc:839]40039 GetArgsInfo:[AIC_INFO] args(0 to 19) after execute:0x120067402400, 0x120067402200, 0x1200674e2400, 0x1200674e2800, 0x1200674e2a00, 0x1200674e2c00, 0x120067400000, 0x120000050000, 0x120067401a00, 0x120067400400, 0x12000004f000, 0x120067401c00, 0, 0x120066400080, 0x120000016000, 0, 0x200000001, 0x400000008, 0x10000000002, 0x380000000001.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.126.933 [davinci_kernel_task.cc:839]40039 GetArgsInfo:[AIC_INFO] args(20 to 27) after execute:0x3e00000000000, 0x8bb2c97000, 0, 0x8, 0xa5a5a5a500000086, 0, 0, 0.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.126.936 [davinci_kernel_task.cc:847]40039 GetArgsInfo:tilingKey = 0, print 2 Times totalLen=(28*8), argsSize=224, schemMode=0, blockDim=1, gridDim3=[0,0,0], blockDim3=[0,0,0]
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.126.940 [davinci_kernel_task.cc:935]40039 PrintErrorInfoForDavinciTask:[AIC_INFO] after execute:args print end
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.127.278 [davinci_kernel_task.cc:972]40039 PrintErrorInfoForDavinciTask:[DFX_INFO]AI Core kernel execution failed, device_id=1, stream_id=58, report_stream_id=58, task_id=0, flip_num=0, fault kernel_name=AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f_0, fault kernel info ext=none, program id=19, hash=3041989334193158878.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.322 [exception_dumper.cpp:191][tid:40039] [Dump][Exception] Begin to dump exception. dumpScene=aic_err_brief_dump, deviceId=1, streamId=58, taskId=70, exceptionType=2(aicore), kernelName=AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f_0.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.390 [kernel_info_collector.cpp:296][tid:40039] [Dump][Exception] dump host kernel to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f_0_host.o
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.453 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=0, coreType=1, SU_ERR_INFO_T0_0=0x2ffe1978 SU_ERR_INFO_T0_1=0x12521dc0 SU_ERR_INFO_T0_2=0x1800401c SU_ERR_INFO_T0_3=0xde4177df MTE_ERR_INFO_T0_0=0x245c5 MTE_ERR_INFO_T0_1=0x0 MTE_ERR_INFO_T0_2=0x0 MTE_ERR_INFO_T1_0=0x0 MTE_ERR_INFO_T1_1=0x0 MTE_ERR_INFO_T1_2=0x0 VEC_ERR_INFO_T0_0=0x394829 VEC_ERR_INFO_T0_1=0x40818330 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.456 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=0, coreType=1, VEC_ERR_INFO_T0_2=0x1200 VEC_ERR_INFO_T0_3=0x40123f2c VEC_ERR_INFO_T0_4=0x0 VEC_ERR_INFO_T0_5=0x5 CUBE_ERR_INFO_T0_0=0x0 CUBE_ERR_INFO_T0_1=0x0 L1_ERR_INFO_T0_0=0x0 L1_ERR_INFO_T0_1=0x0 SC_ERROR_T0_0=0x0 SU_ERROR_T0_0=0x0 MTE_ERROR_T0_0=0x80000000 MTE_ERROR_T1_0=0x0 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.457 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=0, coreType=1, VEC_ERROR_T0_0=0x0 VEC_ERROR_T0_2=0x0 CUBE_ERROR_T0_0=0x0 CUBE_ERROR_T0_1=0x0 L1_ERROR_T0_0=0x0 L1_ERROR_T0_1=0x0 SC_ERR_INFO_T0_0=0xffffffff SC_ERR_INFO_T0_1=0xffff SU_SPR_CONDITION_0=0x0 SU_SPR_CONDITION_1=0x0 SU_ERR_INFO_T0_4=0x0 SU_ERR_INFO_T0_5=0x0 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.459 [kernel_symbol_locator.cpp:688][tid:40039] [Dump][Exception] Error register information. coreId=0, coreType=1, SU_ERR_INFO_T0_6=0x0 SU_ERR_INFO_T0_7=0x0 VEC_ERR_INFO_T0_6=0x0 SU_ERROR_T0_1=0x0 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.463 [kernel_pc_fixer.cpp:102][tid:40039] [Dump][Exception] Fix PC with module=MTE, originalPC=0x120040811b20, fixedPC=0x120040811714.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.465 [kernel_symbol_locator.cpp:725][tid:40039] [Dump][Exception] Error PC information. coreId=0, coreType=1, originalStartPC=0x120040810000, fixedStartPC=0x120040810000, originalCurrentPC=0x120040811b20, fixedCurrentPC=0x120040811714, fixedPCOffset=0x1714.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.467 [kernel_symbol_locator.cpp:755][tid:40039] [Dump][Exception] Not found error symbol information. coreId=0, coreType=1, symbolCount=4, hasSymbolRange=1, minSymbolOffset=0x0, maxSymbolEnd=0x85d0.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.471 [kernel_symbol_locator.cpp:845][tid:40039] [Dump][Exception][Symbolize] classification summary. cores=1, groups=1.
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.479 [kernel_symbol_locator.cpp:520][tid:40039] [Dump][Exception][Symbolize] Group[0] summary (cores=1):
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.480 [kernel_symbol_locator.cpp:522][tid:40039] Group[0] oFile=unknown fixedPCOffset=0x1714 symbol=unknown
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.481 [kernel_symbol_locator.cpp:522][tid:40039] Group[0] outerSrc=unknown innerSrc=unknown
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.483 [kernel_symbol_locator.cpp:522][tid:40039] Group[0] cores=[{id=0,type=1}]
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.526 [dfx_args_parser.cpp:98][tid:40039] [AIC_INFO] args(0 to 20) after execute:0x120067402400, 0x120067402200, 0x1200674e2400, 0x1200674e2800, 0x1200674e2a00, 0x1200674e2c00, 0x120067400000, 0x120000050000, 0x120067401a00, 0x120067400400, 0x12000004f000, 0x120067401c00, 0, 0x120066400080, 0x120000016000, 0, 0x200000001, 0x400000008, 0x10000000002, 0x380000000001, 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.530 [dfx_args_parser.cpp:98][tid:40039] [AIC_INFO] args(20 to 28) after execute:0x3e00000000000, 0x8bb2c97000, 0, 0x8, 0xa5a5a5a500000086, 0, 0, 0, 
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.531 [dfx_args_parser.cpp:93][tid:40039] [AIC_INFO] after execute:args print end
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.651 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:0, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.654 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.656 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067402400; size:917504 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.657 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:0
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.670 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:1, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.671 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.673 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067402200; size:2 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.675 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:1
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.686 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:2, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.688 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.689 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2400; size:1024 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.691 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:2
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.701 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:3, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.703 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.704 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2800; size:512 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.706 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:3
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.715 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:4, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.717 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.719 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2a00; size:64 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.720 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:4
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.729 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:5, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.730 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.732 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x1200674e2c00; size:64 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.733 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:5
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.741 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:6, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.743 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.744 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067400000; size:832 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.746 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:6
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.753 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:7, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.755 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.757 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120000050000; size:256 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.758 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:7
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.764 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:8, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.766 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.768 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067401a00; size:128 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.769 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:8
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.775 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:9, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.776 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.778 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067400400; size:5632 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.779 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:9
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.784 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:10, tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.785 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:2(INPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.787 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x12000004f000; size:24 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.789 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:10
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.793 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load normal tensor, index:11, tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.794 [dfx_args_parser.cpp:370][tid:40039] [Dump][Exception] tensor type:3(OUTPUT_TENSOR), pointer type:1(L1_POINTER)
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.796 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump args data, addr:0x120067401c00; size:32 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.797 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load normal tensor, index:11
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.800 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load workspace, index:12
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.802 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump workspace data, addr:(nil); size:0 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.803 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load workspace, index:12
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.806 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] begin to load tiling data, index:13
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.808 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] exception info dump tiling data, addr:0x120066400080; size:72 bytes
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.127.810 [dfx_args_parser.cpp:98][tid:40039] [Dump][Exception] end to load tiling data, index:13
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.127.892 [context.cc:1253]39867 Synchronize:context is abort, status=0x715005e.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.127.972 [api_error.cc:3683]39867 DeviceSynchronize:Device synchronize failed.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.127.979 [api_c_device.cc:224]39867 rtDeviceSynchronizeWithTimeout:ErrCode=507035, desc=[vector core exception], InnerCode=0x715005e
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.127.983 [error_message_manage.cc:76]39867 FuncErrorReason:rtDeviceSynchronizeWithTimeout execution failed, reason=vector core exception
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.128.571 [dump_args.cpp:494][tid:40039] [Dump][Exception] dump exception to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/exception_info.58.70.20261127073240127
+[ERROR] APP(39867,python3):2026-11-27-07:32:40.128.657 39867 InitNpuBindings.cpp:THPModule_npu_shutdown_synchronize:137: "[PTA]:npuSynchronizeDevice failed err=:SynchronizeUsedDevices:../torch_npu/csrc/core/npu/NPUFunctions.cpp:350 NPU function error: device error type 3, error code is 507035
+[ERROR] 2026-11-27-07:32:40 (PID:39867, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[Error]: The vector core execution is abnormal. 
+        Rectify the fault based on the error information in the ascend log.
+EE9999: Internal error!
+EE9999[PID: 39867] 2026-11-27-07:32:40.127.987 (EE9999):  rtDeviceSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+TraceBack (most recent call last):
+
+Exception raised from SynchronizeUsedDevices at ../torch_npu/csrc/core/npu/NPUFunctions.cpp:350 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) +
+[ERROR] APP(39867,python3):2026-11-27-07:32:40.128.756 39867 InitNpuBindings.cpp:THPModule_npu_shutdown_synchronize:144: "[PTA]:NPU shutdown synchronize device failed."
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.128.809 [api_impl.cc:1728]39867 StreamSynchronize:context is abort, status=0x715005e.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.128.812 [api_error.cc:1490]39867 StreamSynchronize:Stream synchronize failed, stream_id=59, timeout=-1ms.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.128.816 [api_c_stream.cc:202]39867 rtStreamSynchronizeWithTimeout:ErrCode=507035, desc=[vector core exception], InnerCode=0x715005e
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.128.819 [error_message_manage.cc:76]39867 FuncErrorReason:rtStreamSynchronizeWithTimeout execution failed, reason=vector core exception
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.128.858 [stream.cc:4536]40039 EnterFailureAbort:stream_id=58 enter failure abort.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.129.035 [task_recycle_cqrpt_base.cc:210]40039 StarsResumeRtsq:stop scheduling in abort failure mode: stream_id=58, sq_id=5, sq_head=0, task_id=0, taskType=KERNEL_AIVEC(66).
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.151.487 [kernel_info_collector.cpp:392][tid:40209] [Dump][Exception] dump kernel json to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12.json
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.151.622 [kernel_info_collector.cpp:405][tid:40209] [Dump][Exception] dump kernel to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12.o
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.155.916 [kernel_info_collector.cpp:392][tid:40210] [Dump][Exception] dump kernel json to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f.json
+[ERROR] IDEDD(39867,python3):2026-11-27-07:32:40.156.083 [kernel_info_collector.cpp:405][tid:40210] [Dump][Exception] dump kernel to file, file: /work/runs/reference-1127073200/extra-info/extra-info/data-dump/1/AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f.o
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.788.416 [context.cc:1253]39867 Synchronize:context is abort, status=0x715005e.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.788.421 [api_error.cc:3683]39867 DeviceSynchronize:Device synchronize failed.
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.788.429 [api_c_device.cc:224]39867 rtDeviceSynchronizeWithTimeout:ErrCode=507035, desc=[vector core exception], InnerCode=0x715005e
+[ERROR] RUNTIME(39867,python3):2026-11-27-07:32:40.788.434 [error_message_manage.cc:76]39867 FuncErrorReason:rtDeviceSynchronizeWithTimeout execution failed, reason=vector core exception
+[ERROR] APP(39867,python3):2026-11-27-07:32:40.788.848 39867 InitNpuBindings.cpp:THPModule_npu_shutdown:94: "[PTA]:NPUCachingAllocator::emptyCache failed"

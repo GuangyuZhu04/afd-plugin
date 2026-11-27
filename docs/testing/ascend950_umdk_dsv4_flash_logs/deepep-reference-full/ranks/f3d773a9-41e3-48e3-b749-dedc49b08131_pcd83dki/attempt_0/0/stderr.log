@@ -1,0 +1,32 @@
+[W1127 07:32:22.617627642 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 600000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 2000000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/tmp/deepep-ref/tests/afd/run_pipeline_cam.py", line 763, in <module>
+[rank0]:     main()
+[rank0]:   File "/tmp/deepep-ref/tests/afd/run_pipeline_cam.py", line 604, in main
+[rank0]:     status = owner.recv_status.cpu().tolist()
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: RuntimeError: copy_between_host_and_device_opapi:../torch_npu/csrc/aten/ops/op_api/CopyKernelOpApi.cpp:94 NPU function error: device error type 3, error code is 507035
+[rank0]: [ERROR] 2026-11-27-07:32:40 (PID:39866, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[rank0]: [Error]: The vector core execution is abnormal. 
+[rank0]:         Rectify the fault based on the error information in the ascend log.
+[rank0]: EZ9999: Internal error!
+[rank0]: EZ9999[PID: 39866] 2026-11-27-07:32:40.188.527 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 296, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040810000, current: 0x120040811b20, sc error info: 0xffffffffffff, su error info: 0x12521dc01ff41978,0xeffffef61800401c, mte error info: 0x245c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[rank0]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank0]: TraceBack (most recent call last):
+[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 297, the error is aivec error, core id is 1, error code = 263, dump info: pc start: 0x120040819000, current: 0x120040819608, sc error info: 0xffffffffffff, su error info: 0x12521dc019aa6578,0x646c52f21800401c, mte error info: 0x6a00002d9c3, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066800000, mte error: 0, aic cond: 0.
+[rank0]: The extend info: errcode:(263) errorStr: The address for scalar to use is unaligned or out of bounds The GM address exceeds 48 bits, or the on-chip buffer address exceeds the size of the buffer. subErrType: 0x4.
+[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank0]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[rank0]:        rtStreamSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+
+[rank0]:[W1127 07:32:40.620334258 Logger.cpp:75] Warning: Failed to generate log message. (function operator())
+[rank0]:[E1127 07:32:40.620397948 ProcessGroupHCCL.cpp:2104] [Rank 0] HCCL watchdog thread terminated with exception: 
+[ERROR] 2026-11-27-07:32:40 (PID:39866, Device:0, RankID:0) ERR02005 DIST internal error
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 0] HCCL watchdog thread terminated with exception: 
+[ERROR] 2026-11-27-07:32:40 (PID:39866, Device:0, RankID:0) ERR02005 DIST internal error
