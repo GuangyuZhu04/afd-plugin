@@ -1,0 +1,421 @@
+[default7]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default7]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default7]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default7]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default7]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default7]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default2]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default2]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default2]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default2]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default2]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default2]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default5]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default5]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default5]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default5]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default5]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default5]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default6]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default6]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default6]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default6]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default6]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default6]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default0]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default0]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default0]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default3]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default3]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default3]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default3]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default3]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default3]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default4]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default4]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default4]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default4]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default4]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default4]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default0]:[W1127 10:34:45.850815072 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 900000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 2000000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default5]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default4]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default7]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default6]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default4]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default5]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default7]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default6]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+[default0]:  return func(*args, **kwargs)
+[default2]:/tmp/tests-only/tests/npu/umdk_roundtrip.py:95: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+[default2]:  ids = (token * profile.topk + slot) % domain
+[default3]:/tmp/tests-only/tests/npu/umdk_roundtrip.py:95: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+[default3]:  ids = (token * profile.topk + slot) % domain
+[default0]:/tmp/tests-only/tests/npu/umdk_roundtrip.py:95: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+[default0]:  ids = (token * profile.topk + slot) % domain
+[default1]:/tmp/tests-only/tests/npu/umdk_roundtrip.py:95: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+[default1]:  ids = (token * profile.topk + slot) % domain
+[default3]:[rank3]: Traceback (most recent call last):
+[default3]:[rank3]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default3]:[rank3]:     main()
+[default3]:[rank3]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default3]:[rank3]:     return f(*args, **kwargs)
+[default3]:[rank3]:            ^^^^^^^^^^^^^^^^^^
+[default3]:[rank3]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+[default3]:[rank3]:     source_round(session, profile, rank, step, rows, device)
+[default3]:[rank3]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+[default3]:[rank3]:     actual = session.combine(step, context)
+[default3]:[rank3]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default3]:[rank3]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+[default3]:[rank3]:     raise RuntimeError(
+[default3]:[rank3]: RuntimeError: UMDK CombineRecv failed on rank 3, layer 4: [3, 7]
+[default0]:[rank0]: Traceback (most recent call last):
+[default0]:[rank0]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default0]:[rank0]:     main()
+[default0]:[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default0]:[rank0]:     return f(*args, **kwargs)
+[default0]:[rank0]:            ^^^^^^^^^^^^^^^^^^
+[default0]:[rank0]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+[default0]:[rank0]:     source_round(session, profile, rank, step, rows, device)
+[default0]:[rank0]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+[default0]:[rank0]:     actual = session.combine(step, context)
+[default0]:[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default0]:[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+[default0]:[rank0]:     raise RuntimeError(
+[default0]:[rank0]: RuntimeError: UMDK CombineRecv failed on rank 0, layer 1: [3, 7]
+[default1]:[rank1]: Traceback (most recent call last):
+[default1]:[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default1]:[rank1]:     main()
+[default1]:[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default1]:[rank1]:     return f(*args, **kwargs)
+[default1]:[rank1]:            ^^^^^^^^^^^^^^^^^^
+[default1]:[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+[default1]:[rank1]:     source_round(session, profile, rank, step, rows, device)
+[default1]:[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+[default1]:[rank1]:     actual = session.combine(step, context)
+[default1]:[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default1]:[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+[default1]:[rank1]:     raise RuntimeError(
+[default1]:[rank1]: RuntimeError: UMDK CombineRecv failed on rank 1, layer 2: [3, 7]
+[default5]:[rank5]: Traceback (most recent call last):
+[default5]:[rank5]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default5]:[rank5]:     main()
+[default5]:[rank5]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default5]:[rank5]:     return f(*args, **kwargs)
+[default5]:[rank5]:            ^^^^^^^^^^^^^^^^^^
+[default5]:[rank5]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+[default5]:[rank5]:     serve_round(session, store, keys, role_rank, step, experts)
+[default2]:[rank2]: Traceback (most recent call last):
+[default2]:[rank2]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default5]:[rank5]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+[default2]:[rank2]:     main()
+[default2]:[rank2]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default2]:[rank2]:     return f(*args, **kwargs)
+[default5]:[rank5]:     payload = session.receive(wait=False)
+[default5]:[rank5]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default5]:[rank5]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+[default5]:[rank5]:     self.startup.check_failure()
+[default2]:[rank2]:            ^^^^^^^^^^^^^^^^^^
+[default5]:[rank5]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+[default2]:[rank2]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+[default5]:[rank5]:     raise RuntimeError(self._store.get(signal).decode())
+[default2]:[rank2]:     source_round(session, profile, rank, step, rows, device)
+[default5]:[rank5]: RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+[default2]:[rank2]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+[default2]:[rank2]:     actual = session.combine(step, context)
+[default2]:[rank2]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default2]:[rank2]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+[default2]:[rank2]:     raise RuntimeError(
+[default2]:[rank2]: RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+[default4]:[rank4]: Traceback (most recent call last):
+[default4]:[rank4]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default4]:[rank4]:     main()
+[default4]:[rank4]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default4]:[rank4]:     return f(*args, **kwargs)
+[default4]:[rank4]:            ^^^^^^^^^^^^^^^^^^
+[default4]:[rank4]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+[default4]:[rank4]:     serve_round(session, store, keys, role_rank, step, experts)
+[default4]:[rank4]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+[default4]:[rank4]:     payload = session.receive(wait=False)
+[default4]:[rank4]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default4]:[rank4]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+[default4]:[rank4]:     self.startup.check_failure()
+[default4]:[rank4]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+[default4]:[rank4]:     raise RuntimeError(self._store.get(signal).decode())
+[default4]:[rank4]: RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+[default7]:[rank7]: Traceback (most recent call last):
+[default7]:[rank7]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default7]:[rank7]:     main()
+[default7]:[rank7]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default7]:[rank7]:     return f(*args, **kwargs)
+[default7]:[rank7]:            ^^^^^^^^^^^^^^^^^^
+[default7]:[rank7]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+[default7]:[rank7]:     serve_round(session, store, keys, role_rank, step, experts)
+[default7]:[rank7]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+[default7]:[rank7]:     payload = session.receive(wait=False)
+[default7]:[rank7]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default7]:[rank7]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+[default7]:[rank7]:     self.startup.check_failure()
+[default7]:[rank7]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+[default7]:[rank7]:     raise RuntimeError(self._store.get(signal).decode())
+[default7]:[rank7]: RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+[default6]:[rank6]: Traceback (most recent call last):
+[default6]:[rank6]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 220, in <module>
+[default6]:[rank6]:     main()
+[default6]:[rank6]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[default6]:[rank6]:     return f(*args, **kwargs)
+[default6]:[rank6]:            ^^^^^^^^^^^^^^^^^^
+[default6]:[rank6]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+[default6]:[rank6]:     serve_round(session, store, keys, role_rank, step, experts)
+[default6]:[rank6]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+[default6]:[rank6]:     payload = session.receive(wait=False)
+[default6]:[rank6]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default6]:[rank6]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+[default6]:[rank6]:     self.startup.check_failure()
+[default6]:[rank6]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+[default6]:[rank6]:     raise RuntimeError(self._store.get(signal).decode())
+[default6]:[rank6]: RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+W1127 10:38:05.645000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77991 closing signal SIGTERM
+W1127 10:38:05.646000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77992 closing signal SIGTERM
+W1127 10:38:05.646000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77994 closing signal SIGTERM
+W1127 10:38:05.647000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77995 closing signal SIGTERM
+W1127 10:38:05.648000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77996 closing signal SIGTERM
+W1127 10:38:05.648000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77997 closing signal SIGTERM
+W1127 10:38:05.649000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 77998 closing signal SIGTERM
+E1127 10:38:06.276000 77975 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: -11) local_rank: 2 (pid: 77993) of binary: /usr/local/python3.12.16/bin/python3
+E1127 10:38:06.281000 77975 site-packages/torch/distributed/elastic/multiprocessing/errors/error_handler.py:145] no error file defined for parent, to copy child error file (/work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/2/error.json)
+[default2]:rank=2 profile=dsv4-flash cfg={'combine_chunk': 4096, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 1024, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 16384, 'ffn_transaction': 0, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 201326592, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default1]:rank=1 profile=dsv4-flash cfg={'combine_chunk': 4096, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 1024, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 16384, 'ffn_transaction': 0, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 201326592, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default0]:rank=0 profile=dsv4-flash cfg={'combine_chunk': 4096, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 1024, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 16384, 'ffn_transaction': 0, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 201326592, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default3]:rank=3 profile=dsv4-flash cfg={'combine_chunk': 4096, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 1024, 'ffn_backend_max_rows': 0, 'ffn_group_row_bound': 16384, 'ffn_transaction': 0, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 201326592, 'recv_alignment': 0, 'recv_q': 0, 'recv_q_alloc': 0, 'recv_rank': -1, 'recv_tile': 0, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default5]:rank=5 profile=dsv4-flash cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 512, 'ffn_backend_max_rows': 262144, 'ffn_group_row_bound': 16384, 'ffn_transaction': 1, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 143001600, 'recv_alignment': 32, 'recv_q': 16384, 'recv_q_alloc': 16384, 'recv_rank': 1, 'recv_tile': 4, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default7]:rank=7 profile=dsv4-flash cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 512, 'ffn_backend_max_rows': 262144, 'ffn_group_row_bound': 16384, 'ffn_transaction': 1, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 143001600, 'recv_alignment': 32, 'recv_q': 16384, 'recv_q_alloc': 16384, 'recv_rank': 3, 'recv_tile': 4, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default4]:rank=4 profile=dsv4-flash cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 512, 'ffn_backend_max_rows': 262144, 'ffn_group_row_bound': 16384, 'ffn_transaction': 1, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 143001600, 'recv_alignment': 32, 'recv_q': 16384, 'recv_q_alloc': 16384, 'recv_rank': 0, 'recv_tile': 4, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default6]:rank=6 profile=dsv4-flash cfg={'combine_chunk': 0, 'combine_tile': 32, 'comm_round_mode': 1, 'completion_bytes': 1312, 'context_bytes': 2016, 'control_bytes': 512, 'ffn_backend_max_rows': 262144, 'ffn_group_row_bound': 16384, 'ffn_transaction': 1, 'num_experts': 256, 'num_hidden_bytes': 8192, 'num_layers': 43, 'num_ranks': 4, 'num_sf_packs': 0, 'num_slots': 1, 'num_source_lanes': 4, 'num_src_ranks': 4, 'num_token_capacity': 4096, 'num_tokens_per_tile': 256, 'num_topk': 6, 'num_ub_bytes': 221184, 'num_vec_cores': 32, 'payload_bytes': 143001600, 'recv_alignment': 32, 'recv_q': 16384, 'recv_q_alloc': 16384, 'recv_rank': 2, 'recv_tile': 4, 'return_progress_bytes': 0, 'round_step': 0, 'timeout_cycles': 120000000000}
+[default3]:rank=3 step=0 layer=0 valid_rows=1 dispatch
+[default2]:rank=2 step=0 layer=0 valid_rows=1 dispatch
+[default0]:rank=0 step=0 layer=0 valid_rows=1 dispatch
+[default1]:rank=1 step=0 layer=0 valid_rows=1 dispatch
+[default5]:ffn=1 step=0 tx=1 slice=0 physical_rows=0
+[default3]:rank=3 step=1 layer=4 valid_rows=0 dispatch
+[default2]:rank=2 step=1 layer=3 valid_rows=0 dispatch
+[default0]:rank=0 step=1 layer=1 valid_rows=1 dispatch
+[default1]:rank=1 step=1 layer=2 valid_rows=0 dispatch
+[default5]:ffn=1 step=0 tx=2 slice=0 physical_rows=0
+[default4]:ffn=0 step=0 tx=1 slice=0 physical_rows=192
+[default4]:ffn=0 step=0 tx=2 slice=0 physical_rows=192
+[default7]:ffn=3 step=0 tx=1 slice=0 physical_rows=0
+[default7]:ffn=3 step=0 tx=2 slice=0 physical_rows=0
+[default6]:ffn=2 step=0 tx=1 slice=0 physical_rows=0
+[default6]:ffn=2 step=0 tx=2 slice=0 physical_rows=0
+[default4]:[ERROR] 2026-11-27-10:37:53 (PID:77995, Device:4, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default1]:[ERROR] 2026-11-27-10:37:53 (PID:77992, Device:1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default2]:[ERROR] 2026-11-27-10:37:53 (PID:77993, Device:2, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default3]:[ERROR] 2026-11-27-10:37:54 (PID:77994, Device:3, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default6]:[ERROR] 2026-11-27-10:37:54 (PID:77997, Device:6, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default5]:[ERROR] 2026-11-27-10:37:54 (PID:77996, Device:5, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default0]:[ERROR] 2026-11-27-10:37:54 (PID:77991, Device:0, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default7]:[ERROR] 2026-11-27-10:37:54 (PID:77998, Device:7, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Traceback (most recent call last):
+  File "/usr/local/python3.12.16/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 317, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+tests/npu/umdk_roundtrip.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 77991)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/0/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+      source_round(session, profile, rank, step, rows, device)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+      actual = session.combine(step, context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+      raise RuntimeError(
+  RuntimeError: UMDK CombineRecv failed on rank 0, layer 1: [3, 7]
+  
+[2]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 1 (local_rank: 1)
+  exitcode  : -11 (pid: 77992)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/1/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+      source_round(session, profile, rank, step, rows, device)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+      actual = session.combine(step, context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+      raise RuntimeError(
+  RuntimeError: UMDK CombineRecv failed on rank 1, layer 2: [3, 7]
+  
+[3]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 3 (local_rank: 3)
+  exitcode  : -15 (pid: 77994)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/3/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+      source_round(session, profile, rank, step, rows, device)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+      actual = session.combine(step, context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+      raise RuntimeError(
+  RuntimeError: UMDK CombineRecv failed on rank 3, layer 4: [3, 7]
+  
+[4]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 4 (local_rank: 4)
+  exitcode  : -11 (pid: 77995)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/4/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+      serve_round(session, store, keys, role_rank, step, experts)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+      payload = session.receive(wait=False)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+      self.startup.check_failure()
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+      raise RuntimeError(self._store.get(signal).decode())
+  RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+  
+[5]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 5 (local_rank: 5)
+  exitcode  : -11 (pid: 77996)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/5/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+      serve_round(session, store, keys, role_rank, step, experts)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+      payload = session.receive(wait=False)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+      self.startup.check_failure()
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+      raise RuntimeError(self._store.get(signal).decode())
+  RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+  
+[6]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 6 (local_rank: 6)
+  exitcode  : -15 (pid: 77997)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/6/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+      serve_round(session, store, keys, role_rank, step, experts)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+      payload = session.receive(wait=False)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+      self.startup.check_failure()
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+      raise RuntimeError(self._store.get(signal).decode())
+  RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+  
+[7]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 7 (local_rank: 7)
+  exitcode  : -11 (pid: 77998)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/7/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 205, in main
+      serve_round(session, store, keys, role_rank, step, experts)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 117, in serve_round
+      payload = session.receive(wait=False)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+      self.startup.check_failure()
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+      raise RuntimeError(self._store.get(signal).decode())
+  RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+  
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-27_10:37:53
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 2 (local_rank: 2)
+  exitcode  : -11 (pid: 77993)
+  error_file: /work/runs/roundtrip-dsv4flash-rows1-1127103433/ranks/96906454-8ba4-4ca4-88c1-77f0d7faf2da_0l21igh3/attempt_0/2/error.json
+  traceback : Traceback (most recent call last):
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+      return f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 202, in main
+      source_round(session, profile, rank, step, rows, device)
+    File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 105, in source_round
+      actual = session.combine(step, context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 334, in combine
+      raise RuntimeError(
+  RuntimeError: UMDK CombineRecv failed on rank 2, layer 3: [3, 7]
+  
+============================================================
+[ERROR] 2026-11-27-10:38:06 (PID:77975, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception

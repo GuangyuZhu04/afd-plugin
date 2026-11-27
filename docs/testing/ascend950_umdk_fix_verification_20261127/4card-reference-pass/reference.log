@@ -1,0 +1,288 @@
+[default0]:[W1127 10:29:51.784102928 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 600000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 2000000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:PREFLIGHT_OK [{"rank": 0, "role": "A", "required_bytes": 1842320, "payload_bytes": 1835008, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 320, "caller_estimate_bytes": 1836704, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}, {"rank": 1, "role": "A", "required_bytes": 1842320, "payload_bytes": 1835008, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 320, "caller_estimate_bytes": 1836704, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}, {"rank": 2, "role": "F", "required_bytes": 5582800, "payload_bytes": 1901696, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 3674112, "caller_estimate_bytes": 0, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}, {"rank": 3, "role": "F", "required_bytes": 5582800, "payload_bytes": 1901696, "control_bytes": 256, "context_bytes": 832, "workspace_upper_bytes": 5696, "ledger_bytes": 128, "tables_bytes": 48, "prepare_bytes": 3674112, "caller_estimate_bytes": 0, "workspace_note": "j=ceil(C/32) upper bound (runtime tile>=32); includes prepare allocations", "model_note": "prepare_F uses nf=E/num_F; caller uses B=max(1,batch)", "task_cap_bytes": 8589934592, "budget_bytes": 8589934592, "reserve_bytes": 268435456, "fits": true, "fits_task": true}]
+[default2]:RUNCFG {"rank": 2, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default2]:MEM {"stage": "pg_ready", "rank": 2, "role": "F", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default3]:RUNCFG {"rank": 3, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default3]:MEM {"stage": "pg_ready", "rank": 3, "role": "F", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default1]:RUNCFG {"rank": 1, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default1]:MEM {"stage": "pg_ready", "rank": 1, "role": "A", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default0]:RUNCFG {"rank": 0, "argv": ["tests/afd/run_pipeline_cam.py", "--ffn-transaction", "--local-comm-rounds", "--hidden", "7168", "--topk", "2", "--experts", "8", "--batch", "64", "--window", "64", "--backend-max-rows", "4096", "--routes", "balanced", "--weights", "nonunit"], "run_tag": "", "B": 64, "C": 64, "rounds": 1, "Q": 128, "Q_mode": "whole_expert_bound", "local_comm_rounds": true, "local_round_counts": [1, 1], "expected_ffn_rounds": 1, "poll_cycles": false, "Q_raw": 128, "Q_clamped": 0, "MB": 1, "weights": "nonunit", "routes": "balanced", "so": {"path": "/usr/local/python3.12.16/lib/python3.12/site-packages/deep_ep/_C.cpython-312-aarch64-linux-gnu.so", "bytes": 6451704, "sha256": "dfcdad6c758a2d766bcf48a647a50924dddcaa7d083d1f0ccbaadb86eb60444a"}, "cam_so": {"error": "NameError(\"name 'umdk_cam_op_lib' is not defined\")"}}
+[default0]:MEM {"stage": "pg_ready", "rank": 0, "role": "A", "torch_alloc": 0, "torch_reserved": 20971520, "torch_peak": 16779776}
+[default2]:MEM {"stage": "constructed", "rank": 2, "role": "F", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1908624, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default2]:CAMCFG {"rank": 2, "role": "F", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1901696, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": 0, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default2]:CAMJETTY {"rank": 2, "n": 3, "dtype": "torch.int64"}
+[default2]:STRIDEDIR {"tag": "constructed", "rank": 2, "role": "F", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": null, "a_expected_slots_c_k_stride": null, "a_payload_matches_expected": null, "f_layout_unchanged": true}
+[default2]:MEM {"stage": "prepared", "rank": 2, "role": "F", "torch_alloc": 3684864, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default3]:MEM {"stage": "constructed", "rank": 3, "role": "F", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1908624, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default3]:CAMCFG {"rank": 3, "role": "F", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1901696, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": 1, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+[default0]:  return func(*args, **kwargs)
+[default3]:CAMJETTY {"rank": 3, "n": 3, "dtype": "torch.int64"}
+[default3]:STRIDEDIR {"tag": "constructed", "rank": 3, "role": "F", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": null, "a_expected_slots_c_k_stride": null, "a_payload_matches_expected": null, "f_layout_unchanged": true}
+[default3]:MEM {"stage": "prepared", "rank": 3, "role": "F", "torch_alloc": 3684864, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default1]:MEM {"stage": "constructed", "rank": 1, "role": "A", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1841936, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default1]:CAMCFG {"rank": 1, "role": "A", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1835008, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": -1, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default1]:CAMJETTY {"rank": 1, "n": 3, "dtype": "torch.int64"}
+[default1]:STRIDEDIR {"tag": "constructed", "rank": 1, "role": "A", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": 1835008, "a_expected_slots_c_k_stride": 1835008, "a_payload_matches_expected": 1, "f_layout_unchanged": null}
+[default0]:MEM {"stage": "constructed", "rank": 0, "role": "A", "torch_alloc": 7680, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1841936, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default0]:CAMCFG {"rank": 0, "role": "A", "cfg": {"combine_chunk": 0, "combine_tile": 32, "comm_round_mode": 1, "completion_bytes": 192, "context_bytes": 832, "control_bytes": 256, "ffn_backend_max_rows": 0, "ffn_group_row_bound": 128, "ffn_transaction": 0, "num_experts": 8, "num_hidden_bytes": 14336, "num_layers": 1, "num_ranks": 2, "num_sf_packs": 0, "num_slots": 1, "num_source_lanes": 2, "num_src_ranks": 2, "num_token_capacity": 64, "num_tokens_per_tile": 256, "num_topk": 2, "num_ub_bytes": 221184, "num_vec_cores": 1, "payload_bytes": 1835008, "recv_alignment": 0, "recv_q": 0, "recv_q_alloc": 0, "recv_rank": -1, "recv_tile": 0, "return_progress_bytes": 0, "round_step": 0, "timeout_cycles": 600000000000, "num_hidden": 7168}}
+[default0]:CAMJETTY {"rank": 0, "n": 3, "dtype": "torch.int64"}
+[default0]:STRIDEDIR {"tag": "constructed", "rank": 0, "role": "A", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": 1835008, "a_expected_slots_c_k_stride": 1835008, "a_payload_matches_expected": 1, "f_layout_unchanged": null}
+[default3]:POLL_JIT {"rank": 3, "artifact": "/root/.dj/cache/afd_ffn_poll.bb98a81f1a628c6155fe2703ab2c49aa"}
+[default3]:MEM {"stage": "prewarmed", "rank": 3, "role": "F", "torch_alloc": 3685376, "torch_reserved": 39845888, "torch_peak": 20463616, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default3]:FFN_TX {"event": "poll", "f_rank": 3, "ready": [], "pending": [], "missing_members": [], "host_wait_ns": 1135157}
+[default2]:POLL_JIT {"rank": 2, "artifact": "/root/.dj/cache/afd_ffn_poll.bb98a81f1a628c6155fe2703ab2c49aa"}
+[default2]:MEM {"stage": "prewarmed", "rank": 2, "role": "F", "torch_alloc": 3685376, "torch_reserved": 39845888, "torch_peak": 20463616, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default2]:FFN_TX {"event": "poll", "f_rank": 2, "ready": [], "pending": [], "missing_members": [], "host_wait_ns": 1162767}
+[default1]:MEM {"stage": "prepared", "rank": 1, "role": "A", "torch_alloc": 1847296, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default1]:MEM {"stage": "prewarmed", "rank": 1, "role": "A", "torch_alloc": 1847808, "torch_reserved": 20971520, "torch_peak": 18626048, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default0]:MEM {"stage": "prepared", "rank": 0, "role": "A", "torch_alloc": 1847296, "torch_reserved": 20971520, "torch_peak": 16779776, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default0]:MEM {"stage": "prewarmed", "rank": 0, "role": "A", "torch_alloc": 1847808, "torch_reserved": 20971520, "torch_peak": 18626048, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default3]:FFN_TX {"event": "poll", "f_rank": 3, "ready": [1], "pending": [], "missing_members": [{"dp": 0, "mb": 0, "layer": 0, "round": 0, "rounds": null, "phase": 0, "missing": [0]}], "host_wait_ns": 153551}
+[default3]:FFN_TX {"event": "poll", "f_rank": 3, "ready": [], "pending": [1], "missing_members": [{"dp": 0, "mb": 0, "layer": 0, "round": 0, "rounds": null, "phase": 0, "missing": [0]}], "host_wait_ns": 146141}
+[default2]:FFN_TX {"event": "poll", "f_rank": 2, "ready": [], "pending": [1], "missing_members": [{"dp": 0, "mb": 0, "layer": 0, "round": 0, "rounds": null, "phase": 0, "missing": [0]}], "host_wait_ns": 149701}
+[default3]:FFN_TX {"event": "scheduler", "f_rank": 3, "txn": 1, "phase": 0, "entries": [{"dp": 0, "mb": 0, "layer": 0, "layer_slot": 0, "round": 0, "rounds": 1, "phase": 0, "members": [{"lane": 0, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}, {"lane": 1, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}], "representative_tokens": 64, "local_rounds": true}], "result": "selected"}
+[default2]:FFN_TX {"event": "poll", "f_rank": 2, "ready": [0], "pending": [1], "missing_members": [], "host_wait_ns": 139111}
+[default2]:FFN_TX {"event": "scheduler", "f_rank": 2, "txn": 1, "phase": 0, "entries": [{"dp": 0, "mb": 0, "layer": 0, "layer_slot": 0, "round": 0, "rounds": 1, "phase": 0, "members": [{"lane": 0, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}, {"lane": 1, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}], "representative_tokens": 64, "local_rounds": true}], "result": "selected"}
+[default3]:FFN_TX {"event": "dispatch_recv", "f_rank": 3, "txn": 1, "slice": 0, "groups": [{"layer": 0, "expert": 0, "rows": 26, "padded": 26, "row_begin": 0}, {"layer": 0, "expert": 1, "rows": 26, "padded": 26, "row_begin": 26}, {"layer": 0, "expert": 2, "rows": 26, "padded": 26, "row_begin": 52}, {"layer": 0, "expert": 3, "rows": 26, "padded": 26, "row_begin": 78}], "padded": 104}
+[default3]:FFN_TX {"event": "ffn_fixture", "f_rank": 3, "txn": 1, "slice": 0}
+[default3]:FFN_TX {"event": "combine_send", "f_rank": 3, "txn": 1, "slice": 0, "committed": true}
+[default3]:FFN_TX {"event": "done_consumed", "f_rank": 3, "txn": 1, "slice": 0, "entry": {"dp": 0, "mb": 0, "layer": 0, "layer_slot": 0, "round": 0, "rounds": 1, "phase": 0, "members": [{"lane": 0, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}, {"lane": 1, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}], "representative_tokens": 64, "local_rounds": true}}
+[default1]:AFD_DESTROY role=A stage=device_sync_begin t_us=0 rc=0
+[default1]:AFD_DESTROY role=A stage=device_sync_end t_us=28 rc=0
+[default1]:AFD_DESTROY role=A stage=combine_registration_reset_begin t_us=52 rc=0
+[default1]:AFD_DESTROY role=A stage=combine_registration_reset_end t_us=53 rc=0
+[default1]:AFD_DESTROY role=A stage=payload_context_reset_begin t_us=56 rc=0
+[default1]:AFD_DESTROY role=A stage=payload_context_reset_end t_us=57 rc=0
+[default1]:AFD_DESTROY role=A stage=control_context_reset_begin t_us=58 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=table_free_end idx=-1 rc=0 t_us=13
+[default1]:AFD_HCCL_DESTROY rank=1 stage=channel_destroy_begin idx=-1 rc=0 t_us=14
+[default1]:AFD_HCCL_DESTROY rank=1 stage=channel_destroy_end idx=-1 rc=0 t_us=9659
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=0 rc=0 t_us=9666
+[default0]:AFD_DESTROY role=A stage=device_sync_begin t_us=0 rc=0
+[default0]:AFD_DESTROY role=A stage=device_sync_end t_us=25 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=0 rc=0 t_us=9807
+[default0]:AFD_DESTROY role=A stage=combine_registration_reset_begin t_us=64 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=0 rc=0 t_us=9808
+[default2]:AFD_DESTROY role=F stage=device_sync_begin t_us=0 rc=0
+[default2]:AFD_DESTROY role=F stage=device_sync_end t_us=23 rc=0
+[default0]:AFD_DESTROY role=A stage=combine_registration_reset_end t_us=66 rc=0
+[default0]:AFD_DESTROY role=A stage=payload_context_reset_begin t_us=68 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=0 rc=0 t_us=9957
+[default3]:AFD_DESTROY role=F stage=device_sync_begin t_us=0 rc=0
+[default3]:AFD_DESTROY role=F stage=device_sync_end t_us=23 rc=0
+[default0]:AFD_DESTROY role=A stage=payload_context_reset_end t_us=69 rc=0
+[default2]:AFD_DESTROY role=F stage=combine_registration_reset_begin t_us=38 rc=0
+[default3]:AFD_DESTROY role=F stage=combine_registration_reset_begin t_us=41 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=1 rc=0 t_us=9958
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=1 rc=0 t_us=10286
+[default3]:AFD_DESTROY role=F stage=combine_registration_reset_end t_us=581 rc=0
+[default0]:AFD_DESTROY role=A stage=control_context_reset_begin t_us=70 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=1 rc=0 t_us=10287
+[default0]:AFD_HCCL_DESTROY rank=0 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default0]:AFD_HCCL_DESTROY rank=0 stage=table_free_end idx=-1 rc=0 t_us=19
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=1 rc=0 t_us=10293
+[default3]:AFD_DESTROY role=F stage=payload_context_reset_begin t_us=593 rc=0
+[default0]:AFD_HCCL_DESTROY rank=0 stage=channel_destroy_begin idx=-1 rc=0 t_us=20
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=2 rc=0 t_us=10294
+[default0]:AFD_HCCL_DESTROY rank=0 stage=channel_destroy_end idx=-1 rc=0 t_us=7385
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=2 rc=0 t_us=10392
+[default3]:AFD_DESTROY role=F stage=payload_context_reset_end t_us=594 rc=0
+[default2]:AFD_DESTROY role=F stage=combine_registration_reset_end t_us=551 rc=0
+[default3]:AFD_DESTROY role=F stage=control_context_reset_begin t_us=595 rc=0
+[default2]:AFD_DESTROY role=F stage=payload_context_reset_begin t_us=560 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=2 rc=0 t_us=10393
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=2 rc=0 t_us=10397
+[default2]:AFD_DESTROY role=F stage=payload_context_reset_end t_us=562 rc=0
+[default2]:AFD_DESTROY role=F stage=control_context_reset_begin t_us=562 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=memory_reset_begin idx=-1 rc=0 t_us=10398
+[default1]:AFD_HCCL_DESTROY rank=1 stage=memory_reset_end idx=-1 rc=0 t_us=10402
+[default2]:AFD_HCCL_DESTROY rank=2 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default2]:AFD_HCCL_DESTROY rank=2 stage=table_free_end idx=-1 rc=0 t_us=14
+[default1]:AFD_DESTROY role=A stage=control_context_reset_end t_us=10463 rc=0
+[default3]:AFD_HCCL_DESTROY rank=3 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default3]:AFD_HCCL_DESTROY rank=3 stage=table_free_end idx=-1 rc=0 t_us=14
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=0 rc=0 t_us=7391
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=0 rc=0 t_us=7571
+[default2]:AFD_HCCL_DESTROY rank=2 stage=channel_destroy_begin idx=-1 rc=0 t_us=16
+[default3]:AFD_HCCL_DESTROY rank=3 stage=channel_destroy_begin idx=-1 rc=0 t_us=15
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=0 rc=0 t_us=7573
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=0 rc=0 t_us=7600
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=1 rc=0 t_us=7602
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=1 rc=0 t_us=7695
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=1 rc=0 t_us=7696
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=1 rc=0 t_us=7705
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=2 rc=0 t_us=7706
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=2 rc=0 t_us=7796
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=2 rc=0 t_us=7797
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=2 rc=0 t_us=7802
+[default0]:AFD_HCCL_DESTROY rank=0 stage=memory_reset_begin idx=-1 rc=0 t_us=7803
+[default0]:AFD_HCCL_DESTROY rank=0 stage=memory_reset_end idx=-1 rc=0 t_us=7808
+[default0]:AFD_DESTROY role=A stage=control_context_reset_end t_us=7881 rc=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=table_free_end idx=-1 rc=0 t_us=15
+[default1]:AFD_HCCL_DESTROY rank=1 stage=channel_destroy_begin idx=-1 rc=0 t_us=16
+[default1]:AFD_HCCL_DESTROY rank=1 stage=channel_destroy_end idx=-1 rc=0 t_us=17086
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=0 rc=0 t_us=17092
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=0 rc=0 t_us=17601
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=0 rc=0 t_us=17603
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=0 rc=0 t_us=17763
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=1 rc=0 t_us=17764
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=1 rc=0 t_us=18220
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=1 rc=0 t_us=18221
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=1 rc=0 t_us=18226
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=2 rc=0 t_us=18227
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=2 rc=0 t_us=18814
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=2 rc=0 t_us=18815
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=2 rc=0 t_us=18819
+[default1]:AFD_HCCL_DESTROY rank=1 stage=memory_reset_begin idx=-1 rc=0 t_us=18820
+[default3]:AFD_HCCL_DESTROY rank=3 stage=channel_destroy_end idx=-1 rc=0 t_us=11864
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=0 rc=0 t_us=11870
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=0 rc=0 t_us=12029
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=0 rc=0 t_us=12031
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=0 rc=0 t_us=12191
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=1 rc=0 t_us=12192
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=1 rc=0 t_us=12309
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=1 rc=0 t_us=12311
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=1 rc=0 t_us=12428
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=2 rc=0 t_us=12432
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=2 rc=0 t_us=12545
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=2 rc=0 t_us=12546
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=2 rc=0 t_us=12663
+[default3]:AFD_HCCL_DESTROY rank=3 stage=memory_reset_begin idx=-1 rc=0 t_us=12665
+[default3]:AFD_HCCL_DESTROY rank=3 stage=memory_reset_end idx=-1 rc=0 t_us=12669
+[default3]:AFD_DESTROY role=F stage=control_context_reset_end t_us=13267 rc=0
+[default3]:AFD_HCCL_DESTROY rank=3 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default3]:AFD_HCCL_DESTROY rank=3 stage=table_free_end idx=-1 rc=0 t_us=11
+[default3]:AFD_HCCL_DESTROY rank=3 stage=channel_destroy_begin idx=-1 rc=0 t_us=12
+[default3]:AFD_HCCL_DESTROY rank=3 stage=channel_destroy_end idx=-1 rc=0 t_us=26172
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=0 rc=0 t_us=26178
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=0 rc=0 t_us=26747
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=0 rc=0 t_us=26749
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=0 rc=0 t_us=26927
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=1 rc=0 t_us=26928
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=1 rc=0 t_us=27432
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=1 rc=0 t_us=27434
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=1 rc=0 t_us=27586
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=2 rc=0 t_us=27588
+[default3]:AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=2 rc=0 t_us=28041
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=2 rc=0 t_us=28042
+[default3]:AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=2 rc=0 t_us=28224
+[default3]:AFD_HCCL_DESTROY rank=3 stage=memory_reset_begin idx=-1 rc=0 t_us=28226
+[default3]:AFD_HCCL_DESTROY rank=3 stage=memory_reset_end idx=-1 rc=0 t_us=28231
+[default1]:AFD_HCCL_DESTROY rank=1 stage=memory_reset_end idx=-1 rc=0 t_us=18825
+[default2]:AFD_HCCL_DESTROY rank=2 stage=channel_destroy_end idx=-1 rc=0 t_us=11974
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_begin idx=0 rc=0 t_us=11981
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_end idx=0 rc=0 t_us=12116
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_begin idx=0 rc=0 t_us=12117
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_end idx=0 rc=0 t_us=12278
+[default0]:AFD_HCCL_DESTROY rank=0 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default0]:AFD_HCCL_DESTROY rank=0 stage=table_free_end idx=-1 rc=0 t_us=14
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_begin idx=1 rc=0 t_us=12279
+[default0]:AFD_HCCL_DESTROY rank=0 stage=channel_destroy_begin idx=-1 rc=0 t_us=15
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_end idx=1 rc=0 t_us=12389
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_begin idx=1 rc=0 t_us=12390
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_end idx=1 rc=0 t_us=12496
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_begin idx=2 rc=0 t_us=12500
+[default0]:AFD_HCCL_DESTROY rank=0 stage=channel_destroy_end idx=-1 rc=0 t_us=10862
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=0 rc=0 t_us=10867
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_end idx=2 rc=0 t_us=12598
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_begin idx=2 rc=0 t_us=12600
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_end idx=2 rc=0 t_us=12604
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=0 rc=0 t_us=11353
+[default2]:AFD_HCCL_DESTROY rank=2 stage=memory_reset_begin idx=-1 rc=0 t_us=12605
+[default2]:AFD_HCCL_DESTROY rank=2 stage=memory_reset_end idx=-1 rc=0 t_us=12609
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=0 rc=0 t_us=11354
+[default2]:AFD_DESTROY role=F stage=control_context_reset_end t_us=13174 rc=0
+[default2]:AFD_HCCL_DESTROY rank=2 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=0 rc=0 t_us=11364
+[default2]:AFD_HCCL_DESTROY rank=2 stage=table_free_end idx=-1 rc=0 t_us=11
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=1 rc=0 t_us=11365
+[default2]:AFD_HCCL_DESTROY rank=2 stage=channel_destroy_begin idx=-1 rc=0 t_us=12
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=1 rc=0 t_us=11778
+[default2]:AFD_HCCL_DESTROY rank=2 stage=channel_destroy_end idx=-1 rc=0 t_us=24398
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=1 rc=0 t_us=11781
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_begin idx=0 rc=0 t_us=24403
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=1 rc=0 t_us=11785
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=2 rc=0 t_us=11786
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=2 rc=0 t_us=12170
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=2 rc=0 t_us=12171
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_end idx=0 rc=0 t_us=24961
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=2 rc=0 t_us=12180
+[default0]:AFD_HCCL_DESTROY rank=0 stage=memory_reset_begin idx=-1 rc=0 t_us=12181
+[default0]:AFD_HCCL_DESTROY rank=0 stage=memory_reset_end idx=-1 rc=0 t_us=12185
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_begin idx=0 rc=0 t_us=24963
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_end idx=0 rc=0 t_us=25132
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_begin idx=1 rc=0 t_us=25134
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_end idx=1 rc=0 t_us=25592
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_begin idx=1 rc=0 t_us=25593
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_end idx=1 rc=0 t_us=25763
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_begin idx=2 rc=0 t_us=25765
+[default2]:AFD_HCCL_DESTROY rank=2 stage=mem_unreg_end idx=2 rc=0 t_us=26270
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_begin idx=2 rc=0 t_us=26271
+[default2]:AFD_HCCL_DESTROY rank=2 stage=endpoint_destroy_end idx=2 rc=0 t_us=26275
+[default2]:AFD_HCCL_DESTROY rank=2 stage=memory_reset_begin idx=-1 rc=0 t_us=26276
+[default2]:AFD_HCCL_DESTROY rank=2 stage=memory_reset_end idx=-1 rc=0 t_us=26281
+[default3]:FFN_TX {"event": "transaction_end", "f_rank": 3, "txn": 1, "completed_rounds": 1}
+[default3]:STAGE {"stage": "pre_function_barrier", "rank": 3, "t": 2050946.787}
+[default3]:STAGE {"stage": "post_function_barrier", "rank": 3, "t": 2050946.834}
+[default3]:F_CREDIT_TERMINAL {"rank": 3, "credits": [1, 1], "expected": [1, 1]}
+[default3]:MEM {"stage": "function_done", "rank": 3, "role": "F", "torch_alloc": 3685376, "torch_reserved": 39845888, "torch_peak": 20835840, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default3]:STRIDEDIR {"tag": "function_done", "rank": 3, "role": "F", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": null, "a_expected_slots_c_k_stride": null, "a_payload_matches_expected": null, "f_layout_unchanged": true}
+[default3]:STAGE {"stage": "owner_destroy_begin", "rank": 3, "t": 2050946.835}
+[default2]:FFN_TX {"event": "dispatch_recv", "f_rank": 2, "txn": 1, "slice": 0, "groups": [{"layer": 0, "expert": 0, "rows": 24, "padded": 24, "row_begin": 0}, {"layer": 0, "expert": 1, "rows": 24, "padded": 24, "row_begin": 24}, {"layer": 0, "expert": 2, "rows": 26, "padded": 26, "row_begin": 48}, {"layer": 0, "expert": 3, "rows": 26, "padded": 26, "row_begin": 74}], "padded": 100}
+[default2]:FFN_TX {"event": "ffn_fixture", "f_rank": 2, "txn": 1, "slice": 0}
+[default2]:FFN_TX {"event": "combine_send", "f_rank": 2, "txn": 1, "slice": 0, "committed": true}
+[default2]:FFN_TX {"event": "done_consumed", "f_rank": 2, "txn": 1, "slice": 0, "entry": {"dp": 0, "mb": 0, "layer": 0, "layer_slot": 0, "round": 0, "rounds": 1, "phase": 0, "members": [{"lane": 0, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}, {"lane": 1, "local_total_rounds": 1, "round_tokens": 64, "input_bit": 0, "return_bit": 0}], "representative_tokens": 64, "local_rounds": true}}
+[default2]:FFN_TX {"event": "transaction_end", "f_rank": 2, "txn": 1, "completed_rounds": 1}
+[default2]:STAGE {"stage": "pre_function_barrier", "rank": 2, "t": 2050946.797}
+[default2]:STAGE {"stage": "post_function_barrier", "rank": 2, "t": 2050946.834}
+[default2]:F_CREDIT_TERMINAL {"rank": 2, "credits": [1, 1], "expected": [1, 1]}
+[default2]:MEM {"stage": "function_done", "rank": 2, "role": "F", "torch_alloc": 3685376, "torch_reserved": 39845888, "torch_peak": 20835840, "owner_memory_usage": [5582736, 268435456, 8589934592], "payload_nbytes": 1901696, "control_nbytes": 256}
+[default2]:STRIDEDIR {"tag": "function_done", "rank": 2, "role": "F", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": null, "a_expected_slots_c_k_stride": null, "a_payload_matches_expected": null, "f_layout_unchanged": true}
+[default2]:STAGE {"stage": "owner_destroy_begin", "rank": 2, "t": 2050946.835}
+[default1]:STAGE {"stage": "pre_function_barrier", "rank": 1, "t": 2050946.834}
+[default1]:STAGE {"stage": "post_function_barrier", "rank": 1, "t": 2050946.834}
+[default1]:MEM {"stage": "function_done", "rank": 1, "role": "A", "torch_alloc": 1847808, "torch_reserved": 20971520, "torch_peak": 18626048, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default1]:STRIDEDIR {"tag": "function_done", "rank": 1, "role": "A", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": 1835008, "a_expected_slots_c_k_stride": 1835008, "a_payload_matches_expected": 1, "f_layout_unchanged": null}
+[default1]:STAGE {"stage": "owner_destroy_begin", "rank": 1, "t": 2050946.835}
+[default1]:STAGE {"stage": "owner_destroy_end", "rank": 1, "t": 2050946.846}
+[default1]:STAGE {"stage": "final_barrier_begin", "rank": 1, "t": 2050946.846}
+[default0]:STAGE {"stage": "pre_function_barrier", "rank": 0, "t": 2050946.834}
+[default0]:STAGE {"stage": "post_function_barrier", "rank": 0, "t": 2050946.834}
+[default0]:MEM {"stage": "function_done", "rank": 0, "role": "A", "torch_alloc": 1847808, "torch_reserved": 20971520, "torch_peak": 18626048, "owner_memory_usage": [1842256, 268435456, 8589934592], "payload_nbytes": 1835008, "control_nbytes": 256}
+[default0]:STRIDEDIR {"tag": "function_done", "rank": 0, "role": "A", "abi_version": 2, "abi_ok": 1, "dir_offset": 672, "dir_in_range": 1, "return_stride": 14336, "expected_stride_align512_2h": 14336, "stride_ok": 1, "dir_version": 1, "version_ok": 1, "source_peers_offset": 704, "lanes_offset": 768, "a_payload_nbytes": 1835008, "a_expected_slots_c_k_stride": 1835008, "a_payload_matches_expected": 1, "f_layout_unchanged": null}
+[default0]:{"status": "FUNCTION_PASS", "scope": "CAM four operators, identity experts, no graph", "lengths": [64, 64], "window": 64, "rounds": 1, "q": 128, "q_mode": "whole_expert_bound", "precheck": false, "microbatches": 1, "round_step": false, "sweeps_on_rank0": 0, "weights": "nonunit", "routes": "balanced"}
+[default0]:STAGE {"stage": "owner_destroy_begin", "rank": 0, "t": 2050946.835}
+[default0]:STAGE {"stage": "owner_destroy_end", "rank": 0, "t": 2050946.843}
+[default0]:STAGE {"stage": "final_barrier_begin", "rank": 0, "t": 2050946.843}
+[default3]:STAGE {"stage": "owner_destroy_end", "rank": 3, "t": 2050946.848}
+[default3]:STAGE {"stage": "final_barrier_begin", "rank": 3, "t": 2050946.848}
+[default3]:STAGE {"stage": "final_barrier_end", "rank": 3, "t": 2050946.848}
+[default3]:STAGE {"stage": "pg_destroy_begin", "rank": 3, "t": 2050946.849}
+[default3]:STAGE {"stage": "pg_destroy_end", "rank": 3, "t": 2050946.903}
+[default3]:STAGE {"stage": "main_return", "rank": 3, "t": 2050946.903}
+[default2]:STAGE {"stage": "owner_destroy_end", "rank": 2, "t": 2050946.848}
+[default2]:STAGE {"stage": "final_barrier_begin", "rank": 2, "t": 2050946.848}
+[default2]:STAGE {"stage": "final_barrier_end", "rank": 2, "t": 2050946.848}
+[default2]:STAGE {"stage": "pg_destroy_begin", "rank": 2, "t": 2050946.848}
+[default2]:STAGE {"stage": "pg_destroy_end", "rank": 2, "t": 2050946.905}
+[default2]:STAGE {"stage": "main_return", "rank": 2, "t": 2050946.905}
+[default1]:STAGE {"stage": "final_barrier_end", "rank": 1, "t": 2050946.848}
+[default1]:STAGE {"stage": "pg_destroy_begin", "rank": 1, "t": 2050946.848}
+[default1]:STAGE {"stage": "pg_destroy_end", "rank": 1, "t": 2050946.908}
+[default1]:STAGE {"stage": "main_return", "rank": 1, "t": 2050946.908}
+[default0]:STAGE {"stage": "final_barrier_end", "rank": 0, "t": 2050946.848}
+[default0]:STAGE {"stage": "pg_destroy_begin", "rank": 0, "t": 2050946.849}
+[default0]:STAGE {"stage": "pg_destroy_end", "rank": 0, "t": 2050946.908}
+[default0]:{"status": "RUN_PASS", "scope": "CAM four operators, identity experts, no graph", "lengths": [64, 64], "window": 64, "rounds": 1, "q": 128, "q_mode": "whole_expert_bound", "precheck": false, "microbatches": 1, "round_step": false, "sweeps_on_rank0": 0}
+[default0]:STAGE {"stage": "main_return", "rank": 0, "t": 2050946.908}

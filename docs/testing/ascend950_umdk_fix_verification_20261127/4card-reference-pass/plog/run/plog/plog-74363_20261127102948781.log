@@ -1,0 +1,471 @@
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:48.781.415 [trace_recorder.c:169](tid:74363) get path by env ASCEND_WORK_PATH: /work/runs/reference-1127102945
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:48.782.729 [task_fail_callback_data_manager.cc:89] 74363 TaskFailCallBackManager: Constructor.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:48.782.733 [xpu_task_fail_callback_data_manager.cc:59] 74363 XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Constructor.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:48.784.567 [runtime_keeper.cc:209] 74363 CreateRuntimeImpl: Open libruntime_v200.so successfully
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:48.785.537 [runtime.cc:5137] 74363 GetVisibleDevices: real deviceCnt:8 userDeviceCnt:4 isSetVisibleDev:1 ASCEND_RT_VISIBLE_DEVICES:[0,1,2,3] available visible devices:[0,1,2,3]
+[INFO] TDT(74363,python3):2026-11-27-10:29:48.786.340 [package_worker_factory.cpp:38][RegisterPackageWorkerCreator][tid:74363] Register[2] package worker was created successfully
+[INFO] TDT(74363,python3):2026-11-27-10:29:48.786.344 [package_worker_factory.cpp:38][RegisterPackageWorkerCreator][tid:74363] Register[3] package worker was created successfully
+[INFO] HCCL(74363,python3):2026-11-27-10:29:48.879.986 [adapter_rts.cc:3089] [74363][adapter_rts.cc][CallBackInitRts] g_deviceType [9] g_deviceLogicId [-1] g_devicePhyId [-1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:48.920.780 [aicpu_task_cache.cc:24] [74363][AicpuTaskCache][AicpuTaskCache] create aicpu task cache at 0x0000ffff8b631300: maxCacheBytes[10485760]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:48.929.893 [op_base.cc:5820] [74363][HcclCommRegCommStateCallback]Register commStateCallBack success, regName[aicpu_task_cache_callback], args[0xffff8cc1c478].
+[INFO] GE(74363,python3):2026-11-27-10:29:50.551.208 [op_tiling_manager.cc:109]74363 ~FuncPerfScope:[GEPERFTRACE] The time cost of OpTilingManager::LoadSo is [5041] micro seconds.
+[INFO] IDEDD(74363,python3):2026-11-27-10:29:50.570.076 [adx_dump_record.cpp:688][tid:74423] start dump thread, remote dump record temp path : /tmp/deepep-ref/.
+[INFO] IDEDD(74363,python3):2026-11-27-10:29:50.571.231 [dump_manager.cpp:247][tid:74363] Set aic_err_brief_dump[3] dump setting, status: on, dump switch: 3
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.572.739 [acl_op_resource_manager.cpp:60]74363 GetRuntimeV2Env: runtime v2 flag : model flag = 1, singleOp flag = 1
+[INFO] PROFILING(74363,python3):2026-11-27-10:29:50.574.895 [platform.cpp:54] (tid:74363) Profiling platform version: 1.0.
+[INFO] PROFILING(74363,python3):2026-11-27-10:29:50.574.906 [platform.cpp:288] (tid:74363) Succeeded to DrvGetApiVersion version: 0x72419
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.127 [acl.cpp:370]74363 GetAllPackageVersion: Version of runtime package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.145 [acl.cpp:370]74363 GetAllPackageVersion: Version of runtime package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.161 [acl.cpp:370]74363 GetAllPackageVersion: Version of bisheng-compiler package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.177 [acl.cpp:370]74363 GetAllPackageVersion: Version of hccl package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.198 [acl.cpp:370]74363 GetAllPackageVersion: Version of oam-tools package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.219 [acl.cpp:370]74363 GetAllPackageVersion: Version of ops-legacy package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.237 [acl.cpp:370]74363 GetAllPackageVersion: Version of ops-legacy package is 9.2.1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.575.240 [acl.cpp:372]74363 GetAllPackageVersion: Version of driver package is not found
+[INFO] DRV(74363,python3):2026-11-27-10:29:50.596.007 [hdc_ub_common.c:229][ascend][curpid:74363,74363][drv][hdc][hdc_get_urma_init_time_cost]hdc urma_cost info.(dev_id=0; l_id=138; type=5; ctx_c=0; get_token=74; attr_c:0; dev_info=9738; urma_ctx=1769; alloc_id=0; share_seg=0; lock_wait=0; urma_init=11508; own_reg_re=0; alloc_tid=243; own_reg(new)=31; reg_dmp=0; jfc=215; jfs=76; jfr:92; post_wr=1; res_init=661; get_tp=0; import=15)
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:50.603.258 [atrace_client_core.c:162](tid:74363) start to receive device[0] trace log.
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:50.603.269 [acl_resource_manager.cpp:128]74363 GetRuntimeV2Env: runtime v2 flag : model flag = 1, singleOp flag = 1
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.603.292 [client_manager.cpp:148][GetInstance][tid:74363] [ClientManager] Current mode:1
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.603.375 [process_mode_manager.cpp:168][GetLogLevel][tid:74363] [TsdClient] get ASCEND_GLOBAL_LOG_LEVEL [] ASCEND_GLOBAL_EVENT_ENABLE [] ASCEND_MODULE_LOG_LEVEL []
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.603.422 [tsd_process_controller.cpp:58][OpenProcess][tid:74363] [ProcessModeManager] enter into open process deviceId[0] rankSize[0]
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.603.467 [capability_manager.cpp:401][IsSupportCommonSink][tid:74363] mutexFile[/usr/local/Ascend/driver/lib64/driver/sink_file_mutex_0.cfg] found means supporting common sink
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.603.587 [device_comm_agent.cpp:41][InitTsdClient][tid:74363] [TsdClient] deviceId[0] begin to init hdc client
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.615.621 [version_verify.cpp:39][SetVersionInfo][tid:74363] VersionVerify: send client version to server
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.616.918 [version_verify.cpp:71][PeerVersionCheck][tid:74363] VersionVerify: Check client version info, server[1230], client[1230]
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.616.922 [version_verify.cpp:92][ParseVersionInfo][tid:74363] VersionVerify: pass client version info success
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.616.924 [hdc_client.cpp:243][CheckHdcConnection][tid:74363] Service create hdc successfully.
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.190 [package_env_info.cpp:130][GetShortSocVersion][tid:74363] get short_soc_version:Ascend950
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.264 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:Ascend-aicpu_legacy.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.272 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:Ascend910-aicpu_legacy.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.278 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:Ascend310P-aicpu_legacy.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.289 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:aicpu_hccl.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.296 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:mc2_server.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.302 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:aicpu_hcomm.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.309 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:cann-hixl-compat.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.316 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:cann-hcomm-compat.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.322 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:cann-hccd-compat.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.328 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:cann-udf-compat.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.334 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:cann-tsch-compat.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.345 [package_process_config.cpp:265][SetConfigDataOnHost][tid:74363] insert package:cann-hybm-compat.tar.gz config
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.361 [package_process_config.cpp:331][RefreshHostPluginVersions][tid:74363] host plugin pkg:cann-hcomm-compat.tar.gz ini parsed, version:9.2.1 timestamp:20261026_000125081
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.371 [package_process_config.cpp:331][RefreshHostPluginVersions][tid:74363] host plugin pkg:cann-tsch-compat.tar.gz ini parsed, version:9.2.1 timestamp:20261026_000125081
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.375 [hdc_message_builder.cpp:54][SetProcSignPid][tid:74363] [HdcMessageBuilder] tsd get process sign successfully, procpid[972491]
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.618.399 [version_verify.cpp:117][SpecialFeatureCheck][tid:74363] VersionVerify: previous type[69], supported
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.627.895 [plugin_version_manager.cpp:111][HandleDevicePluginVersionRsp][tid:74363] device plugin pkg:cann-hcomm-compat.tar.gz version:9.2.1 timestamp:20261026_000125081
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.627.898 [plugin_version_manager.cpp:114][HandleDevicePluginVersionRsp][tid:74363] device plugin info rsp, pkgCount:1
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.627.901 [package_loader.cpp:427][LoadPackageConfigInfoToDevice][tid:74363] Receive load package config response result:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.627.916 [capability_manager.cpp:401][IsSupportCommonSink][tid:74363] mutexFile[/usr/local/Ascend/driver/lib64/driver/sink_file_mutex_0.cfg] found means supporting common sink
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.627.918 [package_loader.cpp:133][ShouldLoadLegacyPackage][tid:74363] [TsdClient][logicDeviceId_=0] use legacy package
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.628.009 [package_env_info.cpp:221][CheckPackageExistsOnce][tid:74363] [TsdClient][deviceId=0] pkg size[0] in path[/usr/local/Ascend/cann-9.2.1/opp/built-in/] must be only one, skip send package, packageType[6]
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.628.012 [package_loader.cpp:102][LoadSysOpKernel][tid:74363] [TsdClient][logicDeviceId_=0] cannot find aicpu packages
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.628.021 [capability_manager.cpp:401][IsSupportCommonSink][tid:74363] mutexFile[/usr/local/Ascend/driver/lib64/driver/sink_file_mutex_0.cfg] found means supporting common sink
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.628.030 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:Ascend-aicpu_legacy.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.628.034 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/Ascend/aicpu/Ascend-aicpu_legacy.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_Ascend-aicpu_legacy.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.588 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:74363] current package:Ascend-aicpu_legacy.tar.gz is same as device, skip load
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.595 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:Ascend310P-aicpu_legacy.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.604 [package_loader.cpp:481][LoadSinglePackageToDevice][tid:74363] cannot find package:Ascend310P-aicpu_legacy.tar.gz, optional is true skip
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.605 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:Ascend910-aicpu_legacy.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.607 [package_loader.cpp:481][LoadSinglePackageToDevice][tid:74363] cannot find package:Ascend910-aicpu_legacy.tar.gz, optional is true skip
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.609 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:aicpu_hccl.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.794.614 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/aicpu_hccl.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_aicpu_hccl.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.797.400 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:74363] current package:aicpu_hccl.tar.gz is same as device, skip load
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.797.404 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:aicpu_hcomm.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.797.409 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/aicpu_hcomm.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_aicpu_hcomm.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.806.581 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:74363] current package:aicpu_hcomm.tar.gz is same as device, skip load
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.806.585 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:cann-hccd-compat.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.806.591 [package_loader.cpp:467][LoadSinglePackageToDevice][tid:74363] current package:cann-hccd-compat.tar.gz does not need to load to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.806.592 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:cann-hcomm-compat.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.806.596 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/compat/cann-hcomm-compat.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_cann-hcomm-compat.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.678 [plugin_version_manager.cpp:51][GetPluginUpdateStrategy][tid:74363] [TsdClient][deviceId=0] plugin update strategy from DRV = 0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.688 [plugin_version_manager.cpp:96][CompareHostDeviceCompatPluginVersion][tid:74363] host plugin pkg:cann-hcomm-compat.tar.gz equals device, skip. host[9.2.1/20261026_000125081] device[9.2.1/20261026_000125081]
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.690 [package_loader.cpp:487][LoadSinglePackageToDevice][tid:74363] skip load compat plugin package:cann-hcomm-compat.tar.gz by version/strategy check
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.693 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:cann-hixl-compat.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.699 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/cann-hixl-compat.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_cann-hixl-compat.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.804 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:74363] current package:cann-hixl-compat.tar.gz is same as device, skip load
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.806 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:cann-hybm-compat.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.809 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/vendors/cust/op_impl/aicpu/hybm/kernel/cann-hybm-compat.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_cann-hybm-compat.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.859 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:74363] current package:cann-hybm-compat.tar.gz is same as device, skip load
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.861 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:cann-tsch-compat.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.863 [package_loader.cpp:454][SupportLoadPkg][tid:74363] current device chip:15 does not support package:cann-tsch-compat.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.865 [package_loader.cpp:467][LoadSinglePackageToDevice][tid:74363] current package:cann-tsch-compat.tar.gz does not need to load to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.866 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:cann-udf-compat.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.868 [package_loader.cpp:467][LoadSinglePackageToDevice][tid:74363] current package:cann-udf-compat.tar.gz does not need to load to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.869 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:74363] begin to load package:mc2_server.tar.gz to device:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.810.873 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:74363] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/mc2_server.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/972491_mc2_server.tar.gz
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.811.701 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:74363] current package:mc2_server.tar.gz is same as device, skip load
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.811.709 [hdc_message_builder.cpp:54][SetProcSignPid][tid:74363] [HdcMessageBuilder] tsd get process sign successfully, procpid[972491]
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.811.719 [version_verify.cpp:117][SpecialFeatureCheck][tid:74363] VersionVerify: previous type[6], supported
+[INFO] TDT(74363,python3):2026-11-27-10:29:50.811.755 [tsd_process_controller.cpp:110][WaitOpenRsp][tid:74363] [ProcessModeManager] deviceId[0] sessionId[1] rankSize[0], wait subprocess start response
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.163.038 [tsd_process_controller.cpp:473][ProcessQueueForAdc][tid:74363] [TsdClient] it is unnecessary for current mode[0] to grant queue auth to aicpusd
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.163.044 [tsd_process_controller.cpp:133][LogOpenProcessDuration][tid:74363] [TsdClient][deviceId=0] [sessionId=1] start hccp and computer process success,phase4:[208]ms send open message to device,phase5:[351]ms receive open message to device,phase6:[0]ms process for adc on host,whole duration:[559]ms
+[INFO] DRV(74363,python3):2026-11-27-10:29:51.163.070 [event_sched.c:1560][ascend][curpid:74363,74363][drv][event-sche][esched_device_open]The dev_id has opened. (dev_id=0)
+[INFO] DRV(74363,python3):2026-11-27-10:29:51.163.419 [drv_share_log.c:233][ascend][curpid:74363,74363][drv][devmm][share_log_read_in_single_module]Open. (udevid=65; tgid=972491)
+[INFO] DRV(74363,python3):2026-11-27-10:29:51.163.905 [va_dev_default_allocator.c:89][ascend][curpid:74363,74363][drv][devmm][va_dev_default_host_va_expand_with_retry]Reserve va success. (va=0x100000000000; size=2199023255552)
+[INFO] DRV(74363,python3):2026-11-27-10:29:51.164.187 [drv_share_log.c:233][ascend][curpid:74363,74363][drv][devmm][share_log_read_in_single_module]Open. (udevid=0; tgid=972491)
+[INFO] DRV(74363,python3):2026-11-27-10:29:51.268.626 [queue_interface.c:999][ascend][curpid:74363,74363][drv][queuemng][queue_device_open]queue open finish. (dev_id=0)
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:51.268.747 [raw_device.cc:623] 74363 Init: isAddrFlat:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.271.557 [tsd_client.cpp:189][TsdCapabilityGet][tid:74363] TsdCapabilityGet Begin.
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.271.563 [capability_manager.cpp:489][CapabilityGet][tid:74363] [CapabilityManager] enter into CapabilityGet process deviceId[0] type[0].
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.271.570 [hdc_message_builder.cpp:54][SetProcSignPid][tid:74363] [HdcMessageBuilder] tsd get process sign successfully, procpid[972491]
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.271.574 [version_verify.cpp:117][SpecialFeatureCheck][tid:74363] VersionVerify: previous type[38], supported
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.271.606 [capability_manager.cpp:514][CapabilityGet][tid:74363] [CapabilityManager][deviceId=0] [sessionId=1] [type=0]send capability successfully.
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.277.467 [capability_manager.cpp:564][HandlePidQosRsp][tid:74363] [TsdClient] PidQosMsgProc recvMsg realDeviceId[0] msgType[39] localDevId[0] rspCode[0],pidqos[1]
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.277.470 [capability_manager.cpp:520][CapabilityGet][tid:74363] [CapabilityManager][logicDeviceId_=0][type=0][pidQos=1][ret=0]recv capability response finished.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:51.277.481 [engine.cc:99] 74363 Engine: Constructor.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:51.277.484 [stars_engine.cc:53] 74363 StarsEngine: Constructor.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:51.357.811 [runtime.cc:5574] 74363 CreateReportRasThread: Start report ras thread success!
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:51.357.889 [npu_driver_res.cc:389] 74489 GetDeviceStatus: GetDeviceStatus status=1.
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:51.365.008 [tracer_mgr_operate.c:67](tid:74363) create object RUNTIME_ATRACE_DEV0_TS0 successfully, exitSave(false), noLock(false).
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.365.026 [client_manager.cpp:202][SetProfilingCallback][tid:74363] [TsdClient] set profiling callback successfully
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.024 [op_base.cc:1404] [74363]Entry-HcclGetRootInfo:rootInfo[0xffffe6134988], deviceLogicId[0] 
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.033 [root_info_detect_provider.cc:39] [74363]Entry-HcclGetRootInfo V950
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.117 [base_config_legacy.cc:24][74363][HCCL_ENV] HCCL_IF_IP set by default to [IpAddress[0000:0000:0000:0000:0000:0000:0000:0000, AF=IPv4, addr=0.0.0.0]]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.121 [base_config_legacy.cc:27][74363][HCCL_ENV] HCCL_IF_BASE_PORT set by default to [65536]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.125 [base_config_legacy.cc:32][74363][HCCL_ENV] HCCL_SOCKET_IFNAME set by default to []
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.127 [base_config_legacy.cc:36][74363][HCCL_ENV] HCCL_WHITELIST_DISABLE set by default to [1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.134 [base_config_legacy.cc:52][74363][HCCL_ENV] HCCL_HOST_SOCKET_PORT_RANGE set by default to 
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.136 [base_config_legacy.cc:61][74363][HCCL_ENV] HCCL_NPU_SOCKET_PORT_RANGE set by default to 
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.140 [base_config_legacy.cc:89][74363][HCCL_ENV] HCCL_SOCKET_FAMILY set by default to [-1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.149 [base_config_legacy.cc:92][74363][HCCL_ENV] HCCL_CONNECT_TIMEOUT set by environment to [3600]s
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.338 [base_config_legacy.cc:105][74363][HCCL_ENV] HCCL_EXEC_TIMEOUT set by environment to [2000]s
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.342 [base_config_legacy.cc:117][74363][HCCL_ENV] HCCL_RDMA_TC set by default to [132]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.344 [base_config_legacy.cc:120][74363][HCCL_ENV] HCCL_RDMA_SL set by default to [4]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.346 [base_config_legacy.cc:123][74363][HCCL_ENV] HCCL_RDMA_TIMEOUT set by default to [20]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.348 [base_config_legacy.cc:126][74363][HCCL_ENV] HCCL_RDMA_RETRY_CNT set by default to [7]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.350 [base_config_legacy.cc:129][74363][HCCL_ENV] HCCL_RDMA_QPS_PER_CONNECTION set by default to [1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.352 [base_config_legacy.cc:134][74363][HCCL_ENV] HCCL_MULTI_QP_THRESHOLD set by default to [524288]B
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.354 [base_config_legacy.cc:139][74363][HCCL_ENV] HCCL_RDMA_QP_PORT_CONFIG_PATH set by default to []
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.358 [base_config_legacy.cc:377][74363][HCCL_ENV] PRIM_QUEUE_GEN_NAME set by default to []
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.360 [base_config_legacy.cc:380][74363][HCCL_ENV] HCCL_BUFFSIZE set by default to [209715200]B
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.368 [base_config_legacy.cc:385][74363][HCCL_ENV] HCCL_OP_EXPANSION_MODE set by environment to [HcclAccelerator::AIV]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.371 [base_config_legacy.cc:405][74363][HCCL_ENV] HCCL_ENTRY_LOG_ENABLE set by default to [0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.406 [base_config_legacy.cc:408][74363][HCCL_ENV] LD_LIBRARY_PATH set by environment to []
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.409 [base_config_legacy.cc:415][74363][HCCL_ENV] HCCL_DFS_CONFIG task_exception set by default to [1], cluster_heartbeat set by default to [1], rankConsistentState set by default to [0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.370.414 [base_config_legacy.cc:430][74363][HCCL_ENV] HCCL_DETOUR set by default to [HcclDetourType::HCCL_DETOUR_DISABLE]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.370.425 [ra_init.c:165]tid:74363,RaInit: Input parameters: phyId[0], nicPosition:[0] hdcType:[18] enableHdcAsync[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.370.570 [rs.c:2250]tid:74363,RsGetProductType: [Get][ChipInfo]chip name is 950DT_9582, type:4
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.370.617 [rs_tls.c:1951]tid:74363,rs_ssl_init: TLS SWITCH (0)
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.370.707 [rs_epoll.c:551]tid:74493,RsEpollHandle: pthread[epoll_pthread] is alive!
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.370.736 [rs_epoll.c:680]tid:74494,RsConnectHandle: pthread[connect_pthread] is alive!
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.287 [rs.c:450]tid:74363,RsInit: rs init success, chipId[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.372.298 [plf_debug_config.cc:80] [74363][HCCL_ENV] plfDebugConfig set to [0x0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.302 [ra_init.c:253]tid:74363,RaSetDebugConfig: Input parameters: phyId[0], nicPosition:[0], debugConfig[0x0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.332 [ra_host.c:1744]tid:74363,RaGetIfnum: Input parameters: phyId[0], nicPosition:[0], isAll:[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.372.346 [orion_adapter_hccp.cc:1122][74363][Get][HostIf]hrtGetIfNum success. ifAddrNum[34].
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.350 [ra_host.c:1796]tid:74363,RaGetIfaddrs: Input parameters: phyId[0], nicPosition:[0], isAll[0], interface num[34]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.395 [ra_host.c:245]tid:74363,RaSocketInit: socket init:mode=0 phyId=0 family=2 ip=10.244.3.1
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.426 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], port[60016]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:51.372.443 [rs_socket.c:589]tid:74363,RsSocketListenBindListen: socket bind: family 2, addr 10.244.3.1, port 60016
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.372.523 [root_info_detect_provider.cc:72] [74363]HcclGetRootInfoV2 success, take time [2485]us, rootinfo: host ip[10.244.3.1] port[60016] netMode[HrtNetworkMode::HDC] identifier[10.244.3.1_60016_0_1795775391372462], userDevId[0], devPhyId[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.372.614 [op_base_v2.cc:1947][74363]Entry-HcclCommInitRootInfoConfig V950: nRanks[4], rank[0], commEngine[HcclAccelerator::DEFAULT]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.372.619 [op_base_v2.cc:1965][74363]Entry-HcclCommInitRootInfoConfigV2:ranks[4], rank[0], rootinfo: host ip[10.244.3.1] port[60016] netMode[HrtNetworkMode::HDC] rootHandle.identifier[10.244.3.1_60016_0_1795775391372462], identifier[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:51.372.690 [root_info_detect_provider.cc:87] [74363][DetectRankTableImpl] nRanks[4], rank[0] entry flat topo detect, rootinfo: host ip[10.244.3.1] port[60016] netMode[HrtNetworkMode::HDC] identifier[10.244.3.1_60016_0_1795775391372462], userDevId[0], devPhyId[0]
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.372.706 [sub_process_controller.cpp:120][OpenSubProc][tid:74363] enter into ProcessOpenSubProc subtype:0
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.372.716 [package_env_info.cpp:74][GetAscendLatestIntallPath][tid:74363] latest install path:/usr/local/Ascend/cann-9.2.1
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.372.718 [sub_process_controller.cpp:85][ConstructCommonOpenMsg][tid:74363] runtimePkgPath:/usr/local/Ascend/cann-9.2.1
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.372.722 [hdc_message_builder.cpp:54][SetProcSignPid][tid:74363] [HdcMessageBuilder] tsd get process sign successfully, procpid[972491]
+[INFO] TDT(74363,python3):2026-11-27-10:29:51.372.726 [version_verify.cpp:117][SpecialFeatureCheck][tid:74363] VersionVerify: previous type[48], supported
+[INFO] TDT(74363,python3):2026-11-27-10:29:52.366.381 [sub_process_controller.cpp:143][OpenSubProc][tid:74363] OpenSubProc success type:0, pid:31846
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.366.396 [ra_init.c:165]tid:74363,RaInit: Input parameters: phyId[0], nicPosition:[1] hdcType:[18] enableHdcAsync[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.366.413 [ra_hdc.c:794]tid:74363,RaHdcInit: hdc init start! logic id is 0, phy id is 0, hdcType is 18
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.373.072 [ra_hdc.c:830]tid:74363,RaHdcInit: hdc init OK! phyId[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.380.933 [ra_init.c:253]tid:74363,RaSetDebugConfig: Input parameters: phyId[0], nicPosition:[1], debugConfig[0x0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.382.010 [ra_common.c:42]tid:74363,RaGetTlsEnable: Input parameters: phyId[0], nicPosition:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.382.071 [ra_common.c:42]tid:74363,RaGetTlsEnable: Input parameters: phyId[0], nicPosition:[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.382.134 [socket_manager.cc:211][74363][SocketManager::ServerInitAll] socket port range not configured.
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.391.256 [ra_host.c:731]tid:74363,RaSocketBatchConnect: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], remoteIp[10.244.3.1], port[60016], tag[rank_info_detect_default_tag_10.244.3.1_60016_0_1795775391372462_60016], cnt[0]
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:52.393.154 [runtime.cc:5780] 74490 ReportPageFaultProc: pageFaultSupportFlag_=0.
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.617.912 [ra_host.c:885]tid:74495,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[10.244.3.1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.617.922 [rs_drv_socket.c:653]tid:74495,RsSocketListenDelFromEpoll: IP:10.244.3.1 server_port:60016 listen_fd:107 del from epoll:105
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.617.949 [ra_host.c:769]tid:74495,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], cnt[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.412 [root_info_detect_provider.cc:99] [74363][DetectRankTableImpl] end.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.946 [rank_graph_builder.cc:243] [74363][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 0 (localId: 48), found 1 peer2net edges
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.958 [rank_graph_builder.cc:243] [74363][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 1 (localId: 49), found 1 peer2net edges
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.964 [rank_graph_builder.cc:243] [74363][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 2 (localId: 50), found 1 peer2net edges
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.968 [rank_graph_builder.cc:243] [74363][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 3 (localId: 51), found 1 peer2net edges
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.988 [rank_graph_builder.cc:145] [74363][RankGraphBuilder][AddPeer2NetLink] Add Peer2NetLink Net2PeerLink success. level[1] netInstId[superpod_138] rankId[0] planeId[plane_pg_0] AddrStr[IpAddress[0000:0000:047f:0200:0010:0000:df76:1b56, AF=IPv6, addr=::47f:200:10:0:df76:1b56, scopeId=0x0]],topoInstId[0],topoType[678144256]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.625.996 [rank_graph_builder.cc:145] [74363][RankGraphBuilder][AddPeer2NetLink] Add Peer2NetLink Net2PeerLink success. level[1] netInstId[superpod_138] rankId[0] planeId[plane_pg_1] AddrStr[IpAddress[0000:0000:043f:0200:0010:0000:df76:0b56, AF=IPv6, addr=::43f:200:10:0:df76:b56, scopeId=0x0]],topoInstId[0],topoType[678144256]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.626.344 [communicator_impl.cc:1476][74363][CommunicatorImpl::InitRankGraph] rankTableInfo: RankTableInfo[version=2.0, rankCount=4, ranks size=4]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.626.349 [communicator_impl.cc:1477][74363][CommunicatorImpl][InitRankGraph] topoInfo[TopoInfo{version=2.0, peer_count=64, edge_count=480, Peers.size=64, Edges.size=4}]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.626.353 [ra_ctx.c:91]tid:74363,RaGetDevEidInfoNum: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.628.911 [ra_ctx.c:120]tid:74363,RaGetDevEidInfoList: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.640.720 [communicator_impl.cc:1482][74363][CommunicatorImpl][InitRankGraph] link[LinkData:type=PortDeploymentType::DEV_NET, protocol=LinkProtocol::UB_CTP, localRankId=0, localAddr=IpAddress[0000:0000:0407:0300:0010:0000:df76:0850, AF=IPv6, addr=::407:300:10:0:df76:850, scopeId=0x0], remoteRankId=3, remoteAddr=IpAddress[0000:0000:0407:0300:0010:0000:df76:6853, AF=IPv6, addr=::407:300:10:0:df76:6853, scopeId=0x0], reuseIdx=0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.640.726 [communicator_impl.cc:1482][74363][CommunicatorImpl][InitRankGraph] link[LinkData:type=PortDeploymentType::DEV_NET, protocol=LinkProtocol::UB_CTP, localRankId=0, localAddr=IpAddress[0000:0000:0400:0300:0010:0000:df76:0150, AF=IPv6, addr=::400:300:10:0:df76:150, scopeId=0x0], remoteRankId=2, remoteAddr=IpAddress[0000:0000:0400:0300:0010:0000:df76:4152, AF=IPv6, addr=::400:300:10:0:df76:4152, scopeId=0x0], reuseIdx=0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.640.730 [communicator_impl.cc:1482][74363][CommunicatorImpl][InitRankGraph] link[LinkData:type=PortDeploymentType::DEV_NET, protocol=LinkProtocol::UB_CTP, localRankId=0, localAddr=IpAddress[0000:0000:0408:0300:0010:0000:df76:0950, AF=IPv6, addr=::408:300:10:0:df76:950, scopeId=0x0], remoteRankId=1, remoteAddr=IpAddress[0000:0000:0407:0300:0010:0000:df76:2851, AF=IPv6, addr=::407:300:10:0:df76:2851, scopeId=0x0], reuseIdx=0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.640.899 [ra_ctx.c:91]tid:74363,RaGetDevEidInfoNum: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.643.003 [ra_ctx.c:120]tid:74363,RaGetDevEidInfoList: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.654.820 [ra_ctx.c:181]tid:74363,RaCtxInit: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.665.163 [ra_host.c:769]tid:74495,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], cnt[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.668.503 [ra_ctx.c:91]tid:74363,RaGetDevEidInfoNum: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.670.726 [ra_ctx.c:120]tid:74363,RaGetDevEidInfoList: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.682.773 [ra_ctx.c:181]tid:74363,RaCtxInit: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.686.644 [ra_ctx.c:91]tid:74363,RaGetDevEidInfoNum: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.688.849 [ra_ctx.c:120]tid:74363,RaGetDevEidInfoList: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.702.222 [ra_ctx.c:181]tid:74363,RaCtxInit: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.706.344 [ra_ctx.c:91]tid:74363,RaGetDevEidInfoNum: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.708.643 [ra_ctx.c:120]tid:74363,RaGetDevEidInfoList: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.713.158 [ra_host.c:769]tid:74495,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], cnt[2]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.720.832 [ra_ctx.c:181]tid:74363,RaCtxInit: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.725.296 [ra_ctx.c:91]tid:74363,RaGetDevEidInfoNum: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.727.785 [ra_ctx.c:120]tid:74363,RaGetDevEidInfoList: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.749.709 [ra_ctx.c:181]tid:74363,RaCtxInit: Input parameters: phy_id[0], nic_position:[1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.756.006 [communicator_impl.cc:1510][74363][CommunicatorImpl][InitDataBufferManager] cclBuffer create, commId[group_name_0], addr[19792486465536], size[400]M
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.758.546 [ra_common.c:149]tid:74363,RaGetSecRandom: Input parameters: phy_id[0], nic_position:[1]
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:52.760.815 [tracer_mgr_operate.c:67](tid:74363) create object HCCL_74363_0 successfully, exitSave(true), noLock(false).
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.761.161 [ra_host.c:769]tid:74495,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], cnt[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.762.492 [communicator_impl.cc:2905][74363][CommunicatorImpl][SetAccelerator] env OpExpansionMode is [HcclAccelerator::AIV]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.762.513 [op_base_v2.cc:1130][74363]Entry-HcclGetRankSize V950, commId[group_name_0], userDevId[0], devPhyId[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.762.515 [op_base_v2.cc:1139][74363]Entry-HcclGetRankSize V950 success, comm[group_name_0], rankSizePtr[0xffffe61324a4], rankSize[4]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.762.526 [op_base_v2.cc:2013][74363]HcclCommInitRootInfoConfigV2 success, take time [1389914]us, rankNum[4], rank[0], identifier[group_name_0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.762.532 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[10.244.3.1], cnt[4]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.762.666 [op_base_v2.cc:1130][74363]Entry-HcclGetRankSize V950, commId[group_name_0], userDevId[0], devPhyId[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.762.669 [op_base_v2.cc:1139][74363]Entry-HcclGetRankSize V950 success, comm[group_name_0], rankSizePtr[0xffffe6132a28], rankSize[4]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.472 [env_ub_config.cc:32] [74363][HCCL_ENV] HCCL_UB_MULTI_CHANNEL_NUM set by default to [1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.477 [host_multi_qp_config.cc:277] [74363][HCCL_ENV] HCCL_HOST_RDMA_UDP_PORTS_LIST set by default, device config count[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.534 [my_rank.cc:450] [74363][MyRank][Init] set op expansion mode by env[HcclAccelerator::AIV].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.547 [coll_comm.cc:230] [74363][Communicator Key Info]identifier[group_name_0] rankSize[4] comm[0x287a5c40]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.550 [coll_comm.cc:231] [74363][LocalRank Key Info]userRank[0] deviceLogicId[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.739 [coll_comm.cc:238] [74363][CollComm][InitSymmetricMemory] commId[group_name_0], rank[0], rankSize[4].
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:52.763.828 [task_fail_callback_data_manager.cc:62] 74363 RegTaskFailCallback: Unregister task fail callback finish, name:__ACLRT_EXCEPTION_CALLBACK_REGISTER__:ASCENDCL:281472874715824.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.831 [hcclCommTaskException.cc:139] [74363][Register]aclrtExceptionInfoCallbackRegister set ProcessCallback success and unregister legacy TaskExceptionHandler::Process callback
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.842 [hccl_comm_host.cc:394] [74363][InitCollComm]success, commId[group_name_0], deviceLogicId[0], devicePhyId[0], devType[6], userRank[0], userRankSize[4], opExpansionMode[3], taskExceptionEnable[1], notifyWaitTimeout[2000], plfDebugConfig[0x0].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.871 [hcom_common.cc:171] [74363][Hcom][HcomSetGroupTopoInfo] store groupRankNumMap, group:group_name_0, rankNum:4
+[INFO] HCCL(74363,python3):2026-11-27-10:29:52.763.874 [op_base.cc:508] [74363][HcclCommInitCollComm] success, take time [1210]us.
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.764.126 [ra_host.c:369]tid:74495,RaSocketDeinit: Input parameters: phyId[0] family[2] local_ip[10.244.3.1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.764.132 [rs.c:1702]tid:74495,RsSocketDeinit: socket deinit success, phyId:0, localIp:10.244.3.1
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.764.143 [ra_init.c:221]tid:74495,RaDeinit: Input parameters: phyId[0], nicPosition:[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:52.824.288 [rs.c:1899]tid:74495,RsDeinit: rs_deinit chipId[0] ok
+[INFO] PROFILING(74363,python3):2026-11-27-10:29:53.037.499 [prof_cann_plugin.cpp:256] (tid:74537) RegisterProfileCallback, callback type is 12
+[INFO] PROFILING(74363,python3):2026-11-27-10:29:53.037.507 [prof_cann_plugin.cpp:256] (tid:74537) RegisterProfileCallback, callback type is 11
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.037.606 [alg_env_config.cc:189] [74537][InitEnvConfig] initialized: deviceType[6], aicpuUnfold[0], aicpuCacheEnable[1], aivMode[1], ccuMSMode[0], ccuSchedMode[0], enableFfts[1], deterministic[0], entryLog[0], debugConfig[0x0].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.037.611 [alg_env_config.cc:212] [74537][InitEnvConfig] initialized: execTimeoutSet[1], execTimeoutSec[2000.00], splitRatioSet[0], splitRatio[0], intraLinkConfigSupported[0], intraRoce[0], a3ConfigSupported[0], interHccsDisable[0], retryMask[0x0], inconsistentCheck[0], taskException[1], algoConfig[deferred-to-costmodel].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.335 [physical_level_build.cc:484] [74537][PhysicalLevel][Build] rank[0] built [2] physical levels
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.348 [physical_level_build.cc:489] [74537][PhysicalLevel][Build] rank[0] level[0/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 0 inst 6] hasTopoInst[1] topoType[1] locType[0] protocolNum[2] portNums[1,1,1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.352 [physical_level_build.cc:489] [74537][PhysicalLevel][Build] rank[0] level[1/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 1 inst 0] hasTopoInst[1] topoType[0] locType[0] protocolNum[2] portNums[6,2]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.379 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.387 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AllGather_group_name_0], engine[CPU_TS], size[2142], ctx[0xfffecc72e890], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.393 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.041.395 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[tuner_init], engine[CPU], size[1], ctx[0xfffecc72d850], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.042.084 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.042.091 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[costmodel_AIV], engine[CPU], size[1504], ctx[0xfffecc73bc20], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.042.181 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.042.184 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AllGather_group_name_0_AivAllGatherSoleMesh_host], engine[CPU_TS], size[568], ctx[0xfffecc46f7a0], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.042.194 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.042.790 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[group_name_0__opbase], engine[AIV], size[68157440], ctx[0x120067600000], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.045.713 [op_base.cc:5820] [74537][HcclCommRegCommStateCallback]Register commStateCallBack success, regName[group_name_0__opbase], args[0x120067600000].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.045.716 [comm_mem_c_adpt.cc:76] [74537]Entry-operator():comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.045.722 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.045.724 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[group_name_0__opbase], engine[CPU_TS], size[8], ctx[0xfffecc7392c0], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.045.734 [coll_comm_res_c_adpt.cc:791] [74537]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.045.780 [config_log.cc:27] [74537]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.045.977 [ra_host.c:245]tid:74537,RaSocketInit: socket init:mode=1 phyId=0 family=10 ip=::408:300:10:0:df76:950
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.045.984 [ra_host.c:848]tid:74537,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], port[16666]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.046.525 [socket_manager.cc:197][74537][SocketManager::ServerInit] Local PortData[rankId=0, type=PortDeploymentType::DEV_NET, id=0, addr=IpAddress[0000:0000:0408:0300:0010:0000:df76:0950, AF=IPv6, addr=::408:300:10:0:df76:950, scopeId=0x0]] listen the port 16666 success
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.046.536 [ra_host.c:245]tid:74537,RaSocketInit: socket init:mode=1 phyId=0 family=10 ip=::400:300:10:0:df76:150
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.046.539 [ra_host.c:848]tid:74537,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150], port[16666]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.046.846 [socket_manager.cc:197][74537][SocketManager::ServerInit] Local PortData[rankId=0, type=PortDeploymentType::DEV_NET, id=0, addr=IpAddress[0000:0000:0400:0300:0010:0000:df76:0150, AF=IPv6, addr=::400:300:10:0:df76:150, scopeId=0x0]] listen the port 16666 success
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.046.853 [ra_host.c:245]tid:74537,RaSocketInit: socket init:mode=1 phyId=0 family=10 ip=::407:300:10:0:df76:850
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.046.855 [ra_host.c:848]tid:74537,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], port[16666]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.059.380 [socket_manager.cc:197][74537][SocketManager::ServerInit] Local PortData[rankId=0, type=PortDeploymentType::DEV_NET, id=0, addr=IpAddress[0000:0000:0407:0300:0010:0000:df76:0850, AF=IPv6, addr=::407:300:10:0:df76:850, scopeId=0x0]] listen the port 16666 success
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.059.647 [my_rank.cc:811] [74537][LinkInfo]userRank[0] remoteRank[1] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.059.877 [my_rank.cc:811] [74537][LinkInfo]userRank[0] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.059.956 [my_rank.cc:811] [74537][LinkInfo]userRank[0] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.096.110 [socket_process.cc:231] [74569][SocketProcess][Init] initialized successfully. deviceLogicId: 0, devicePhyId: 0, this: 0xffff8b685bb8
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.096.116 [socket_process.cc:98] [74569][GetSocket][GetSocket] initialized. devicePhyId: 0, this: 0xffff8b685bb8
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.096.292 [ra_socket.c:65]tid:74569,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], remoteIp[::407:300:10:0:df76:2851], port[16666], tag[HeartBeat_sp_138_srv_62/48_to_sp_138_srv_62/49_::407:300:10:0:df76:2851_::408:300:10:0:df76:950], cnt[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.096.327 [socket_process.cc:98] [74570][GetSocket][GetSocket] initialized. devicePhyId: 0, this: 0xffff8b685bb8
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.096.346 [ra_host.c:848]tid:74570,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], port[16666]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.381.819 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.384.518 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.573.993 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.574.527 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.689.107 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.689.426 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.689.779 [my_rank.cc:1390] [74537][MyRank][CreateChannels] CreateChannels Time Elapsed [643831]us, channelNum [3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.706.429 [coll_comm_res_c_adpt.cc:881] [74537][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [660696]us.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.706.438 [op_common.cc:3300] [74537][HcclAllocAlgResourceAiv]remoteRank[1] memNum[2] regMemAddr[0x124036200000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.706.443 [op_common.cc:3300] [74537][HcclAllocAlgResourceAiv]remoteRank[2] memNum[2] regMemAddr[0x124019000000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.706.446 [op_common.cc:3300] [74537][HcclAllocAlgResourceAiv]remoteRank[3] memNum[2] regMemAddr[0x12403a400000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.706.486 [op_common.cc:1437] [74537][HcclGetAlgRes] engine[AIV], algTag[AllGather_group_name_0_AivAllGatherSoleMesh_host], resource allocated: thread num[0], channel num per level[], ccu kernel num[0], commName[group_name_0], userRank[0], ctxSize[568].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.706.500 [inconsistent_check.cc:66] [74537][CompareOpExchangeInfos] all exchangeInfos checked successfully. algTag[AllGather_group_name_0_AivAllGatherSoleMesh_host]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.707.191 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.707.339 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AivCacheIndex], engine[CPU_TS], size[524300], ctx[0xfffecc756060], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.707.343 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.707.351 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AivCache_4b8c01ed3c2a6bb4], engine[CPU_TS], size[8444], ctx[0xfffecc7d6080], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.718.473 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.718.483 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AivCache_6962743dbca25d9c], engine[CPU_TS], size[8444], ctx[0xfffecc878890], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.778.639 [comm_mem_c_adpt.cc:76] [74363]Entry-operator():comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.778.697 [coll_comm_res_c_adpt.cc:791] [74363]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.778.778 [config_log.cc:27] [74363]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.778.849 [my_rank.cc:811] [74363][LinkInfo]userRank[0] remoteRank[1] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.782.022 [remote_rma_buffer.cc:85][74363][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.782.466 [my_rank.cc:811] [74363][LinkInfo]userRank[0] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.784.277 [remote_rma_buffer.cc:85][74363][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.784.604 [my_rank.cc:811] [74363][LinkInfo]userRank[0] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.792.008 [remote_rma_buffer.cc:85][74363][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.792.421 [coll_comm_res_c_adpt.cc:881] [74363][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [13728]us.
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.793.300 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], port[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.793.772 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150], port[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:53.794.053 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], port[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.472 [alg_env_config.cc:189] [74363][InitEnvConfig] initialized: deviceType[6], aicpuUnfold[0], aicpuCacheEnable[1], aivMode[1], ccuMSMode[0], ccuSchedMode[0], enableFfts[1], deterministic[0], entryLog[0], debugConfig[0x0].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.476 [alg_env_config.cc:212] [74363][InitEnvConfig] initialized: execTimeoutSet[1], execTimeoutSec[2000.00], splitRatioSet[0], splitRatio[0], intraLinkConfigSupported[0], intraRoce[0], a3ConfigSupported[0], interHccsDisable[0], retryMask[0x0], inconsistentCheck[0], taskException[1], algoConfig[deferred-to-costmodel].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.678 [engine_ctx_c_adpt.cc:65] [74363]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.683 [engine_ctx_c_adpt.cc:65] [74363]HcclEngineCtxCreate success, ctxTag[AivCache_36d0232fd6ae1363], engine[CPU_TS], size[8444], ctx[0x2cff0530], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.904 [base_config.cc:41] [74363][HCCL_ENV] HCOMM_TA_CTP_UB_TIMEOUT set by default to [8]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.908 [base_config.cc:45] [74363][HCCL_ENV] HCOMM_TA_RTP_UB_TIMEOUT set by default to [16]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.794.909 [base_config.cc:50] [74363][HCCL_ENV] HCOMM_TA_RTP_UBOE_TIMEOUT set by default to [16]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.801.887 [dev_ub_connection.cc:652][74363][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc76eb000. jettyId[10566], jettyHandle[2cfef090], dieId[0], funcId[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.809.087 [dev_ub_connection.cc:652][74363][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc72eb000. jettyId[10567], jettyHandle[2cff67b0], dieId[0], funcId[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.816.170 [dev_ub_connection.cc:652][74363][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc6eeb000. jettyId[10568], jettyHandle[2cff7e00], dieId[0], funcId[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:53.816.554 [channel_process.cc:361] [74363][PrintChannelStatusDistribution] batch[0x120000044000] link_ready[0] socket_ok[0] connecting[3] abnormal[0] total[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.096.479 [cluster_monitor.cc:467] [74569]commId:[group_name_0], establish rank[sp_138_srv_62/48] to rank[sp_138_srv_62/49] heartbeat connection success.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.127.956 [cluster_monitor.cc:467] [74570]commId:[group_name_0], establish rank[sp_138_srv_62/48] to rank[sp_138_srv_62/51] heartbeat connection success.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.161.258 [comm_mem_c_adpt.cc:76] [74363]Entry-operator():comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.161.293 [coll_comm_res_c_adpt.cc:791] [74363]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.161.348 [config_log.cc:27] [74363]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.161.429 [my_rank.cc:811] [74363][LinkInfo]userRank[0] remoteRank[1] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.163.341 [remote_rma_buffer.cc:85][74363][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.163.638 [my_rank.cc:811] [74363][LinkInfo]userRank[0] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.165.474 [remote_rma_buffer.cc:85][74363][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.165.738 [my_rank.cc:811] [74363][LinkInfo]userRank[0] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.166.407 [remote_rma_buffer.cc:85][74363][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.166.623 [coll_comm_res_c_adpt.cc:881] [74363][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [5333]us.
+[INFO] HCCP(74363,python3):2026-11-27-10:29:54.167.152 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], port[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:54.167.547 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150], port[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:54.167.873 [ra_host.c:848]tid:74363,RaSocketListenStart: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], port[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.175.088 [dev_ub_connection.cc:652][74363][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc6aeb000. jettyId[10569], jettyHandle[2cfff6e0], dieId[0], funcId[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.177.981 [dev_ub_connection.cc:652][74363][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc66eb000. jettyId[10570], jettyHandle[2d0009e0], dieId[0], funcId[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.180.785 [dev_ub_connection.cc:652][74363][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc62eb000. jettyId[10571], jettyHandle[2d001da0], dieId[0], funcId[3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.177 [physical_level_build.cc:484] [74537][PhysicalLevel][Build] rank[0] built [2] physical levels
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.188 [physical_level_build.cc:489] [74537][PhysicalLevel][Build] rank[0] level[0/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 0 inst 6] hasTopoInst[1] topoType[1] locType[0] protocolNum[2] portNums[1,1,1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.193 [physical_level_build.cc:489] [74537][PhysicalLevel][Build] rank[0] level[1/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 1 inst 0] hasTopoInst[1] topoType[0] locType[0] protocolNum[2] portNums[6,2]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.223 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.229 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AllReduce_group_name_0], engine[CPU_TS], size[2142], ctx[0xfffecc8d1010], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.321 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.324 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AllReduce_group_name_0_AivAllReduceSoleMeshOneShot_host], engine[CPU_TS], size[568], ctx[0xfffecc387ed0], group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.371 [coll_comm_res_c_adpt.cc:791] [74537]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.418 [config_log.cc:27] [74537]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.640.470 [my_rank.cc:811] [74537][LinkInfo]userRank[0] remoteRank[1] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.641.178 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.641.592 [my_rank.cc:811] [74537][LinkInfo]userRank[0] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.643.369 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.643.712 [my_rank.cc:811] [74537][LinkInfo]userRank[0] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.645.449 [remote_rma_buffer.cc:85][74537][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.294 [coll_comm_res_c_adpt.cc:881] [74537][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [15923]us.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.303 [op_common.cc:3300] [74537][HcclAllocAlgResourceAiv]remoteRank[1] memNum[5] regMemAddr[0x124059000000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.308 [op_common.cc:3300] [74537][HcclAllocAlgResourceAiv]remoteRank[2] memNum[5] regMemAddr[0x12405d200000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.313 [op_common.cc:3300] [74537][HcclAllocAlgResourceAiv]remoteRank[3] memNum[5] regMemAddr[0x124061400000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.344 [op_common.cc:1437] [74537][HcclGetAlgRes] engine[AIV], algTag[AllReduce_group_name_0_AivAllReduceSoleMeshOneShot_host], resource allocated: thread num[0], channel num per level[], ccu kernel num[0], commName[group_name_0], userRank[0], ctxSize[568].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.356 [inconsistent_check.cc:66] [74537][CompareOpExchangeInfos] all exchangeInfos checked successfully. algTag[AllReduce_group_name_0_AivAllReduceSoleMeshOneShot_host]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.457 [engine_ctx_c_adpt.cc:65] [74537]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:54.656.469 [engine_ctx_c_adpt.cc:65] [74537]HcclEngineCtxCreate success, ctxTag[AivCache_d5bce33bbb4becfe], engine[CPU_TS], size[8451], ctx[0xfffecc8d5cc0], group[group_name_0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.420.346 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], cnt[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.422.963 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150], cnt[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.425.357 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], cnt[0]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.433.758 [op_base.cc:3957] [74363]Entry-HcclCommDestroy: op_base comm destroy begin
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.433.772 [op_base.cc:5840] [74363][HcclCommStateNotify]comm[0x286b4e60], state[0], regName[group_name_0__opbase], args[0x120067600000] callback begin.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.433.776 [op_base.cc:5844] [74363][HcclCommStateNotify]comm[0x286b4e60], state[0], regName[group_name_0__opbase], args[0x120067600000] callback success.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.433.777 [op_base.cc:5840] [74363][HcclCommStateNotify]comm[0x286b4e60], state[0], regName[aicpu_task_cache_callback], args[0xffff8cc1c478] callback begin.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.433.780 [op_base.cc:5844] [74363][HcclCommStateNotify]comm[0x286b4e60], state[0], regName[aicpu_task_cache_callback], args[0xffff8cc1c478] callback success.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.433.789 [op_base_v2.cc:731][74363]Entry-HcclCommDestroy V950 comm[group_name_0]
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:55.433.843 [tracer_mgr_operate.c:250](tid:74363) destroy object HCCL_74363_0, exitSave(true).
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.436.573 [op_base_v2.cc:767][74363]Entry-HcclCommDestroy V950 comm[group_name_0] success, take time [2787]us, userDevId[0], devPhyId[0].
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.436.658 [cluster_monitor.cc:923] [74363][UnRegisterToClusterMonitor]Entry HeartBeat DeInit.
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.453.272 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], cnt[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.467.144 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], cnt[1]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.467.454 [hccl_comm_host.cc:130] [74363]UnRegistTaskAbortHandler begin, group[group_name_0]
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:55.467.569 [task_fail_callback_data_manager.cc:62] 74363 RegTaskFailCallback: Unregister task fail callback finish, name:__ACLRT_EXCEPTION_CALLBACK_REGISTER__:ASCENDCL:281473012216592.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.467.572 [hcclCommTaskException.cc:161] [74363][UnRegister]aclrtExceptionInfoCallbackUnregister success
+[WARNING] HCCL(74363,python3):2026-11-27-10:29:55.467.574 [coll_comm.cc:1248] [74363][HcclBinaryUnLoad] binHcclHandle is nullptr
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.467.618 [coll_comm.cc:132] [74363][CollComm][~CollComm] cclBuffer free, commId[group_name_0].
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.469.468 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], cnt[2]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.488.572 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150], cnt[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.490.489 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], cnt[2]
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.492.972 [op_base.cc:5840] [74363][HcclCommStateNotify]comm[0x286b4e60], state[1], regName[group_name_0__opbase], args[0x120067600000] callback begin.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.492.975 [op_base.cc:5844] [74363][HcclCommStateNotify]comm[0x286b4e60], state[1], regName[group_name_0__opbase], args[0x120067600000] callback success.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.492.977 [op_base.cc:5840] [74363][HcclCommStateNotify]comm[0x286b4e60], state[1], regName[aicpu_task_cache_callback], args[0xffff8cc1c478] callback begin.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.492.980 [op_base.cc:5844] [74363][HcclCommStateNotify]comm[0x286b4e60], state[1], regName[aicpu_task_cache_callback], args[0xffff8cc1c478] callback success.
+[INFO] HCCL(74363,python3):2026-11-27-10:29:55.492.982 [op_base.cc:3993] [74363]Entry-HcclCommDestroy V2 group[group_name_0] destroy success, deviceLogicId[0], comm[0x286b4e60]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.493.470 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950], cnt[3]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.496.733 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150], cnt[2]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:55.501.162 [ra_host.c:769]tid:74363,RaSocketBatchClose: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850], cnt[3]
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.202 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_MALLOC_FREE, applyTotal = 121, applySucc = 71, releaseTotal = 59, releaseSucc = 59
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.207 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_MALLOC_FREE_HOST, applyTotal = 0, applySucc = 0, releaseTotal = 11, releaseSucc = 11
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.211 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_CONTEXT, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.213 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_SET_RESET_DEVICE, applyTotal = 9, applySucc = 9, releaseTotal = 5, releaseSucc = 5
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.215 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_EVENT, applyTotal = 20, applySucc = 20, releaseTotal = 20, releaseSucc = 20
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.216 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_STREAM, applyTotal = 34, applySucc = 34, releaseTotal = 1, releaseSucc = 1
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.218 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_DVPP_MALLOC_FREE, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.220 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_RECORD_RESET_EVENT, applyTotal = 28, applySucc = 28, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.221 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DATA_BUFFER, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.223 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_TENSOR_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.225 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.226 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DATASET, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.228 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_LOAD_UNLOAD_MODEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.229 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_AIPP, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.231 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_ATTR, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.232 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_HANDLE, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.234 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_CHANNEL_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.235 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_PIC_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.237 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_ROI_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.242 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_RESIZE_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.244 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_JPEGE_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.245 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VDEC_CHANNEL_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.246 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VENC_CHANNEL_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.248 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_STREAM_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.249 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VDEC_FRAME_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.251 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VENC_FRAME_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.252 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_CHANNEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.253 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VDEC_CHANNEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.255 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VENC_CHANNEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.256 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_BATCH_PIC_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.257 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_GROUP_INFO, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.259 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_PROF_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.260 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_PROF_SUB_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.262 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_MODEL_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.263 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ID, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.264 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ATTR, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.266 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ROUTE, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.267 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ROUTE_LIST, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.268 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ROUTE_QUERY, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.270 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_MBUF, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.271 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_GRAPH_DUMP_OPTION, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.273 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_ALLOCATOR_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.274 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_ALLOCATOR_BINARY_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.275 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_RESERVE_RELEASE_MEMORY_ADDRESS, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.277 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_MALLOC_FREE_PHYSICAL_MEMORY, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.278 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_MAP_UNMAP_MEMORY, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(74363,python3):2026-11-27-10:29:55.622.279 [resource_statistics.cpp:113]74363 TraverseStatistics: The ResourceType:ACL_STATISTICS_LOAD_UNLOAD_BINARY, applyTotal = 0, applySucc = 0, releaseTotal = 2, releaseSucc = 2
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.474.779 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.475.075 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.475.477 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.475.579 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.475.665 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.475.747 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.476.970 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.477.034 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::400:300:10:0:df76:150]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.477.122 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::408:300:10:0:df76:950]
+[EVENT] PROFILING(74363,python3):2026-11-27-10:29:56.478.629 (mspti)[activity_manager.cpp:263] >>> (tid:74363) Total activity record: 0. Total activity drop: 0
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.502.528 [ra_host.c:885]tid:74363,RaSocketListenStop: Input parameters: [0]th, phyId[0], localIp[::407:300:10:0:df76:850]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.795.694 [ra_host.c:369]tid:74363,RaSocketDeinit: Input parameters: phyId[0] family[10] local_ip[::407:300:10:0:df76:850]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.795.896 [ra_host.c:369]tid:74363,RaSocketDeinit: Input parameters: phyId[0] family[10] local_ip[::400:300:10:0:df76:150]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.795.985 [ra_host.c:369]tid:74363,RaSocketDeinit: Input parameters: phyId[0] family[10] local_ip[::408:300:10:0:df76:950]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.796.074 [ra_ctx.c:251]tid:74363,RaCtxDeinit: Input parameters: phy_id[0], devIndex[327682], protocol[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.798.109 [ra_ctx.c:251]tid:74363,RaCtxDeinit: Input parameters: phy_id[0], devIndex[262402], protocol[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.800.067 [ra_ctx.c:251]tid:74363,RaCtxDeinit: Input parameters: phy_id[0], devIndex[196611], protocol[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.801.923 [ra_ctx.c:251]tid:74363,RaCtxDeinit: Input parameters: phy_id[0], devIndex[131075], protocol[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.804.161 [ra_ctx.c:251]tid:74363,RaCtxDeinit: Input parameters: phy_id[0], devIndex[65539], protocol[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.806.024 [ra_init.c:221]tid:74363,RaDeinit: Input parameters: phyId[0], nicPosition:[1]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.806.027 [ra_hdc_async.c:681]tid:74363,RaHdcDeinitAsync: hdc deinit async start! phyId[0] restore_flag[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.851.822 [ra_hdc.c:899]tid:74363,RaHdcDeinit: hdc deinit start! phyId[0] restore_flag[0]
+[INFO] HCCP(74363,python3):2026-11-27-10:29:56.854.062 [ra_hdc.c:919]tid:74363,RaHdcDeinit: hdc deinit OK! phyId[0]
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:57.523.312 [runtime.cc:5614] 74490 ReportRasRun: Report ras thread exits normally!
+[INFO] HCCL(74363,python3):2026-11-27-10:29:57.903.014 [aicpu_task_cache.cc:45] [74363][AicpuTaskCache][~AicpuTaskCache] release aicpu task cache at 0x0000ffff8b631300: entryCnt[0], cacheBytes_[0]
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:58.512.390 [tprt.cc:21][TPRT]TID[74363] ~TprtManage: ~TprtManage
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:58.512.398 [runtime_adapt.cc:57] 74363 ~Runtime: runtime destructor.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:58.512.425 [runtime.cc:5584] 74363 DestroyReportRasThread: Join report ras thread OK.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:58.512.428 [runtime.cc:1661] 74363 WaitMonitorExit: wait monitor success, used count=0.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:58.554.328 [xpu_task_fail_callback_data_manager.cc:64] 74363 ~XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Destructor.
+[INFO] RUNTIME(74363,python3):2026-11-27-10:29:58.554.333 [task_fail_callback_data_manager.cc:91] 74363 ~TaskFailCallBackManager: Destructor.
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:58.688.085 [stacktrace_signal.c:229](tid:74363) unregister all signal handlers, can not capture signal.
+[INFO] ATRACE(74363,python3):2026-11-27-10:29:58.827.471 [atrace_client_core.c:129](tid:74474) atrace receive thread exited, devId=0.

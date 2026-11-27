@@ -1,0 +1,3 @@
+# The repository ignores *.log globally. These captures are the evidence the
+# verification note cites, so re-include the log files under this directory only.
+!*.log
