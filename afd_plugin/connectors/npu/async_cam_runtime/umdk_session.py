@@ -65,6 +65,7 @@ class SourceRound:
     inputs_ready: torch.npu.Event
     sent: torch.npu.Event
     rows: int
+    rounds: int
 
 
 class UmdkSession(FFNExecutionSession):
@@ -215,7 +216,7 @@ class UmdkSession(FFNExecutionSession):
         ready, sent = torch.npu.Event(), torch.npu.Event()
         ready.record(torch.npu.current_stream(self.device))
         self.pending = SourceRound(
-            context, hidden, idx, weight, mask, task, output, ready, sent, rows
+            context, hidden, idx, weight, mask, task, output, ready, sent, rows, rounds
         )
         self.sequence = (self.sequence + 1) % (1 << 32)
         with torch.npu.stream(self.send_stream):
@@ -257,8 +258,13 @@ class UmdkSession(FFNExecutionSession):
         ):
             raise RuntimeError("UMDK return does not match the outstanding source slot")
         o, c = self.owner, self.cfg
-        # A multi-round send may need credit from this very receive before it finishes.
-        torch.npu.current_stream(self.device).wait_event(p.inputs_ready)
+        # A single round publishes its ledger and returns independently. If it
+        # rejects the task, there is no ledger for a blocking receive to consume.
+        # A multi-round send can need credit from this receive to reuse its slot.
+        if p.rounds == 1:
+            self._check_dispatch_status(p)
+        else:
+            torch.npu.current_stream(self.device).wait_event(p.inputs_ready)
         self.ops.afd_async_combine_recv(
             o.payload,
             p.task,
@@ -286,14 +292,32 @@ class UmdkSession(FFNExecutionSession):
             c["num_vec_cores"],
         )
         recv_status = o.recv_status.view(torch.int32)[:2].tolist()
-        p.sent.synchronize()
-        send_status = o.send_status.view(torch.int32)[:2].tolist()
-        if recv_status != _TRANSFER_DONE or send_status != _TRANSFER_DONE:
+        if p.rounds > 1:
+            self._check_dispatch_status(p)
+        if recv_status != _TRANSFER_DONE:
             raise RuntimeError(
-                f"UMDK transfer failed: dispatch={send_status}, combine={recv_status}"
+                f"UMDK CombineRecv failed on rank {self.topology.world_rank}, "
+                f"layer {p.context.metadata.layer_idx}: {recv_status}"
             )
         self.pending = None
         return p.output[: p.rows]
+
+    def _check_dispatch_status(self, pending: SourceRound) -> None:
+        rank = self.topology.world_rank
+        layer = pending.context.metadata.layer_idx
+        try:
+            pending.sent.synchronize()
+            status = self.owner.send_status.view(torch.int32)[:3].tolist()
+        except RuntimeError as exc:
+            raise RuntimeError(
+                f"UMDK DispatchSend synchronization failed on rank {rank}, "
+                f"layer {layer}, rounds={pending.rounds}: {exc}"
+            ) from exc
+        if status[:2] != _TRANSFER_DONE:
+            raise RuntimeError(
+                f"UMDK DispatchSend failed on rank {rank}, layer {layer}: "
+                f"state={status[0]}, error={status[1]}, round={status[2]}"
+            )
 
     def _transaction(self) -> list[int]:
         return (
