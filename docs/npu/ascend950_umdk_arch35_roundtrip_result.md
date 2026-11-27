@@ -37,6 +37,7 @@ Three runs cover the operator in isolation, without vLLM or a checkpoint:
 | 1 | `small` (H=256, K=2, E=4) | 4 (2A2F) | 65 |
 | 2 | `small` | 4 | 1 |
 | 3 | `dsv4-flash` (H=4096, K=6, E=256) | 8 (4A4F) | 64 |
+| 4 | `small`, repeated on a fresh container | 4 (2A2F) | 64 |
 
 Run 3 is the model geometry the Flash case uses. Runs 1 and 2 isolate scale:
 run 2 keeps the same topology as run 1 with a single source row.
@@ -65,8 +66,11 @@ errcode:(95) The MTE instruction accesses an invalid GM address or the
 ```
 
 The offset from the kernel entry, `0x1b20`, is the relative PC the bringup note
-records for the archived four-rank `rt11` probe. Two independent executions
-therefore trap at the same instruction.
+records for the archived four-rank `rt11` probe. Five independent executions
+therefore trap at the same instruction: every run, including the Flash
+geometry, the single-row run and the `_AIV_CORES = 1` control, reports
+`current: 0x12004081ab20` and no other trap address. The fault is
+deterministic, not a race or a scale-dependent overflow.
 
 Failure counts per run: 10 / 14 / 28 occurrences of `507035`, all raised from
 the host copy of the operator status through `CopyKernelOpApi.cpp:94`, that

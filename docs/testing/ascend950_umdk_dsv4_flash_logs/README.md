@@ -9,6 +9,7 @@ Compact extracts from the device runs described in
 | `small-65rows` | 1 | `small` (H=256, K=2, E=4) | 4 (2A2F) | 65 | 10 |
 | `small-1row` | 2 | `small` | 4 | 1 | 14 |
 | `aiv1-control` | 1' | `small` with `_AIV_CORES = 1` | 4 | 1 | 14 |
+| `small-64rows-repeat` | 4 | `small`, fresh container | 4 (2A2F) | 64 | 10 |
 
 Each directory holds:
 
