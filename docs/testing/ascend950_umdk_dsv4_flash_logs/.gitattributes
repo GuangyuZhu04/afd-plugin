@@ -1,0 +1,5 @@
+# Device dumps and kernel objects are opaque binaries; keep Git from
+# attempting text diffs on them.
+exception_info.* binary
+exception_info.*.* binary
+*.o binary

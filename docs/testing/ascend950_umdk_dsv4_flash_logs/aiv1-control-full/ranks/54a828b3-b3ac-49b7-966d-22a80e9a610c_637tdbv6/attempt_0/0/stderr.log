@@ -1,0 +1,84 @@
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[W1127 06:04:49.428987059 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 900000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 2000000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/tmp/tests-only/tests/npu/umdk_roundtrip.py:60: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+  ids = (token * profile.topk + slot) % domain
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 349, in _check_dispatch_status
+[rank0]:     pending.sent.synchronize()
+[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/npu/streams.py", line 258, in synchronize
+[rank0]:     super(Event, self).synchronize()
+[rank0]: RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+[rank0]: [ERROR] 2026-11-27-06:04:52 (PID:20981, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[rank0]: [Error]: The vector core execution is abnormal. 
+[rank0]:         Rectify the fault based on the error information in the ascend log.
+[rank0]: EZ9999: Internal error!
+[rank0]: EZ9999[PID: 20981] 2026-11-27-06:04:52.979.207 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 292, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040819000, current: 0x12004081ab20, sc error info: 0xffffffffffff, su error info: 0x12521dc01ff41978,0xeffffef61800401c, mte error info: 0x269c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[rank0]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank0]: TraceBack (most recent call last):
+[rank0]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[rank0]:        rtEventSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+
+
+[rank0]: The above exception was the direct cause of the following exception:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 181, in <module>
+[rank0]:     main()
+[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[rank0]:     return f(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 163, in main
+[rank0]:     source_round(session, profile, rank, step, rows, device)
+[rank0]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 67, in source_round
+[rank0]:     actual = session.combine(step, context)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 294, in combine
+[rank0]:     self._check_dispatch_status(p)
+[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 352, in _check_dispatch_status
+[rank0]:     raise RuntimeError(
+[rank0]: RuntimeError: UMDK DispatchSend synchronization failed on rank 0, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+[rank0]: [ERROR] 2026-11-27-06:04:52 (PID:20981, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[rank0]: [Error]: The vector core execution is abnormal. 
+[rank0]:         Rectify the fault based on the error information in the ascend log.
+[rank0]: EZ9999: Internal error!
+[rank0]: EZ9999[PID: 20981] 2026-11-27-06:04:52.979.207 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 292, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040819000, current: 0x12004081ab20, sc error info: 0xffffffffffff, su error info: 0x12521dc01ff41978,0xeffffef61800401c, mte error info: 0x269c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[rank0]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank0]: TraceBack (most recent call last):
+[rank0]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[rank0]:        rtEventSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] Failed to shutdown process group during NPU exit.
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] Traceback (most recent call last):
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582]   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/distributed/distributed_c10d.py", line 580, in _destructor_process_group
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582]     pg_to_shutdown.shutdown()
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUStream.cpp:414 NPU function error: device error type 3, error code is 507035
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] [ERROR] 2026-11-27-06:04:52 (PID:20981, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] [Error]: The vector core execution is abnormal. 
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582]         Rectify the fault based on the error information in the ascend log.
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999: Internal error!
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999[PID: 20981] 2026-11-27-06:04:52.987.132 (EE9999):  rtStreamSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] TraceBack (most recent call last):
+[rank0]:W1127 06:04:52.987000 20981 site-packages/torch_npu/distributed/distributed_c10d.py:582] 
+[W1127 06:04:52.404862367 Logger.cpp:75] Warning: Failed to generate log message. (function operator())
+[E1127 06:04:52.404927277 ProcessGroupHCCL.cpp:2104] [Rank 0] HCCL watchdog thread terminated with exception: 
+[ERROR] 2026-11-27-06:04:52 (PID:20981, Device:0, RankID:0) ERR02005 DIST internal error
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 0] HCCL watchdog thread terminated with exception: 
+[ERROR] 2026-11-27-06:04:52 (PID:20981, Device:0, RankID:0) ERR02005 DIST internal error
+Fatal Python error: Aborted
+
+Thread 0x0000ffff91973b80 (most recent call first):
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/_init/core/runtime_lifecycle.py", line 14 in _npu_shutdown
+
+Extension modules: numpy.core._multiarray_umath, numpy.core._multiarray_tests, numpy.linalg._umath_linalg, numpy.fft._pocketfft_internal, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, torch_npu._C, regex._regex, mspti_C, markupsafe._speedups, psutil._psutil_linux, psutil._psutil_posix, zmq.backend.cython._zmq, PIL._imaging, yaml._yaml, PIL._imagingft, av._core, _cyutil, av._cyutil, av.logging, av.buffer, av.error, av.dictionary, av.container.pyio, av.format, av.index, av.rational, av.utils, av.stream, av.container.streams, av.opaque, av.packet, av.container.input, av.bitstream, av.container.output, av.container.core, av.codec.context, av.video.format, av.video.reformatter, av.sidedata.encparams, av.sidedata.motionvectors, av.sidedata.sidedata, av.plane, av.video.plane, av.video.frame, av.video.stream, av.codec.hwaccel, av.audio.format, av.codec.codec, av.frame, av.audio.layout, av.audio.plane, av.audio.frame, av.audio.stream, av.filter.link, av.filter.context, av.filter.graph, av.filter.filter, av.filter.loudnorm, av.audio.resampler, av.audio.codeccontext, av.audio.fifo, av.device, av.video.codeccontext, _cffi_backend, scipy._lib._ccallback_c, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg.cython_blas, scipy.linalg._matfuncs_expm, scipy.linalg._decomp_update, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.optimize._minpack2, scipy.optimize._group_columns, scipy._lib.messagestream, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._highs.cython.src._highs_wrapper, scipy.optimize._highs._highs_wrapper, scipy.optimize._highs.cython.src._highs_constants, scipy.optimize._highs._highs_constants, scipy.linalg._interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.spatial._ckdtree, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.special._ufuncs_cxx, scipy.special._cdflib, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial.transform._rotation, scipy.optimize._direct, multidict._multidict, yarl._quoting_c, propcache._helpers_c, aiohttp._http_writer, aiohttp._http_parser, aiohttp._websocket.mask, aiohttp._websocket.reader_c, frozenlist._frozenlist, charset_normalizer.md, charset_normalizer.cd, requests.packages.charset_normalizer.md, requests.packages.chardet.md, requests.packages.charset_normalizer.cd, requests.packages.chardet.cd (total: 156)

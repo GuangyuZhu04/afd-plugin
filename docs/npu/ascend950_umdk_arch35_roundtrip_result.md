@@ -68,9 +68,12 @@ errcode:(95) The MTE instruction accesses an invalid GM address or the
 The offset from the kernel entry, `0x1b20`, is the relative PC the bringup note
 records for the archived four-rank `rt11` probe. Five independent executions
 therefore trap at the same instruction: every run, including the Flash
-geometry, the single-row run and the `_AIV_CORES = 1` control, reports
-`current: 0x12004081ab20` and no other trap address. The fault is
-deterministic, not a race or a scale-dependent overflow.
+geometry, the single-row run and the `_AIV_CORES = 1` control, reports the
+MTE error, `error code = 95`, only at `current: 0x12004081ab20`. The other
+addresses in the same records carry `error code = 0` with `timeout or trap
+error`, which is the propagation after the first core traps, so the primary
+fault is a single instruction. The fault is deterministic, not a race or a
+scale-dependent overflow.
 
 Failure counts per run: 10 / 14 / 28 occurrences of `507035`, all raised from
 the host copy of the operator status through `CopyKernelOpApi.cpp:94`, that

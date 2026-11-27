@@ -1,0 +1,53 @@
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 181, in <module>
+[rank3]:     main()
+[rank3]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[rank3]:     return f(*args, **kwargs)
+[rank3]:            ^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 166, in main
+[rank3]:     serve_round(session, store, keys, role_rank, step, experts)
+[rank3]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 78, in serve_round
+[rank3]:     payload = session.receive(wait=False)
+[rank3]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 376, in receive
+[rank3]:     self.startup.check_failure()
+[rank3]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py", line 96, in check_failure
+[rank3]:     raise RuntimeError(self._store.get(signal).decode())
+[rank3]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+[rank3]: [ERROR] 2026-11-27-06:04:52 (PID:20982, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[rank3]: [Error]: The vector core execution is abnormal. 
+[rank3]:         Rectify the fault based on the error information in the ascend log.
+[rank3]: EZ9999: Internal error!
+[rank3]: EZ9999[PID: 20982] 2026-11-27-06:04:52.968.049 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 229, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040819000, current: 0x12004081ab20, sc error info: 0xffffffffffff, su error info: 0x12521dc02ffe1978,0xde4177df1800401c, mte error info: 0x269c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[rank3]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[rank3]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank3]: TraceBack (most recent call last):
+[rank3]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[rank3]:        rtEventSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+
+AFD_HCCL_DESTROY rank=3 stage=table_free_begin idx=-1 rc=0 t_us=0
+AFD_HCCL_DESTROY rank=3 stage=table_free_end idx=-1 rc=0 t_us=50
+AFD_HCCL_DESTROY rank=3 stage=channel_destroy_begin idx=-1 rc=0 t_us=64
+AFD_HCCL_DESTROY rank=3 stage=channel_destroy_end idx=-1 rc=0 t_us=56882
+AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=0 rc=0 t_us=56894
+AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=0 rc=0 t_us=57036
+AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=0 rc=0 t_us=57037
+AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=0 rc=0 t_us=57192
+AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=1 rc=0 t_us=57194
+AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=1 rc=0 t_us=57297
+AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=1 rc=0 t_us=57298
+AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=1 rc=0 t_us=57396
+AFD_HCCL_DESTROY rank=3 stage=mem_unreg_begin idx=2 rc=0 t_us=57397
+AFD_HCCL_DESTROY rank=3 stage=mem_unreg_end idx=2 rc=0 t_us=57504
+AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_begin idx=2 rc=0 t_us=57505
+AFD_HCCL_DESTROY rank=3 stage=endpoint_destroy_end idx=2 rc=0 t_us=57648
+AFD_HCCL_DESTROY rank=3 stage=memory_reset_begin idx=-1 rc=0 t_us=57650
+AFD_HCCL_DESTROY rank=3 stage=memory_reset_end idx=-1 rc=0 t_us=57655

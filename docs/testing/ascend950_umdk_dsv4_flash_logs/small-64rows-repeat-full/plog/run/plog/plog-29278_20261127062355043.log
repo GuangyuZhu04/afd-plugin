@@ -1,0 +1,892 @@
+[INFO] ATRACE(29278,python3):2026-11-27-06:23:55.043.500 [trace_recorder.c:169](tid:29278) get path by env ASCEND_WORK_PATH: /work/runs/roundtrip-small-1127062351
+[INFO] RUNTIME(29278,python3):2026-11-27-06:23:55.044.807 [task_fail_callback_data_manager.cc:89] 29278 TaskFailCallBackManager: Constructor.
+[INFO] RUNTIME(29278,python3):2026-11-27-06:23:55.044.811 [xpu_task_fail_callback_data_manager.cc:59] 29278 XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Constructor.
+[INFO] RUNTIME(29278,python3):2026-11-27-06:23:55.046.391 [runtime_keeper.cc:209] 29278 CreateRuntimeImpl: Open libruntime_v200.so successfully
+[INFO] RUNTIME(29278,python3):2026-11-27-06:23:55.047.356 [runtime.cc:5137] 29278 GetVisibleDevices: real deviceCnt:8 userDeviceCnt:4 isSetVisibleDev:1 ASCEND_RT_VISIBLE_DEVICES:[0,1,2,3] available visible devices:[0,1,2,3]
+[INFO] TDT(29278,python3):2026-11-27-06:23:55.048.147 [package_worker_factory.cpp:38][RegisterPackageWorkerCreator][tid:29278] Register[2] package worker was created successfully
+[INFO] TDT(29278,python3):2026-11-27-06:23:55.048.152 [package_worker_factory.cpp:38][RegisterPackageWorkerCreator][tid:29278] Register[3] package worker was created successfully
+[INFO] HCCL(29278,python3):2026-11-27-06:23:55.142.518 [adapter_rts.cc:3089] [29278][adapter_rts.cc][CallBackInitRts] g_deviceType [9] g_deviceLogicId [-1] g_devicePhyId [-1]
+[INFO] HCCL(29278,python3):2026-11-27-06:23:55.183.617 [aicpu_task_cache.cc:24] [29278][AicpuTaskCache][AicpuTaskCache] create aicpu task cache at 0x0000ffff8fcb1300: maxCacheBytes[10485760]
+[INFO] HCCL(29278,python3):2026-11-27-06:23:55.192.690 [op_base.cc:5820] [29278][HcclCommRegCommStateCallback]Register commStateCallBack success, regName[aicpu_task_cache_callback], args[0xffff9129c478].
+[INFO] PROFILING(29278,python3):2026-11-27-06:23:56.524.450 [prof_cann_plugin.cpp:256] (tid:29278) RegisterProfileCallback, callback type is 12
+[INFO] PROFILING(29278,python3):2026-11-27-06:23:56.524.459 [prof_cann_plugin.cpp:256] (tid:29278) RegisterProfileCallback, callback type is 11
+[INFO] GE(29278,python3):2026-11-27-06:24:01.367.403 [op_tiling_manager.cc:109]29278 ~FuncPerfScope:[GEPERFTRACE] The time cost of OpTilingManager::LoadSo is [5591] micro seconds.
+[INFO] IDEDD(29278,python3):2026-11-27-06:24:01.386.119 [adx_dump_record.cpp:688][tid:29967] start dump thread, remote dump record temp path : /tmp/tests-only/.
+[INFO] IDEDD(29278,python3):2026-11-27-06:24:01.387.276 [dump_manager.cpp:247][tid:29278] Set aic_err_brief_dump[3] dump setting, status: on, dump switch: 3
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.388.735 [acl_op_resource_manager.cpp:60]29278 GetRuntimeV2Env: runtime v2 flag : model flag = 1, singleOp flag = 1
+[INFO] PROFILING(29278,python3):2026-11-27-06:24:01.390.832 [platform.cpp:54] (tid:29278) Profiling platform version: 1.0.
+[INFO] PROFILING(29278,python3):2026-11-27-06:24:01.390.847 [platform.cpp:288] (tid:29278) Succeeded to DrvGetApiVersion version: 0x72419
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.064 [acl.cpp:370]29278 GetAllPackageVersion: Version of runtime package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.083 [acl.cpp:370]29278 GetAllPackageVersion: Version of runtime package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.099 [acl.cpp:370]29278 GetAllPackageVersion: Version of bisheng-compiler package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.115 [acl.cpp:370]29278 GetAllPackageVersion: Version of hccl package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.135 [acl.cpp:370]29278 GetAllPackageVersion: Version of oam-tools package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.156 [acl.cpp:370]29278 GetAllPackageVersion: Version of ops-legacy package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.175 [acl.cpp:370]29278 GetAllPackageVersion: Version of ops-legacy package is 9.2.1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.391.179 [acl.cpp:372]29278 GetAllPackageVersion: Version of driver package is not found
+[INFO] DRV(29278,python3):2026-11-27-06:24:01.437.087 [hdc_ub_common.c:229][ascend][curpid:29278,29278][drv][hdc][hdc_get_urma_init_time_cost]hdc urma_cost info.(dev_id=1; l_id=85; type=5; ctx_c=0; get_token=77; attr_c:0; dev_info=12534; urma_ctx=951; alloc_id=0; share_seg=0; lock_wait=1; urma_init=13486; own_reg_re=0; alloc_tid=231; own_reg(new)=28; reg_dmp=0; jfc=220; jfs=75; jfr:94; post_wr=1; res_init=652; get_tp=0; import=20)
+[INFO] ATRACE(29278,python3):2026-11-27-06:24:01.466.921 [atrace_client_core.c:162](tid:29278) start to receive device[1] trace log.
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:01.466.937 [acl_resource_manager.cpp:128]29278 GetRuntimeV2Env: runtime v2 flag : model flag = 1, singleOp flag = 1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.466.958 [client_manager.cpp:148][GetInstance][tid:29278] [ClientManager] Current mode:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.467.036 [process_mode_manager.cpp:168][GetLogLevel][tid:29278] [TsdClient] get ASCEND_GLOBAL_LOG_LEVEL [] ASCEND_GLOBAL_EVENT_ENABLE [] ASCEND_MODULE_LOG_LEVEL []
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.467.080 [tsd_process_controller.cpp:58][OpenProcess][tid:29278] [ProcessModeManager] enter into open process deviceId[1] rankSize[0]
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.467.126 [capability_manager.cpp:401][IsSupportCommonSink][tid:29278] mutexFile[/usr/local/Ascend/driver/lib64/driver/sink_file_mutex_0.cfg] found means supporting common sink
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.467.247 [device_comm_agent.cpp:41][InitTsdClient][tid:29278] [TsdClient] deviceId[1] begin to init hdc client
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.485.345 [version_verify.cpp:39][SetVersionInfo][tid:29278] VersionVerify: send client version to server
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.496.847 [version_verify.cpp:71][PeerVersionCheck][tid:29278] VersionVerify: Check client version info, server[1230], client[1230]
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.496.858 [version_verify.cpp:92][ParseVersionInfo][tid:29278] VersionVerify: pass client version info success
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.496.861 [hdc_client.cpp:243][CheckHdcConnection][tid:29278] Service create hdc successfully.
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.234 [package_env_info.cpp:130][GetShortSocVersion][tid:29278] get short_soc_version:Ascend950
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.308 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:Ascend-aicpu_legacy.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.317 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:Ascend910-aicpu_legacy.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.323 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:Ascend310P-aicpu_legacy.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.334 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:aicpu_hccl.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.340 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:mc2_server.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.347 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:aicpu_hcomm.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.354 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:cann-hixl-compat.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.361 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:cann-hcomm-compat.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.367 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:cann-hccd-compat.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.373 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:cann-udf-compat.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.379 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:cann-tsch-compat.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.390 [package_process_config.cpp:265][SetConfigDataOnHost][tid:29278] insert package:cann-hybm-compat.tar.gz config
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.407 [package_process_config.cpp:331][RefreshHostPluginVersions][tid:29278] host plugin pkg:cann-hcomm-compat.tar.gz ini parsed, version:9.2.1 timestamp:20261026_000125081
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.418 [package_process_config.cpp:331][RefreshHostPluginVersions][tid:29278] host plugin pkg:cann-tsch-compat.tar.gz ini parsed, version:9.2.1 timestamp:20261026_000125081
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.422 [hdc_message_builder.cpp:54][SetProcSignPid][tid:29278] [HdcMessageBuilder] tsd get process sign successfully, procpid[2390769]
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.498.446 [version_verify.cpp:117][SpecialFeatureCheck][tid:29278] VersionVerify: previous type[69], supported
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.287 [plugin_version_manager.cpp:111][HandleDevicePluginVersionRsp][tid:29278] device plugin pkg:cann-hcomm-compat.tar.gz version:9.2.1 timestamp:20261026_000125081
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.290 [plugin_version_manager.cpp:114][HandleDevicePluginVersionRsp][tid:29278] device plugin info rsp, pkgCount:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.294 [package_loader.cpp:427][LoadPackageConfigInfoToDevice][tid:29278] Receive load package config response result:0
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.311 [capability_manager.cpp:401][IsSupportCommonSink][tid:29278] mutexFile[/usr/local/Ascend/driver/lib64/driver/sink_file_mutex_0.cfg] found means supporting common sink
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.314 [package_loader.cpp:133][ShouldLoadLegacyPackage][tid:29278] [TsdClient][logicDeviceId_=1] use legacy package
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.405 [package_env_info.cpp:221][CheckPackageExistsOnce][tid:29278] [TsdClient][deviceId=1] pkg size[0] in path[/usr/local/Ascend/cann-9.2.1/opp/built-in/] must be only one, skip send package, packageType[6]
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.408 [package_loader.cpp:102][LoadSysOpKernel][tid:29278] [TsdClient][logicDeviceId_=1] cannot find aicpu packages
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.418 [capability_manager.cpp:401][IsSupportCommonSink][tid:29278] mutexFile[/usr/local/Ascend/driver/lib64/driver/sink_file_mutex_0.cfg] found means supporting common sink
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.429 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:Ascend-aicpu_legacy.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.509.435 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/Ascend/aicpu/Ascend-aicpu_legacy.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_Ascend-aicpu_legacy.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.658.994 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:29278] current package:Ascend-aicpu_legacy.tar.gz is same as device, skip load
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.659.001 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:Ascend310P-aicpu_legacy.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.659.005 [package_loader.cpp:481][LoadSinglePackageToDevice][tid:29278] cannot find package:Ascend310P-aicpu_legacy.tar.gz, optional is true skip
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.659.007 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:Ascend910-aicpu_legacy.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.659.009 [package_loader.cpp:481][LoadSinglePackageToDevice][tid:29278] cannot find package:Ascend910-aicpu_legacy.tar.gz, optional is true skip
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.659.011 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:aicpu_hccl.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.659.014 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/aicpu_hccl.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_aicpu_hccl.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.661.628 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:29278] current package:aicpu_hccl.tar.gz is same as device, skip load
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.661.632 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:aicpu_hcomm.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.661.636 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/aicpu_hcomm.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_aicpu_hcomm.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.670.142 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:29278] current package:aicpu_hcomm.tar.gz is same as device, skip load
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.670.146 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:cann-hccd-compat.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.670.148 [package_loader.cpp:467][LoadSinglePackageToDevice][tid:29278] current package:cann-hccd-compat.tar.gz does not need to load to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.670.150 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:cann-hcomm-compat.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.670.156 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/compat/cann-hcomm-compat.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_cann-hcomm-compat.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.870 [plugin_version_manager.cpp:51][GetPluginUpdateStrategy][tid:29278] [TsdClient][deviceId=1] plugin update strategy from DRV = 0
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.879 [plugin_version_manager.cpp:96][CompareHostDeviceCompatPluginVersion][tid:29278] host plugin pkg:cann-hcomm-compat.tar.gz equals device, skip. host[9.2.1/20261026_000125081] device[9.2.1/20261026_000125081]
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.882 [package_loader.cpp:487][LoadSinglePackageToDevice][tid:29278] skip load compat plugin package:cann-hcomm-compat.tar.gz by version/strategy check
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.884 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:cann-hixl-compat.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.888 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/cann-hixl-compat.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_cann-hixl-compat.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.978 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:29278] current package:cann-hixl-compat.tar.gz is same as device, skip load
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.981 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:cann-hybm-compat.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.673.983 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/vendors/cust/op_impl/aicpu/hybm/kernel/cann-hybm-compat.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_cann-hybm-compat.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.028 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:29278] current package:cann-hybm-compat.tar.gz is same as device, skip load
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.029 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:cann-tsch-compat.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.031 [package_loader.cpp:454][SupportLoadPkg][tid:29278] current device chip:15 does not support package:cann-tsch-compat.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.033 [package_loader.cpp:467][LoadSinglePackageToDevice][tid:29278] current package:cann-tsch-compat.tar.gz does not need to load to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.034 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:cann-udf-compat.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.036 [package_loader.cpp:467][LoadSinglePackageToDevice][tid:29278] current package:cann-udf-compat.tar.gz does not need to load to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.037 [package_loader.cpp:464][LoadSinglePackageToDevice][tid:29278] begin to load package:mc2_server.tar.gz to device:1
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.040 [package_process_config.cpp:396][GetPkgHostAndDeviceDstPath][tid:29278] get orgFile:/usr/local/Ascend/cann-9.2.1/opp/built-in/op_impl/aicpu/kernel/mc2_server.tar.gz, dstFile:/home/HwHiAiUser/hdcd/device0/aicpu/2390769_mc2_server.tar.gz
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.776 [package_loader.cpp:491][LoadSinglePackageToDevice][tid:29278] current package:mc2_server.tar.gz is same as device, skip load
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.783 [hdc_message_builder.cpp:54][SetProcSignPid][tid:29278] [HdcMessageBuilder] tsd get process sign successfully, procpid[2390769]
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.789 [version_verify.cpp:117][SpecialFeatureCheck][tid:29278] VersionVerify: previous type[6], supported
+[INFO] TDT(29278,python3):2026-11-27-06:24:01.674.821 [tsd_process_controller.cpp:110][WaitOpenRsp][tid:29278] [ProcessModeManager] deviceId[1] sessionId[1] rankSize[0], wait subprocess start response
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.062.806 [tsd_process_controller.cpp:473][ProcessQueueForAdc][tid:29278] [TsdClient] it is unnecessary for current mode[0] to grant queue auth to aicpusd
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.062.809 [tsd_process_controller.cpp:133][LogOpenProcessDuration][tid:29278] [TsdClient][deviceId=1] [sessionId=1] start hccp and computer process success,phase4:[207]ms send open message to device,phase5:[387]ms receive open message to device,phase6:[0]ms process for adc on host,whole duration:[595]ms
+[INFO] DRV(29278,python3):2026-11-27-06:24:02.062.835 [event_sched.c:1560][ascend][curpid:29278,29278][drv][event-sche][esched_device_open]The dev_id has opened. (dev_id=1)
+[INFO] DRV(29278,python3):2026-11-27-06:24:02.063.188 [drv_share_log.c:233][ascend][curpid:29278,29278][drv][devmm][share_log_read_in_single_module]Open. (udevid=65; tgid=2390769)
+[INFO] DRV(29278,python3):2026-11-27-06:24:02.076.565 [va_dev_default_allocator.c:89][ascend][curpid:29278,29278][drv][devmm][va_dev_default_host_va_expand_with_retry]Reserve va success. (va=0x100000000000; size=2199023255552)
+[INFO] DRV(29278,python3):2026-11-27-06:24:02.076.884 [drv_share_log.c:233][ascend][curpid:29278,29278][drv][devmm][share_log_read_in_single_module]Open. (udevid=1; tgid=2390769)
+[INFO] DRV(29278,python3):2026-11-27-06:24:02.190.696 [queue_interface.c:999][ascend][curpid:29278,29278][drv][queuemng][queue_device_open]queue open finish. (dev_id=1)
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:02.190.808 [raw_device.cc:623] 29278 Init: isAddrFlat:0
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.193.951 [tsd_client.cpp:189][TsdCapabilityGet][tid:29278] TsdCapabilityGet Begin.
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.193.958 [capability_manager.cpp:489][CapabilityGet][tid:29278] [CapabilityManager] enter into CapabilityGet process deviceId[1] type[0].
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.193.963 [hdc_message_builder.cpp:54][SetProcSignPid][tid:29278] [HdcMessageBuilder] tsd get process sign successfully, procpid[2390769]
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.193.967 [version_verify.cpp:117][SpecialFeatureCheck][tid:29278] VersionVerify: previous type[38], supported
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.193.999 [capability_manager.cpp:514][CapabilityGet][tid:29278] [CapabilityManager][deviceId=1] [sessionId=1] [type=0]send capability successfully.
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.196.000 [capability_manager.cpp:564][HandlePidQosRsp][tid:29278] [TsdClient] PidQosMsgProc recvMsg realDeviceId[1] msgType[39] localDevId[1] rspCode[0],pidqos[1]
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.196.003 [capability_manager.cpp:520][CapabilityGet][tid:29278] [CapabilityManager][logicDeviceId_=1][type=0][pidQos=1][ret=0]recv capability response finished.
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:02.196.013 [engine.cc:99] 29278 Engine: Constructor.
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:02.196.016 [stars_engine.cc:53] 29278 StarsEngine: Constructor.
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:02.321.985 [runtime.cc:5574] 29278 CreateReportRasThread: Start report ras thread success!
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:02.322.041 [npu_driver_res.cc:389] 30023 GetDeviceStatus: GetDeviceStatus status=1.
+[INFO] ATRACE(29278,python3):2026-11-27-06:24:02.328.614 [tracer_mgr_operate.c:67](tid:29278) create object RUNTIME_ATRACE_DEV1_TS0 successfully, exitSave(false), noLock(false).
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.328.626 [client_manager.cpp:202][SetProfilingCallback][tid:29278] [TsdClient] set profiling callback successfully
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.807 [op_base_v2.cc:1947][29278]Entry-HcclCommInitRootInfoConfig V950: nRanks[4], rank[1], commEngine[HcclAccelerator::DEFAULT]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.816 [op_base_v2.cc:1965][29278]Entry-HcclCommInitRootInfoConfigV2:ranks[4], rank[1], rootinfo: host ip[10.244.3.1] port[60016] netMode[HrtNetworkMode::HDC] rootHandle.identifier[10.244.3.1_60016_0_1795760642362534], identifier[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.927 [root_info_detect_provider.cc:87] [29278][DetectRankTableImpl] nRanks[4], rank[1] entry flat topo detect, rootinfo: host ip[10.244.3.1] port[60016] netMode[HrtNetworkMode::HDC] identifier[10.244.3.1_60016_0_1795760642362534], userDevId[1], devPhyId[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.971 [base_config_legacy.cc:24][29278][HCCL_ENV] HCCL_IF_IP set by default to [IpAddress[0000:0000:0000:0000:0000:0000:0000:0000, AF=IPv4, addr=0.0.0.0]]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.974 [base_config_legacy.cc:27][29278][HCCL_ENV] HCCL_IF_BASE_PORT set by default to [65536]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.977 [base_config_legacy.cc:32][29278][HCCL_ENV] HCCL_SOCKET_IFNAME set by default to []
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.979 [base_config_legacy.cc:36][29278][HCCL_ENV] HCCL_WHITELIST_DISABLE set by default to [1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.984 [base_config_legacy.cc:52][29278][HCCL_ENV] HCCL_HOST_SOCKET_PORT_RANGE set by default to 
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.986 [base_config_legacy.cc:61][29278][HCCL_ENV] HCCL_NPU_SOCKET_PORT_RANGE set by default to 
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.989 [base_config_legacy.cc:89][29278][HCCL_ENV] HCCL_SOCKET_FAMILY set by default to [-1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.362.994 [base_config_legacy.cc:92][29278][HCCL_ENV] HCCL_CONNECT_TIMEOUT set by environment to [3600]s
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.168 [base_config_legacy.cc:105][29278][HCCL_ENV] HCCL_EXEC_TIMEOUT set by environment to [2000]s
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.171 [base_config_legacy.cc:117][29278][HCCL_ENV] HCCL_RDMA_TC set by default to [132]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.173 [base_config_legacy.cc:120][29278][HCCL_ENV] HCCL_RDMA_SL set by default to [4]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.174 [base_config_legacy.cc:123][29278][HCCL_ENV] HCCL_RDMA_TIMEOUT set by default to [20]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.176 [base_config_legacy.cc:126][29278][HCCL_ENV] HCCL_RDMA_RETRY_CNT set by default to [7]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.178 [base_config_legacy.cc:129][29278][HCCL_ENV] HCCL_RDMA_QPS_PER_CONNECTION set by default to [1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.180 [base_config_legacy.cc:134][29278][HCCL_ENV] HCCL_MULTI_QP_THRESHOLD set by default to [524288]B
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.182 [base_config_legacy.cc:139][29278][HCCL_ENV] HCCL_RDMA_QP_PORT_CONFIG_PATH set by default to []
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.184 [base_config_legacy.cc:377][29278][HCCL_ENV] PRIM_QUEUE_GEN_NAME set by default to []
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.187 [base_config_legacy.cc:380][29278][HCCL_ENV] HCCL_BUFFSIZE set by default to [209715200]B
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.189 [base_config_legacy.cc:385][29278][HCCL_ENV] HCCL_OP_EXPANSION_MODE set by environment to [HcclAccelerator::AIV]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.191 [base_config_legacy.cc:405][29278][HCCL_ENV] HCCL_ENTRY_LOG_ENABLE set by default to [0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.222 [base_config_legacy.cc:408][29278][HCCL_ENV] LD_LIBRARY_PATH set by environment to []
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.225 [base_config_legacy.cc:415][29278][HCCL_ENV] HCCL_DFS_CONFIG task_exception set by default to [1], cluster_heartbeat set by default to [1], rankConsistentState set by default to [0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.363.229 [base_config_legacy.cc:430][29278][HCCL_ENV] HCCL_DETOUR set by default to [HcclDetourType::HCCL_DETOUR_DISABLE]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.363.241 [ra_init.c:165]tid:29278,RaInit: Input parameters: phyId[1], nicPosition:[0] hdcType:[18] enableHdcAsync[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.363.382 [rs.c:2250]tid:29278,RsGetProductType: [Get][ChipInfo]chip name is 950DT_9582, type:4
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.363.423 [rs_tls.c:1951]tid:29278,rs_ssl_init: TLS SWITCH (0)
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.363.553 [rs_epoll.c:680]tid:30031,RsConnectHandle: pthread[connect_pthread] is alive!
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.363.561 [rs_epoll.c:551]tid:30030,RsEpollHandle: pthread[epoll_pthread] is alive!
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.364.565 [rs.c:450]tid:29278,RsInit: rs init success, chipId[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:02.364.575 [plf_debug_config.cc:80] [29278][HCCL_ENV] plfDebugConfig set to [0x0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:02.364.579 [ra_init.c:253]tid:29278,RaSetDebugConfig: Input parameters: phyId[1], nicPosition:[0], debugConfig[0x0]
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.364.592 [sub_process_controller.cpp:120][OpenSubProc][tid:29278] enter into ProcessOpenSubProc subtype:0
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.364.598 [package_env_info.cpp:74][GetAscendLatestIntallPath][tid:29278] latest install path:/usr/local/Ascend/cann-9.2.1
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.364.600 [sub_process_controller.cpp:85][ConstructCommonOpenMsg][tid:29278] runtimePkgPath:/usr/local/Ascend/cann-9.2.1
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.364.604 [hdc_message_builder.cpp:54][SetProcSignPid][tid:29278] [HdcMessageBuilder] tsd get process sign successfully, procpid[2390769]
+[INFO] TDT(29278,python3):2026-11-27-06:24:02.364.608 [version_verify.cpp:117][SpecialFeatureCheck][tid:29278] VersionVerify: previous type[48], supported
+[INFO] TDT(29278,python3):2026-11-27-06:24:03.301.534 [sub_process_controller.cpp:143][OpenSubProc][tid:29278] OpenSubProc success type:0, pid:11482
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.301.544 [ra_init.c:165]tid:29278,RaInit: Input parameters: phyId[1], nicPosition:[1] hdcType:[18] enableHdcAsync[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.301.564 [ra_hdc.c:794]tid:29278,RaHdcInit: hdc init start! logic id is 1, phy id is 1, hdcType is 18
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.309.895 [ra_hdc.c:830]tid:29278,RaHdcInit: hdc init OK! phyId[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.317.542 [ra_init.c:253]tid:29278,RaSetDebugConfig: Input parameters: phyId[1], nicPosition:[1], debugConfig[0x0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.317.910 [ra_host.c:1744]tid:29278,RaGetIfnum: Input parameters: phyId[1], nicPosition:[0], isAll:[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.317.924 [orion_adapter_hccp.cc:1122][29278][Get][HostIf]hrtGetIfNum success. ifAddrNum[34].
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.317.928 [ra_host.c:1796]tid:29278,RaGetIfaddrs: Input parameters: phyId[1], nicPosition:[0], isAll[0], interface num[34]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.317.959 [ra_host.c:245]tid:29278,RaSocketInit: socket init:mode=0 phyId=1 family=2 ip=10.244.3.1
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.318.566 [ra_common.c:42]tid:29278,RaGetTlsEnable: Input parameters: phyId[1], nicPosition:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.318.624 [ra_common.c:42]tid:29278,RaGetTlsEnable: Input parameters: phyId[1], nicPosition:[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.318.686 [socket_manager.cc:211][29278][SocketManager::ServerInitAll] socket port range not configured.
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.328.028 [ra_host.c:731]tid:29278,RaSocketBatchConnect: Input parameters: [0]th, phyId[1], localIp[10.244.3.1], remoteIp[10.244.3.1], port[60016], tag[rank_info_detect_default_tag_10.244.3.1_60016_0_1795760642362534_60016], cnt[0]
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:03.337.153 [runtime.cc:5780] 30024 ReportPageFaultProc: pageFaultSupportFlag_=0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.374.921 [root_info_detect_provider.cc:99] [29278][DetectRankTableImpl] end.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.401 [rank_graph_builder.cc:243] [29278][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 0 (localId: 48), found 1 peer2net edges
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.410 [rank_graph_builder.cc:243] [29278][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 1 (localId: 49), found 1 peer2net edges
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.415 [rank_graph_builder.cc:243] [29278][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 2 (localId: 50), found 1 peer2net edges
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.419 [rank_graph_builder.cc:243] [29278][RankGraphBuilder][AddTopoDescFabricInfo] Processing rank 3 (localId: 51), found 1 peer2net edges
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.444 [rank_graph_builder.cc:145] [29278][RankGraphBuilder][AddPeer2NetLink] Add Peer2NetLink Net2PeerLink success. level[1] netInstId[superpod_138] rankId[1] planeId[plane_pg_0] AddrStr[IpAddress[0000:0000:047f:0200:0010:0000:df76:3b56, AF=IPv6, addr=::47f:200:10:0:df76:3b56, scopeId=0x0]],topoInstId[0],topoType[701083648]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.451 [rank_graph_builder.cc:145] [29278][RankGraphBuilder][AddPeer2NetLink] Add Peer2NetLink Net2PeerLink success. level[1] netInstId[superpod_138] rankId[1] planeId[plane_pg_1] AddrStr[IpAddress[0000:0000:043f:0200:0010:0000:df76:2b56, AF=IPv6, addr=::43f:200:10:0:df76:2b56, scopeId=0x0]],topoInstId[0],topoType[701083648]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.775 [communicator_impl.cc:1476][29278][CommunicatorImpl::InitRankGraph] rankTableInfo: RankTableInfo[version=2.0, rankCount=4, ranks size=4]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.375.780 [communicator_impl.cc:1477][29278][CommunicatorImpl][InitRankGraph] topoInfo[TopoInfo{version=2.0, peer_count=64, edge_count=480, Peers.size=64, Edges.size=4}]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.375.782 [ra_ctx.c:91]tid:29278,RaGetDevEidInfoNum: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.378.154 [ra_ctx.c:120]tid:29278,RaGetDevEidInfoList: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.389.757 [communicator_impl.cc:1482][29278][CommunicatorImpl][InitRankGraph] link[LinkData:type=PortDeploymentType::DEV_NET, protocol=LinkProtocol::UB_CTP, localRankId=1, localAddr=IpAddress[0000:0000:0408:0300:0010:0000:df76:2951, AF=IPv6, addr=::408:300:10:0:df76:2951, scopeId=0x0], remoteRankId=3, remoteAddr=IpAddress[0000:0000:0408:0300:0010:0000:df76:6953, AF=IPv6, addr=::408:300:10:0:df76:6953, scopeId=0x0], reuseIdx=0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.389.763 [communicator_impl.cc:1482][29278][CommunicatorImpl][InitRankGraph] link[LinkData:type=PortDeploymentType::DEV_NET, protocol=LinkProtocol::UB_CTP, localRankId=1, localAddr=IpAddress[0000:0000:0400:0300:0010:0000:df76:2151, AF=IPv6, addr=::400:300:10:0:df76:2151, scopeId=0x0], remoteRankId=2, remoteAddr=IpAddress[0000:0000:0408:0300:0010:0000:df76:4952, AF=IPv6, addr=::408:300:10:0:df76:4952, scopeId=0x0], reuseIdx=0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.389.767 [communicator_impl.cc:1482][29278][CommunicatorImpl][InitRankGraph] link[LinkData:type=PortDeploymentType::DEV_NET, protocol=LinkProtocol::UB_CTP, localRankId=1, localAddr=IpAddress[0000:0000:0407:0300:0010:0000:df76:2851, AF=IPv6, addr=::407:300:10:0:df76:2851, scopeId=0x0], remoteRankId=0, remoteAddr=IpAddress[0000:0000:0408:0300:0010:0000:df76:0950, AF=IPv6, addr=::408:300:10:0:df76:950, scopeId=0x0], reuseIdx=0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.389.927 [ra_ctx.c:91]tid:29278,RaGetDevEidInfoNum: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.392.153 [ra_ctx.c:120]tid:29278,RaGetDevEidInfoList: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.403.722 [ra_ctx.c:181]tid:29278,RaCtxInit: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.414.685 [ra_ctx.c:91]tid:29278,RaGetDevEidInfoNum: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.417.439 [ra_ctx.c:120]tid:29278,RaGetDevEidInfoList: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.429.649 [ra_ctx.c:181]tid:29278,RaCtxInit: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.433.807 [ra_ctx.c:91]tid:29278,RaGetDevEidInfoNum: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.436.007 [ra_ctx.c:120]tid:29278,RaGetDevEidInfoList: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.447.903 [ra_ctx.c:181]tid:29278,RaCtxInit: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.452.049 [ra_ctx.c:91]tid:29278,RaGetDevEidInfoNum: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.454.184 [ra_ctx.c:120]tid:29278,RaGetDevEidInfoList: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.465.964 [ra_ctx.c:181]tid:29278,RaCtxInit: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.469.617 [ra_ctx.c:91]tid:29278,RaGetDevEidInfoNum: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.471.746 [ra_ctx.c:120]tid:29278,RaGetDevEidInfoList: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.483.513 [ra_ctx.c:181]tid:29278,RaCtxInit: Input parameters: phy_id[1], nic_position:[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.489.427 [communicator_impl.cc:1510][29278][CommunicatorImpl][InitDataBufferManager] cclBuffer create, commId[group_name_0], addr[19792486465536], size[400]M
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.491.682 [ra_common.c:149]tid:29278,RaGetSecRandom: Input parameters: phy_id[1], nic_position:[1]
+[INFO] ATRACE(29278,python3):2026-11-27-06:24:03.493.979 [tracer_mgr_operate.c:67](tid:29278) create object HCCL_29278_1 successfully, exitSave(true), noLock(false).
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.495.441 [communicator_impl.cc:2905][29278][CommunicatorImpl][SetAccelerator] env OpExpansionMode is [HcclAccelerator::AIV]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.495.461 [op_base_v2.cc:1130][29278]Entry-HcclGetRankSize V950, commId[group_name_0], userDevId[1], devPhyId[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.495.464 [op_base_v2.cc:1139][29278]Entry-HcclGetRankSize V950 success, comm[group_name_0], rankSizePtr[0xffffec64eed4], rankSize[4]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.495.475 [op_base_v2.cc:2013][29278]HcclCommInitRootInfoConfigV2 success, take time [1132678]us, rankNum[4], rank[1], identifier[group_name_0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.495.481 [ra_host.c:769]tid:29278,RaSocketBatchClose: Input parameters: [0]th, phyId[1], localIp[10.244.3.1], cnt[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.495.540 [ra_host.c:369]tid:29278,RaSocketDeinit: Input parameters: phyId[1] family[2] local_ip[10.244.3.1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.495.546 [rs.c:1702]tid:29278,RsSocketDeinit: socket deinit success, phyId:1, localIp:10.244.3.1
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.495.624 [op_base_v2.cc:1130][29278]Entry-HcclGetRankSize V950, commId[group_name_0], userDevId[1], devPhyId[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.495.627 [op_base_v2.cc:1139][29278]Entry-HcclGetRankSize V950 success, comm[group_name_0], rankSizePtr[0xffffec64f458], rankSize[4]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.495.639 [ra_init.c:221]tid:30049,RaDeinit: Input parameters: phyId[1], nicPosition:[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.407 [env_ub_config.cc:32] [29278][HCCL_ENV] HCCL_UB_MULTI_CHANNEL_NUM set by default to [1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.412 [host_multi_qp_config.cc:277] [29278][HCCL_ENV] HCCL_HOST_RDMA_UDP_PORTS_LIST set by default, device config count[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.487 [my_rank.cc:450] [29278][MyRank][Init] set op expansion mode by env[HcclAccelerator::AIV].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.503 [coll_comm.cc:230] [29278][Communicator Key Info]identifier[group_name_0] rankSize[4] comm[0x29dffd50]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.506 [coll_comm.cc:231] [29278][LocalRank Key Info]userRank[1] deviceLogicId[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.685 [coll_comm.cc:238] [29278][CollComm][InitSymmetricMemory] commId[group_name_0], rank[1], rankSize[4].
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:03.496.774 [task_fail_callback_data_manager.cc:62] 29278 RegTaskFailCallback: Unregister task fail callback finish, name:__ACLRT_EXCEPTION_CALLBACK_REGISTER__:ASCENDCL:281472948640432.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.777 [hcclCommTaskException.cc:139] [29278][Register]aclrtExceptionInfoCallbackRegister set ProcessCallback success and unregister legacy TaskExceptionHandler::Process callback
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.791 [hccl_comm_host.cc:394] [29278][InitCollComm]success, commId[group_name_0], deviceLogicId[1], devicePhyId[1], devType[6], userRank[1], userRankSize[4], opExpansionMode[3], taskExceptionEnable[1], notifyWaitTimeout[2000], plfDebugConfig[0x0].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.821 [hcom_common.cc:171] [29278][Hcom][HcomSetGroupTopoInfo] store groupRankNumMap, group:group_name_0, rankNum:4
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.496.824 [op_base.cc:508] [29278][HcclCommInitCollComm] success, take time [1202]us.
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.555.819 [rs.c:1899]tid:30049,RsDeinit: rs_deinit chipId[1] ok
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.565.890 [comm_mem_c_adpt.cc:76] [29278]Entry-operator():comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.565.958 [coll_comm_res_c_adpt.cc:791] [29278]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.566.030 [config_log.cc:27] [29278]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.566.225 [ra_host.c:245]tid:29278,RaSocketInit: socket init:mode=1 phyId=1 family=10 ip=::400:300:10:0:df76:2151
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.566.234 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[16666]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.566.753 [socket_manager.cc:197][29278][SocketManager::ServerInit] Local PortData[rankId=1, type=PortDeploymentType::DEV_NET, id=0, addr=IpAddress[0000:0000:0400:0300:0010:0000:df76:2151, AF=IPv6, addr=::400:300:10:0:df76:2151, scopeId=0x0]] listen the port 16666 success
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.566.763 [ra_host.c:245]tid:29278,RaSocketInit: socket init:mode=1 phyId=1 family=10 ip=::408:300:10:0:df76:2951
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.566.767 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[16666]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.567.105 [socket_manager.cc:197][29278][SocketManager::ServerInit] Local PortData[rankId=1, type=PortDeploymentType::DEV_NET, id=0, addr=IpAddress[0000:0000:0408:0300:0010:0000:df76:2951, AF=IPv6, addr=::408:300:10:0:df76:2951, scopeId=0x0]] listen the port 16666 success
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.567.115 [ra_host.c:245]tid:29278,RaSocketInit: socket init:mode=1 phyId=1 family=10 ip=::407:300:10:0:df76:2851
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.567.121 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[16666], tag[group_name_0_engine_4_protocol_6_0_1_6_5], cnt[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.567.337 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[0] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.567.586 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.567.667 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.616.346 [socket_process.cc:231] [30081][SocketProcess][Init] initialized successfully. deviceLogicId: 1, devicePhyId: 1, this: 0xffff8fd05ca0
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.616.353 [socket_process.cc:98] [30081][GetSocket][GetSocket] initialized. devicePhyId: 1, this: 0xffff8fd05ca0
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.616.371 [ra_host.c:848]tid:30081,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[16666]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:03.619.610 [socket_process.cc:98] [30082][GetSocket][GetSocket] initialized. devicePhyId: 1, this: 0xffff8fd05ca0
+[INFO] HCCP(29278,python3):2026-11-27-06:24:03.619.635 [ra_host.c:848]tid:30082,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[16666]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.013.748 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.016.346 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.086.992 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.087.487 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.159.706 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.160.038 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.160.304 [my_rank.cc:1390] [29278][MyRank][CreateChannels] CreateChannels Time Elapsed [594125]us, channelNum [3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.276.916 [coll_comm_res_c_adpt.cc:881] [29278][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [710969]us.
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.277.727 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.278.161 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.278.436 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.278.639 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.278.818 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.279.003 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.279.189 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.279.381 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.279.557 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.279.735 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.279.913 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.280.115 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.280.288 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.280.447 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.280.606 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.280.762 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.280.924 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.281.087 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.281.248 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.281.409 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.281.621 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.281.799 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.281.977 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.282.150 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.282.319 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.282.512 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.282.687 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.282.872 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.283.069 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.283.230 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.283.391 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.283.572 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.283.753 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.284.002 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.284.236 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.284.425 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.284.612 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.284.795 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.284.967 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.285.143 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.285.301 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.285.483 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.285.674 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.285.950 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.286.191 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.286.368 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.286.549 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.286.742 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.286.927 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.287.099 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.287.305 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.287.476 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.287.651 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.287.821 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.288.053 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.288.233 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.288.465 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.288.641 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.288.838 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.308.280 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.308.517 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.308.747 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.309.041 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.309.690 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.309.935 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.310.163 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.310.353 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.310.539 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.310.807 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.311.067 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.311.294 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.311.573 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.311.768 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.312.006 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.312.221 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.312.408 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.312.596 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.312.770 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.313.174 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.313.418 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.313.605 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.313.853 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.314.132 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.314.329 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.314.501 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.314.703 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.314.882 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.315.046 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.315.197 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.315.356 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.315.509 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.315.877 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.316.201 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.316.431 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.316.618 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.316.803 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.317.105 [alg_env_config.cc:189] [29278][InitEnvConfig] initialized: deviceType[6], aicpuUnfold[0], aicpuCacheEnable[1], aivMode[1], ccuMSMode[0], ccuSchedMode[0], enableFfts[1], deterministic[0], entryLog[0], debugConfig[0x0].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.317.109 [alg_env_config.cc:212] [29278][InitEnvConfig] initialized: execTimeoutSet[1], execTimeoutSec[2000.00], splitRatioSet[0], splitRatio[0], intraLinkConfigSupported[0], intraRoce[0], a3ConfigSupported[0], interHccsDisable[0], retryMask[0x0], inconsistentCheck[0], taskException[1], algoConfig[deferred-to-costmodel].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.915 [physical_level_build.cc:484] [29278][PhysicalLevel][Build] rank[1] built [2] physical levels
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.924 [physical_level_build.cc:489] [29278][PhysicalLevel][Build] rank[1] level[0/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 0 inst 6] hasTopoInst[1] topoType[1] locType[0] protocolNum[2] portNums[1,1,1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.928 [physical_level_build.cc:489] [29278][PhysicalLevel][Build] rank[1] level[1/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 1 inst 0] hasTopoInst[1] topoType[0] locType[0] protocolNum[2] portNums[6,2]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.953 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.957 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[AllGather_group_name_0], engine[CPU_TS], size[2142], ctx[0x2d70bd80], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.964 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.319.966 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[tuner_init], engine[CPU], size[1], ctx[0x2d70b1a0], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.320.580 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.320.584 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[costmodel_AIV], engine[CPU], size[1504], ctx[0x2d7184b0], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.320.655 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.320.658 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[AllGather_group_name_0_AivAllGatherSoleMesh_host], engine[CPU_TS], size[568], ctx[0x29c34430], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.320.665 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.321.327 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[group_name_0__opbase], engine[AIV], size[68157440], ctx[0x120067400000], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.397 [op_base.cc:5820] [29278][HcclCommRegCommStateCallback]Register commStateCallBack success, regName[group_name_0__opbase], args[0x120067400000].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.402 [comm_mem_c_adpt.cc:76] [29278]Entry-operator():comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.407 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.409 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[group_name_0__opbase], engine[CPU_TS], size[8], ctx[0x2d717b60], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.419 [coll_comm_res_c_adpt.cc:791] [29278]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.459 [config_log.cc:27] [29278]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.324.502 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[0] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.325.325 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.325.722 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.329.756 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.330.115 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.331.904 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.341.695 [coll_comm_res_c_adpt.cc:881] [29278][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [17277]us.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.341.704 [op_common.cc:3300] [29278][HcclAllocAlgResourceAiv]remoteRank[0] memNum[3] regMemAddr[0x124032000000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.341.708 [op_common.cc:3300] [29278][HcclAllocAlgResourceAiv]remoteRank[2] memNum[3] regMemAddr[0x124036200000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.341.711 [op_common.cc:3300] [29278][HcclAllocAlgResourceAiv]remoteRank[3] memNum[3] regMemAddr[0x12403a400000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.341.751 [op_common.cc:1437] [29278][HcclGetAlgRes] engine[AIV], algTag[AllGather_group_name_0_AivAllGatherSoleMesh_host], resource allocated: thread num[0], channel num per level[], ccu kernel num[0], commName[group_name_0], userRank[1], ctxSize[568].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.341.760 [inconsistent_check.cc:66] [29278][CompareOpExchangeInfos] all exchangeInfos checked successfully. algTag[AllGather_group_name_0_AivAllGatherSoleMesh_host]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.342.388 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.342.524 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[AivCacheIndex], engine[CPU_TS], size[524300], ctx[0x2d71e9b0], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.342.528 [engine_ctx_c_adpt.cc:65] [29278]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.342.531 [engine_ctx_c_adpt.cc:65] [29278]HcclEngineCtxCreate success, ctxTag[AivCache_98700f692bacf130], engine[CPU_TS], size[8444], ctx[0x2d79e9d0], group[group_name_0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.345.355 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34687], tag[deep_ep/group_name_0/0/0-1/0], cnt[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.345.379 [base_config.cc:41] [29278][HCCL_ENV] HCOMM_TA_CTP_UB_TIMEOUT set by default to [8]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.345.381 [base_config.cc:45] [29278][HCCL_ENV] HCOMM_TA_RTP_UB_TIMEOUT set by default to [16]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.345.383 [base_config.cc:50] [29278][HCCL_ENV] HCOMM_TA_RTP_UBOE_TIMEOUT set by default to [16]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.352.862 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffd898f000. jettyId[10290], jettyHandle[2d71d4e0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.353.086 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[38401], tag[deep_ep/group_name_0/0/0-1/1], cnt[2]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.360.256 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffd858f000. jettyId[10291], jettyHandle[2d7a4b60], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.360.450 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[41863], tag[deep_ep/group_name_0/0/0-1/2], cnt[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.367.649 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffd818f000. jettyId[10292], jettyHandle[2d7a6230], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.367.836 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[46873], tag[deep_ep/group_name_0/0/0-1/3], cnt[4]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.376.002 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffcd0d0000. jettyId[10293], jettyHandle[2d7a79d0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.376.209 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[45559], tag[deep_ep/group_name_0/0/0-1/4], cnt[5]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.389.544 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffcccd0000. jettyId[10294], jettyHandle[2d7a91c0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.389.740 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39873], tag[deep_ep/group_name_0/0/0-1/5], cnt[6]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.396.886 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffcc8d0000. jettyId[10295], jettyHandle[2d7aaa50], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.397.118 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[37001], tag[deep_ep/group_name_0/0/0-1/6], cnt[7]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.404.286 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffcc4d0000. jettyId[10296], jettyHandle[2d7ac2b0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.404.473 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[42335], tag[deep_ep/group_name_0/0/0-1/7], cnt[8]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.413.642 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffcc0d0000. jettyId[10297], jettyHandle[2d7adc00], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.413.820 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[45669], tag[deep_ep/group_name_0/0/0-1/8], cnt[9]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.421.016 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc547f000. jettyId[10298], jettyHandle[2d7af3b0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.421.199 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[45135], tag[deep_ep/group_name_0/0/0-1/9], cnt[10]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.429.015 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc507f000. jettyId[10299], jettyHandle[2d7b0be0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.429.241 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39745], tag[deep_ep/group_name_0/0/0-1/10], cnt[11]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.436.467 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc4c7f000. jettyId[10300], jettyHandle[2d7b2390], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.436.650 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[44389], tag[deep_ep/group_name_0/0/0-1/11], cnt[12]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.443.806 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc487f000. jettyId[10301], jettyHandle[2d7b3f10], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.444.030 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39039], tag[deep_ep/group_name_0/0/0-1/12], cnt[13]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.451.758 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc447f000. jettyId[10302], jettyHandle[2d7b5650], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.453.193 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34045], tag[deep_ep/group_name_0/0/0-1/13], cnt[14]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.460.670 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc407f000. jettyId[10303], jettyHandle[2d7b6e10], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.460.918 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[36175], tag[deep_ep/group_name_0/0/0-1/14], cnt[15]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.474.378 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc3c7f000. jettyId[10304], jettyHandle[2d7b8550], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.476.854 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[41965], tag[deep_ep/group_name_0/0/0-1/15], cnt[16]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.489.266 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc387f000. jettyId[10305], jettyHandle[2d7ba420], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.489.480 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[43915], tag[deep_ep/group_name_0/0/0-1/16], cnt[17]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.513.141 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc347f000. jettyId[10306], jettyHandle[2d7bbbd0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.513.354 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[33639], tag[deep_ep/group_name_0/0/0-1/17], cnt[18]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.555.275 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc307f000. jettyId[10307], jettyHandle[2d7bd400], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.555.540 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34141], tag[deep_ep/group_name_0/0/0-1/18], cnt[19]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.585.818 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc2c7f000. jettyId[10308], jettyHandle[2d7bebb0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.586.027 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[36223], tag[deep_ep/group_name_0/0/0-1/19], cnt[20]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.593.201 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc287f000. jettyId[10309], jettyHandle[2d7c03e0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.593.409 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39653], tag[deep_ep/group_name_0/0/0-1/20], cnt[21]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.603.139 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc247f000. jettyId[10310], jettyHandle[2d7c1b90], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.603.359 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39523], tag[deep_ep/group_name_0/0/0-1/21], cnt[22]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.610.557 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc207f000. jettyId[10311], jettyHandle[2d7c33c0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.610.806 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[46725], tag[deep_ep/group_name_0/0/0-1/22], cnt[23]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.617.961 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc1c7f000. jettyId[10312], jettyHandle[2d7c4b70], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.618.162 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[33653], tag[deep_ep/group_name_0/0/0-1/23], cnt[24]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.620.035 [cluster_monitor.cc:467] [30081]commId:[group_name_0], establish rank[sp_138_srv_62/49] to rank[sp_138_srv_62/48] heartbeat connection success.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.624.530 [cluster_monitor.cc:467] [30082]commId:[group_name_0], establish rank[sp_138_srv_62/49] to rank[sp_138_srv_62/50] heartbeat connection success.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.626.055 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc187f000. jettyId[10313], jettyHandle[2d7c63a0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.626.257 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[37253], tag[deep_ep/group_name_0/0/0-1/24], cnt[25]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.635.468 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc147f000. jettyId[10314], jettyHandle[2d7c7b10], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.635.655 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[42793], tag[deep_ep/group_name_0/0/0-1/25], cnt[26]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.666.270 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc107f000. jettyId[10315], jettyHandle[2d7c9340], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.666.590 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39753], tag[deep_ep/group_name_0/0/0-1/26], cnt[27]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.717.416 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc0c7f000. jettyId[10316], jettyHandle[2d7caaf0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.717.651 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[45759], tag[deep_ep/group_name_0/0/0-1/27], cnt[28]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.732.451 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc087f000. jettyId[10317], jettyHandle[2d7ccaa0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.732.649 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[44519], tag[deep_ep/group_name_0/0/0-1/28], cnt[29]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.739.797 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc047f000. jettyId[10318], jettyHandle[2d7ce250], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.740.015 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[42709], tag[deep_ep/group_name_0/0/0-1/29], cnt[30]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.747.234 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffc007f000. jettyId[10319], jettyHandle[2d7cfa80], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.747.547 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[44875], tag[deep_ep/group_name_0/0/0-1/30], cnt[31]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.754.820 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbfc7f000. jettyId[10320], jettyHandle[2d7d1230], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:04.755.055 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[46537], tag[deep_ep/group_name_0/0/0-1/31], cnt[32]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.762.137 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbf87f000. jettyId[10321], jettyHandle[2d7d3240], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.769.091 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbf47f000. jettyId[10322], jettyHandle[2d7d49e0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.778.150 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbf07f000. jettyId[10323], jettyHandle[2d7d6230], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.785.199 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbec7f000. jettyId[10324], jettyHandle[2d7d7a00], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.794.202 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbe87f000. jettyId[10325], jettyHandle[2d7d9170], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.805.271 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbe47f000. jettyId[10326], jettyHandle[2d7da920], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.812.289 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbe07f000. jettyId[10327], jettyHandle[2d7dc090], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.819.353 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbdc7f000. jettyId[10328], jettyHandle[2d7dd840], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.828.411 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbd87f000. jettyId[10329], jettyHandle[2d7defb0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.835.433 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbd47f000. jettyId[10330], jettyHandle[2d7e0760], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.842.424 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbd07f000. jettyId[10331], jettyHandle[2d7e1ed0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.849.504 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbcc7f000. jettyId[10332], jettyHandle[2d7e3680], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.858.517 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbc87f000. jettyId[10333], jettyHandle[2d7e4df0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.865.444 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbc47f000. jettyId[10334], jettyHandle[2d7e65a0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.876.497 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbc07f000. jettyId[10335], jettyHandle[2d7e7d10], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.885.629 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbbc7f000. jettyId[10336], jettyHandle[2d7e94c0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.896.703 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbb87f000. jettyId[10337], jettyHandle[2d7eb340], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.903.703 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbb47f000. jettyId[10338], jettyHandle[2d7ecaf0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.910.745 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbb07f000. jettyId[10339], jettyHandle[2d7ee260], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.917.807 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffbac7f000. jettyId[10340], jettyHandle[2d7efa10], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.924.747 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffba87f000. jettyId[10341], jettyHandle[2d7f1180], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.931.774 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffba47f000. jettyId[10342], jettyHandle[2d7f2930], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.938.840 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffba07f000. jettyId[10343], jettyHandle[2d7f40a0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.945.932 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb9c7f000. jettyId[10344], jettyHandle[2d7f5850], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.952.939 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb987f000. jettyId[10345], jettyHandle[2d7f6fc0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.962.048 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb947f000. jettyId[10346], jettyHandle[2d7f8770], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.971.119 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb907f000. jettyId[10347], jettyHandle[2d7faeb0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.980.153 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb8c7f000. jettyId[10348], jettyHandle[2d7fc6b0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:04.993.265 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb887f000. jettyId[10349], jettyHandle[2d7fde20], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.000.259 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb847f000. jettyId[10350], jettyHandle[2d7ff9a0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.007.210 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb807f000. jettyId[10351], jettyHandle[2d8011b0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.014.251 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb7c7f000. jettyId[10352], jettyHandle[2d802920], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.023.336 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb787f000. jettyId[10353], jettyHandle[2d805030], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.030.297 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb747f000. jettyId[10354], jettyHandle[2d806890], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.037.247 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb707f000. jettyId[10355], jettyHandle[2d808160], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.044.296 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb6c7f000. jettyId[10356], jettyHandle[2d809930], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.053.339 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb687f000. jettyId[10357], jettyHandle[2d80b060], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.060.342 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb647f000. jettyId[10358], jettyHandle[2d80c810], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.067.304 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb607f000. jettyId[10359], jettyHandle[2d80df80], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.074.365 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb5c7f000. jettyId[10360], jettyHandle[2d80f730], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.087.566 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb587f000. jettyId[10361], jettyHandle[2d810ea0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.094.576 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb547f000. jettyId[10362], jettyHandle[2d812650], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.101.590 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb507f000. jettyId[10363], jettyHandle[2d813dc0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.108.659 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb4c7f000. jettyId[10364], jettyHandle[2d815570], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.115.662 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb487f000. jettyId[10365], jettyHandle[2d816ce0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.122.657 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb447f000. jettyId[10366], jettyHandle[2d818490], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.129.660 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb407f000. jettyId[10367], jettyHandle[2d819c00], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.137.114 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb3c7f000. jettyId[10368], jettyHandle[2d81b3b0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.144.259 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb387f000. jettyId[10369], jettyHandle[2d81cb20], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.151.643 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb347f000. jettyId[10370], jettyHandle[2d81e9e0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.160.468 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb307f000. jettyId[10371], jettyHandle[2d820150], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.167.599 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb2c7f000. jettyId[10372], jettyHandle[2d821900], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.178.861 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb287f000. jettyId[10373], jettyHandle[2d823070], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.194.757 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb247f000. jettyId[10374], jettyHandle[2d824820], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.203.865 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb207f000. jettyId[10375], jettyHandle[2d825f90], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.210.983 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb1c7f000. jettyId[10376], jettyHandle[2d827740], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.221.083 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb187f000. jettyId[10377], jettyHandle[2d828eb0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.232.956 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb147f000. jettyId[10378], jettyHandle[2d82a600], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.246.798 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb107f000. jettyId[10379], jettyHandle[2d82be30], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.254.021 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb0c7f000. jettyId[10380], jettyHandle[2d82d5e0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.265.217 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb087f000. jettyId[10381], jettyHandle[2d82ed50], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.272.380 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb047f000. jettyId[10382], jettyHandle[2d830500], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.282.285 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffb007f000. jettyId[10383], jettyHandle[2d831c70], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.296.368 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffafc7f000. jettyId[10384], jettyHandle[2d833420], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.303.538 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaf87f000. jettyId[10385], jettyHandle[2d834b90], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:05.312.771 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:06.323.608 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:07.330.026 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:08.346.579 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[0] socket_ok[12] connecting[84] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:09.366.879 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[0] socket_ok[12] connecting[84] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:10.371.408 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[12] socket_ok[0] connecting[84] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:11.382.280 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[25] socket_ok[0] connecting[71] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:12.390.798 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[25] socket_ok[0] connecting[71] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:13.392.121 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[25] socket_ok[2] connecting[69] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:14.401.512 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[71] socket_ok[25] connecting[0] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:15.405.349 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[71] socket_ok[25] connecting[0] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:16.408.930 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000004c000] link_ready[71] socket_ok[25] connecting[0] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.157.743 [comm_mem_c_adpt.cc:76] [29278]Entry-operator():comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.157.803 [coll_comm_res_c_adpt.cc:791] [29278]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.157.860 [config_log.cc:27] [29278]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.157.943 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[0] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.162.472 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.163.913 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.179.804 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.180.686 [my_rank.cc:811] [29278][LinkInfo]userRank[1] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.182.666 [remote_rma_buffer.cc:85][29278][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.183.261 [coll_comm_res_c_adpt.cc:881] [29278][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [25461]us.
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.184.292 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.185.434 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.185.916 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.186.293 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.186.657 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.186.964 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.187.246 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.187.524 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.188.150 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.188.573 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.188.907 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.189.241 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.189.548 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.189.873 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.190.183 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.190.491 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.190.763 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.191.053 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.191.339 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.191.665 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.193.281 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.194.336 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.194.812 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.195.156 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.195.931 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.196.340 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.196.671 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.197.000 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.198.497 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.200.331 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.202.854 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.204.848 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.205.428 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.205.813 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.206.504 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.206.901 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.207.282 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.207.725 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.208.622 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.208.982 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.209.746 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.210.090 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.210.387 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.210.887 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.211.209 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.211.491 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.211.792 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.212.141 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.212.467 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.212.762 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.213.090 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.213.403 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.213.760 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.214.099 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.214.440 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.214.977 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.215.335 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.215.675 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.216.040 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.216.433 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.216.786 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.217.414 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.217.763 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.218.091 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.218.443 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.218.791 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.219.376 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.219.815 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.220.191 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.220.493 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.220.807 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.221.153 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.221.467 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.221.769 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.222.085 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.222.439 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.222.824 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.223.181 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.223.688 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.224.817 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.225.213 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.225.615 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.225.966 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.226.486 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.226.866 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.227.167 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.227.517 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.227.865 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.228.255 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.228.610 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.229.228 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.229.635 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.229.985 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.230.312 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.230.660 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.230.997 [ra_host.c:848]tid:29278,RaSocketListenStart: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], port[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.263.366 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[46667], tag[deep_ep/group_name_0/1/0-1/0], cnt[33]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.266.780 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaf47f000. jettyId[10386], jettyHandle[2d8a6a00], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.266.993 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34147], tag[deep_ep/group_name_0/1/0-1/1], cnt[34]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.270.380 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaf07f000. jettyId[10387], jettyHandle[2d8a7f70], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.270.610 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34211], tag[deep_ep/group_name_0/1/0-1/2], cnt[35]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.273.690 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaec7f000. jettyId[10388], jettyHandle[2d8a9550], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.273.870 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[38983], tag[deep_ep/group_name_0/1/0-1/3], cnt[36]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.276.978 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffae87f000. jettyId[10389], jettyHandle[2d8aac00], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.277.163 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[41651], tag[deep_ep/group_name_0/1/0-1/4], cnt[37]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.280.216 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffae47f000. jettyId[10390], jettyHandle[2d8ac010], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.280.390 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[44859], tag[deep_ep/group_name_0/1/0-1/5], cnt[38]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.283.416 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffae07f000. jettyId[10391], jettyHandle[2d8ad530], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.283.603 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[40561], tag[deep_ep/group_name_0/1/0-1/6], cnt[39]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.286.769 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffadc7f000. jettyId[10392], jettyHandle[2d8aebc0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.286.954 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[41877], tag[deep_ep/group_name_0/1/0-1/7], cnt[40]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.289.948 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffad87f000. jettyId[10393], jettyHandle[2d8b0350], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.290.130 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[40147], tag[deep_ep/group_name_0/1/0-1/8], cnt[41]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.293.141 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffad47f000. jettyId[10394], jettyHandle[2d8b1b60], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.293.324 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39481], tag[deep_ep/group_name_0/1/0-1/9], cnt[42]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.296.435 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffad07f000. jettyId[10395], jettyHandle[2d8b33a0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.296.621 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[35637], tag[deep_ep/group_name_0/1/0-1/10], cnt[43]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.299.654 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffacc7f000. jettyId[10396], jettyHandle[2d8b4b40], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.299.834 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[46097], tag[deep_ep/group_name_0/1/0-1/11], cnt[44]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.303.006 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffac87f000. jettyId[10397], jettyHandle[2d8b6350], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.303.175 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[33259], tag[deep_ep/group_name_0/1/0-1/12], cnt[45]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.306.244 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffac47f000. jettyId[10398], jettyHandle[2d8b7b90], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.306.473 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[35527], tag[deep_ep/group_name_0/1/0-1/13], cnt[46]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.310.445 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffac07f000. jettyId[10399], jettyHandle[2d8b9330], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.310.849 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[45967], tag[deep_ep/group_name_0/1/0-1/14], cnt[47]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.313.944 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffabc7f000. jettyId[10400], jettyHandle[2d8bab40], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.314.173 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[42653], tag[deep_ep/group_name_0/1/0-1/15], cnt[48]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.317.200 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffab87f000. jettyId[10401], jettyHandle[2d8bc380], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.317.380 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[39627], tag[deep_ep/group_name_0/1/0-1/16], cnt[49]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.320.453 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffab47f000. jettyId[10402], jettyHandle[2d8bdb20], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.320.649 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[33209], tag[deep_ep/group_name_0/1/0-1/17], cnt[50]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.323.675 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffab07f000. jettyId[10403], jettyHandle[2d8bf330], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.323.915 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[35999], tag[deep_ep/group_name_0/1/0-1/18], cnt[51]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.328.042 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaac7f000. jettyId[10404], jettyHandle[2d8c0b70], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.328.229 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34541], tag[deep_ep/group_name_0/1/0-1/19], cnt[52]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.331.258 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaa87f000. jettyId[10405], jettyHandle[2d8c2310], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.331.506 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[42675], tag[deep_ep/group_name_0/1/0-1/20], cnt[53]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.334.951 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaa47f000. jettyId[10406], jettyHandle[2d8c3b20], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.335.133 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[35211], tag[deep_ep/group_name_0/1/0-1/21], cnt[54]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.338.231 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffaa07f000. jettyId[10407], jettyHandle[2d8c5360], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.338.493 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[38131], tag[deep_ep/group_name_0/1/0-1/22], cnt[55]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.341.657 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa9c7f000. jettyId[10408], jettyHandle[2d8c6b00], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.341.838 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[40347], tag[deep_ep/group_name_0/1/0-1/23], cnt[56]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.375.623 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa987f000. jettyId[10409], jettyHandle[2d8c8310], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.376.513 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[33083], tag[deep_ep/group_name_0/1/0-1/24], cnt[57]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.423.786 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa947f000. jettyId[10410], jettyHandle[2d8c9b50], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.432.485 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[35115], tag[deep_ep/group_name_0/1/0-1/25], cnt[58]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.435.591 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa907f000. jettyId[10411], jettyHandle[2d8cb2f0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.435.826 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34347], tag[deep_ep/group_name_0/1/0-1/26], cnt[59]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.438.966 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa8c7f000. jettyId[10412], jettyHandle[2d8ccb00], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.439.150 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[41783], tag[deep_ep/group_name_0/1/0-1/27], cnt[60]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.442.232 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa887f000. jettyId[10413], jettyHandle[2d8ce340], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.442.411 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[44607], tag[deep_ep/group_name_0/1/0-1/28], cnt[61]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.445.415 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa847f000. jettyId[10414], jettyHandle[2d8cfae0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.445.606 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[34331], tag[deep_ep/group_name_0/1/0-1/29], cnt[62]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.448.656 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa807f000. jettyId[10415], jettyHandle[2d8d33e0], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.448.890 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[33441], tag[deep_ep/group_name_0/1/0-1/30], cnt[63]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.451.931 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa7c7f000. jettyId[10416], jettyHandle[2d8d4b90], dieId[0], funcId[3]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:17.452.122 [ra_socket.c:65]tid:29278,RaSocketBatchConnectAsync: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], remoteIp[::408:300:10:0:df76:950], port[36253], tag[deep_ep/group_name_0/1/0-1/31], cnt[64]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.455.220 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa787f000. jettyId[10417], jettyHandle[2d7d2a90], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.458.064 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa747f000. jettyId[10418], jettyHandle[2d8d9960], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.460.946 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa707f000. jettyId[10419], jettyHandle[2d8db1a0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.463.888 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa6c7f000. jettyId[10420], jettyHandle[2d8dc940], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.466.762 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa687f000. jettyId[10421], jettyHandle[2d8de0e0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.469.615 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa647f000. jettyId[10422], jettyHandle[2d8df870], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.472.462 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa607f000. jettyId[10423], jettyHandle[2d8e1010], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.475.355 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa5c7f000. jettyId[10424], jettyHandle[2d8e27b0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.478.214 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa587f000. jettyId[10425], jettyHandle[2d8e3f50], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.481.038 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa547f000. jettyId[10426], jettyHandle[2d8e56f0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.483.885 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa507f000. jettyId[10427], jettyHandle[2d8e6e90], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.486.764 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa4c7f000. jettyId[10428], jettyHandle[2d8e8630], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.489.591 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa487f000. jettyId[10429], jettyHandle[2d8e9dd0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.492.388 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa447f000. jettyId[10430], jettyHandle[2d8eb570], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.495.196 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa407f000. jettyId[10431], jettyHandle[2d8ecd10], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.498.717 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa3c7f000. jettyId[10432], jettyHandle[2d8ee4b0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.501.575 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa387f000. jettyId[10433], jettyHandle[2d8efc50], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.504.438 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa347f000. jettyId[10434], jettyHandle[2d8f13f0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.507.285 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa307f000. jettyId[10435], jettyHandle[2d8f2b90], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.510.242 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa2c7f000. jettyId[10436], jettyHandle[2d8f4330], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.513.141 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa287f000. jettyId[10437], jettyHandle[2d8f5ad0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.515.995 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa247f000. jettyId[10438], jettyHandle[2d8f7260], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.519.284 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa207f000. jettyId[10439], jettyHandle[2d8f8a00], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.522.119 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa1c7f000. jettyId[10440], jettyHandle[2d8fa1a0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.524.928 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa187f000. jettyId[10441], jettyHandle[2d8fb940], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.527.763 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa147f000. jettyId[10442], jettyHandle[2d8fd0e0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.530.699 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa107f000. jettyId[10443], jettyHandle[2d8fe880], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.533.554 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa0c7f000. jettyId[10444], jettyHandle[2d900020], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.536.335 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa087f000. jettyId[10445], jettyHandle[2d9017c0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.539.182 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa047f000. jettyId[10446], jettyHandle[2d902f60], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.542.065 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ffa007f000. jettyId[10447], jettyHandle[2d904700], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.544.959 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9fc7f000. jettyId[10448], jettyHandle[2d905ea0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.547.932 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9f87f000. jettyId[10449], jettyHandle[2d804820], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.550.743 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9f47f000. jettyId[10450], jettyHandle[2d90a330], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.553.531 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9f07f000. jettyId[10451], jettyHandle[2d90ba90], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.556.425 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9ec7f000. jettyId[10452], jettyHandle[2d90d230], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.559.280 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9e87f000. jettyId[10453], jettyHandle[2d90e9d0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.562.153 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9e47f000. jettyId[10454], jettyHandle[2d910160], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.564.988 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9e07f000. jettyId[10455], jettyHandle[2d911900], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.567.898 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9dc7f000. jettyId[10456], jettyHandle[2d9130a0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.570.765 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9d87f000. jettyId[10457], jettyHandle[2d914840], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.573.667 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9d47f000. jettyId[10458], jettyHandle[2d915fe0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.576.515 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9d07f000. jettyId[10459], jettyHandle[2d917780], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.579.417 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9cc7f000. jettyId[10460], jettyHandle[2d918f20], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.582.241 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9c87f000. jettyId[10461], jettyHandle[2d91a6c0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.585.028 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9c47f000. jettyId[10462], jettyHandle[2d91be60], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.587.844 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9c07f000. jettyId[10463], jettyHandle[2d91d600], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.590.776 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9bc7f000. jettyId[10464], jettyHandle[2d91eda0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.593.572 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9b87f000. jettyId[10465], jettyHandle[2d920540], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.596.421 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9b47f000. jettyId[10466], jettyHandle[2d921ce0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.599.261 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9b07f000. jettyId[10467], jettyHandle[2d923480], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.602.189 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9ac7f000. jettyId[10468], jettyHandle[2d924c20], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.605.056 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9a87f000. jettyId[10469], jettyHandle[2d9263c0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.608.025 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9a47f000. jettyId[10470], jettyHandle[2d927b60], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.610.862 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9a07f000. jettyId[10471], jettyHandle[2d929300], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.613.754 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff99c7f000. jettyId[10472], jettyHandle[2d92aaa0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.616.561 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9987f000. jettyId[10473], jettyHandle[2d92c240], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.619.475 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9947f000. jettyId[10474], jettyHandle[2d92d9e0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.622.838 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9907f000. jettyId[10475], jettyHandle[2d92f180], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.625.784 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff98c7f000. jettyId[10476], jettyHandle[2d930920], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.628.677 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9887f000. jettyId[10477], jettyHandle[2d9320c0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.631.507 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9847f000. jettyId[10478], jettyHandle[2d933860], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.634.354 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9807f000. jettyId[10479], jettyHandle[2d935000], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.637.189 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff97c7f000. jettyId[10480], jettyHandle[2d936730], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.642.621 [dev_ub_connection.cc:652][29278][DevUbConnection][SetJettyInfo] Get sqBuffVa is 3ff9787f000. jettyId[10481], jettyHandle[2d937fe0], dieId[0], funcId[3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:17.647.134 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:18.647.995 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:19.660.466 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:20.675.478 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:21.686.229 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[0] socket_ok[0] connecting[96] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:22.688.623 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[1] socket_ok[9] connecting[86] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:23.704.527 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[1] socket_ok[9] connecting[86] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:24.721.065 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[1] socket_ok[9] connecting[86] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:25.724.500 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[31] socket_ok[0] connecting[65] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:26.737.803 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[31] socket_ok[14] connecting[51] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:27.740.730 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[64] socket_ok[3] connecting[29] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:28.750.883 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[64] socket_ok[12] connecting[20] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:29.769.519 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[64] socket_ok[20] connecting[12] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:30.772.007 [channel_process.cc:361] [29278][PrintChannelStatusDistribution] batch[0x12000022e000] link_ready[64] socket_ok[27] connecting[5] abnormal[0] total[96]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.251 [alg_env_config.cc:189] [30051][InitEnvConfig] initialized: deviceType[6], aicpuUnfold[0], aicpuCacheEnable[1], aivMode[1], ccuMSMode[0], ccuSchedMode[0], enableFfts[1], deterministic[0], entryLog[0], debugConfig[0x0].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.259 [alg_env_config.cc:212] [30051][InitEnvConfig] initialized: execTimeoutSet[1], execTimeoutSec[2000.00], splitRatioSet[0], splitRatio[0], intraLinkConfigSupported[0], intraRoce[0], a3ConfigSupported[0], interHccsDisable[0], retryMask[0x0], inconsistentCheck[0], taskException[1], algoConfig[deferred-to-costmodel].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.487 [physical_level_build.cc:484] [30051][PhysicalLevel][Build] rank[1] built [2] physical levels
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.501 [physical_level_build.cc:489] [30051][PhysicalLevel][Build] rank[1] level[0/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 0 inst 6] hasTopoInst[1] topoType[1] locType[0] protocolNum[2] portNums[1,1,1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.505 [physical_level_build.cc:489] [30051][PhysicalLevel][Build] rank[1] level[1/2] rankNum[4] ranks[0..3] view[1] instSizeListByLayer[4] ref[layer 1 inst 0] hasTopoInst[1] topoType[0] locType[0] protocolNum[2] portNums[6,2]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.534 [engine_ctx_c_adpt.cc:65] [30051]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.540 [engine_ctx_c_adpt.cc:65] [30051]HcclEngineCtxCreate success, ctxTag[AllReduce_group_name_0], engine[CPU_TS], size[2142], ctx[0xfffeac3207a0], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.663 [engine_ctx_c_adpt.cc:65] [30051]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.667 [engine_ctx_c_adpt.cc:65] [30051]HcclEngineCtxCreate success, ctxTag[AllReduce_group_name_0_AivAllReduceSoleMeshOneShot_host], engine[CPU_TS], size[568], ctx[0xfffeac322000], group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.732 [coll_comm_res_c_adpt.cc:791] [30051]Entry-HcclChannelAcquire channelNum[3], engine[AIV] group[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.787 [config_log.cc:27] [30051]HCCL_DEBUG_CONFIG is not set, debugConfig set by default to 0x0
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.745.849 [my_rank.cc:811] [30051][LinkInfo]userRank[1] remoteRank[0] localProtocol[6] remoteProtocol[6] engine[AIV] channel[1/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.747.854 [remote_rma_buffer.cc:85][30051][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:31.748.329 [my_rank.cc:811] [30051][LinkInfo]userRank[1] remoteRank[2] localProtocol[6] remoteProtocol[6] engine[AIV] channel[2/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.231.574 [remote_rma_buffer.cc:85][30051][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.233.685 [my_rank.cc:811] [30051][LinkInfo]userRank[1] remoteRank[3] localProtocol[6] remoteProtocol[6] engine[AIV] channel[3/3]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.234.626 [remote_rma_buffer.cc:85][30051][GetRuntimeVersion] rts version is 90201000 pathMode is 0.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.244.880 [coll_comm_res_c_adpt.cc:881] [30051][HcclChannelAcquire] acquire channel success, group[group_name_0], engine[AIV], channelNum[3], take time [20499150]us.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.244.896 [op_common.cc:3300] [30051][HcclAllocAlgResourceAiv]remoteRank[0] memNum[5] regMemAddr[0x124099000000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.244.903 [op_common.cc:3300] [30051][HcclAllocAlgResourceAiv]remoteRank[2] memNum[5] regMemAddr[0x12409d200000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.244.907 [op_common.cc:3300] [30051][HcclAllocAlgResourceAiv]remoteRank[3] memNum[5] regMemAddr[0x1240a1400000] regMemSize[68157440] memTag[group_name_0__opbase]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.244.961 [op_common.cc:1437] [30051][HcclGetAlgRes] engine[AIV], algTag[AllReduce_group_name_0_AivAllReduceSoleMeshOneShot_host], resource allocated: thread num[0], channel num per level[], ccu kernel num[0], commName[group_name_0], userRank[1], ctxSize[568].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.244.985 [inconsistent_check.cc:66] [30051][CompareOpExchangeInfos] all exchangeInfos checked successfully. algTag[AllReduce_group_name_0_AivAllReduceSoleMeshOneShot_host]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.245.301 [engine_ctx_c_adpt.cc:65] [30051]Entry-HcclEngineCtxCreate:comm[group_name_0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:52.245.314 [engine_ctx_c_adpt.cc:65] [30051]HcclEngineCtxCreate success, ctxTag[AivCache_d5bce33bbb4becfe], engine[CPU_TS], size[8451], ctx[0xfffeac3286e0], group[group_name_0]
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:52.609.572 [runtime.cc:5420] 30025 SetWatchDogDevStatus: There is errInfo of devId=1, tsId=0
+[INFO] IDEDD(29278,python3):2026-11-27-06:24:53.111.043 [dump_manager.cpp:50][tid:30025] An exception callback message is received.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.114.044 [hcclCommTaskException.cc:249] [30025][TaskExceptionHost][Process], taskid[43], streamid[58], tid[30051], deviceid[1], retcode[507035], type[2]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.114.059 [global_mirror_tasks.cc:136][30025][FindTaskInfo]devId[1] streamId(sqId)[58] not hccl task.
+[WARNING] HCCL(29278,python3):2026-11-27-06:24:53.114.061 [hcclCommTaskException.cc:274] [30025][ProcessHcclTaskException]FindTaskInfo not found, deviceid[1] streamid[58] taskid[43].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.114.075 [hccl_aiv_utils.cc:329] [30025][TaskExceptionHandler][AIV] task not found, streamId[58], taskId[43].
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:53.114.487 [api_impl.cc:6683] 29278 PeekLastErr: level=THREAD_LEVEL(0) err=507035.
+[INFO] IDEDD(29278,python3):2026-11-27-06:24:53.116.625 [dump_manager.cpp:50][tid:30025] An exception callback message is received.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.118.227 [hcclCommTaskException.cc:249] [30025][TaskExceptionHost][Process], taskid[46], streamid[61], tid[30051], deviceid[1], retcode[507035], type[2]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.118.239 [global_mirror_tasks.cc:150][30025][FindTaskInfo]devId[1] streamId(sqId)[61] taskId(sqeId)[46] not hccl task.
+[WARNING] HCCL(29278,python3):2026-11-27-06:24:53.118.241 [hcclCommTaskException.cc:274] [30025][ProcessHcclTaskException]FindTaskInfo not found, deviceid[1] streamid[61] taskid[46].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.118.248 [hccl_aiv_utils.cc:329] [30025][TaskExceptionHandler][AIV] task not found, streamId[61], taskId[46].
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:53.118.903 [api_impl.cc:6683] 29278 PeekLastErr: level=THREAD_LEVEL(0) err=507035.
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:53.119.797 [api_impl.cc:6683] 29278 PeekLastErr: level=THREAD_LEVEL(0) err=507035.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.121.351 [op_base.cc:3957] [29278]Entry-HcclCommDestroy: op_base comm destroy begin
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.121.369 [op_base.cc:5840] [29278][HcclCommStateNotify]comm[0x29df9c50], state[0], regName[group_name_0__opbase], args[0x120067400000] callback begin.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.121.372 [op_base.cc:5844] [29278][HcclCommStateNotify]comm[0x29df9c50], state[0], regName[group_name_0__opbase], args[0x120067400000] callback success.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.121.374 [op_base.cc:5840] [29278][HcclCommStateNotify]comm[0x29df9c50], state[0], regName[aicpu_task_cache_callback], args[0xffff9129c478] callback begin.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.121.377 [op_base.cc:5844] [29278][HcclCommStateNotify]comm[0x29df9c50], state[0], regName[aicpu_task_cache_callback], args[0xffff9129c478] callback success.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.121.390 [op_base_v2.cc:731][29278]Entry-HcclCommDestroy V950 comm[group_name_0]
+[INFO] ATRACE(29278,python3):2026-11-27-06:24:53.121.430 [tracer_mgr_operate.c:250](tid:29278) destroy object HCCL_29278_1, exitSave(true).
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.123.630 [op_base_v2.cc:767][29278]Entry-HcclCommDestroy V950 comm[group_name_0] success, take time [2247]us, userDevId[1], devPhyId[1].
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.123.666 [cluster_monitor.cc:923] [29278][UnRegisterToClusterMonitor]Entry HeartBeat DeInit.
+[INFO] HCCP(29278,python3):2026-11-27-06:24:53.127.081 [ra_host.c:769]tid:29278,RaSocketBatchClose: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], cnt[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:53.169.103 [ra_host.c:769]tid:29278,RaSocketBatchClose: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], cnt[0]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.169.483 [hccl_comm_host.cc:130] [29278]UnRegistTaskAbortHandler begin, group[group_name_0]
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:53.169.537 [task_fail_callback_data_manager.cc:62] 29278 RegTaskFailCallback: Unregister task fail callback finish, name:__ACLRT_EXCEPTION_CALLBACK_REGISTER__:ASCENDCL:281473086141200.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.169.540 [hcclCommTaskException.cc:161] [29278][UnRegister]aclrtExceptionInfoCallbackUnregister success
+[WARNING] HCCL(29278,python3):2026-11-27-06:24:53.169.543 [coll_comm.cc:1248] [29278][HcclBinaryUnLoad] binHcclHandle is nullptr
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.169.583 [coll_comm.cc:132] [29278][CollComm][~CollComm] cclBuffer free, commId[group_name_0].
+[INFO] HCCP(29278,python3):2026-11-27-06:24:53.171.371 [ra_host.c:769]tid:29278,RaSocketBatchClose: Input parameters: [0]th, phyId[1], localIp[::408:300:10:0:df76:2951], cnt[0]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:53.203.425 [ra_host.c:769]tid:29278,RaSocketBatchClose: Input parameters: [0]th, phyId[1], localIp[::400:300:10:0:df76:2151], cnt[1]
+[INFO] HCCP(29278,python3):2026-11-27-06:24:53.205.291 [ra_host.c:769]tid:29278,RaSocketBatchClose: Input parameters: [0]th, phyId[1], localIp[::407:300:10:0:df76:2851], cnt[1]
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.250.401 [op_base.cc:5840] [29278][HcclCommStateNotify]comm[0x29df9c50], state[1], regName[group_name_0__opbase], args[0x120067400000] callback begin.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.250.405 [op_base.cc:5844] [29278][HcclCommStateNotify]comm[0x29df9c50], state[1], regName[group_name_0__opbase], args[0x120067400000] callback success.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.250.407 [op_base.cc:5840] [29278][HcclCommStateNotify]comm[0x29df9c50], state[1], regName[aicpu_task_cache_callback], args[0xffff9129c478] callback begin.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.250.411 [op_base.cc:5844] [29278][HcclCommStateNotify]comm[0x29df9c50], state[1], regName[aicpu_task_cache_callback], args[0xffff9129c478] callback success.
+[INFO] HCCL(29278,python3):2026-11-27-06:24:53.250.413 [op_base.cc:3993] [29278]Entry-HcclCommDestroy V2 group[group_name_0] destroy success, deviceLogicId[1], comm[0x29df9c50]
+[INFO] RUNTIME(29278,python3):2026-11-27-06:24:53.250.801 [api_impl.cc:6683] 29278 PeekLastErr: level=THREAD_LEVEL(0) err=507035.
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.777 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_MALLOC_FREE, applyTotal = 1977, applySucc = 997, releaseTotal = 24, releaseSucc = 24
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.785 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_MALLOC_FREE_HOST, applyTotal = 0, applySucc = 0, releaseTotal = 7, releaseSucc = 7
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.788 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_CONTEXT, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.790 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_SET_RESET_DEVICE, applyTotal = 8, applySucc = 8, releaseTotal = 4, releaseSucc = 4
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.792 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_EVENT, applyTotal = 5, applySucc = 5, releaseTotal = 3, releaseSucc = 3
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.794 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_STREAM, applyTotal = 34, applySucc = 34, releaseTotal = 1, releaseSucc = 1
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.796 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_DVPP_MALLOC_FREE, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.797 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_RECORD_RESET_EVENT, applyTotal = 5, applySucc = 5, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.799 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DATA_BUFFER, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.800 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_TENSOR_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.802 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.803 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DATASET, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.804 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_LOAD_UNLOAD_MODEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.806 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_AIPP, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.807 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_ATTR, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.809 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_HANDLE, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.810 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_CHANNEL_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.811 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_PIC_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.813 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_ROI_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.815 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_RESIZE_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.817 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_JPEGE_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.818 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VDEC_CHANNEL_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.819 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VENC_CHANNEL_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.821 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_STREAM_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.822 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VDEC_FRAME_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.824 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VENC_FRAME_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.825 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_CHANNEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.826 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VDEC_CHANNEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.828 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_VENC_CHANNEL, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.829 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_DVPP_BATCH_PIC_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.830 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_GROUP_INFO, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.832 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_PROF_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.833 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_PROF_SUB_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.835 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_MODEL_CONFIG, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.836 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ID, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.837 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ATTR, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.839 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ROUTE, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.840 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ROUTE_LIST, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.841 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_QUEUE_ROUTE_QUERY, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.843 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_MBUF, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.844 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_GRAPH_DUMP_OPTION, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.845 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_ALLOCATOR_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.847 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_CREATE_DESTROY_ALLOCATOR_BINARY_DESC, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.848 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_RESERVE_RELEASE_MEMORY_ADDRESS, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.850 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_MALLOC_FREE_PHYSICAL_MEMORY, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.851 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_MAP_UNMAP_MEMORY, applyTotal = 0, applySucc = 0, releaseTotal = 0, releaseSucc = 0
+[INFO] ASCENDCL(29278,python3):2026-11-27-06:24:54.169.852 [resource_statistics.cpp:113]29278 TraverseStatistics: The ResourceType:ACL_STATISTICS_LOAD_UNLOAD_BINARY, applyTotal = 0, applySucc = 0, releaseTotal = 2, releaseSucc = 2

@@ -1,0 +1,264 @@
+{
+ "binFileName": "AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12",
+ "binFileSuffix": ".o",
+ "blockDim": -1,
+ "coreType": "VectorCore",
+ "core_type": "AIV",
+ "intercoreSync": 0,
+ "kernelName": "AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12",
+ "magic": "RT_DEV_BINARY_MAGIC_ELF_AIVEC",
+ "memoryStamping": [],
+ "opParaSize": 64,
+ "parameters": [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+ ],
+ "sha256": "2b69de591d2ab8aca824467b808f92c85e21aa82aaf99189e663be128d43ad29",
+ "workspace": {
+  "num": 1,
+  "size": [
+   -1
+  ],
+  "type": [
+   0
+  ]
+ },
+ "kernelList": [
+  {
+   "kernelName": "AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12_0"
+  }
+ ],
+ "optionalInputMode": "gen_placeholder",
+ "optionalOutputMode": "gen_placeholder",
+ "supportSuperKernel": 1,
+ "platformInfo": {
+  "deterministicLevel": 0
+ },
+ "compileInfo": {},
+ "supportInfo": {
+  "implMode": "high_performance",
+  "int64Mode": false,
+  "simplifiedKeyMode": 0,
+  "simplifiedKey": [
+   "AfdAsyncCombineRecv/d=0,p=1/4,2/4,2/4,2/4,2/4,2/4,2/12,2/27,2/9,2/0,2/3,2/4,2",
+   "AfdAsyncCombineRecv/d=0,p=0/4,2/4,2/4,2/4,2/4,2/4,2/12,2/27,2/9,2/0,2/3,2/4,2",
+   "AfdAsyncCombineRecv/d=1,p=1/4,2/4,2/4,2/4,2/4,2/4,2/12,2/27,2/9,2/0,2/3,2/4,2",
+   "AfdAsyncCombineRecv/d=1,p=0/4,2/4,2/4,2/4,2/4,2/4,2/12,2/27,2/9,2/0,2/3,2/4,2"
+  ],
+  "optionalInputMode": "gen_placeholder",
+  "optionalOutputMode": "gen_placeholder",
+  "staticKey": "5a0c033e4517a41114718f2857431551185041d378d0c8dc7bb29e4de2fed6b9,009abfde6387d0c1343c223db5807f3343c9b5878b00673f56fe654e4c060c87",
+  "inputs": [
+   {
+    "name": "payload",
+    "index": 0,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "task_info",
+    "index": 1,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "context",
+    "index": 2,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "control_buffer",
+    "index": 3,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "round_ledger",
+    "index": 4,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "workspace",
+    "index": 5,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "token_mask",
+    "index": 6,
+    "dtype": "bool",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   }
+  ],
+  "outputs": [
+   {
+    "name": "combined_x",
+    "index": 0,
+    "dtype": "bfloat16",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "combined_topk_idx",
+    "index": 1,
+    "dtype": "int64",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "topk_weights",
+    "index": 2,
+    "dtype": "float32",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "recv_status",
+    "index": 3,
+    "dtype": "int32",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "return_progress",
+    "index": 4,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   }
+  ],
+  "attrs": [
+   {
+    "name": "group_ep",
+    "dtype": "str",
+    "value": ""
+   },
+   {
+    "name": "num_experts",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_ranks",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_topk",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "round_step",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "start",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_hidden",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_token_capacity",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "recv_status_words",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "return_progress_bytes",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "timeout_cycles",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_vec_cores",
+    "dtype": "int",
+    "value": 0
+   }
+  ],
+  "opMode": "dynamic",
+  "deterministic": "ignore"
+ },
+ "filePath": "ascend950_proj/build_out/op_kernel/ascendc_kernels/binary/ascend950/afd_async_combine_recv/AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12.json"
+}

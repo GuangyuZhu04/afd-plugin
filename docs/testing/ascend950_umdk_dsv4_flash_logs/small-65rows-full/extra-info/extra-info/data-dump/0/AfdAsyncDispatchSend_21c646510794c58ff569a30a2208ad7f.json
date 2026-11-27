@@ -1,0 +1,259 @@
+{
+ "binFileName": "AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f",
+ "binFileSuffix": ".o",
+ "blockDim": -1,
+ "coreType": "VectorCore",
+ "core_type": "AIV",
+ "intercoreSync": 0,
+ "kernelName": "AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f",
+ "magic": "RT_DEV_BINARY_MAGIC_ELF_AIVEC",
+ "memoryStamping": [],
+ "opParaSize": 72,
+ "parameters": [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+ ],
+ "sha256": "2290fc090ffcd40f47205766b6287f67e1ca6bf63c82f5fd29541aa4c303dae0",
+ "workspace": {
+  "num": 1,
+  "size": [
+   -1
+  ],
+  "type": [
+   0
+  ]
+ },
+ "kernelList": [
+  {
+   "kernelName": "AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f_0"
+  }
+ ],
+ "optionalInputMode": "gen_placeholder",
+ "optionalOutputMode": "gen_placeholder",
+ "supportSuperKernel": 1,
+ "platformInfo": {
+  "deterministicLevel": 0
+ },
+ "compileInfo": {},
+ "supportInfo": {
+  "implMode": "high_performance",
+  "int64Mode": false,
+  "simplifiedKeyMode": 0,
+  "simplifiedKey": [
+   "AfdAsyncDispatchSend/d=0,p=1/27,2/6,2/9,2/0,2/12,2/4,2/4,2/4,2/4,2/4,2/9,2/3,2",
+   "AfdAsyncDispatchSend/d=0,p=0/27,2/6,2/9,2/0,2/12,2/4,2/4,2/4,2/4,2/4,2/9,2/3,2",
+   "AfdAsyncDispatchSend/d=1,p=1/27,2/6,2/9,2/0,2/12,2/4,2/4,2/4,2/4,2/4,2/9,2/3,2",
+   "AfdAsyncDispatchSend/d=1,p=0/27,2/6,2/9,2/0,2/12,2/4,2/4,2/4,2/4,2/4,2/9,2/3,2"
+  ],
+  "optionalInputMode": "gen_placeholder",
+  "optionalOutputMode": "gen_placeholder",
+  "staticKey": "e38b96cf8aec1057a184b2b145b7322ffde31d23e0a8fc65510abb485ee098d5,bc129cd0ae3cadd204232e0e1e5d10367093af9629fde4433cf46e4dd63dc4de",
+  "inputs": [
+   {
+    "name": "x",
+    "index": 0,
+    "dtype": "bfloat16",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "sf",
+    "index": 1,
+    "dtype": "int16",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "topk_idx",
+    "index": 2,
+    "dtype": "int64",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "topk_weights",
+    "index": 3,
+    "dtype": "float32",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "token_mask",
+    "index": 4,
+    "dtype": "bool",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "task_info",
+    "index": 5,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "context",
+    "index": 6,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "control_buffer",
+    "index": 7,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "round_ledger",
+    "index": 8,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "workspace",
+    "index": 9,
+    "dtype": "uint8",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "jetty_ptrs",
+    "index": 10,
+    "dtype": "int64",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   }
+  ],
+  "outputs": [
+   {
+    "name": "send_status",
+    "index": 0,
+    "dtype": "int32",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   }
+  ],
+  "attrs": [
+   {
+    "name": "group_ep",
+    "dtype": "str",
+    "value": ""
+   },
+   {
+    "name": "num_ranks",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_experts",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_topk",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_tokens_per_tile",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "sf_token_stride",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "sf_hidden_stride",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_sf_packs",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "timeout_cycles",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "send_status_words",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "num_vec_cores",
+    "dtype": "int",
+    "value": 0
+   }
+  ],
+  "opMode": "dynamic",
+  "deterministic": "ignore"
+ },
+ "filePath": "ascend950_proj/build_out/op_kernel/ascendc_kernels/binary/ascend950/afd_async_dispatch_send/AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f.json"
+}

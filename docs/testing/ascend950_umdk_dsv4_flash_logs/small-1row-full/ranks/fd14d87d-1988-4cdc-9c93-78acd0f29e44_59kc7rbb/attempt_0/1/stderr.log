@@ -1,0 +1,645 @@
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+/tmp/tests-only/tests/npu/umdk_roundtrip.py:60: UserWarning: Cannot create tensor with interal format while allow_internel_format=False, tensor will be created with base format. (Triggered internally at ../torch_npu/csrc/aten/common/TensorFactories.cpp:437.)
+  ids = (token * profile.topk + slot) % domain
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 349, in _check_dispatch_status
+[rank1]:     pending.sent.synchronize()
+[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/npu/streams.py", line 258, in synchronize
+[rank1]:     super(Event, self).synchronize()
+[rank1]: RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+[rank1]: [ERROR] 2026-11-27-06:03:28 (PID:15215, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[rank1]: [Error]: The vector core execution is abnormal. 
+[rank1]:         Rectify the fault based on the error information in the ascend log.
+[rank1]: EZ9999: Internal error!
+[rank1]: EZ9999[PID: 15215] 2026-11-27-06:03:28.509.288 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040819000, current: 0x12004081ab20, sc error info: 0xffffffffffff, su error info: 0x12521dc02ffe1978,0xde4177df1800401c, mte error info: 0x269c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[rank1]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]: TraceBack (most recent call last):
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 1, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03cfe4581,0xd6e57e771800401c, mte error info: 0x520c9d00002fc40, vec error info: 0x3b3fb9ff003eef5f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 2, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03bfc5b8d,0x5ffffbdd1800401c, mte error info: 0xcc06c00002d9c3, vec error info: 0x6b67c7ef007fffb9, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 3, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c031fc0000,0xffde2ddf1800401c, mte error info: 0x520ca200002fc40, vec error info: 0xffde563f007fdfff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 4, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03ffc5b8d,0xfe4e6b791800401c, mte error info: 0x20007040002d9c3, vec error info: 0xe7fffff400307f9c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 5, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c030fe0000,0xe517cc3f1800401c, mte error info: 0x520ca700002fc40, vec error info: 0xe7d3cf16003e963f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 6, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c037f65b8d,0xf1df97fd1800401c, mte error info: 0x4c907440002d9c3, vec error info: 0x7b7fea3c003ff62f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 7, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc038de0000,0xdb89fb551800401c, mte error info: 0x520cac00002fc40, vec error info: 0xa7feffde003dfc7e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 8, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03fee5b8d,0xd92b3ffc1800401c, mte error info: 0x5b8d, vec error info: 0xbdfa272f007cef1f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 9, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03dba0000,0x517cfd3f1800401c, mte error info: 0x27633, vec error info: 0x975ef3ff003ee36e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 10, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03a8c5b8d,0xf7fbfe7f1800401c, mte error info: 0x5b8d, vec error info: 0xffff3d77003fe77f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 11, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc019a80000,0xd5c3c61f1800401c, mte error info: 0x27633, vec error info: 0xfff5fb5d003eff7d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 12, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01b0a5b8d,0xfecd7ff91800401c, mte error info: 0x5b8d, vec error info: 0xd877fc6f007d7f75, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 13, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01c0a0000,0xecdafdbe1800401c, mte error info: 0x27633, vec error info: 0xf777abbf0027ebda, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 14, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c019f65b8d,0xf07dfddd1800401c, mte error info: 0x5b8d, vec error info: 0xf77fb3ff007ffb79, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 15, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03dae0000,0xd9df55fd1800401c, mte error info: 0x27633, vec error info: 0x6bd3feff007ee39f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 36, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c037fe4581,0xffefdffd1800401c, mte error info: 0x5b8d, vec error info: 0xd3eefbde007f5ff7, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 37, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c029984581,0x4bffffff1800401c, mte error info: 0x27633, vec error info: 0x793fb251003ddffb, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 38, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03f7c5b8d,0xfc02ffff1800401c, mte error info: 0x5b8d, vec error info: 0xd5edfc940076cf4f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 39, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bbe0000,0xdc9d89fd1800401c, mte error info: 0x27633, vec error info: 0xf35ddccc001cf742, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 40, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c001445b8d,0x9fcf37f71800401c, mte error info: 0x5b8d, vec error info: 0xf7d7fec7003e7a7f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 41, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc025f80000,0xdc37f7ff1800401c, mte error info: 0x27633, vec error info: 0xb4fbfdff007ffdd6, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 42, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01f3e5b8d,0x7f7f7f911800401c, mte error info: 0x5b8d, vec error info: 0x1f9fffef005d9f5d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 43, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bbc0000,0x5ffd7ed71800401c, mte error info: 0x27633, vec error info: 0xf7f3f9fd007fff37, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 44, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01ffa5b8d,0x7bd7ffff1800401c, mte error info: 0x5b8d, vec error info: 0xff79fdbf003fe777, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 45, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc02ab80000,0x6ffad7df1800401c, mte error info: 0x4e13a100002fc40, vec error info: 0xae3bffff0067fee5, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 46, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c011f85b8d,0xf5fffffd1800401c, mte error info: 0x5b8d, vec error info: 0x84fdfffd007feffa, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 47, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc039ea0000,0x56f4eaef1800401c, mte error info: 0x4e13a600002fc40, vec error info: 0x9ffffef5007d7bef, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 48, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03ffe5b8d,0xffefc9af1800401c, mte error info: 0x5b8d, vec error info: 0x778f3ede005df4ff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 49, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c0398e0000,0x6bec1dd61800401c, mte error info: 0x4e13ab00002fc40, vec error info: 0xfffffffe007ee67f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 50, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc027ba5b8d,0x8efcf9db1800401c, mte error info: 0x5b8d, vec error info: 0xff79bf7d0077dd5d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 51, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03dde0000,0x5fe63d7f1800401c, mte error info: 0x4e13b000002fc40, vec error info: 0xff5ee67f007f5478, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[rank1]:        rtEventSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+
+
+[rank1]: The above exception was the direct cause of the following exception:
+
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 181, in <module>
+[rank1]:     main()
+[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+[rank1]:     return f(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 163, in main
+[rank1]:     source_round(session, profile, rank, step, rows, device)
+[rank1]:   File "/tmp/tests-only/tests/npu/umdk_roundtrip.py", line 67, in source_round
+[rank1]:     actual = session.combine(step, context)
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 294, in combine
+[rank1]:     self._check_dispatch_status(p)
+[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/connectors/npu/async_cam_runtime/umdk_session.py", line 352, in _check_dispatch_status
+[rank1]:     raise RuntimeError(
+[rank1]: RuntimeError: UMDK DispatchSend synchronization failed on rank 1, layer 2, rounds=1: synchronize:../torch_npu/csrc/core/npu/NPUEvent.cpp:215 NPU function error: device error type 3, error code is 507035
+[rank1]: [ERROR] 2026-11-27-06:03:28 (PID:15215, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[rank1]: [Error]: The vector core execution is abnormal. 
+[rank1]:         Rectify the fault based on the error information in the ascend log.
+[rank1]: EZ9999: Internal error!
+[rank1]: EZ9999[PID: 15215] 2026-11-27-06:03:28.509.288 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040819000, current: 0x12004081ab20, sc error info: 0xffffffffffff, su error info: 0x12521dc02ffe1978,0xde4177df1800401c, mte error info: 0x269c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0x80000000, aic cond: 0.
+[rank1]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]: TraceBack (most recent call last):
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 1, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03cfe4581,0xd6e57e771800401c, mte error info: 0x520c9d00002fc40, vec error info: 0x3b3fb9ff003eef5f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 2, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03bfc5b8d,0x5ffffbdd1800401c, mte error info: 0xcc06c00002d9c3, vec error info: 0x6b67c7ef007fffb9, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 3, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c031fc0000,0xffde2ddf1800401c, mte error info: 0x520ca200002fc40, vec error info: 0xffde563f007fdfff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 4, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03ffc5b8d,0xfe4e6b791800401c, mte error info: 0x20007040002d9c3, vec error info: 0xe7fffff400307f9c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 5, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c030fe0000,0xe517cc3f1800401c, mte error info: 0x520ca700002fc40, vec error info: 0xe7d3cf16003e963f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 6, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c037f65b8d,0xf1df97fd1800401c, mte error info: 0x4c907440002d9c3, vec error info: 0x7b7fea3c003ff62f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 7, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc038de0000,0xdb89fb551800401c, mte error info: 0x520cac00002fc40, vec error info: 0xa7feffde003dfc7e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 8, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03fee5b8d,0xd92b3ffc1800401c, mte error info: 0x5b8d, vec error info: 0xbdfa272f007cef1f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 9, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03dba0000,0x517cfd3f1800401c, mte error info: 0x27633, vec error info: 0x975ef3ff003ee36e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 10, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc03a8c5b8d,0xf7fbfe7f1800401c, mte error info: 0x5b8d, vec error info: 0xffff3d77003fe77f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 11, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc019a80000,0xd5c3c61f1800401c, mte error info: 0x27633, vec error info: 0xfff5fb5d003eff7d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 12, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01b0a5b8d,0xfecd7ff91800401c, mte error info: 0x5b8d, vec error info: 0xd877fc6f007d7f75, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 13, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01c0a0000,0xecdafdbe1800401c, mte error info: 0x27633, vec error info: 0xf777abbf0027ebda, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 14, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c019f65b8d,0xf07dfddd1800401c, mte error info: 0x5b8d, vec error info: 0xf77fb3ff007ffb79, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 15, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03dae0000,0xd9df55fd1800401c, mte error info: 0x27633, vec error info: 0x6bd3feff007ee39f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 36, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c037fe4581,0xffefdffd1800401c, mte error info: 0x5b8d, vec error info: 0xd3eefbde007f5ff7, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 37, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c029984581,0x4bffffff1800401c, mte error info: 0x27633, vec error info: 0x793fb251003ddffb, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 38, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03f7c5b8d,0xfc02ffff1800401c, mte error info: 0x5b8d, vec error info: 0xd5edfc940076cf4f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 39, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bbe0000,0xdc9d89fd1800401c, mte error info: 0x27633, vec error info: 0xf35ddccc001cf742, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 40, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c001445b8d,0x9fcf37f71800401c, mte error info: 0x5b8d, vec error info: 0xf7d7fec7003e7a7f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 41, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc025f80000,0xdc37f7ff1800401c, mte error info: 0x27633, vec error info: 0xb4fbfdff007ffdd6, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 42, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01f3e5b8d,0x7f7f7f911800401c, mte error info: 0x5b8d, vec error info: 0x1f9fffef005d9f5d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 43, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bbc0000,0x5ffd7ed71800401c, mte error info: 0x27633, vec error info: 0xf7f3f9fd007fff37, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 44, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01ffa5b8d,0x7bd7ffff1800401c, mte error info: 0x5b8d, vec error info: 0xff79fdbf003fe777, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 45, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc02ab80000,0x6ffad7df1800401c, mte error info: 0x4e13a100002fc40, vec error info: 0xae3bffff0067fee5, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 46, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c011f85b8d,0xf5fffffd1800401c, mte error info: 0x5b8d, vec error info: 0x84fdfffd007feffa, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 47, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc039ea0000,0x56f4eaef1800401c, mte error info: 0x4e13a600002fc40, vec error info: 0x9ffffef5007d7bef, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 48, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03ffe5b8d,0xffefc9af1800401c, mte error info: 0x5b8d, vec error info: 0x778f3ede005df4ff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 49, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c0398e0000,0x6bec1dd61800401c, mte error info: 0x4e13ab00002fc40, vec error info: 0xfffffffe007ee67f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 50, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0x12521dc027ba5b8d,0x8efcf9db1800401c, mte error info: 0x5b8d, vec error info: 0xff79bf7d0077dd5d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 228, the error is aivec error, core id is 51, error code = 0, dump info: pc start: 0x120040819000, current: 0x12004081d10c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03dde0000,0x5fe63d7f1800401c, mte error info: 0x4e13b000002fc40, vec error info: 0xff5ee67f007f5478, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x120066400000, mte error: 0, aic cond: 0.
+[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[rank1]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[rank1]:        rtEventSynchronize execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] Failed to shutdown process group during NPU exit.
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] Traceback (most recent call last):
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582]   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/distributed/distributed_c10d.py", line 580, in _destructor_process_group
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582]     pg_to_shutdown.shutdown()
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUStream.cpp:414 NPU function error: device error type 3, error code is 507035
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] [ERROR] 2026-11-27-06:03:28 (PID:15215, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] [Error]: The vector core execution is abnormal. 
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582]         Rectify the fault based on the error information in the ascend log.
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999: Internal error!
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999[PID: 15215] 2026-11-27-06:03:28.517.443 (EE9999):  rtStreamSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] TraceBack (most recent call last):
+[rank1]:W1127 06:03:28.517000 15215 site-packages/torch_npu/distributed/distributed_c10d.py:582] 
+AFD_HCCL_DESTROY rank=1 stage=table_free_begin idx=-1 rc=0 t_us=0
+AFD_HCCL_DESTROY rank=1 stage=table_free_end idx=-1 rc=0 t_us=39
+AFD_HCCL_DESTROY rank=1 stage=channel_destroy_begin idx=-1 rc=0 t_us=41
+AFD_HCCL_DESTROY rank=1 stage=channel_destroy_end idx=-1 rc=0 t_us=698750
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=0 rc=0 t_us=698762
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=0 rc=0 t_us=698792
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=0 rc=0 t_us=698794
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=0 rc=0 t_us=699151
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=1 rc=0 t_us=699153
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=1 rc=0 t_us=699160
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=1 rc=0 t_us=699161
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=1 rc=0 t_us=699426
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=2 rc=0 t_us=699427
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=2 rc=0 t_us=699432
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=2 rc=0 t_us=699433
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=2 rc=0 t_us=699593
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=3 rc=0 t_us=699594
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=3 rc=0 t_us=699599
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=3 rc=0 t_us=699599
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=3 rc=0 t_us=699764
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=4 rc=0 t_us=699765
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=4 rc=0 t_us=699770
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=4 rc=0 t_us=699771
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=4 rc=0 t_us=699923
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=5 rc=0 t_us=699924
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=5 rc=0 t_us=699929
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=5 rc=0 t_us=699938
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=5 rc=0 t_us=700218
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=6 rc=0 t_us=700219
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=6 rc=0 t_us=700224
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=6 rc=0 t_us=700225
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=6 rc=0 t_us=700381
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=7 rc=0 t_us=700382
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=7 rc=0 t_us=700387
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=7 rc=0 t_us=700388
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=7 rc=0 t_us=700532
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=8 rc=0 t_us=700536
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=8 rc=0 t_us=700540
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=8 rc=0 t_us=700541
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=8 rc=0 t_us=700702
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=9 rc=0 t_us=700703
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=9 rc=0 t_us=700707
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=9 rc=0 t_us=700708
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=9 rc=0 t_us=700841
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=10 rc=0 t_us=700842
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=10 rc=0 t_us=700846
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=10 rc=0 t_us=700847
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=10 rc=0 t_us=700992
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=11 rc=0 t_us=700993
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=11 rc=0 t_us=700997
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=11 rc=0 t_us=700998
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=11 rc=0 t_us=701124
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=12 rc=0 t_us=701125
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=12 rc=0 t_us=701129
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=12 rc=0 t_us=701130
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=12 rc=0 t_us=701262
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=13 rc=0 t_us=701263
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=13 rc=0 t_us=701267
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=13 rc=0 t_us=701268
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=13 rc=0 t_us=701412
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=14 rc=0 t_us=701413
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=14 rc=0 t_us=701418
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=14 rc=0 t_us=701419
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=14 rc=0 t_us=701551
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=15 rc=0 t_us=701552
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=15 rc=0 t_us=701556
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=15 rc=0 t_us=701557
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=15 rc=0 t_us=701688
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=16 rc=0 t_us=701689
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=16 rc=0 t_us=701694
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=16 rc=0 t_us=701694
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=16 rc=0 t_us=701863
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=17 rc=0 t_us=701864
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=17 rc=0 t_us=701868
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=17 rc=0 t_us=701869
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=17 rc=0 t_us=702017
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=18 rc=0 t_us=702018
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=18 rc=0 t_us=702023
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=18 rc=0 t_us=702024
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=18 rc=0 t_us=702155
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=19 rc=0 t_us=702156
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=19 rc=0 t_us=702160
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=19 rc=0 t_us=702161
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=19 rc=0 t_us=702303
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=20 rc=0 t_us=702304
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=20 rc=0 t_us=702308
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=20 rc=0 t_us=702309
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=20 rc=0 t_us=702438
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=21 rc=0 t_us=702439
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=21 rc=0 t_us=702443
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=21 rc=0 t_us=702444
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=21 rc=0 t_us=702567
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=22 rc=0 t_us=702569
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=22 rc=0 t_us=702573
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=22 rc=0 t_us=702573
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=22 rc=0 t_us=702715
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=23 rc=0 t_us=702716
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=23 rc=0 t_us=702721
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=23 rc=0 t_us=702721
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=23 rc=0 t_us=702872
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=24 rc=0 t_us=702874
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=24 rc=0 t_us=702878
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=24 rc=0 t_us=702879
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=24 rc=0 t_us=703005
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=25 rc=0 t_us=703006
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=25 rc=0 t_us=703010
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=25 rc=0 t_us=703011
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=25 rc=0 t_us=703136
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=26 rc=0 t_us=703137
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=26 rc=0 t_us=703141
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=26 rc=0 t_us=703142
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=26 rc=0 t_us=703277
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=27 rc=0 t_us=703278
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=27 rc=0 t_us=703282
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=27 rc=0 t_us=703283
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=27 rc=0 t_us=703415
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=28 rc=0 t_us=703416
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=28 rc=0 t_us=703420
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=28 rc=0 t_us=703421
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=28 rc=0 t_us=703552
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=29 rc=0 t_us=703553
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=29 rc=0 t_us=703557
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=29 rc=0 t_us=703558
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=29 rc=0 t_us=703682
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=30 rc=0 t_us=703683
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=30 rc=0 t_us=703688
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=30 rc=0 t_us=703688
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=30 rc=0 t_us=703820
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=31 rc=0 t_us=703821
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=31 rc=0 t_us=703824
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=31 rc=0 t_us=703825
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=31 rc=0 t_us=703972
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=32 rc=0 t_us=703973
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=32 rc=0 t_us=703978
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=32 rc=0 t_us=703979
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=32 rc=0 t_us=703983
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=33 rc=0 t_us=703983
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=33 rc=0 t_us=703987
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=33 rc=0 t_us=703988
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=33 rc=0 t_us=703993
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=34 rc=0 t_us=703994
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=34 rc=0 t_us=703998
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=34 rc=0 t_us=703999
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=34 rc=0 t_us=704002
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=35 rc=0 t_us=704002
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=35 rc=0 t_us=704006
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=35 rc=0 t_us=704007
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=35 rc=0 t_us=704010
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=36 rc=0 t_us=704011
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=36 rc=0 t_us=704015
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=36 rc=0 t_us=704016
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=36 rc=0 t_us=704018
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=37 rc=0 t_us=704019
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=37 rc=0 t_us=704023
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=37 rc=0 t_us=704024
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=37 rc=0 t_us=704026
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=38 rc=0 t_us=704027
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=38 rc=0 t_us=704031
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=38 rc=0 t_us=704031
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=38 rc=0 t_us=704034
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=39 rc=0 t_us=704035
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=39 rc=0 t_us=704039
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=39 rc=0 t_us=704039
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=39 rc=0 t_us=704042
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=40 rc=0 t_us=704043
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=40 rc=0 t_us=704047
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=40 rc=0 t_us=704048
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=40 rc=0 t_us=704050
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=41 rc=0 t_us=704051
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=41 rc=0 t_us=704055
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=41 rc=0 t_us=704056
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=41 rc=0 t_us=704058
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=42 rc=0 t_us=704059
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=42 rc=0 t_us=704063
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=42 rc=0 t_us=704063
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=42 rc=0 t_us=704066
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=43 rc=0 t_us=704067
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=43 rc=0 t_us=704070
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=43 rc=0 t_us=704071
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=43 rc=0 t_us=704074
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=44 rc=0 t_us=704075
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=44 rc=0 t_us=704079
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=44 rc=0 t_us=704079
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=44 rc=0 t_us=704082
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=45 rc=0 t_us=704083
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=45 rc=0 t_us=704087
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=45 rc=0 t_us=704088
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=45 rc=0 t_us=704091
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=46 rc=0 t_us=704092
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=46 rc=0 t_us=704095
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=46 rc=0 t_us=704096
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=46 rc=0 t_us=704099
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=47 rc=0 t_us=704099
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=47 rc=0 t_us=704103
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=47 rc=0 t_us=704104
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=47 rc=0 t_us=704106
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=48 rc=0 t_us=704109
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=48 rc=0 t_us=704113
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=48 rc=0 t_us=704114
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=48 rc=0 t_us=704116
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=49 rc=0 t_us=704117
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=49 rc=0 t_us=704121
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=49 rc=0 t_us=704121
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=49 rc=0 t_us=704124
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=50 rc=0 t_us=704125
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=50 rc=0 t_us=704128
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=50 rc=0 t_us=704129
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=50 rc=0 t_us=704131
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=51 rc=0 t_us=704132
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=51 rc=0 t_us=704136
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=51 rc=0 t_us=704136
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=51 rc=0 t_us=704139
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=52 rc=0 t_us=704140
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=52 rc=0 t_us=704144
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=52 rc=0 t_us=704144
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=52 rc=0 t_us=704147
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=53 rc=0 t_us=704147
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=53 rc=0 t_us=704151
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=53 rc=0 t_us=704152
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=53 rc=0 t_us=704154
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=54 rc=0 t_us=704155
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=54 rc=0 t_us=704159
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=54 rc=0 t_us=704160
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=54 rc=0 t_us=704162
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=55 rc=0 t_us=704162
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=55 rc=0 t_us=704166
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=55 rc=0 t_us=704167
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=55 rc=0 t_us=704169
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=56 rc=0 t_us=704170
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=56 rc=0 t_us=704173
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=56 rc=0 t_us=704174
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=56 rc=0 t_us=704176
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=57 rc=0 t_us=704177
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=57 rc=0 t_us=704181
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=57 rc=0 t_us=704182
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=57 rc=0 t_us=704184
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=58 rc=0 t_us=704185
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=58 rc=0 t_us=704189
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=58 rc=0 t_us=704189
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=58 rc=0 t_us=704192
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=59 rc=0 t_us=704193
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=59 rc=0 t_us=704196
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=59 rc=0 t_us=704197
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=59 rc=0 t_us=704200
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=60 rc=0 t_us=704200
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=60 rc=0 t_us=704204
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=60 rc=0 t_us=704205
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=60 rc=0 t_us=704207
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=61 rc=0 t_us=704208
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=61 rc=0 t_us=704212
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=61 rc=0 t_us=704212
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=61 rc=0 t_us=704215
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=62 rc=0 t_us=704217
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=62 rc=0 t_us=704221
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=62 rc=0 t_us=704222
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=62 rc=0 t_us=704224
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=63 rc=0 t_us=704225
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=63 rc=0 t_us=704227
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=63 rc=0 t_us=704228
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=63 rc=0 t_us=704230
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=64 rc=0 t_us=704231
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=64 rc=0 t_us=704235
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=64 rc=0 t_us=704236
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=64 rc=0 t_us=704239
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=65 rc=0 t_us=704240
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=65 rc=0 t_us=704243
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=65 rc=0 t_us=704244
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=65 rc=0 t_us=704246
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=66 rc=0 t_us=704247
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=66 rc=0 t_us=704251
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=66 rc=0 t_us=704252
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=66 rc=0 t_us=704254
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=67 rc=0 t_us=704255
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=67 rc=0 t_us=704259
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=67 rc=0 t_us=704260
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=67 rc=0 t_us=704262
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=68 rc=0 t_us=704263
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=68 rc=0 t_us=704267
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=68 rc=0 t_us=704268
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=68 rc=0 t_us=704270
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=69 rc=0 t_us=704271
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=69 rc=0 t_us=704275
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=69 rc=0 t_us=704276
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=69 rc=0 t_us=704279
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=70 rc=0 t_us=704280
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=70 rc=0 t_us=704283
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=70 rc=0 t_us=704284
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=70 rc=0 t_us=704287
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=71 rc=0 t_us=704288
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=71 rc=0 t_us=704292
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=71 rc=0 t_us=704292
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=71 rc=0 t_us=704295
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=72 rc=0 t_us=704296
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=72 rc=0 t_us=704300
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=72 rc=0 t_us=704301
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=72 rc=0 t_us=704303
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=73 rc=0 t_us=704304
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=73 rc=0 t_us=704308
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=73 rc=0 t_us=704309
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=73 rc=0 t_us=704311
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=74 rc=0 t_us=704312
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=74 rc=0 t_us=704316
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=74 rc=0 t_us=704317
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=74 rc=0 t_us=704320
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=75 rc=0 t_us=704321
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=75 rc=0 t_us=704325
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=75 rc=0 t_us=704325
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=75 rc=0 t_us=704328
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=76 rc=0 t_us=704329
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=76 rc=0 t_us=704335
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=76 rc=0 t_us=704335
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=76 rc=0 t_us=704338
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=77 rc=0 t_us=704339
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=77 rc=0 t_us=704343
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=77 rc=0 t_us=704344
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=77 rc=0 t_us=704346
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=78 rc=0 t_us=704347
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=78 rc=0 t_us=704351
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=78 rc=0 t_us=704352
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=78 rc=0 t_us=704354
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=79 rc=0 t_us=704355
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=79 rc=0 t_us=704359
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=79 rc=0 t_us=704360
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=79 rc=0 t_us=704362
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=80 rc=0 t_us=704363
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=80 rc=0 t_us=704366
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=80 rc=0 t_us=704367
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=80 rc=0 t_us=704370
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=81 rc=0 t_us=704370
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=81 rc=0 t_us=704374
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=81 rc=0 t_us=704375
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=81 rc=0 t_us=704378
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=82 rc=0 t_us=704378
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=82 rc=0 t_us=704382
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=82 rc=0 t_us=704383
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=82 rc=0 t_us=704385
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=83 rc=0 t_us=704386
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=83 rc=0 t_us=704389
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=83 rc=0 t_us=704390
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=83 rc=0 t_us=704393
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=84 rc=0 t_us=704394
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=84 rc=0 t_us=704397
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=84 rc=0 t_us=704398
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=84 rc=0 t_us=704400
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=85 rc=0 t_us=704401
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=85 rc=0 t_us=704405
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=85 rc=0 t_us=704406
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=85 rc=0 t_us=704408
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=86 rc=0 t_us=704409
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=86 rc=0 t_us=704413
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=86 rc=0 t_us=704414
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=86 rc=0 t_us=704416
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=87 rc=0 t_us=704417
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=87 rc=0 t_us=704420
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=87 rc=0 t_us=704421
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=87 rc=0 t_us=704424
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=88 rc=0 t_us=704425
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=88 rc=0 t_us=704428
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=88 rc=0 t_us=704429
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=88 rc=0 t_us=704431
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=89 rc=0 t_us=704432
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=89 rc=0 t_us=704436
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=89 rc=0 t_us=704437
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=89 rc=0 t_us=704439
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=90 rc=0 t_us=704440
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=90 rc=0 t_us=704445
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=90 rc=0 t_us=704446
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=90 rc=0 t_us=704448
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=91 rc=0 t_us=704449
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=91 rc=0 t_us=704452
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=91 rc=0 t_us=704453
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=91 rc=0 t_us=704456
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=92 rc=0 t_us=704463
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=92 rc=0 t_us=704473
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=92 rc=0 t_us=704474
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=92 rc=0 t_us=704476
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=93 rc=0 t_us=704477
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=93 rc=0 t_us=704481
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=93 rc=0 t_us=704481
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=93 rc=0 t_us=704484
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=94 rc=0 t_us=704485
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=94 rc=0 t_us=704488
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=94 rc=0 t_us=704489
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=94 rc=0 t_us=704492
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=95 rc=0 t_us=704493
+AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=95 rc=0 t_us=704494
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=95 rc=0 t_us=704495
+AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=95 rc=0 t_us=704497
+AFD_HCCL_DESTROY rank=1 stage=memory_reset_begin idx=-1 rc=0 t_us=704498
+AFD_HCCL_DESTROY rank=1 stage=memory_reset_end idx=-1 rc=0 t_us=704506

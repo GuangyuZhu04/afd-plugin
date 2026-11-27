@@ -1,0 +1,17 @@
+[INFO] ATRACE(7530,python3):2026-11-27-06:00:47.224.120 [trace_recorder.c:169](tid:7530) get path by env ASCEND_WORK_PATH: /work/runs/roundtrip-small-1127060046
+[INFO] RUNTIME(7530,python3):2026-11-27-06:00:47.225.457 [task_fail_callback_data_manager.cc:89] 7530 TaskFailCallBackManager: Constructor.
+[INFO] RUNTIME(7530,python3):2026-11-27-06:00:47.225.462 [xpu_task_fail_callback_data_manager.cc:59] 7530 XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Constructor.
+[INFO] RUNTIME(7530,python3):2026-11-27-06:00:47.287.477 [runtime_keeper.cc:209] 7530 CreateRuntimeImpl: Open libruntime_v200.so successfully
+[INFO] RUNTIME(7530,python3):2026-11-27-06:00:47.298.017 [runtime.cc:5137] 7530 GetVisibleDevices: real deviceCnt:8 userDeviceCnt:4 isSetVisibleDev:1 ASCEND_RT_VISIBLE_DEVICES:[0,1,2,3] available visible devices:[0,1,2,3]
+[INFO] TDT(7530,python3):2026-11-27-06:00:47.300.592 [package_worker_factory.cpp:38][RegisterPackageWorkerCreator][tid:7530] Register[2] package worker was created successfully
+[INFO] TDT(7530,python3):2026-11-27-06:00:47.300.596 [package_worker_factory.cpp:38][RegisterPackageWorkerCreator][tid:7530] Register[3] package worker was created successfully
+[INFO] HCCL(7530,python3):2026-11-27-06:00:47.394.276 [adapter_rts.cc:3089] [7530][adapter_rts.cc][CallBackInitRts] g_deviceType [9] g_deviceLogicId [-1] g_devicePhyId [-1]
+[INFO] HCCL(7530,python3):2026-11-27-06:00:47.435.832 [aicpu_task_cache.cc:24] [7530][AicpuTaskCache][AicpuTaskCache] create aicpu task cache at 0x0000ffff7f701300: maxCacheBytes[10485760]
+[INFO] HCCL(7530,python3):2026-11-27-06:00:47.445.018 [op_base.cc:5820] [7530][HcclCommRegCommStateCallback]Register commStateCallBack success, regName[aicpu_task_cache_callback], args[0xffff80cec478].
+[INFO] HCCL(7530,python3):2026-11-27-06:02:18.812.872 [aicpu_task_cache.cc:45] [7530][AicpuTaskCache][~AicpuTaskCache] release aicpu task cache at 0x0000ffff7f701300: entryCnt[0], cacheBytes_[0]
+[INFO] RUNTIME(7530,python3):2026-11-27-06:02:19.369.560 [tprt.cc:21][TPRT]TID[7530] ~TprtManage: ~TprtManage
+[INFO] RUNTIME(7530,python3):2026-11-27-06:02:19.369.570 [runtime_adapt.cc:57] 7530 ~Runtime: runtime destructor.
+[INFO] RUNTIME(7530,python3):2026-11-27-06:02:19.369.575 [runtime.cc:1661] 7530 WaitMonitorExit: wait monitor success, used count=0.
+[INFO] RUNTIME(7530,python3):2026-11-27-06:02:19.413.062 [xpu_task_fail_callback_data_manager.cc:64] 7530 ~XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Destructor.
+[INFO] RUNTIME(7530,python3):2026-11-27-06:02:19.413.067 [task_fail_callback_data_manager.cc:91] 7530 ~TaskFailCallBackManager: Destructor.
+[INFO] ATRACE(7530,python3):2026-11-27-06:02:19.476.732 [stacktrace_signal.c:229](tid:7530) unregister all signal handlers, can not capture signal.

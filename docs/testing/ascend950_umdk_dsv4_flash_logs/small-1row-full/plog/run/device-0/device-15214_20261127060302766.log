@@ -1,0 +1,892 @@
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.709.563 [main.cpp:323][main][tid:8609] Start parameter. deviceId=0, hostPid=2137853, pidSign=, profilingMode=0, vfId=0, logLevel=3, ccecpulogLevel=-1, aicpulogLevel=-1, deviceMode=0, hostProcName=, grpNameNum=0, aicpuProcNum=0, grpNameList=[]
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.183 [aicpusd_resource_limit.cpp:60][AddToCgroup][tid:8609] Add to cgroup finished, cmd:[cd /var/ && sudo ./tsdaemon_add_to_usermemory.sh memory 8609 0 0].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.545 [aicpusd_interface_process.cpp:615][GetCurrentRunMode][tid:8609] Current aicpu mode is online (call from host).
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.784 [aicpusd_feature_ctrl.cpp:243][InitMsqEnableStatus][tid:8609] The aicpu schedule mode is interrupt
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.817 [aicpusd_drv_manager.cpp:165][GetNormalAicpuInfo][tid:8609] aicpuBitMap[504], aicpuNum[6].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.846 [aicpusd_drv_manager.cpp:198][GetCcpuInfo][tid:8609] ccpuBitMap[1].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.934 [aicpusd_drv_manager.cpp:116][GetNormalAicpuDCpuInfo][tid:8609] GetNormalAicpuDCpuInfo, deviceId[0], aicpu_num[6], aicpu_os_sched[1], ccpu_num[1], ccpu_os_sched[1], dcpu_num[2], dcpu_os_sched[1], tscpu_num[0], tscpu_os_sched[0].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.956 [aicpusd_drv_manager.cpp:281][InitDrvMgrCaluniqueVfId][tid:8609] InitDrvMgr uniqueVfId=0, deviceId=0
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.972 [aicpusd_drv_manager.cpp:350][InitDrvMgr][tid:8609] host pid[2137853], host proc name[], vf id[0], first aicpu index[0], aicpu num[6], dcpu base index[1], dcpu num[2].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.789.997 [aicpusd_drv_manager.cpp:546][CheckBindHostPid][tid:8609] Start query process host pid
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.790.328 [aicpusd_drv_manager.cpp:559][CheckBindHostPid][tid:8609] Query process host pid end, ret=0, hostpid=2137853, expect=2137853, cpType=0
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.790.360 [aicpusd_drv_manager.cpp:574][CheckBindHostPid][tid:8609] call drvQueryProcessHostPid successfully, hostpid[2137853], cpType[0].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.791.125 [aicpusd_resource_manager.cpp:264][InitBufManager][tid:8609] Aicpu schedule SetBuffCfg successfully!
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.793.359 [aicpusd_drv_manager.cpp:419][InitDrvSchedModule][tid:8609] Enable process drv queue msg on ccpu, ret is 0.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.793.586 [aicpusd_monitor.cpp:228][SetModelTimeoutFlag][tid:8609] Not set aicpu model timeout. Env is not set.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.794.226 [aicpusd_monitor.cpp:158][InitMonitor][tid:8609] Init aicpu monitor successfully, taskTimeout=28s, tickFreq=1000000000.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.795.312 [prof_so_manager.cpp:32][tid:8609]:The new profiling so had taken effect.
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:02:58.800.776 [drv_share_log.c:233][devmm] [share_log_read_in_single_module] Open. (udevid=0; tgid=8609)
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:02:58.810.669 [grp_mng.c:84][bufmng] [halGrpCreate] Create grp. (grp_name=svm_share_grp_8609; grp_id=6155; max_size=0; cache_flag=0)
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:02:58.810.891 [grp_mng.c:147][bufmng] [halGrpAddProc] add grp succ, name:svm_share_grp_8609, pid:8609, grp_id:6155, admin:1 alloc:1 read:1 write:1 
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:02:58.811.283 [buff_recycle_ctx.c:88][bufmng] [pool_ctx_init] pool_id 6155 add task node uid 6450 pid 8609
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:02:58.812.326 [drv_buff_mbuf.c:68][bufmng] [mbuf_set_priv_flag] Set mbuf priv flag success. (flag=0, g_mbuf_priv_flag=0)
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:02:58.812.402 [grp_mng.c:208][bufmng] [halGrpAttach] grp attach, grp_name:svm_share_grp_8609, grp_id:6155, timeout:0ms
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.812.457 [aicpusd_worker.cpp:73][ThreadPool][tid:8609] ThreadPool
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.812.475 [aicpusd_worker.cpp:181][WaitForStop][tid:8609] Wait for stop begin.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.812.486 [aicpusd_worker.cpp:188][WaitForStop][tid:8609] Wait for stop end.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.829.822 [aicpusd_threads_process.cpp:62][LoadKernelSo][tid:8609] Start to preload aicpu so.
+[WARNING] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.830.199 [ae_kernel_lib_fwk.cc:298][LoadTfSo][tid:8609][AICPU_PROCESSER] load tensorflow so failed, ret is[11002]
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.940.260 [aicpusd_threads_process.cpp:66][LoadKernelSo][tid:8609] End to preload aicpu so.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.940.438 [aicpusd_threads_process.cpp:82][LoadExtendKernelSo][tid:8609] Start to preload extend kernel so.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.948.452 [aicpusd_threads_process.cpp:86][LoadExtendKernelSo][tid:8609] End to preload extend kernel so.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.949.071 [aicpusd_period_statistic.cpp:133][SetThreadAffinity][tid:8626] aicpu bind by self success
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.953.426 [aicpusd_cust_so_manager.cpp:83][InitAicpuCustSoManager][tid:8609] Cust so manager init successfully, dir=/home/CustAiCpuUser/cust_aicpu_0_0_2137853/, runMode=0, schedMode=0.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.953.599 [main.cpp:352][main][tid:8609] Aicpu schedule start successfully, LD_LIBRARY_PATH=/usr/lib64/aicpu_kernels/0/aicpu_kernels_device/:/usr/lib64/aicpu_kernels/0/aicpu_kernels_device/sand_box/:/home/HwHiAiUser/hs/0/runtime/lib64/:/usr/lib64/device-compat-plugin/0/:/usr/lib64/device-sw-plugin/0/device-sw-plugin/:
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.953.610 [main.cpp:363][main][tid:8609] Aicpu schedule attach and init successfully.
+[INFO] TDT(8609,aicpu_scheduler):2026-11-27-14:02:58.953.639 [tsd_event_client.cpp:404][ReportMsgToTsd][tid:8609] [TsdEventClient] Enter ReportMsgToTsd deviceid[0],hostPid[2137853],vfId[0].
+[INFO] TDT(8609,aicpu_scheduler):2026-11-27-14:02:58.953.660 [tsd_event_client.cpp:420][ReportMsgToTsd][tid:8609] [TsdEventClient] subCapabilityType[8], value[1]
+[INFO] TDT(8609,aicpu_scheduler):2026-11-27-14:02:58.953.732 [tsd_event_client.cpp:427][ReportMsgToTsd][tid:8609] [TsdEventClient] Submit event ReportMsgToTsd to tsd successfully.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.960.961 [main.cpp:205][RegQueueScheduleModuleCallBack][tid:8609] Register queue schedule module callback successfully.
+[INFO] TDT(8609,aicpu_scheduler):2026-11-27-14:02:58.961.080 [tsd_event_client.cpp:257][TsdStartupResponse][tid:8609] [TsdEventClient] TsdStartupResponseProc to dev[0] pid[4147] hostpid[2137853] vfId[0] is running.
+[INFO] TDT(8609,aicpu_scheduler):2026-11-27-14:02:58.966.000 [tsd_event_client.cpp:276][TsdStartupResponse][tid:8609] [TsdEventClient] Submit event TSD_EVENT_START_RSP to tsd successfully.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:58.966.044 [main.cpp:380][main][tid:8609] Aicpu startup response return successfully.
+[INFO] TDT(8609,aicpu_scheduler):2026-11-27-14:02:58.966.058 [tsd_event_client.cpp:221][DoLoopProcessEvent][tid:8609] [TsdEventClient] Start waiting event, deviceId=0.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:59.148.183 [hwts_kernel_model_process.cpp:108][Compute][tid:8624] Begin to process kernel CheckKernelSupported event.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:59.148.225 [hwts_kernel_model_process.cpp:123][Compute][tid:8624] Finish to process kernel CheckKernelSupported event retCode[21001].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:59.148.323 [hwts_kernel_model_process.cpp:108][Compute][tid:8624] Begin to process kernel CheckKernelSupported event.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:59.148.336 [hwts_kernel_model_process.cpp:123][Compute][tid:8624] Finish to process kernel CheckKernelSupported event retCode[21001].
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:59.169.248 [aicpusd_event_process.cpp:383][ProcessSetTimeoutEvent][tid:8624] Get opTimeoutEnable[0] value[0] waitTimeoutEnable[1] value[2030] from ts success.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:02:59.169.259 [aicpusd_event_process.cpp:407][ProcessSetTimeoutEvent][tid:8624] Reopen aicpu op timer, waitTimeVal[2030s], curTimeVal[28s].
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:02:59.318.446 [ra_adp.c:2145]tid:8630,HccpSetAffinity: chipId:0 phyDevid:0 ccpuNum:1, dcpuNum:2, acpuNum:6, cpuId:0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:02:59.318.978 [ra_adp.c:1874]tid:8635,RaPthread: pthread[ra_thread] is alive!
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:02:59.322.033 [rs_tls.c:1951]tid:8630,rs_ssl_init: TLS SWITCH (1)
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:02:59.322.236 [rs_tls.c:1670]tid:8630,rs_tls_get_product_type: get product type:4, logic_id:0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:02:59.822.023 [rs_tls.c:1408]tid:8630,rs_check_key_without_priv: ssl ctx use pridata success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:02:59.822.114 [rs_tls.c:1415]tid:8630,rs_check_key_without_priv: ssl ctx check pridata success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.263.180 [rs_tls.c:1408]tid:8630,rs_check_key_without_priv: ssl ctx use pridata success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.263.221 [rs_tls.c:1415]tid:8630,rs_check_key_without_priv: ssl ctx check pridata success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.263.787 [rs_epoll.c:680]tid:8669,RsConnectHandle: pthread[connect_pthread] is alive!
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.264.314 [rs.c:450]tid:8630,RsInit: rs init success, chipId[0]
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.264.490 [main.c:156]tid:8630,main: hccp init ok cost [946.120972] ms logic_id[0], tgid[2137853]
+[INFO] TDT(8630,hccp_service.bin):2026-11-27-14:03:00.264.528 [tsd_event_client.cpp:257][TsdStartupResponse][tid:8630] [TsdEventClient] TsdStartupResponseProc to dev[0] pid[4147] hostpid[2137853] vfId[0] is running.
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.264.571 [rs_ping.c:100]tid:8670,RsPingHandle: pthread[ping_pthread] is alive!
+[INFO] TDT(8630,hccp_service.bin):2026-11-27-14:03:00.265.634 [tsd_event_client.cpp:276][TsdStartupResponse][tid:8630] [TsdEventClient] Submit event TSD_EVENT_START_RSP to tsd successfully.
+[INFO] TDT(8630,hccp_service.bin):2026-11-27-14:03:00.265.650 [tsd_event_client.cpp:221][DoLoopProcessEvent][tid:8630] [TsdEventClient] Start waiting event, deviceId=0.
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.266.949 [buff_recycle_ctx.c:88][bufmng] [pool_ctx_init] pool_id 6156 add task node uid 0 pid 8630
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.267.166 [drv_buff_mbuf.c:68][bufmng] [mbuf_set_priv_flag] Set mbuf priv flag success. (flag=0, g_mbuf_priv_flag=0)
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.267.200 [grp_mng.c:272][bufmng] [buff_private_grp_create_add_attach] grp create add attach success, grp_name:private_buff_grp_8630, grp_id:6156, attach timeout:1000ms
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.272.686 [hdc_ub_common.c:457][hdc] [hdc_get_send_time_cost] hdc send exceed 10 us.(dev_id=0; l_id=110; type='service_rdma_v2'; jfs_id=9815; jfc_s=11373; find_block:0; memcpy=0; post_jfs_wr=4; wait_jfc=20; poll_jfc:0; ack_rearm_jfc=1; send=25; exceed_times=1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.278.945 [ra_adp_async.c:117]tid:8675,RaAsyncPthread: pthread[ra_async_thread] is alive!
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.283.756 [rs_epoll.c:551]tid:8668,RsEpollHandle: pthread[epoll_pthread] is alive!
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.315.976 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.318.280 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.318.349 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.330.080 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.332.274 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.332.346 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.344.316 [drv_share_log.c:233][devmm] [share_log_read_in_single_module] Open. (udevid=0; tgid=8630)
+[INFO] DRV(8609,aicpu_scheduler):2026-11-27-14:03:00.349.723 [grp_mng.c:147][bufmng] [halGrpAddProc] add grp succ, name:svm_share_grp_8609, pid:8630, grp_id:6155, admin:0 alloc:1 read:1 write:1 
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.349.918 [buff_recycle_ctx.c:88][bufmng] [pool_ctx_init] pool_id 6155 add task node uid 6451 pid 8630
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.350.096 [grp_mng.c:208][bufmng] [halGrpAttach] grp attach, grp_name:svm_share_grp_8609, grp_id:6155, timeout:1000ms
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.350.184 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:2
+[INFO] DRV(8630,hccp_service.bin):2026-11-27-14:03:00.352.774 [dms_fault.c:584][devmng] [halSensorNodeRegister] Sensor node register success. (devid=0; name=roce_rs_8630; NodeType=1551; SensorType=195; AssertEventMask=0x100; DeassertEventMask=0x0)
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.354.744 [rs_ub.c:446]tid:8635,RsUbCtxInit: phy_id:0, eidIndex:2, devIndex:0x10003 init success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.354.934 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.357.596 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.357.703 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.370.291 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.374.178 [rs_ub.c:446]tid:8635,RsUbCtxInit: phy_id:0, eidIndex:0, devIndex:0x20003 init success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.374.316 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.376.625 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.376.695 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.388.647 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.392.183 [rs_ub.c:446]tid:8635,RsUbCtxInit: phy_id:0, eidIndex:3, devIndex:0x30003 init success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.392.332 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.394.512 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.394.586 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.406.923 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.410.617 [rs_ub.c:446]tid:8635,RsUbCtxInit: phy_id:0, eidIndex:1, devIndex:0x40102 init success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.410.794 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.413.149 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.413.242 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.425.439 [dl_urma_function.c:372]tid:8635,RsOpenUrmaSo: urma_api dlopen again, gUrmaApiRefcnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.429.618 [rs_ub.c:446]tid:8635,RsUbCtxInit: phy_id:0, eidIndex:1, devIndex:0x50002 init success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.433.937 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x10003 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec038ff0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.434.480 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x20003 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03a4e0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.434.968 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x30003 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03b9f0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.435.446 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x40102 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03cf00 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.436.122 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x50002 addr:0x12004c200000, len[0x19100000], flag[0x29c1] segment:0x3ffec03e410 register success
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:03:00.439.468 [aicpusd_event_process.cpp:383][ProcessSetTimeoutEvent][tid:8624] Get opTimeoutEnable[1] value[547] waitTimeoutEnable[0] value[0] from ts success.
+[INFO] CCECPU(8609,aicpu_scheduler):2026-11-27-14:03:00.439.487 [aicpusd_monitor.cpp:436][SetOpExecuteTimeOut][tid:8624] Get enable op execute timeout config from ts. timeout[547]s tickFrequency[547000000000]
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.508.405 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 16666
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.508.776 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 16666
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:00.524.092 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 16666
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.213.926 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x10003 addr:0x120000040000, len[0x8000], flag[0x29c1] segment:0x3ffec042460 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.214.236 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x20003 addr:0x120000040000, len[0x8000], flag[0x29c1] segment:0x3ffec042690 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.214.392 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x30003 addr:0x120000040000, len[0x8000], flag[0x29c1] segment:0x3ffec0427b0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.214.856 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.215.162 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.215.402 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.215.707 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.216.006 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.216.220 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.216.416 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.216.619 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.216.809 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.216.999 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.217.222 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.217.424 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.217.627 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.217.814 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.217.996 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.218.195 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.218.399 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.218.594 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.218.785 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.219.019 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.219.253 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.219.451 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.219.651 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.219.853 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.220.046 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.220.241 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.220.433 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.220.640 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.221.134 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.221.406 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.221.606 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.221.801 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.222.022 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.222.208 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.222.375 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.222.529 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.222.688 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.222.853 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.223.013 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.223.175 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.223.358 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.223.509 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.223.683 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.223.900 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.224.096 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.224.278 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.224.466 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.224.633 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.224.804 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.224.960 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.225.122 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.225.297 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.225.497 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.225.674 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.225.846 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.226.083 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.226.267 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.226.486 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.243.760 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.243.983 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.244.156 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.244.323 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.244.482 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.244.633 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.244.852 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.245.058 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.245.257 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.245.510 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.245.740 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.245.936 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.246.135 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.246.368 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.246.574 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.246.769 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.246.960 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.247.235 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.247.443 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.247.685 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.247.920 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.248.177 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.248.385 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.248.563 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.248.744 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.248.908 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.249.069 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.249.227 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.249.389 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.249.562 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.249.754 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.249.936 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.250.190 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.250.370 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.250.565 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.250.746 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.250.921 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.251.093 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.288.126 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9820 mode:3 create success, jettyCnt:1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.295.096 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9821 mode:3 create success, jettyCnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.302.121 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9822 mode:3 create success, jettyCnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.311.144 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9823 mode:3 create success, jettyCnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.318.094 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9824 mode:3 create success, jettyCnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.325.070 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9825 mode:3 create success, jettyCnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.332.048 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9826 mode:3 create success, jettyCnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.339.055 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9827 mode:3 create success, jettyCnt:8
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.345.930 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9828 mode:3 create success, jettyCnt:9
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.352.987 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9829 mode:3 create success, jettyCnt:10
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.360.010 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9830 mode:3 create success, jettyCnt:11
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.366.996 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9831 mode:3 create success, jettyCnt:12
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.373.945 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9832 mode:3 create success, jettyCnt:13
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.380.970 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9833 mode:3 create success, jettyCnt:14
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.388.022 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9834 mode:3 create success, jettyCnt:15
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.394.962 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9835 mode:3 create success, jettyCnt:16
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.401.925 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9836 mode:3 create success, jettyCnt:17
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.409.073 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9837 mode:3 create success, jettyCnt:18
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.416.034 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9838 mode:3 create success, jettyCnt:19
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.427.175 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9839 mode:3 create success, jettyCnt:20
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.438.137 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9840 mode:3 create success, jettyCnt:21
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.445.092 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9841 mode:3 create success, jettyCnt:22
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.452.317 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9842 mode:3 create success, jettyCnt:23
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.459.177 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9843 mode:3 create success, jettyCnt:24
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.466.109 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9844 mode:3 create success, jettyCnt:25
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.473.165 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9845 mode:3 create success, jettyCnt:26
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.480.212 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9846 mode:3 create success, jettyCnt:27
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.487.219 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9847 mode:3 create success, jettyCnt:28
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.494.246 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9848 mode:3 create success, jettyCnt:29
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.501.572 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9849 mode:3 create success, jettyCnt:30
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.508.755 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9850 mode:3 create success, jettyCnt:31
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.515.669 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9851 mode:3 create success, jettyCnt:32
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.522.631 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9852 mode:3 create success, jettyCnt:1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.529.582 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9853 mode:3 create success, jettyCnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.536.568 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9854 mode:3 create success, jettyCnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.543.859 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9855 mode:3 create success, jettyCnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.550.654 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9856 mode:3 create success, jettyCnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.557.720 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9857 mode:3 create success, jettyCnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.564.782 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9858 mode:3 create success, jettyCnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.573.844 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9859 mode:3 create success, jettyCnt:8
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.580.878 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9860 mode:3 create success, jettyCnt:9
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.587.866 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9861 mode:3 create success, jettyCnt:10
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.594.832 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9862 mode:3 create success, jettyCnt:11
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.601.923 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9863 mode:3 create success, jettyCnt:12
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.608.886 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9864 mode:3 create success, jettyCnt:13
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.615.902 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9865 mode:3 create success, jettyCnt:14
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.622.813 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9866 mode:3 create success, jettyCnt:15
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.629.874 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9867 mode:3 create success, jettyCnt:16
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.636.891 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9868 mode:3 create success, jettyCnt:17
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.643.944 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9869 mode:3 create success, jettyCnt:18
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.651.000 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9870 mode:3 create success, jettyCnt:19
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.657.907 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9871 mode:3 create success, jettyCnt:20
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.664.943 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9872 mode:3 create success, jettyCnt:21
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.672.083 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9873 mode:3 create success, jettyCnt:22
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.679.016 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9874 mode:3 create success, jettyCnt:23
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.685.982 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9875 mode:3 create success, jettyCnt:24
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.692.952 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9876 mode:3 create success, jettyCnt:25
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.699.906 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9877 mode:3 create success, jettyCnt:26
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.707.030 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9878 mode:3 create success, jettyCnt:27
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.713.920 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9879 mode:3 create success, jettyCnt:28
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.721.019 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9880 mode:3 create success, jettyCnt:29
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.728.064 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9881 mode:3 create success, jettyCnt:30
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.735.021 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9882 mode:3 create success, jettyCnt:31
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.742.037 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9883 mode:3 create success, jettyCnt:32
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.749.100 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9884 mode:3 create success, jettyCnt:1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.756.038 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9885 mode:3 create success, jettyCnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.763.180 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9886 mode:3 create success, jettyCnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.770.071 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9887 mode:3 create success, jettyCnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.777.101 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9888 mode:3 create success, jettyCnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.784.193 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9889 mode:3 create success, jettyCnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.791.253 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9890 mode:3 create success, jettyCnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.798.237 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9891 mode:3 create success, jettyCnt:8
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.805.256 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9892 mode:3 create success, jettyCnt:9
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.812.371 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9893 mode:3 create success, jettyCnt:10
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.819.332 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9894 mode:3 create success, jettyCnt:11
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.826.329 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9895 mode:3 create success, jettyCnt:12
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.833.253 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9896 mode:3 create success, jettyCnt:13
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.840.336 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9897 mode:3 create success, jettyCnt:14
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.847.338 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9898 mode:3 create success, jettyCnt:15
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.854.349 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9899 mode:3 create success, jettyCnt:16
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.861.352 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9900 mode:3 create success, jettyCnt:17
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.868.849 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9901 mode:3 create success, jettyCnt:18
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.879.744 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9902 mode:3 create success, jettyCnt:19
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.889.185 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9903 mode:3 create success, jettyCnt:20
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.896.094 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9904 mode:3 create success, jettyCnt:21
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.903.198 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9905 mode:3 create success, jettyCnt:22
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.910.522 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9906 mode:3 create success, jettyCnt:23
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.917.539 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9907 mode:3 create success, jettyCnt:24
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.926.681 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9908 mode:3 create success, jettyCnt:25
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.935.861 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9909 mode:3 create success, jettyCnt:26
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.942.731 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9910 mode:3 create success, jettyCnt:27
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.952.168 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9911 mode:3 create success, jettyCnt:28
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.958.811 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9912 mode:3 create success, jettyCnt:29
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.970.086 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9913 mode:3 create success, jettyCnt:30
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.977.265 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9914 mode:3 create success, jettyCnt:31
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:01.984.366 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9915 mode:3 create success, jettyCnt:32
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:05.227.414 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec060220 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:05.236.612 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9893 rjettyHandle:0x65 mode:1 import success, rjettyCnt:1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.164.103 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec057280 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.164.669 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec060310 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.164.923 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec060400 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.093 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05ced0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.238 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05cfc0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.280 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10758 rjettyHandle:0x65 mode:1 import success, rjettyCnt:1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.418 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05d0b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.501 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10759 rjettyHandle:0x64 mode:1 import success, rjettyCnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.598 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05d1a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.718 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10760 rjettyHandle:0x66 mode:1 import success, rjettyCnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.763 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05d290 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.820 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10761 rjettyHandle:0x67 mode:1 import success, rjettyCnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.969 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10762 rjettyHandle:0x68 mode:1 import success, rjettyCnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.165.992 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05d380 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.166.118 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10763 rjettyHandle:0x69 mode:1 import success, rjettyCnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.166.225 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10764 rjettyHandle:0x6a mode:1 import success, rjettyCnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.166.251 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec05d470 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.166.287 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10765 rjettyHandle:0x6b mode:1 import success, rjettyCnt:8
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.166.397 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10766 rjettyHandle:0x6c mode:1 import success, rjettyCnt:9
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.166.590 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10767 rjettyHandle:0x6d mode:1 import success, rjettyCnt:10
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.518.732 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05d560 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.519.028 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05d650 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.519.767 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9650 rjettyHandle:0x65 mode:1 import success, rjettyCnt:1
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.519.913 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9651 rjettyHandle:0x64 mode:1 import success, rjettyCnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.304 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05d740 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.454 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05d830 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.637 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9654 rjettyHandle:0x66 mode:1 import success, rjettyCnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.669 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05d920 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.778 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9655 rjettyHandle:0x67 mode:1 import success, rjettyCnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.876 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05da10 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.521.902 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9656 rjettyHandle:0x68 mode:1 import success, rjettyCnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.522.042 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec05db00 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.522.066 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9657 rjettyHandle:0x69 mode:1 import success, rjettyCnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.522.218 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9658 rjettyHandle:0x6a mode:1 import success, rjettyCnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.540.771 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0606c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.540.989 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0607b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.143 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9641 rjettyHandle:0x6b mode:1 import success, rjettyCnt:8
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.241 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0608a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.393 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9642 rjettyHandle:0x6c mode:1 import success, rjettyCnt:9
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.429 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060990 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.580 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9643 rjettyHandle:0x6d mode:1 import success, rjettyCnt:10
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.608 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060a80 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.769 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9644 rjettyHandle:0x6e mode:1 import success, rjettyCnt:11
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.860 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9645 rjettyHandle:0x6f mode:1 import success, rjettyCnt:12
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.541.882 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060b70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.026 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060c60 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.051 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9646 rjettyHandle:0x70 mode:1 import success, rjettyCnt:13
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.164 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060d50 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.290 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060e40 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.329 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9647 rjettyHandle:0x71 mode:1 import success, rjettyCnt:14
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.551 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9648 rjettyHandle:0x72 mode:1 import success, rjettyCnt:15
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.654 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec060f30 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.836 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9649 rjettyHandle:0x73 mode:1 import success, rjettyCnt:16
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.542.861 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061020 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.544.000 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9652 rjettyHandle:0x74 mode:1 import success, rjettyCnt:17
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:07.544.136 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9653 rjettyHandle:0x75 mode:1 import success, rjettyCnt:18
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.638.276 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061110 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.638.652 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061200 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.638.794 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9659 rjettyHandle:0x76 mode:1 import success, rjettyCnt:19
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.638.930 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0612f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.076 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0613e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.111 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9660 rjettyHandle:0x77 mode:1 import success, rjettyCnt:20
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.233 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0614d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.348 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9661 rjettyHandle:0x78 mode:1 import success, rjettyCnt:21
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.391 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9662 rjettyHandle:0x79 mode:1 import success, rjettyCnt:22
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.475 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0615c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.605 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9663 rjettyHandle:0x7a mode:1 import success, rjettyCnt:23
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.722 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0616b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.747 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9664 rjettyHandle:0x7b mode:1 import success, rjettyCnt:24
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.887 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0617a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.639.917 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9665 rjettyHandle:0x7c mode:1 import success, rjettyCnt:25
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.068 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9666 rjettyHandle:0x7d mode:1 import success, rjettyCnt:26
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.097 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061890 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.225 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061980 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.494 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9667 rjettyHandle:0x7e mode:1 import success, rjettyCnt:27
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.571 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061a70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.621 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9668 rjettyHandle:0x7f mode:1 import success, rjettyCnt:28
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.749 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9669 rjettyHandle:0x80 mode:1 import success, rjettyCnt:29
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.801 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061b60 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.937 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9670 rjettyHandle:0x81 mode:1 import success, rjettyCnt:30
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.640.971 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061c50 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.641.093 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec061d40 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.641.134 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9671 rjettyHandle:0x82 mode:1 import success, rjettyCnt:31
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:10.641.263 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9672 rjettyHandle:0x83 mode:1 import success, rjettyCnt:32
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.045.612 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec061e30 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.006 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec061f20 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.162 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9894 rjettyHandle:0x64 mode:1 import success, rjettyCnt:2
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.299 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062010 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.469 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9895 rjettyHandle:0x66 mode:1 import success, rjettyCnt:3
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.497 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062100 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.670 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9896 rjettyHandle:0x67 mode:1 import success, rjettyCnt:4
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.696 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0621f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.795 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9897 rjettyHandle:0x68 mode:1 import success, rjettyCnt:5
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.046.882 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0622e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.030 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9898 rjettyHandle:0x69 mode:1 import success, rjettyCnt:6
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.121 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0623d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.221 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9899 rjettyHandle:0x6a mode:1 import success, rjettyCnt:7
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.316 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0624c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.603 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0625b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.838 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9900 rjettyHandle:0x6b mode:1 import success, rjettyCnt:8
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.047.950 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0626a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.114 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062790 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.199 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9901 rjettyHandle:0x6c mode:1 import success, rjettyCnt:9
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.306 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062880 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.475 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062970 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.500 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9902 rjettyHandle:0x6d mode:1 import success, rjettyCnt:10
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.609 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9903 rjettyHandle:0x6e mode:1 import success, rjettyCnt:11
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.724 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9904 rjettyHandle:0x6f mode:1 import success, rjettyCnt:12
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.759 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062a60 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.822 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9905 rjettyHandle:0x70 mode:1 import success, rjettyCnt:13
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.958 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062b50 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.048.994 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9906 rjettyHandle:0x71 mode:1 import success, rjettyCnt:14
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.122 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9907 rjettyHandle:0x72 mode:1 import success, rjettyCnt:15
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.149 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062c40 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.304 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062d30 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.366 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9908 rjettyHandle:0x73 mode:1 import success, rjettyCnt:16
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.477 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062e20 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.536 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9909 rjettyHandle:0x74 mode:1 import success, rjettyCnt:17
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.652 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec062f10 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.049.915 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9910 rjettyHandle:0x75 mode:1 import success, rjettyCnt:18
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.005 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9911 rjettyHandle:0x76 mode:1 import success, rjettyCnt:19
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.147 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec063000 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.282 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9912 rjettyHandle:0x77 mode:1 import success, rjettyCnt:20
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.331 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0630f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.391 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9913 rjettyHandle:0x78 mode:1 import success, rjettyCnt:21
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.516 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0631e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.665 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0632d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.692 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9914 rjettyHandle:0x79 mode:1 import success, rjettyCnt:22
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.818 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9915 rjettyHandle:0x7a mode:1 import success, rjettyCnt:23
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.852 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0633c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.050.951 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0634b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.110 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0635a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.133 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9916 rjettyHandle:0x7b mode:1 import success, rjettyCnt:24
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.264 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec063690 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.320 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9917 rjettyHandle:0x7c mode:1 import success, rjettyCnt:25
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.425 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec063780 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.607 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec063870 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.654 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9918 rjettyHandle:0x7d mode:1 import success, rjettyCnt:26
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.731 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9919 rjettyHandle:0x7e mode:1 import success, rjettyCnt:27
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.821 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec063960 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.875 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9920 rjettyHandle:0x7f mode:1 import success, rjettyCnt:28
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.051.996 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec063a50 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.052.057 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9921 rjettyHandle:0x80 mode:1 import success, rjettyCnt:29
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.052.197 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9922 rjettyHandle:0x81 mode:1 import success, rjettyCnt:30
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.052.274 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9923 rjettyHandle:0x82 mode:1 import success, rjettyCnt:31
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.052.393 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9924 rjettyHandle:0x83 mode:1 import success, rjettyCnt:32
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.975.948 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec063b40 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.224 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec063c30 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.440 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10769 rjettyHandle:0x6e mode:1 import success, rjettyCnt:11
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.543 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec063d20 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.720 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec063e10 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.626 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10770 rjettyHandle:0x6f mode:1 import success, rjettyCnt:12
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.851 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10771 rjettyHandle:0x70 mode:1 import success, rjettyCnt:13
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.954 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec063f00 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.976.989 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10772 rjettyHandle:0x71 mode:1 import success, rjettyCnt:14
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.116 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec063ff0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.256 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10773 rjettyHandle:0x72 mode:1 import success, rjettyCnt:15
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.291 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0640e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.519 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0641d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.547 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10774 rjettyHandle:0x73 mode:1 import success, rjettyCnt:16
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.719 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10775 rjettyHandle:0x74 mode:1 import success, rjettyCnt:17
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.793 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0642c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.977.912 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10776 rjettyHandle:0x75 mode:1 import success, rjettyCnt:18
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.023 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10777 rjettyHandle:0x76 mode:1 import success, rjettyCnt:19
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.048 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0643b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.184 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0644a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.211 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10778 rjettyHandle:0x77 mode:1 import success, rjettyCnt:20
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.400 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10779 rjettyHandle:0x78 mode:1 import success, rjettyCnt:21
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.426 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064590 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.557 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064680 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.978.592 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10780 rjettyHandle:0x79 mode:1 import success, rjettyCnt:22
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.100 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10781 rjettyHandle:0x7a mode:1 import success, rjettyCnt:23
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.140 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064770 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.283 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064860 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.395 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10782 rjettyHandle:0x7b mode:1 import success, rjettyCnt:24
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.480 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064950 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.511 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10783 rjettyHandle:0x7c mode:1 import success, rjettyCnt:25
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.677 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10784 rjettyHandle:0x7d mode:1 import success, rjettyCnt:26
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.699 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064a40 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.848 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10785 rjettyHandle:0x7e mode:1 import success, rjettyCnt:27
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.871 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064b30 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.979.996 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064c20 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.980.029 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10786 rjettyHandle:0x7f mode:1 import success, rjettyCnt:28
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.980.144 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064d10 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.980.185 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10787 rjettyHandle:0x80 mode:1 import success, rjettyCnt:29
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.980.307 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10788 rjettyHandle:0x81 mode:1 import success, rjettyCnt:30
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.980.355 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064e00 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.980.468 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10789 rjettyHandle:0x82 mode:1 import success, rjettyCnt:31
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.982.549 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec064ef0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:12.982.673 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10768 rjettyHandle:0x83 mode:1 import success, rjettyCnt:32
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.397.773 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x10003 addr:0x120000229000, len[0x100], flag[0x29c1] segment:0x3ffec064fe0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.398.147 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x20003 addr:0x120000229000, len[0x100], flag[0x29c1] segment:0x3ffec0650d0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.398.381 [rs_ub.c:1311]tid:8635,RsUbCtxLmemReg: devIndex:0x30003 addr:0x120000229000, len[0x100], flag[0x29c1] segment:0x3ffec0651c0 register success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.399.605 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.401.086 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.401.628 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.402.105 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.402.488 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.403.038 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.403.482 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.403.841 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.404.211 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.404.812 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.405.139 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.405.465 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.405.909 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.406.260 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.406.592 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.406.904 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.407.212 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.407.802 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.408.294 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.408.643 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.408.971 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.409.277 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.409.575 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.409.875 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.410.157 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.410.499 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.410.820 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.411.133 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.411.428 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.412.099 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.412.731 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.413.078 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::408:300:10:0:df76:950, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.413.448 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.413.787 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.414.103 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.414.381 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.414.691 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.415.094 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.415.490 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.415.845 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.416.342 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.416.723 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.417.044 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.417.353 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.417.790 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.418.090 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.418.403 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.418.719 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.419.075 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.419.414 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.419.987 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.420.347 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.420.935 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.421.387 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.421.717 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.422.049 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.422.390 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.422.696 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.423.018 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.423.292 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.423.630 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.424.091 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.424.415 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.424.727 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::400:300:10:0:df76:150, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.425.276 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.425.658 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.425.949 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.426.306 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.426.629 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.426.956 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.427.296 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.427.997 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.428.538 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.428.870 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.429.175 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.429.727 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.430.130 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.430.685 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.431.083 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.431.401 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.431.757 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.432.118 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.432.554 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.432.933 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.433.398 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.433.763 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.434.094 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.434.593 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.435.016 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.435.358 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.435.716 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.436.058 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.436.365 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.436.704 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.437.034 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.437.352 [rs_socket.c:588]tid:8635,RsSocketListenBindListen: socket bind: family 10, addr ::407:300:10:0:df76:850, port 0
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.454.710 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9916 mode:3 create success, jettyCnt:33
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.457.680 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9917 mode:3 create success, jettyCnt:34
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.460.825 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9918 mode:3 create success, jettyCnt:35
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.463.858 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9919 mode:3 create success, jettyCnt:36
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.466.505 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9920 mode:3 create success, jettyCnt:37
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.469.352 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9921 mode:3 create success, jettyCnt:38
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.472.259 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9922 mode:3 create success, jettyCnt:39
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.475.346 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9923 mode:3 create success, jettyCnt:40
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.478.170 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9924 mode:3 create success, jettyCnt:41
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.480.942 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9925 mode:3 create success, jettyCnt:42
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.483.970 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9926 mode:3 create success, jettyCnt:43
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.486.758 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9927 mode:3 create success, jettyCnt:44
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.489.611 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9928 mode:3 create success, jettyCnt:45
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.492.450 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9929 mode:3 create success, jettyCnt:46
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.495.311 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9930 mode:3 create success, jettyCnt:47
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.498.066 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9931 mode:3 create success, jettyCnt:48
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.501.000 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9932 mode:3 create success, jettyCnt:49
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.503.903 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9933 mode:3 create success, jettyCnt:50
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.506.747 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9934 mode:3 create success, jettyCnt:51
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.509.498 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9935 mode:3 create success, jettyCnt:52
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.512.385 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9936 mode:3 create success, jettyCnt:53
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.515.117 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9937 mode:3 create success, jettyCnt:54
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.518.134 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9938 mode:3 create success, jettyCnt:55
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.520.881 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9939 mode:3 create success, jettyCnt:56
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.523.794 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9940 mode:3 create success, jettyCnt:57
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.526.546 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9941 mode:3 create success, jettyCnt:58
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.529.398 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9942 mode:3 create success, jettyCnt:59
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.532.436 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9943 mode:3 create success, jettyCnt:60
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.535.311 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9944 mode:3 create success, jettyCnt:61
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.538.155 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9945 mode:3 create success, jettyCnt:62
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.541.100 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9946 mode:3 create success, jettyCnt:63
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.544.478 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x10003 jettyId:9947 mode:3 create success, jettyCnt:64
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.546.905 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9948 mode:3 create success, jettyCnt:33
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.549.841 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9949 mode:3 create success, jettyCnt:34
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.553.231 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9950 mode:3 create success, jettyCnt:35
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.555.719 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9951 mode:3 create success, jettyCnt:36
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.558.320 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9952 mode:3 create success, jettyCnt:37
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.561.267 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9953 mode:3 create success, jettyCnt:38
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.564.199 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9954 mode:3 create success, jettyCnt:39
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.566.807 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9955 mode:3 create success, jettyCnt:40
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.569.710 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9956 mode:3 create success, jettyCnt:41
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.572.543 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9957 mode:3 create success, jettyCnt:42
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.575.495 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9958 mode:3 create success, jettyCnt:43
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.578.302 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9959 mode:3 create success, jettyCnt:44
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.581.135 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9960 mode:3 create success, jettyCnt:45
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.583.883 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9961 mode:3 create success, jettyCnt:46
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.586.879 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9962 mode:3 create success, jettyCnt:47
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.589.749 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9963 mode:3 create success, jettyCnt:48
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.592.536 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9964 mode:3 create success, jettyCnt:49
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.595.535 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9965 mode:3 create success, jettyCnt:50
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.598.313 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9966 mode:3 create success, jettyCnt:51
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.601.082 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9967 mode:3 create success, jettyCnt:52
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.603.991 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9968 mode:3 create success, jettyCnt:53
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.606.788 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9969 mode:3 create success, jettyCnt:54
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.609.741 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9970 mode:3 create success, jettyCnt:55
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.612.650 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9971 mode:3 create success, jettyCnt:56
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.615.457 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9972 mode:3 create success, jettyCnt:57
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.618.221 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9973 mode:3 create success, jettyCnt:58
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.621.008 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9974 mode:3 create success, jettyCnt:59
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.623.921 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9975 mode:3 create success, jettyCnt:60
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.626.768 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9976 mode:3 create success, jettyCnt:61
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.629.576 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9977 mode:3 create success, jettyCnt:62
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.632.514 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9978 mode:3 create success, jettyCnt:63
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.635.502 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x20003 jettyId:9979 mode:3 create success, jettyCnt:64
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.638.319 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9980 mode:3 create success, jettyCnt:33
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.641.081 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9981 mode:3 create success, jettyCnt:34
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.644.154 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9982 mode:3 create success, jettyCnt:35
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.647.541 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9983 mode:3 create success, jettyCnt:36
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.649.942 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9984 mode:3 create success, jettyCnt:37
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.652.691 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9985 mode:3 create success, jettyCnt:38
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.655.630 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9986 mode:3 create success, jettyCnt:39
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.658.524 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9987 mode:3 create success, jettyCnt:40
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.661.467 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9988 mode:3 create success, jettyCnt:41
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.664.272 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9989 mode:3 create success, jettyCnt:42
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.667.144 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9990 mode:3 create success, jettyCnt:43
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.672.089 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9991 mode:3 create success, jettyCnt:44
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.674.979 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9992 mode:3 create success, jettyCnt:45
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.678.041 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9993 mode:3 create success, jettyCnt:46
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.685.415 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9994 mode:3 create success, jettyCnt:47
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.688.241 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9995 mode:3 create success, jettyCnt:48
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.693.884 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9996 mode:3 create success, jettyCnt:49
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.696.769 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9997 mode:3 create success, jettyCnt:50
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.699.639 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9998 mode:3 create success, jettyCnt:51
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.702.524 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:9999 mode:3 create success, jettyCnt:52
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.705.264 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10000 mode:3 create success, jettyCnt:53
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.708.319 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10001 mode:3 create success, jettyCnt:54
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.711.084 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10002 mode:3 create success, jettyCnt:55
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.713.933 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10003 mode:3 create success, jettyCnt:56
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.716.763 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10004 mode:3 create success, jettyCnt:57
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.719.641 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10005 mode:3 create success, jettyCnt:58
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.722.500 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10006 mode:3 create success, jettyCnt:59
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.725.319 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10007 mode:3 create success, jettyCnt:60
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.728.241 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10008 mode:3 create success, jettyCnt:61
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.730.994 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10009 mode:3 create success, jettyCnt:62
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.734.043 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10010 mode:3 create success, jettyCnt:63
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:13.738.943 [rs_ub.c:1778]tid:8673,RsUbCtxJettyCreate: devIndex:0x30003 jettyId:10011 mode:3 create success, jettyCnt:64
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.542.194 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec080980 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.542.475 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec07dcc0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.542.612 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec080a70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.542.718 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10854 rjettyHandle:0xc4 mode:1 import success, rjettyCnt:33
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.542.842 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec083720 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.542.999 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10855 rjettyHandle:0xc5 mode:1 import success, rjettyCnt:34
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.034 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec083810 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.143 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10856 rjettyHandle:0xc6 mode:1 import success, rjettyCnt:35
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.235 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10857 rjettyHandle:0xc7 mode:1 import success, rjettyCnt:36
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.265 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec083900 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.356 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10858 rjettyHandle:0xc8 mode:1 import success, rjettyCnt:37
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.466 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10859 rjettyHandle:0xc9 mode:1 import success, rjettyCnt:38
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.502 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0839f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.543.651 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10860 rjettyHandle:0xca mode:1 import success, rjettyCnt:39
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.544.253 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec083ae0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.544.438 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec083bd0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.544.906 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10861 rjettyHandle:0xcb mode:1 import success, rjettyCnt:40
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:19.545.132 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10862 rjettyHandle:0xcc mode:1 import success, rjettyCnt:41
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.128.810 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec083cc0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.129.322 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9737 rjettyHandle:0xc4 mode:1 import success, rjettyCnt:33
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.129.652 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec083db0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.129.835 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9738 rjettyHandle:0xc5 mode:1 import success, rjettyCnt:34
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.130.026 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec083ea0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.132.748 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9739 rjettyHandle:0xc6 mode:1 import success, rjettyCnt:35
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.132.897 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec083f90 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.066 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084080 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.232 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9740 rjettyHandle:0xc7 mode:1 import success, rjettyCnt:36
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.269 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084170 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.434 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9741 rjettyHandle:0xc8 mode:1 import success, rjettyCnt:37
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.501 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084260 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.647 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9742 rjettyHandle:0xc9 mode:1 import success, rjettyCnt:38
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.687 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084350 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.873 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084440 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.133.905 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9743 rjettyHandle:0xca mode:1 import success, rjettyCnt:39
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.013 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9744 rjettyHandle:0xcb mode:1 import success, rjettyCnt:40
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.097 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084530 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.230 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9745 rjettyHandle:0xcc mode:1 import success, rjettyCnt:41
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.356 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9746 rjettyHandle:0xcd mode:1 import success, rjettyCnt:42
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.381 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084620 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.522 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084710 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.750 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9747 rjettyHandle:0xce mode:1 import success, rjettyCnt:43
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.857 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084800 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.134.989 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0848f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.120 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9748 rjettyHandle:0xcf mode:1 import success, rjettyCnt:44
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.211 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0849e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.304 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9749 rjettyHandle:0xd0 mode:1 import success, rjettyCnt:45
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.424 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9750 rjettyHandle:0xd1 mode:1 import success, rjettyCnt:46
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.450 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084ad0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.661 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084bc0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.800 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084cb0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.827 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9751 rjettyHandle:0xd2 mode:1 import success, rjettyCnt:47
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.135.995 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9752 rjettyHandle:0xd3 mode:1 import success, rjettyCnt:48
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.024 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084da0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.172 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084e90 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.199 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9753 rjettyHandle:0xd4 mode:1 import success, rjettyCnt:49
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.318 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec084f80 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.376 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9754 rjettyHandle:0xd5 mode:1 import success, rjettyCnt:50
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.479 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085070 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.590 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9755 rjettyHandle:0xd6 mode:1 import success, rjettyCnt:51
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.693 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085160 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.136.885 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9756 rjettyHandle:0xd7 mode:1 import success, rjettyCnt:52
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.137.103 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9757 rjettyHandle:0xd8 mode:1 import success, rjettyCnt:53
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.137.213 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9758 rjettyHandle:0xd9 mode:1 import success, rjettyCnt:54
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:21.137.304 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9759 rjettyHandle:0xda mode:1 import success, rjettyCnt:55
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.828.705 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085250 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.249 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9760 rjettyHandle:0xdb mode:1 import success, rjettyCnt:56
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.369 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085340 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.518 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9761 rjettyHandle:0xdc mode:1 import success, rjettyCnt:57
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.616 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085430 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.742 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9762 rjettyHandle:0xdd mode:1 import success, rjettyCnt:58
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.833 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085520 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.829.987 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9763 rjettyHandle:0xde mode:1 import success, rjettyCnt:59
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.020 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085610 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.186 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9764 rjettyHandle:0xdf mode:1 import success, rjettyCnt:60
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.213 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec085700 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.341 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9765 rjettyHandle:0xe0 mode:1 import success, rjettyCnt:61
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.377 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0857f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.521 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0858e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.550 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9766 rjettyHandle:0xe1 mode:1 import success, rjettyCnt:62
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.704 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9767 rjettyHandle:0xe2 mode:1 import success, rjettyCnt:63
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.728 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x10003 segment:0x3ffec0859d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:22.830.860 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x10003 remJettyId:9768 rjettyHandle:0xe3 mode:1 import success, rjettyCnt:64
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.576.359 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec085ac0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.576.839 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10002 rjettyHandle:0xc4 mode:1 import success, rjettyCnt:33
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.576.935 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec085bb0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.067 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec085ca0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.109 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10003 rjettyHandle:0xc5 mode:1 import success, rjettyCnt:34
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.213 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec085d90 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.356 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec085e80 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.388 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10004 rjettyHandle:0xc6 mode:1 import success, rjettyCnt:35
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.492 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10005 rjettyHandle:0xc7 mode:1 import success, rjettyCnt:36
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.567 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec085f70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.673 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10006 rjettyHandle:0xc8 mode:1 import success, rjettyCnt:37
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.800 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10007 rjettyHandle:0xc9 mode:1 import success, rjettyCnt:38
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.832 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086060 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.577.995 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086150 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.135 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086240 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.153 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10008 rjettyHandle:0xca mode:1 import success, rjettyCnt:39
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.320 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10009 rjettyHandle:0xcb mode:1 import success, rjettyCnt:40
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.346 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086330 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.496 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086420 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.524 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10010 rjettyHandle:0xcc mode:1 import success, rjettyCnt:41
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.653 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086510 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.806 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086600 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.834 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10011 rjettyHandle:0xcd mode:1 import success, rjettyCnt:42
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.578.950 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0866f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.093 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0867e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.283 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10012 rjettyHandle:0xce mode:1 import success, rjettyCnt:43
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.389 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0868d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.447 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10013 rjettyHandle:0xcf mode:1 import success, rjettyCnt:44
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.521 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10014 rjettyHandle:0xd0 mode:1 import success, rjettyCnt:45
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.631 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0869c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.727 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10015 rjettyHandle:0xd1 mode:1 import success, rjettyCnt:46
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.579.983 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10016 rjettyHandle:0xd2 mode:1 import success, rjettyCnt:47
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.580.036 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086ab0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.580.186 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086ba0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.580.215 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10017 rjettyHandle:0xd3 mode:1 import success, rjettyCnt:48
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.580.419 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10018 rjettyHandle:0xd4 mode:1 import success, rjettyCnt:49
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.580.505 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10019 rjettyHandle:0xd5 mode:1 import success, rjettyCnt:50
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.580.605 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10020 rjettyHandle:0xd6 mode:1 import success, rjettyCnt:51
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.037 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086c90 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.248 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086d80 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.421 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9989 rjettyHandle:0xd7 mode:1 import success, rjettyCnt:52
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.500 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086e70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.642 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec086f60 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.745 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9990 rjettyHandle:0xd8 mode:1 import success, rjettyCnt:53
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.822 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec087050 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.607.883 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9991 rjettyHandle:0xd9 mode:1 import success, rjettyCnt:54
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.031 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec087140 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.058 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9992 rjettyHandle:0xda mode:1 import success, rjettyCnt:55
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.185 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9993 rjettyHandle:0xdb mode:1 import success, rjettyCnt:56
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.252 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec087230 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.380 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9994 rjettyHandle:0xdc mode:1 import success, rjettyCnt:57
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.419 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec087320 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.531 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9995 rjettyHandle:0xdd mode:1 import success, rjettyCnt:58
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.613 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec087410 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.720 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9996 rjettyHandle:0xde mode:1 import success, rjettyCnt:59
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.608.810 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec087500 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.002 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0875f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.093 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9997 rjettyHandle:0xdf mode:1 import success, rjettyCnt:60
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.185 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9998 rjettyHandle:0xe0 mode:1 import success, rjettyCnt:61
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.331 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0876e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.359 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:9999 rjettyHandle:0xe1 mode:1 import success, rjettyCnt:62
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.487 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x20003 segment:0x3ffec0877d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.584 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10000 rjettyHandle:0xe2 mode:1 import success, rjettyCnt:63
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:23.609.794 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x20003 remJettyId:10001 rjettyHandle:0xe3 mode:1 import success, rjettyCnt:64
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.492.450 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0878c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.492.921 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10863 rjettyHandle:0xcd mode:1 import success, rjettyCnt:42
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.041 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0879b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.212 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10864 rjettyHandle:0xce mode:1 import success, rjettyCnt:43
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.312 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec087aa0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.443 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10865 rjettyHandle:0xcf mode:1 import success, rjettyCnt:44
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.533 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec087b90 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.680 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10866 rjettyHandle:0xd0 mode:1 import success, rjettyCnt:45
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.754 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec087c80 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.898 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10867 rjettyHandle:0xd1 mode:1 import success, rjettyCnt:46
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.493.927 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec087d70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.494.098 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10868 rjettyHandle:0xd2 mode:1 import success, rjettyCnt:47
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.494.194 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec087e60 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.494.337 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10869 rjettyHandle:0xd3 mode:1 import success, rjettyCnt:48
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.494.423 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec087f50 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.494.713 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10870 rjettyHandle:0xd4 mode:1 import success, rjettyCnt:49
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.494.883 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088040 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.033 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10871 rjettyHandle:0xd5 mode:1 import success, rjettyCnt:50
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.127 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088130 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.278 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10872 rjettyHandle:0xd6 mode:1 import success, rjettyCnt:51
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.307 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088220 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.432 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088310 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.473 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10873 rjettyHandle:0xd7 mode:1 import success, rjettyCnt:52
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.628 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088400 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.672 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10874 rjettyHandle:0xd8 mode:1 import success, rjettyCnt:53
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.806 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0884f0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.848 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10875 rjettyHandle:0xd9 mode:1 import success, rjettyCnt:54
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.495.973 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10876 rjettyHandle:0xda mode:1 import success, rjettyCnt:55
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.009 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0885e0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.148 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0886d0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.186 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10877 rjettyHandle:0xdb mode:1 import success, rjettyCnt:56
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.308 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0887c0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.406 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10878 rjettyHandle:0xdc mode:1 import success, rjettyCnt:57
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.510 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10879 rjettyHandle:0xdd mode:1 import success, rjettyCnt:58
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.603 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0888b0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.747 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10880 rjettyHandle:0xde mode:1 import success, rjettyCnt:59
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.837 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec0889a0 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.496.969 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10881 rjettyHandle:0xdf mode:1 import success, rjettyCnt:60
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.015 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088a90 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.237 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10882 rjettyHandle:0xe0 mode:1 import success, rjettyCnt:61
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.265 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088b80 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.399 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10883 rjettyHandle:0xe1 mode:1 import success, rjettyCnt:62
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.439 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088c70 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.576 [rs_ub.c:1382]tid:8635,RsUbCtxRmemImport: devIndex:0x30003 segment:0x3ffec088d60 import success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.632 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10884 rjettyHandle:0xe2 mode:1 import success, rjettyCnt:63
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:26.497.759 [rs_ub.c:2000]tid:8673,RsUbCtxJettyImport: devIndex:0x30003 remJettyId:10885 rjettyHandle:0xe3 mode:1 import success, rjettyCnt:64
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:27.771.086 [rs_ub.c:1340]tid:8635,RsUbCtxLmemUnreg: devIndex:0x50002 segment:0x3ffec03e410 unregister success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:27.771.719 [rs_ub.c:1340]tid:8635,RsUbCtxLmemUnreg: devIndex:0x40102 segment:0x3ffec03cf00 unregister success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:27.772.161 [rs_ub.c:1340]tid:8635,RsUbCtxLmemUnreg: devIndex:0x30003 segment:0x3ffec03b9f0 unregister success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:27.772.255 [rs_ub.c:1340]tid:8635,RsUbCtxLmemUnreg: devIndex:0x20003 segment:0x3ffec03a4e0 unregister success
+[INFO] HCCP(8630,hccp_service.bin):2026-11-27-14:03:27.772.346 [rs_ub.c:1340]tid:8635,RsUbCtxLmemUnreg: devIndex:0x10003 segment:0x3ffec038ff0 unregister success
