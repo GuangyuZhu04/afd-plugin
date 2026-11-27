@@ -27,8 +27,8 @@ export ASCEND_PROCESS_LOG_PATH="$run/plog"
 export ASCEND_WORK_PATH="$run"
 export ASCEND_DUMP_PATH="$run/extra-info"
 mkdir -p "$ASCEND_PROCESS_LOG_PATH" "$ASCEND_DUMP_PATH"
-# Run the tests from the same revision as the wheel. Keep sources off PYTHONPATH.
-cp -R tests "$run/"
+# Copy the current branch's tests into the run directory; import the installed plugin.
+git archive HEAD tests | tar -x -C "$run"
 cd "$run"
 python -m pytest -q tests/npu/test_umdk_meta_dispatch.py tests/npu/test_umdk_meta_combine.py
 ```
@@ -60,7 +60,7 @@ for rows in 1 65; do
     tests/npu/umdk_roundtrip.py --profile small --rows "$rows" || exit 1
 done
 export ASCEND_RT_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-for rows in 64 4096; do
+for rows in 1 64 4096; do
   torchrun --standalone --nproc-per-node=8 --log-dir "$run/flash-$rows" --tee 3 \
     tests/npu/umdk_roundtrip.py --profile dsv4-flash --rows "$rows" || exit 1
 done
@@ -152,3 +152,44 @@ explicitly, so every field starts at its declared physical offset.
 These tests used real ACLNN kernels on simulated device memory, with software
 queue completions. Use the four- and eight-device cases above to verify the
 physical transport, then run the model acceptance on the framework branch.
+
+## November 27 Flash timeout at step 1
+
+The device runs at framework revision `7cc7911` (operator revision `243aec6`)
+passed the 65-row small profile twice and the four-device DeepEP reference
+pipeline once. The two 64-row Flash runs and the one-row Flash run completed
+step 0. All four Attention ranks then returned `[3, 7]` from CombineRecv at
+step 1, with no FFN transaction logged for that step. This status records a
+transfer timeout. The ledger, Done and Consumed waits can all produce it.
+[Device logs for all six runs](https://github.com/GuangyuZhu04/afd-plugin/tree/255a47035117d04558fc81bd2e5fca1e1b2703d7/docs/testing/ascend950_umdk_fix_verification_20261127)
+
+The session registers ranks 0/1 in DP0 and 2/3 in DP1. The FFN scheduler
+selects a group when its TP members agree on phase, microbatch, layer,
+communication round and round mode. A member with zero rows still publishes
+round zero. The old test chose the layer by global rank, leaving each
+step-1 layer with only one of its two required members. The corrected test
+chooses the layer by DP. Each pair can now complete its own layer while the
+two DPs can still exercise different layers.
+[Pinned DeepEP selection logic](https://github.com/puxiaokun3721/DeepEP-Ascend/blob/25b5153eb2549107c13c8d462e325ac28cea8dea/deep_ep/include/deep_ep/impls/afd/ffn_scheduler.hpp#L96-L268)
+
+| Flash step | Valid rows on ranks 0, 1, 2, 3 | Old layer IDs | Corrected layer IDs |
+| --- | --- | --- | --- |
+| 0 | N, N, N, N | 0, 0, 0, 0 | 0, 0, 0, 0 |
+| 1 | N, 0, 0, 0 | 1, 2, 3, 4 | 1, 1, 2, 2 |
+| 2 | N, min(N,7), min(N,7), min(N,7) | 2, 3, 4, 5 (unreached on device) | 2, 2, 3, 3 |
+
+A CPU replay of DeepEP's C++ selection predicates found zero eligible groups
+per FFN for the logged step-1 inputs and two for the corrected inputs with
+all lanes present. DeepEP's reference transaction model retired all three
+corrected steps for each FFN across all 24 source arrival orders at 1 and
+64 rows, and in forward and reverse order at 4096 rows. The replay used
+identical activations, expert IDs and weights on both sides of the comparison.
+The small TP1 profile retained its original layer and row assignments.
+
+For a device rerun, take the test script from the updated branch and use the
+wheel and OPP for that branch below. Only the test and documentation changed.
+Check the three-step BF16 result at 1, 64 and 4096 rows before the model run.
+Corrected eight-device transport and model serving still require hardware
+verification.
+[Operator packages](https://github.com/GuangyuZhu04/afd-plugin/releases/tag/ascend950-umdk-afd-243aec6)
+· [Framework packages](https://github.com/GuangyuZhu04/afd-plugin/releases/tag/ascend950-umdk-dsv4-flash-7cc7911)

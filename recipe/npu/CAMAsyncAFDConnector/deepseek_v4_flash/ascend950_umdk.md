@@ -30,8 +30,10 @@ export AFD_UMDK_VLLM_ASCEND_WHEEL_SHA256='<vLLM-Ascend 固定提交的构建记�
 python -m pip install --no-index --no-deps --force-reinstall "$VLLM_WHEEL" "$VLLM_ASCEND_WHEEL"
 ```
 
-从本框架分支构建插件，安装生成的 wheel。以下命令在已初始化 CANN 并安装匹配
-DeepEP owner 的环境执行。结果目录放在容器外持久卷；工作目录只复制同一提交的测试。
+在已初始化 CANN 并安装匹配 DeepEP owner 的环境中执行以下命令，结果目录放在容器外持久卷。
+需要从源码构建时执行两条 pip 命令。板测镜像已安装框架版 `7cc7911` wheel 和 OPP 时可直接复用，
+从更新后的框架分支执行 `git archive HEAD tests`，以便这次运行使用修正了 TP 层号的测试脚本。
+[框架版 wheel 与 OPP](https://github.com/GuangyuZhu04/afd-plugin/releases/tag/ascend950-umdk-dsv4-flash-7cc7911)
 
 ```bash
 export SOC_VERSION=950 AFD_BUILD_ASCEND_OPS=1
@@ -149,6 +151,15 @@ MTE 的故障 PC 从 `0x1b20` 修正为 `0x1714`。
 `2.10.0+cpu`、torch-npu `2.10.0.post7` 配套的修复版 wheel。
 保留本轮 `umdk-runtime.json` 中的设备 ELF SHA-256；旧测试的 DispatchSend
 哈希是 `2290fc090ffcd40f47205766b6287f67e1ca6bf63c82f5fd29541aa4c303dae0`。
-先执行四卡 1 行、65 行，再执行八卡 64 行、4096 行的数值回环。
-这些用例同时核对路由记录中的专家 ID、权重和回传 BF16 结果。回环通过后，
-再按上文拉起模型，保留本轮十路请求逐条校验和清理结果。
+
+`7cc7911` 的两次四卡 65 行回环和一次四卡 DeepEP 参考测试均在实板通过。
+三次八卡回环中，Attention rank 0–3 都在第 1 步分别发布了层号 `[1,2,3,4]`。
+同一 DP 的两个 TP 成员因此无法组成 FFN 事务，四个 Attention rank 随后均报
+`CombineRecv [3,7]`。框架实际转发模型的 `self.layer_idx`。回环现按 DP 选层，
+第 1 步应在日志中看到 `[1,1,2,2]`，第 2 步应为 `[2,2,3,3]`。
+[本次实板日志](https://github.com/GuangyuZhu04/afd-plugin/tree/255a47035117d04558fc81bd2e5fca1e1b2703d7/docs/testing/ascend950_umdk_fix_verification_20261127)
+
+用当前分支的回环脚本先跑四卡 1、65 行，再跑八卡 1、64、4096 行。
+每组都须完成三个步骤，逐元素核对回传的 BF16 结果，并检查非空源最后一轮的路由记录。
+八卡实板回环通过后再拉起模型，保留十路请求的逐条结果和清理记录。
+[回环命令](../../../../docs/npu/ascend950_umdk_bringup.md#communication-before-the-first-model-forward) · [无卡重放结果](../../../../docs/npu/ascend950_umdk_bringup.md#november-27-flash-timeout-at-step-1)
