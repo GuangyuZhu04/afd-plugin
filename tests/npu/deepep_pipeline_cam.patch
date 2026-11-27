@@ -1,71 +1,43 @@
 --- a/tests/afd/run_pipeline_cam.py
 +++ b/tests/afd/run_pipeline_cam.py
-@@ -4,7 +4,7 @@
-
- AFDBuffer still owns the device context, the transport registration and the
+@@ -6,3 +6,3 @@
  scheduler side (ffnScheduler/computeReady). The four communication operators are
 -the CAM custom ops (torch.ops.umdk_cam_op_lib.cam_deepep_*), launched with the
 +the CAM custom ops (torch.ops.umdk_cam_op_lib.afd_async_*_arch35), launched with the
  values camConfig() reports for this owner so the harness cannot drift from the
- JIT-launched production path. The default milestone is single round
- (round_step=0); multi-round stays available through --round-step.
-@@ -27,10 +27,13 @@
- import torch_npu
- import torch_npu.profiler
+@@ -29,3 +29,3 @@
  import deep_ep
 -import umdk_cam_op_lib  # noqa: F401 - registers umdk_cam_op_lib torch ops
 +from afd_plugin.compat.npu.ops import ensure_afd_async_ops_available, uses_umdk_async
  from deep_ep.utils.envs import get_hccl_group_name
- from ffn_transaction_runner import run_transaction_ffn
-
-+ensure_afd_async_ops_available()
-+if not uses_umdk_async():
-+    raise RuntimeError('The reference pipeline requires the Ascend 950 UMDK plugin wheel')
- CAM = torch.ops.umdk_cam_op_lib
-
-
-@@ -68,7 +71,7 @@
-
- def receive(owner, cfg, group_name, source_task, status_i32, progress, *, start=False):
+@@ -70,3 +70,3 @@
      """CAM combine_recv in place of owner.combineRecv; outputs are the owner buffers."""
 -    CAM.cam_deepep_combine_recv(
 +    CAM.afd_async_combine_recv_arch35(
          owner.payload, source_task.task, owner.context, owner.control_buffer,
-         owner.round_ledger, owner.combine_recv_workspace, source_task.mask,
-         source_task.output, source_task.idx, source_task.weights, status_i32, progress,
-@@ -81,7 +84,7 @@
-
- def send_dispatch(owner, cfg, group_name, source_task, sf, jetty, status_i32):
+@@ -83,3 +83,3 @@
      """CAM dispatch_send in place of owner.dispatchSend."""
 -    CAM.cam_deepep_dispatch_send(
 +    CAM.afd_async_dispatch_send_arch35(
          source_task.x, sf, source_task.idx, source_task.weights, source_task.mask,
-         source_task.task, owner.context, owner.control_buffer, owner.round_ledger,
-         owner.workspace, jetty, status_i32, group_name,
-@@ -92,7 +95,7 @@
-
- def recv_dispatch(owner, cfg, group_name, recv_sf):
+@@ -94,3 +94,3 @@
      """CAM dispatch_recv in place of owner.dispatchRecv."""
 -    CAM.cam_deepep_dispatch_recv(
 +    CAM.afd_async_dispatch_recv_arch35(
          owner.payload, owner.context, owner.active, owner.execution_state,
-         owner.recv_workspace, owner.control_buffer,
-         owner.recv_x, recv_sf, owner.recv_src_metadata, group_name,
-@@ -106,7 +109,7 @@
-
- def send_combine(owner, cfg, group_name, jetty):
+@@ -108,3 +108,3 @@
      """CAM combine_send in place of owner.combineSend; completion is an owner buffer."""
 -    CAM.cam_deepep_combine_send(
 +    CAM.afd_async_combine_send_arch35(
          owner.combine_x, owner.recv_src_metadata, owner.context, owner.active,
-         owner.control_buffer, owner.execution_state, owner.combine_send_workspace,
-         jetty, owner.completion, group_name,
-@@ -498,7 +501,7 @@
-             _bad_alloc, _bad_align = 64, 128
-             _ok = 0
+@@ -119,2 +119,5 @@
+ def main():
++    ensure_afd_async_ops_available()
++    if not uses_umdk_async():
++        raise RuntimeError('The CAM pipeline requires the Ascend 950 UMDK plugin wheel')
+     parser = argparse.ArgumentParser(description=__doc__)
+@@ -500,3 +503,3 @@
              try:
 -                CAM.cam_deepep_dispatch_recv(
 +                CAM.afd_async_dispatch_recv_arch35(
                      owner.payload, owner.context, owner.active, owner.execution_state,
-                     owner.recv_workspace, owner.control_buffer,
-                     owner.recv_x, recv_sf, owner.recv_src_metadata, group_name,
