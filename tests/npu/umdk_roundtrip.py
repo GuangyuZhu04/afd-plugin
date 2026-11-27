@@ -81,10 +81,13 @@ def check_last_dispatch_records(session, ids, weights):
 
 
 def source_round(session, profile, rank, step, rows, device):
+    dp_rank, tp_rank = divmod(rank, profile.tp)
+    # The FFN scheduler gathers every TP member of a DP at the same layer,
+    # including members that publish zero rows in the first communication round.
     layer = (
         profile.layers[0]
         if step == 0
-        else profile.layers[(rank + step) % len(profile.layers)]
+        else profile.layers[(dp_rank + step) % len(profile.layers)]
     )
     n = rows if step == 0 or rank == 0 else (0 if step == 1 else min(rows, 7))
     context = AFDTransferContext(AFDTransferMetadata(layer, step, [n]))
@@ -100,7 +103,11 @@ def source_round(session, profile, rank, step, rows, device):
     column = torch.arange(profile.hidden, device=device)
     # X in {-1, 0, 1} times an integer gain <= 251 is exactly representable in BF16.
     x = ((token * 7 + column + rank + step) % 17 % 3 - 1).bfloat16()
-    print(f"rank={rank} step={step} layer={layer} valid_rows={n} dispatch", flush=True)
+    print(
+        f"rank={rank} step={step} layer={layer} valid_rows={n} dispatch "
+        f"dp={dp_rank} tp_member={tp_rank}",
+        flush=True,
+    )
     session.dispatch(context, x, ids, weights, n)
     actual = session.combine(step, context)
     check_last_dispatch_records(session, ids, weights)
