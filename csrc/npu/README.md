@@ -7,8 +7,8 @@ Attention-to-Expert and Expert-to-Attention transfers:
 - `torch.ops.afd_ascend.e2a`
 
 The 910C build registers four compact routed operators under `torch.ops.afd_ascend`.
-The 950 build bundles the registered-buffer operators from UMDK at `dcc0350e`
-under `torch.ops.umdk_cam_op_lib`, alongside A2E/E2A. Kernel names match
+The 950 build bundles the registered-buffer operators from UMDK at `fee97356`
+under `torch.ops.umdk_cam_op_lib` with the `_arch35` suffix, alongside A2E/E2A. Kernel names match
 across targets. The ACLNN workspace-query prototypes and wire layouts are
 target-specific. [910C compact protocol](../../docs/design/npu/cam_async_routed_ops.md) ·
 [950 UMDK integration](../../docs/design/npu/ascend950_umdk_async.md).

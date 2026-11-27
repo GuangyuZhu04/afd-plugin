@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- * Description: afd_async_dispatch_recv pybind extension file.
+ * Description: afd_async_dispatch_recv_arch35 pybind extension file.
  * Create: 2026-11-03
  * Note: the three receive buffers are caller-owned so the same storage can be
  *       replayed across rounds; they are passed in and returned.
@@ -51,13 +51,13 @@ constexpr size_t kOutSrcMetadata = 2;
 // caller-owned buffers themselves because the schema marks them mutable.
 void CheckDtype(const at::Tensor &t, at::ScalarType want, const char *name)
 {
-    TORCH_CHECK(t.scalar_type() == want, "afd_async_dispatch_recv: ", name,
+    TORCH_CHECK(t.scalar_type() == want, "afd_async_dispatch_recv_arch35: ", name,
         " must have dtype ", want, ", got ", t.scalar_type());
 }
 
 void CheckDim(const at::Tensor &t, int64_t dim, const char *name)
 {
-    TORCH_CHECK(t.dim() == dim, "afd_async_dispatch_recv: ", name, " must be ",
+    TORCH_CHECK(t.dim() == dim, "afd_async_dispatch_recv_arch35: ", name, " must be ",
         dim, "-D, got ", t.dim(), "-D");
 }
 
@@ -68,7 +68,7 @@ void CheckByteBlob(const at::Tensor &t, const char *name)
 }
 }  // namespace
 
-std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImplNpu(
+std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvArch35ImplNpu(
     const at::Tensor &payload,
     const at::Tensor &context,
     const at::Tensor &active,
@@ -170,7 +170,7 @@ static void CheckDispatchOutputs(const at::Tensor &recvX, const at::Tensor &recv
         "dispatch_recv: recv_src_metadata must be [max_padded_tokens, 4] int32");
 }
 
-std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImplMeta(
+std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvArch35ImplMeta(
     const at::Tensor &payload,
     const at::Tensor &context,
     const at::Tensor &active,
@@ -248,7 +248,7 @@ std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImplMeta(
     return std::make_tuple(recvX, recvSf, recvSrcMetadata);
 }
 
-std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImpl(
+std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvArch35Impl(
     const at::Tensor &payload,
     const at::Tensor &context,
     const at::Tensor &active,
@@ -279,8 +279,8 @@ std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImpl(
     const int64_t numVecCores)
 {
     static auto op = torch::Dispatcher::singleton()
-                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_dispatch_recv", "")
-                         .typed<decltype(AfdAsyncDispatchRecvImpl)>();
+                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_dispatch_recv_arch35", "")
+                         .typed<decltype(AfdAsyncDispatchRecvArch35Impl)>();
     return op.call(payload, context, active, executionState, afdWorkspace,
         controlBuffer, recvX, recvSf, recvSrcMetadata, groupEp, numRanks,
         numExperts, numTopk, numSourceLanes, numLayers, maxExpandedTokens,
@@ -326,7 +326,7 @@ public:
         const int64_t numVecCores)
     {
         at::AutoDispatchBelowADInplaceOrView guard;
-        const auto outs = AfdAsyncDispatchRecvImpl(payload, context, active,
+        const auto outs = AfdAsyncDispatchRecvArch35Impl(payload, context, active,
             executionState, afdWorkspace, controlBuffer, recvX, recvSf,
             recvSrcMetadata, groupEp, numRanks, numExperts, numTopk, numSourceLanes,
             numLayers, maxExpandedTokens, maxPaddedTokens, expertAlignment,
@@ -345,7 +345,7 @@ public:
     }
 };
 
-std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImplAutograd(
+std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvArch35ImplAutograd(
     const at::Tensor &payload,
     const at::Tensor &context,
     const at::Tensor &active,
@@ -386,15 +386,15 @@ std::tuple<at::Tensor, at::Tensor, at::Tensor> AfdAsyncDispatchRecvImplAutograd(
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, PrivateUse1, m)
 {
-    m.impl("afd_async_dispatch_recv", &AfdAsyncDispatchRecvImplNpu);
+    m.impl("afd_async_dispatch_recv_arch35", &AfdAsyncDispatchRecvArch35ImplNpu);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, AutogradPrivateUse1, m)
 {
-    m.impl("afd_async_dispatch_recv", &AfdAsyncDispatchRecvImplAutograd);
+    m.impl("afd_async_dispatch_recv_arch35", &AfdAsyncDispatchRecvArch35ImplAutograd);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, Meta, m)
 {
-    m.impl("afd_async_dispatch_recv", &AfdAsyncDispatchRecvImplMeta);
+    m.impl("afd_async_dispatch_recv_arch35", &AfdAsyncDispatchRecvArch35ImplMeta);
 }

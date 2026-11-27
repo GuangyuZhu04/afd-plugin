@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- * Description: afd_async_dispatch_send pybind extension file.
+ * Description: afd_async_dispatch_send_arch35 pybind extension file.
  * Create: 2026-11-03
  * Note: AFD control-plane buffers are caller-owned tensors; the output status
  *       buffer is passed in and returned so the scheduler can hold the same
@@ -44,13 +44,13 @@ constexpr size_t kForwardArgCount = 23;
 // return that buffer itself because the schema marks it mutable.
 void CheckDtype(const at::Tensor &t, at::ScalarType want, const char *name)
 {
-    TORCH_CHECK(t.scalar_type() == want, "afd_async_dispatch_send: ", name,
+    TORCH_CHECK(t.scalar_type() == want, "afd_async_dispatch_send_arch35: ", name,
         " must have dtype ", want, ", got ", t.scalar_type());
 }
 
 void CheckDim(const at::Tensor &t, int64_t dim, const char *name)
 {
-    TORCH_CHECK(t.dim() == dim, "afd_async_dispatch_send: ", name, " must be ",
+    TORCH_CHECK(t.dim() == dim, "afd_async_dispatch_send_arch35: ", name, " must be ",
         dim, "-D, got ", t.dim(), "-D");
 }
 
@@ -61,7 +61,7 @@ void CheckByteBlob(const at::Tensor &t, const char *name)
 }
 }  // namespace
 
-at::Tensor AfdAsyncDispatchSendImplNpu(
+at::Tensor AfdAsyncDispatchSendArch35ImplNpu(
     const at::Tensor &x,
     const at::Tensor &sf,
     const at::Tensor &topkIdx,
@@ -118,7 +118,7 @@ static void CheckDispatchRoutes(const at::Tensor &topkIdx, const at::Tensor &top
     TORCH_CHECK(tokenMask.size(0) == tokens, "dispatch_send: token_mask must be [tokens]");
 }
 
-at::Tensor AfdAsyncDispatchSendImplMeta(
+at::Tensor AfdAsyncDispatchSendArch35ImplMeta(
     const at::Tensor &x,
     const at::Tensor &sf,
     const at::Tensor &topkIdx,
@@ -202,7 +202,7 @@ at::Tensor AfdAsyncDispatchSendImplMeta(
     return sendStatus;
 }
 
-at::Tensor AfdAsyncDispatchSendImpl(
+at::Tensor AfdAsyncDispatchSendArch35Impl(
     const at::Tensor &x,
     const at::Tensor &sf,
     const at::Tensor &topkIdx,
@@ -228,8 +228,8 @@ at::Tensor AfdAsyncDispatchSendImpl(
     const int64_t numVecCores)
 {
     static auto op = torch::Dispatcher::singleton()
-                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_dispatch_send", "")
-                         .typed<decltype(AfdAsyncDispatchSendImpl)>();
+                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_dispatch_send_arch35", "")
+                         .typed<decltype(AfdAsyncDispatchSendArch35Impl)>();
     return op.call(x, sf, topkIdx, topkWeights, tokenMask, taskInfo, context,
         controlBuffer, roundLedger, afdWorkspace, jettyPtrs, sendStatus, groupEp,
         numRanks, numExperts, numTopk, numTokensPerTile, sfTokenStride,
@@ -265,7 +265,7 @@ public:
         const int64_t numVecCores)
     {
         at::AutoDispatchBelowADInplaceOrView guard;
-        return AfdAsyncDispatchSendImpl(x, sf, topkIdx, topkWeights, tokenMask,
+        return AfdAsyncDispatchSendArch35Impl(x, sf, topkIdx, topkWeights, tokenMask,
             taskInfo, context, controlBuffer, roundLedger, afdWorkspace, jettyPtrs,
             sendStatus, groupEp, numRanks, numExperts, numTopk, numTokensPerTile,
             sfTokenStride, sfHiddenStride, numSfPacks, timeoutCycles, sendStatusWords,
@@ -280,7 +280,7 @@ public:
     }
 };
 
-at::Tensor AfdAsyncDispatchSendImplAutograd(
+at::Tensor AfdAsyncDispatchSendArch35ImplAutograd(
     const at::Tensor &x,
     const at::Tensor &sf,
     const at::Tensor &topkIdx,
@@ -314,15 +314,15 @@ at::Tensor AfdAsyncDispatchSendImplAutograd(
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, PrivateUse1, m)
 {
-    m.impl("afd_async_dispatch_send", &AfdAsyncDispatchSendImplNpu);
+    m.impl("afd_async_dispatch_send_arch35", &AfdAsyncDispatchSendArch35ImplNpu);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, AutogradPrivateUse1, m)
 {
-    m.impl("afd_async_dispatch_send", &AfdAsyncDispatchSendImplAutograd);
+    m.impl("afd_async_dispatch_send_arch35", &AfdAsyncDispatchSendArch35ImplAutograd);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, Meta, m)
 {
-    m.impl("afd_async_dispatch_send", &AfdAsyncDispatchSendImplMeta);
+    m.impl("afd_async_dispatch_send_arch35", &AfdAsyncDispatchSendArch35ImplMeta);
 }

@@ -33,6 +33,9 @@ cd "$run"
 python -m pytest -q tests/npu/test_umdk_meta_dispatch.py tests/npu/test_umdk_meta_combine.py
 ```
 
+The four 950 PyTorch calls are `afd_async_dispatch_send_arch35`,
+`afd_async_dispatch_recv_arch35`, `afd_async_combine_send_arch35` and
+`afd_async_combine_recv_arch35`, under `torch.ops.umdk_cam_op_lib`.
 The Meta fixtures explicitly load `afd_plugin._C_ascend` through the plugin
 loader and require the 950 registered-buffer provider. They exercise the
 schemas without a device or a separate UMDK Python package.

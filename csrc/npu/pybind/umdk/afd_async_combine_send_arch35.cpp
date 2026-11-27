@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- * Description: afd_async_combine_send pybind extension file.
+ * Description: afd_async_combine_send_arch35 pybind extension file.
  * Create: 2026-11-03
  * Note: the completion buffer is scheduler-owned, so it is passed in and
  *       returned instead of being allocated per call.
@@ -45,13 +45,13 @@ constexpr size_t kForwardArgCount = 22;
 // return that buffer itself because the schema marks it mutable.
 void CheckDtype(const at::Tensor &t, at::ScalarType want, const char *name)
 {
-    TORCH_CHECK(t.scalar_type() == want, "afd_async_combine_send: ", name,
+    TORCH_CHECK(t.scalar_type() == want, "afd_async_combine_send_arch35: ", name,
         " must have dtype ", want, ", got ", t.scalar_type());
 }
 
 void CheckDim(const at::Tensor &t, int64_t dim, const char *name)
 {
-    TORCH_CHECK(t.dim() == dim, "afd_async_combine_send: ", name, " must be ",
+    TORCH_CHECK(t.dim() == dim, "afd_async_combine_send_arch35: ", name, " must be ",
         dim, "-D, got ", t.dim(), "-D");
 }
 
@@ -62,7 +62,7 @@ void CheckByteBlob(const at::Tensor &t, const char *name)
 }
 }  // namespace
 
-at::Tensor AfdAsyncCombineSendImplNpu(
+at::Tensor AfdAsyncCombineSendArch35ImplNpu(
     const at::Tensor &x,
     const at::Tensor &srcMetadata,
     const at::Tensor &context,
@@ -117,7 +117,7 @@ at::Tensor AfdAsyncCombineSendImplNpu(
     return completion;
 }
 
-at::Tensor AfdAsyncCombineSendImplMeta(
+at::Tensor AfdAsyncCombineSendArch35ImplMeta(
     const at::Tensor &x,
     const at::Tensor &srcMetadata,
     const at::Tensor &context,
@@ -201,7 +201,7 @@ at::Tensor AfdAsyncCombineSendImplMeta(
     return completion;
 }
 
-at::Tensor AfdAsyncCombineSendImpl(
+at::Tensor AfdAsyncCombineSendArch35Impl(
     const at::Tensor &x,
     const at::Tensor &srcMetadata,
     const at::Tensor &context,
@@ -226,8 +226,8 @@ at::Tensor AfdAsyncCombineSendImpl(
     const int64_t numVecCores)
 {
     static auto op = torch::Dispatcher::singleton()
-                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_combine_send", "")
-                         .typed<decltype(AfdAsyncCombineSendImpl)>();
+                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_combine_send_arch35", "")
+                         .typed<decltype(AfdAsyncCombineSendArch35Impl)>();
     return op.call(x, srcMetadata, context, active, controlBuffer, executionState,
         afdWorkspace, jettyPtrs, completion, groupEp, numSrcRanks, numRanks,
         numExperts, numTopk, numSourceLanes, numLayers, maxPaddedTokens,
@@ -262,7 +262,7 @@ public:
         const int64_t numVecCores)
     {
         at::AutoDispatchBelowADInplaceOrView guard;
-        return AfdAsyncCombineSendImpl(x, srcMetadata, context, active,
+        return AfdAsyncCombineSendArch35Impl(x, srcMetadata, context, active,
             controlBuffer, executionState, afdWorkspace, jettyPtrs, completion,
             groupEp, numSrcRanks, numRanks, numExperts, numTopk, numSourceLanes,
             numLayers, maxPaddedTokens, numTokensPerTile, rankIdx, timeoutCycles,
@@ -277,7 +277,7 @@ public:
     }
 };
 
-at::Tensor AfdAsyncCombineSendImplAutograd(
+at::Tensor AfdAsyncCombineSendArch35ImplAutograd(
     const at::Tensor &x,
     const at::Tensor &srcMetadata,
     const at::Tensor &context,
@@ -310,15 +310,15 @@ at::Tensor AfdAsyncCombineSendImplAutograd(
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, PrivateUse1, m)
 {
-    m.impl("afd_async_combine_send", &AfdAsyncCombineSendImplNpu);
+    m.impl("afd_async_combine_send_arch35", &AfdAsyncCombineSendArch35ImplNpu);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, AutogradPrivateUse1, m)
 {
-    m.impl("afd_async_combine_send", &AfdAsyncCombineSendImplAutograd);
+    m.impl("afd_async_combine_send_arch35", &AfdAsyncCombineSendArch35ImplAutograd);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, Meta, m)
 {
-    m.impl("afd_async_combine_send", &AfdAsyncCombineSendImplMeta);
+    m.impl("afd_async_combine_send_arch35", &AfdAsyncCombineSendArch35ImplMeta);
 }

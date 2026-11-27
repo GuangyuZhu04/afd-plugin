@@ -960,9 +960,16 @@ def test_dsv4_a5_umdk_launch_profile(
     assert attention[attention.index("--data-parallel-address") + 1] == host
 
 
-@pytest.mark.parametrize("ffn_mxfp_ranks", [(4, 5, 6, 7), (4, 5, 6)])
+@pytest.mark.parametrize(
+    ("ffn_mxfp_ranks", "suffix", "missing_role"),
+    [
+        ((4, 5, 6, 7), "_arch35", None),
+        ((4, 5, 6), "_arch35", "ffn"),
+        ((4, 5, 6, 7), "", "attention"),
+    ],
+)
 def test_a5_acceptance_attributes_answers_to_registered_mxfp_workers(
-    tmp_path, monkeypatch, ffn_mxfp_ranks
+    tmp_path, monkeypatch, ffn_mxfp_ranks, suffix, missing_role
 ):
     monkeypatch.setattr(
         "tests.e2e.models.deepseek_v4_flash.completions.evaluate_completions",
@@ -970,7 +977,8 @@ def test_a5_acceptance_attributes_answers_to_registered_mxfp_workers(
     )
     for role, ranks in (("attention", range(4)), ("ffn", range(4, 8))):
         lines = [
-            f"UMDK AFD registered buffers: role={role} world_rank={rank}"
+            f"UMDK AFD registered buffers: role={role} world_rank={rank} "
+            f"schema=umdk_cam_op_lib::afd_async_dispatch_send{suffix}"
             for rank in ranks
         ]
         if role == "ffn":
@@ -983,8 +991,10 @@ def test_a5_acceptance_attributes_answers_to_registered_mxfp_workers(
     args = dict(
         base_url="", model_name="", checkpoint="", output_path=tmp_path / "evaluation"
     )
-    if len(ffn_mxfp_ranks) != 4:
-        with pytest.raises(RuntimeError, match="Incomplete UMDK evidence for ffn"):
+    if missing_role:
+        with pytest.raises(
+            RuntimeError, match=f"Incomplete UMDK evidence for {missing_role}"
+        ):
             task.execute(**args)
     else:
         assert task.execute(**args)["umdk"] == {

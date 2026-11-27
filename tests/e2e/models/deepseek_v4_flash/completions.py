@@ -197,7 +197,8 @@ def _registered_mxfp_workers(
         ) as log:
             for line in log:
                 if match := re.search(
-                    rf"UMDK AFD registered buffers: role={role} world_rank=(\d+)\b",
+                    rf"UMDK AFD registered buffers: role={role} world_rank=(\d+) "
+                    r"schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35\b",
                     line,
                 ):
                     registered.add(int(match[1]))

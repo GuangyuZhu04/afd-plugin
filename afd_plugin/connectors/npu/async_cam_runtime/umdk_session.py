@@ -179,9 +179,11 @@ class UmdkSession(FFNExecutionSession):
             o.compileComputeReadyOnly()
         self.cfg = o.camConfig()
         cam_logger.info(
-            "UMDK AFD registered buffers: role=%s world_rank=%d lane_rows=%d layers=%d",
+            "UMDK AFD registered buffers: role=%s world_rank=%d schema=%s "
+            "lane_rows=%d layers=%d",
             t.role,
             t.world_rank,
+            self.ops.afd_async_dispatch_send_arch35.default._schema.name,
             self.window,
             len(self.layout.layers),
         )
@@ -242,14 +244,14 @@ class UmdkSession(FFNExecutionSession):
             self.send_stream.wait_event(ready)
             n = hidden.size(0)
             log_cam_op_values(
-                "afd_async_dispatch_send",
+                "afd_async_dispatch_send_arch35",
                 "inputs",
                 x=hidden,
                 task_info=task,
                 valid_rows=valid_rows,
                 rounds=rounds,
             )
-            self.ops.afd_async_dispatch_send(
+            self.ops.afd_async_dispatch_send_arch35(
                 hidden,
                 self.sf,
                 idx[:n],
@@ -293,13 +295,13 @@ class UmdkSession(FFNExecutionSession):
         else:
             torch.npu.current_stream(self.device).wait_event(p.inputs_ready)
         log_cam_op_values(
-            "afd_async_combine_recv",
+            "afd_async_combine_recv_arch35",
             "inputs",
             task_info=p.task,
             combined_x=p.output,
             stage=stage,
         )
-        self.ops.afd_async_combine_recv(
+        self.ops.afd_async_combine_recv_arch35(
             o.payload,
             p.task,
             o.context,
@@ -334,7 +336,9 @@ class UmdkSession(FFNExecutionSession):
                 f"layer {p.context.metadata.layer_idx}: {recv_status}"
             )
         combined = p.output[: p.rows]
-        log_cam_op_values("afd_async_combine_recv", "outputs", combined_x=combined)
+        log_cam_op_values(
+            "afd_async_combine_recv_arch35", "outputs", combined_x=combined
+        )
         self.pending = None
         return combined
 
@@ -393,12 +397,12 @@ class UmdkSession(FFNExecutionSession):
                 if monotonic() >= deadline:
                     raise TimeoutError("UMDK timed out waiting for an FFN transaction")
         log_cam_op_values(
-            "afd_async_dispatch_recv",
+            "afd_async_dispatch_recv_arch35",
             "inputs",
             active=o.active,
             execution_state=o.execution_state,
         )
-        self.ops.afd_async_dispatch_recv(
+        self.ops.afd_async_dispatch_recv_arch35(
             o.payload,
             o.context,
             o.active,
@@ -453,7 +457,7 @@ class UmdkSession(FFNExecutionSession):
             metadata, UmdkSlice(tx[1], tx[7], groups)
         )
         log_cam_op_values(
-            "afd_async_dispatch_recv",
+            "afd_async_dispatch_recv_arch35",
             "outputs",
             transaction=tx[1],
             slice_index=tx[7],
@@ -482,13 +486,13 @@ class UmdkSession(FFNExecutionSession):
             target.copy_(result)
         o.computeReady()
         log_cam_op_values(
-            "afd_async_combine_send",
+            "afd_async_combine_send_arch35",
             "inputs",
             combine_x=target,
             transaction=context.states.transaction,
             slice_index=context.states.index,
         )
-        self.ops.afd_async_combine_send(
+        self.ops.afd_async_combine_send_arch35(
             o.combine_x,
             o.recv_src_metadata,
             o.context,

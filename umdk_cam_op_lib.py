@@ -12,7 +12,7 @@ if not uses_umdk_async():
 
 from torch import ops  # noqa: E402 -- loading the extension registers the schemas
 
-afd_async_dispatch_send = ops.umdk_cam_op_lib.afd_async_dispatch_send
-afd_async_dispatch_recv = ops.umdk_cam_op_lib.afd_async_dispatch_recv
-afd_async_combine_send = ops.umdk_cam_op_lib.afd_async_combine_send
-afd_async_combine_recv = ops.umdk_cam_op_lib.afd_async_combine_recv
+afd_async_dispatch_send_arch35 = ops.umdk_cam_op_lib.afd_async_dispatch_send_arch35
+afd_async_dispatch_recv_arch35 = ops.umdk_cam_op_lib.afd_async_dispatch_recv_arch35
+afd_async_combine_send_arch35 = ops.umdk_cam_op_lib.afd_async_combine_send_arch35
+afd_async_combine_recv_arch35 = ops.umdk_cam_op_lib.afd_async_combine_recv_arch35

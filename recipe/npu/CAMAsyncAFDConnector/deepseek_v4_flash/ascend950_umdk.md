@@ -3,13 +3,13 @@
 这个用例运行两个 eager ModelRunnerV2 服务。前四张设备组成 Attention DP2/TP2，
 负责 Hash/普通门控、共享专家和最终加权合并。后四张组成 FFN EP4/TP1，每个 rank
 保存连续的一段路由专家。Attention 与 FFN 使用插件内置的四个
-`torch.ops.umdk_cam_op_lib.afd_async_*` 算子，在线上传输 BF16。
+`torch.ops.umdk_cam_op_lib.afd_async_*_arch35` 算子，在线上传输 BF16。
 
 ## 版本与安装
 
 | 组件 | 本用例的版本或配置 |
 | --- | --- |
-| 算子基线 | afd-plugin `codex/ascend950-umdk-afd`，算子来自 UMDK `cam_feature@dcc0350e` |
+| 算子基线 | afd-plugin `codex/ascend950-umdk-afd`，算子来自 UMDK `cam_feature@fee97356` |
 | 框架适配 | `codex/ascend950-umdk-dsv4-flash`，重放 [PR #628](https://github.com/vllm-project/afd-plugin/pull/628) 的模型侧改动 |
 | vLLM | `0.32.0+empty.g5df63a7`，源码 [5df63a7203cd](https://github.com/vllm-project/vllm/commit/5df63a7203cdb9328d824a27b682e77c7b9928be) |
 | vLLM-Ascend | `0.32.0.dev0+gbd42eea`，源码 [bd42eea01d83](https://github.com/vllm-project/vllm-ascend/commit/bd42eea01d8312c4df469fabaed45f77a12df4d3) |
@@ -52,7 +52,7 @@ print(umdk_worker_environment())
 ensure_afd_async_ops_available()
 assert uses_umdk_async() and hasattr(deep_ep, "AFDBuffer")
 print(get_afd_cust_opapi_path())
-print(torch.ops.umdk_cam_op_lib.afd_async_dispatch_recv.default._schema)
+print(torch.ops.umdk_cam_op_lib.afd_async_dispatch_recv_arch35.default._schema)
 PY
 ```
 
@@ -101,7 +101,8 @@ python -m pytest -q -s --basetemp "$run_dir/pytest" \
 
 `plan.json` 给出两组实际启动命令。设备测试会启动 Attention 和 FFN，发送 10 个重叠请求，逐条核对 19 到 28 的精确答案及 `finish_reason=stop`，最后检查严格清理。保留
 `run.json`、`evaluation/completions.json`、`attention.log` 和 `ffn.log`。
-用例从服务日志核对 Attention 0–3 和 FFN 4–7 的 UMDK 注册，以及四个 FFN rank
+用例从服务日志逐 rank 核对 Attention 0–3 和 FFN 4–7 实际加载的
+`umdk_cam_op_lib::afd_async_dispatch_send_arch35` schema，以及四个 FFN rank
 的 W4A8MXFP executor，将结果写入 `run.json` 的 `phases[0].result.umdk`。
 定位收发问题时可设置 `AFD_CAM_OP_IO_LOG=1`，查看四个真实注册缓冲区调用
 及接收切片的有效行数和物理行数。
@@ -115,7 +116,8 @@ python -m pytest -q -s --basetemp "$run_dir/pytest" \
 
 ## 11 月 26 日故障的证据范围
 
-报告分支 `fb7b1bc` 补传的服务日志来自框架提交 `cbd8e2a`。存档的 Attention
+报告分支 `fb7b1bc` 补传的服务日志来自框架提交 `cbd8e2a`，使用 !3969 改名前的
+950 PyTorch 入口。两版的设备内核及内存协议相同。存档的 Attention
 日志在 13:52:06 首次显示 rank 3 从 `recv_status` 拷回状态时收到 507035。
 AIV 0 的 MTE 错误码 95 同时涵盖非法 GM 地址和跨设备访问超时。FFN 在
 13:52:27 才报告对端断链。`run.json` 中 `phases=[]`、

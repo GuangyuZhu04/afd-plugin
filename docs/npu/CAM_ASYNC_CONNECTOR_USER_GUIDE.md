@@ -323,7 +323,7 @@ Attention and on every FFN process.
 
 At initialization, the runtime verifies all four
 `torch.ops.afd_ascend.afd_async_*` operators on 910C, or the four
-`torch.ops.umdk_cam_op_lib.afd_async_*` operators and the registered-buffer
+`torch.ops.umdk_cam_op_lib.afd_async_*_arch35` operators and the registered-buffer
 vendor library on Ascend 950. Missing source operators fail startup.
 
 ## Current limitations

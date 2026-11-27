@@ -26,6 +26,12 @@ AFD_ASYNC_DISPATCH_SEND = "afd_async_dispatch_send"
 AFD_ASYNC_DISPATCH_RECV = "afd_async_dispatch_recv"
 AFD_ASYNC_COMBINE_SEND = "afd_async_combine_send"
 AFD_ASYNC_COMBINE_RECV = "afd_async_combine_recv"
+_UMDK_ASYNC_SCHEMAS = (
+    ("afd_async_dispatch_send_arch35", 23, 1, "send_status"),
+    ("afd_async_dispatch_recv_arch35", 28, 3, "recv_src_metadata"),
+    ("afd_async_combine_send_arch35", 22, 1, "completion"),
+    ("afd_async_combine_recv_arch35", 24, 5, "return_progress"),
+)
 
 
 def get_afd_cann_vendor_path() -> Path:
@@ -186,12 +192,7 @@ def _check_umdk_async(torch: object) -> None:
     if not hasattr(deep_ep, "AFDBuffer"):
         raise RuntimeError("Ascend 950 requires a DeepEP build exporting AFDBuffer")
     namespace = vars(torch)["ops"].umdk_cam_op_lib
-    for name, arity, outputs, marker in (
-        (AFD_ASYNC_DISPATCH_SEND, 23, 1, "send_status"),
-        (AFD_ASYNC_DISPATCH_RECV, 28, 3, "recv_src_metadata"),
-        (AFD_ASYNC_COMBINE_SEND, 22, 1, "completion"),
-        (AFD_ASYNC_COMBINE_RECV, 24, 5, "return_progress"),
-    ):
+    for name, arity, outputs, marker in _UMDK_ASYNC_SCHEMAS:
         schema = getattr(namespace, name).default._schema
         args = {a.name for a in schema.arguments}
         if (
@@ -217,7 +218,13 @@ def ensure_cam_p2p_ops_available() -> None:
         if (
             get_afd_cust_opapi_path().name == _UMDK_OPAPI_NAME
             and "afd_plugin._C_ascend" not in sys.modules
-            and hasattr(torch.ops.umdk_cam_op_lib, AFD_ASYNC_DISPATCH_SEND)
+            and (
+                hasattr(torch.ops.umdk_cam_op_lib, AFD_ASYNC_DISPATCH_SEND)
+                or any(
+                    hasattr(torch.ops.umdk_cam_op_lib, op[0])
+                    for op in _UMDK_ASYNC_SCHEMAS
+                )
+            )
         ):
             raise RuntimeError(
                 "An external UMDK dispatcher already owns the AFD schemas"
@@ -259,7 +266,8 @@ def ensure_afd_async_ops_available() -> None:
     except AttributeError as exc:
         raise RuntimeError(
             "Async CAM requires the four target-specific afd_async operators "
-            "(umdk_cam_op_lib on 950, afd_ascend on 910C). Rebuild the AFD extension."
+            "(umdk_cam_op_lib with _arch35 on 950, afd_ascend on 910C). "
+            "Rebuild the AFD extension."
         ) from exc
 
     # The bindings open the configured vendor by path, or libopapi.so when
