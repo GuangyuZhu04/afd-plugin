@@ -1,0 +1,537 @@
+{
+  "case_id": "afd-dsv4-flash-async-cam-dp2tp2-ep4",
+  "run_id": "51199e5c3c13435881ac054ea6be5140",
+  "canonical": {
+    "id": "afd-dsv4-flash-async-cam-dp2tp2-ep4",
+    "model": "DeepSeek-V4-Flash",
+    "deployment": {
+      "backend": "npu",
+      "attention": {
+        "dp": 2,
+        "tp": 2,
+        "execution": "eager",
+        "dbo": null,
+        "vllm_args": [
+          "--all2all-backend",
+          "allgather_reducescatter",
+          "--no-disable-hybrid-kv-cache-manager",
+          "--tool-call-parser",
+          "deepseek_v4",
+          "--enable-auto-tool-choice",
+          "--reasoning-parser",
+          "deepseek_v4"
+        ],
+        "additional_config": [
+          [
+            "enable_flashcomm1",
+            true
+          ],
+          [
+            "enable_cpu_binding",
+            true
+          ],
+          [
+            "enable_force_eplb",
+            false
+          ],
+          [
+            "enable_dsa_cp",
+            false
+          ],
+          [
+            "multistream_dsv4_dsa_overlap",
+            false
+          ]
+        ],
+        "compilation_config": [],
+        "data_parallel_rpc_port": null
+      },
+      "ffn": {
+        "dp": 4,
+        "tp": 1,
+        "execution": "eager",
+        "dbo": null,
+        "vllm_args": [
+          "--all2all-backend",
+          "flashinfer_all2allv",
+          "--expert-placement-strategy",
+          "linear"
+        ],
+        "additional_config": [
+          [
+            "enable_flashcomm1",
+            false
+          ],
+          [
+            "enable_cpu_binding",
+            true
+          ],
+          [
+            "enable_force_eplb",
+            false
+          ],
+          [
+            "enable_dsa_cp",
+            false
+          ],
+          [
+            "multistream_dsv4_dsa_overlap",
+            false
+          ],
+          [
+            "enable_fused_mc2",
+            0
+          ]
+        ],
+        "compilation_config": [],
+        "data_parallel_rpc_port": null
+      },
+      "connector": "CAMAsyncAFDConnector",
+      "cleanup_profile": "strict",
+      "dbo": null,
+      "cudagraph_capture_size": null,
+      "max_num_seqs": 16,
+      "max_num_batched_tokens": 8192,
+      "compute_gate_on_attention": true,
+      "connector_extra_config": [
+        [
+          "dynamicQuant",
+          0
+        ],
+        [
+          "attn_ranks_per_dp",
+          2
+        ],
+        [
+          "hccl_buffer_size",
+          2048
+        ]
+      ],
+      "pin_attention_address": true,
+      "compilation_config": [],
+      "shutdown_timeout_s": 90,
+      "worker_shutdown_timeout_s": 60,
+      "termination_timeout_s": 120,
+      "ffn_service": null,
+      "prefill": null
+    },
+    "phases": [
+      {
+        "name": "evaluation",
+        "task": {
+          "check_answer": true,
+          "answer_repetitions": 1,
+          "first_request_index": 0,
+          "num_requests": 10,
+          "max_tokens": 256,
+          "timeout_s": 300,
+          "first_operand": 12,
+          "second_operand": 7,
+          "umdk_rank_counts": [
+            4,
+            4
+          ]
+        },
+        "checks": []
+      }
+    ],
+    "served_model_name_prefix": "dsv4-flash",
+    "common_vllm_args": [
+      "--api-server-count",
+      "1",
+      "--seed",
+      "1024",
+      "--max-model-len",
+      "1048576",
+      "--block-size",
+      "128",
+      "--gpu-memory-utilization",
+      "0.7",
+      "--attention_config.indexer_kv_dtype",
+      "fp8",
+      "--tokenizer-mode",
+      "deepseek_v4",
+      "--model-loader-extra-config",
+      "{\"enable_multithread_load\": true, \"num_threads\": 128}",
+      "--trust-remote-code",
+      "--no-enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--dtype",
+      "bfloat16"
+    ],
+    "worker_extension": null,
+    "worker_environment": [
+      [
+        "VLLM_LOGGING_LEVEL",
+        "INFO"
+      ],
+      [
+        "BATCH_SIZE_FACTOR",
+        "1.0"
+      ],
+      [
+        "HCCL_BUFFSIZE",
+        "2048"
+      ],
+      [
+        "HCCL_IF_IP",
+        "192.168.16.111"
+      ]
+    ]
+  },
+  "effective": {
+    "id": "afd-dsv4-flash-async-cam-dp2tp2-ep4",
+    "model": "DeepSeek-V4-Flash",
+    "deployment": {
+      "backend": "npu",
+      "attention": {
+        "dp": 2,
+        "tp": 2,
+        "execution": "eager",
+        "dbo": null,
+        "vllm_args": [
+          "--all2all-backend",
+          "allgather_reducescatter",
+          "--no-disable-hybrid-kv-cache-manager",
+          "--tool-call-parser",
+          "deepseek_v4",
+          "--enable-auto-tool-choice",
+          "--reasoning-parser",
+          "deepseek_v4"
+        ],
+        "additional_config": [
+          [
+            "enable_flashcomm1",
+            true
+          ],
+          [
+            "enable_cpu_binding",
+            true
+          ],
+          [
+            "enable_force_eplb",
+            false
+          ],
+          [
+            "enable_dsa_cp",
+            false
+          ],
+          [
+            "multistream_dsv4_dsa_overlap",
+            false
+          ]
+        ],
+        "compilation_config": [],
+        "data_parallel_rpc_port": null
+      },
+      "ffn": {
+        "dp": 4,
+        "tp": 1,
+        "execution": "eager",
+        "dbo": null,
+        "vllm_args": [
+          "--all2all-backend",
+          "flashinfer_all2allv",
+          "--expert-placement-strategy",
+          "linear"
+        ],
+        "additional_config": [
+          [
+            "enable_flashcomm1",
+            false
+          ],
+          [
+            "enable_cpu_binding",
+            true
+          ],
+          [
+            "enable_force_eplb",
+            false
+          ],
+          [
+            "enable_dsa_cp",
+            false
+          ],
+          [
+            "multistream_dsv4_dsa_overlap",
+            false
+          ],
+          [
+            "enable_fused_mc2",
+            0
+          ]
+        ],
+        "compilation_config": [],
+        "data_parallel_rpc_port": null
+      },
+      "connector": "CAMAsyncAFDConnector",
+      "cleanup_profile": "strict",
+      "dbo": null,
+      "cudagraph_capture_size": null,
+      "max_num_seqs": 16,
+      "max_num_batched_tokens": 8192,
+      "compute_gate_on_attention": true,
+      "connector_extra_config": [
+        [
+          "dynamicQuant",
+          0
+        ],
+        [
+          "attn_ranks_per_dp",
+          2
+        ],
+        [
+          "hccl_buffer_size",
+          2048
+        ]
+      ],
+      "pin_attention_address": true,
+      "compilation_config": [],
+      "shutdown_timeout_s": 90,
+      "worker_shutdown_timeout_s": 60,
+      "termination_timeout_s": 120,
+      "ffn_service": null,
+      "prefill": null
+    },
+    "phases": [
+      {
+        "name": "evaluation",
+        "task": {
+          "check_answer": true,
+          "answer_repetitions": 1,
+          "first_request_index": 0,
+          "num_requests": 10,
+          "max_tokens": 256,
+          "timeout_s": 300,
+          "first_operand": 12,
+          "second_operand": 7,
+          "umdk_rank_counts": [
+            4,
+            4
+          ]
+        },
+        "checks": []
+      }
+    ],
+    "served_model_name_prefix": "dsv4-flash",
+    "common_vllm_args": [
+      "--api-server-count",
+      "1",
+      "--seed",
+      "1024",
+      "--max-model-len",
+      "1048576",
+      "--block-size",
+      "128",
+      "--gpu-memory-utilization",
+      "0.7",
+      "--attention_config.indexer_kv_dtype",
+      "fp8",
+      "--tokenizer-mode",
+      "deepseek_v4",
+      "--model-loader-extra-config",
+      "{\"enable_multithread_load\": true, \"num_threads\": 128}",
+      "--trust-remote-code",
+      "--no-enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--dtype",
+      "bfloat16"
+    ],
+    "worker_extension": null,
+    "worker_environment": [
+      [
+        "VLLM_LOGGING_LEVEL",
+        "INFO"
+      ],
+      [
+        "BATCH_SIZE_FACTOR",
+        "1.0"
+      ],
+      [
+        "HCCL_BUFFSIZE",
+        "2048"
+      ],
+      [
+        "HCCL_IF_IP",
+        "192.168.16.111"
+      ]
+    ]
+  },
+  "bindings": {
+    "model": "/mnt/xds/sfs/DeepSeek-V4-Flash",
+    "vllm_bin": "/usr/local/python3.12.16/bin/vllm",
+    "device_backend": "npu",
+    "devices": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "output_path": "/work/runs/n1",
+    "api_host": "127.0.0.1",
+    "api_port_base": 19310,
+    "afd_host": "192.168.16.111",
+    "afd_port": 6485,
+    "startup_timeout": 1800.0
+  },
+  "overrides": {},
+  "configuration": {
+    "eligible": true,
+    "classification": "qualified",
+    "reasons": []
+  },
+  "commands": {
+    "attention": [
+      "/usr/local/python3.12.16/bin/vllm",
+      "serve",
+      "/mnt/xds/sfs/DeepSeek-V4-Flash",
+      "--shutdown-timeout",
+      "90",
+      "--served-model-name",
+      "dsv4-flash-attention",
+      "--data-parallel-size",
+      "2",
+      "--tensor-parallel-size",
+      "2",
+      "--enable-expert-parallel",
+      "--enable-ep-weight-filter",
+      "--additional-config",
+      "{\"afd\":{\"role\":\"attention\",\"connector\":\"CAMAsyncAFDConnector\",\"host\":\"192.168.16.111\",\"port\":6485,\"num_attention_ranks\":4,\"num_ffn_ranks\":4,\"async\":true,\"compute_gate_on_attention\":true,\"connector_extra_config\":{\"dynamicQuant\":0,\"attn_ranks_per_dp\":2,\"hccl_buffer_size\":2048}},\"enable_flashcomm1\":true,\"enable_cpu_binding\":true,\"enable_force_eplb\":false,\"enable_dsa_cp\":false,\"multistream_dsv4_dsa_overlap\":false}",
+      "--data-parallel-address",
+      "192.168.16.111",
+      "--max-num-seqs",
+      "16",
+      "--max-num-batched-tokens",
+      "8192",
+      "--enforce-eager",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "19310",
+      "--all2all-backend",
+      "allgather_reducescatter",
+      "--no-disable-hybrid-kv-cache-manager",
+      "--tool-call-parser",
+      "deepseek_v4",
+      "--enable-auto-tool-choice",
+      "--reasoning-parser",
+      "deepseek_v4",
+      "--api-server-count",
+      "1",
+      "--seed",
+      "1024",
+      "--max-model-len",
+      "1048576",
+      "--block-size",
+      "128",
+      "--gpu-memory-utilization",
+      "0.7",
+      "--attention_config.indexer_kv_dtype",
+      "fp8",
+      "--tokenizer-mode",
+      "deepseek_v4",
+      "--model-loader-extra-config",
+      "{\"enable_multithread_load\": true, \"num_threads\": 128}",
+      "--trust-remote-code",
+      "--no-enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--dtype",
+      "bfloat16"
+    ],
+    "ffn": [
+      "/usr/local/python3.12.16/bin/vllm",
+      "serve",
+      "/mnt/xds/sfs/DeepSeek-V4-Flash",
+      "--shutdown-timeout",
+      "90",
+      "--served-model-name",
+      "dsv4-flash-ffn",
+      "--data-parallel-size",
+      "4",
+      "--tensor-parallel-size",
+      "1",
+      "--enable-expert-parallel",
+      "--enable-ep-weight-filter",
+      "--additional-config",
+      "{\"afd\":{\"role\":\"ffn\",\"connector\":\"CAMAsyncAFDConnector\",\"host\":\"192.168.16.111\",\"port\":6485,\"num_attention_ranks\":4,\"num_ffn_ranks\":4,\"async\":true,\"compute_gate_on_attention\":true,\"connector_extra_config\":{\"dynamicQuant\":0,\"attn_ranks_per_dp\":2,\"hccl_buffer_size\":2048}},\"enable_flashcomm1\":false,\"enable_cpu_binding\":true,\"enable_force_eplb\":false,\"enable_dsa_cp\":false,\"multistream_dsv4_dsa_overlap\":false,\"enable_fused_mc2\":0}",
+      "--max-num-seqs",
+      "16",
+      "--max-num-batched-tokens",
+      "8192",
+      "--enforce-eager",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "19311",
+      "--all2all-backend",
+      "flashinfer_all2allv",
+      "--expert-placement-strategy",
+      "linear",
+      "--api-server-count",
+      "1",
+      "--seed",
+      "1024",
+      "--max-model-len",
+      "1048576",
+      "--block-size",
+      "128",
+      "--gpu-memory-utilization",
+      "0.7",
+      "--attention_config.indexer_kv_dtype",
+      "fp8",
+      "--tokenizer-mode",
+      "deepseek_v4",
+      "--model-loader-extra-config",
+      "{\"enable_multithread_load\": true, \"num_threads\": 128}",
+      "--trust-remote-code",
+      "--no-enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--dtype",
+      "bfloat16"
+    ]
+  },
+  "execution": {
+    "status": "failed",
+    "error": "service 677 exited with 1"
+  },
+  "cleanup": {
+    "status": "passed"
+  },
+  "phases": [],
+  "acceptance_passed": false,
+  "processes": [
+    {
+      "role": "attention",
+      "pid": 677,
+      "returncode": 1
+    },
+    {
+      "role": "ffn",
+      "pid": 679,
+      "returncode": 0
+    }
+  ],
+  "shutdown": {
+    "status": "forced",
+    "forced_process_groups": [],
+    "forced_ffn_processes": [],
+    "forced_log_events": [
+      {
+        "role": "ffn",
+        "line": "(APIServer pid=679) WARNING 11-26 13:52:36 [utils.py:648] [shutdown] Process manager: force killing remaining processes count=1"
+      },
+      {
+        "role": "ffn",
+        "line": "(APIServer pid=679) WARNING 11-26 13:52:36 [utils.py:653] [shutdown] Process manager: force killing remaining process VLLM_DP_Coordinator pid 759"
+      },
+      {
+        "role": "ffn",
+        "line": "(APIServer pid=679) WARNING 11-26 13:52:36 [system_utils.py:225] [shutdown] force killing sub process asc_dumper pid 4233"
+      }
+    ]
+  }
+}

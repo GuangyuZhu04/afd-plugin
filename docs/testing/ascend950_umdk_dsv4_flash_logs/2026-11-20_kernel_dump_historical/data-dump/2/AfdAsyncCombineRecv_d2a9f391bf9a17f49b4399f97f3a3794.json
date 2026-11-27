@@ -1,0 +1,179 @@
+{
+ "binFileName": "AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794",
+ "binFileSuffix": ".o",
+ "blockDim": -1,
+ "coreType": "VectorCore",
+ "core_type": "AIV",
+ "intercoreSync": 0,
+ "kernelName": "AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794",
+ "magic": "RT_DEV_BINARY_MAGIC_ELF_AIVEC",
+ "memoryStamping": [],
+ "opParaSize": 1160,
+ "parameters": [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+ ],
+ "sha256": "ac148099fe1318dcdb61f88713a1eea8fd3f3c4229cd68d7af37bc42af882414",
+ "workspace": {
+  "num": 1,
+  "size": [
+   -1
+  ],
+  "type": [
+   0
+  ]
+ },
+ "kernelList": [
+  {
+   "kernelName": "AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794_100"
+  },
+  {
+   "kernelName": "AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794_101"
+  },
+  {
+   "kernelName": "AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794_102"
+  },
+  {
+   "kernelName": "AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794_103"
+  }
+ ],
+ "optionalInputMode": "gen_placeholder",
+ "optionalOutputMode": "gen_placeholder",
+ "supportSuperKernel": 1,
+ "platformInfo": {
+  "deterministicLevel": 0
+ },
+ "compileInfo": {},
+ "supportInfo": {
+  "implMode": "high_performance",
+  "int64Mode": false,
+  "simplifiedKeyMode": 0,
+  "simplifiedKey": [
+   "AfdAsyncCombineRecv/d=0,p=1/27,2/3,2/0,2/1,2/27,2",
+   "AfdAsyncCombineRecv/d=0,p=0/27,2/3,2/0,2/1,2/27,2",
+   "AfdAsyncCombineRecv/d=1,p=1/27,2/3,2/0,2/1,2/27,2",
+   "AfdAsyncCombineRecv/d=1,p=0/27,2/3,2/0,2/1,2/27,2"
+  ],
+  "optionalInputMode": "gen_placeholder",
+  "optionalOutputMode": "gen_placeholder",
+  "staticKey": "8d847a97a2be3459a8009a177e0da93c30b0ef6c1caa13369a95b87a5e3282d7,85f8654437710e93383c7a42afe4e4ee262608067665c2e8d7cdb6f379c698bc",
+  "inputs": [
+   {
+    "name": "expandX",
+    "index": 0,
+    "dtype": "bfloat16",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "expertIds",
+    "index": 1,
+    "dtype": "int32",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "expertScales",
+    "index": 2,
+    "dtype": "float32",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   },
+   {
+    "name": "commArgs",
+    "index": 3,
+    "dtype": "float16",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   }
+  ],
+  "outputs": [
+   {
+    "name": "x",
+    "index": 0,
+    "dtype": "bfloat16",
+    "format": "ND",
+    "paramType": "required",
+    "shape": [
+     -2
+    ],
+    "format_match_mode": "FormatAgnostic"
+   }
+  ],
+  "attrs": [
+   {
+    "name": "magic",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "batchSize",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "hiddenSize",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "topk",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "moeRankNum",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "attnRankNum",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "routeExpertNumPerMoe",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "attnRankId",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "worldSize",
+    "dtype": "int",
+    "value": 0
+   },
+   {
+    "name": "hccl_group_name",
+    "dtype": "str",
+    "value": ""
+   }
+  ],
+  "opMode": "dynamic",
+  "deterministic": "ignore"
+ },
+ "filePath": "ascend950_proj/build_out/op_kernel/ascendc_kernels/binary/ascend950/afd_async_combine_recv/AfdAsyncCombineRecv_d2a9f391bf9a17f49b4399f97f3a3794.json"
+}
