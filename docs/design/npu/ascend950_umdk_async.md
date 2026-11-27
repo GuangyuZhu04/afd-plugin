@@ -32,10 +32,12 @@ tokens.
 
 The four Ascend 950 operators are mirrored from
 [`openeuler/umdk@fee97356`](https://gitcode.com/openeuler/umdk/commit/fee97356e28f9945b44ceb3372bac89f9332a515).
-The 43 kernel, shared device, host tiling and ACLNN source files and the four
-PyTorch binding translation units have the same Git blob IDs as the originals.
-This includes the dispatch and combine algorithms, record layouts, FFN
-transaction logic and ACK publication. The plugin supplies the upstream
+Of the 47 pinned files, 44 retain their upstream Git blob IDs. The shared
+runtime header and the two sender bodies explicitly align the 950 scalar
+workers on their local stacks. DispatchSend uses natural alignment for its
+private parameter object and independently aligns its UB allocation to 32 bytes.
+All four PyTorch schemas, ACLNN signatures, tiling and registered wire layouts
+use the upstream contract. The plugin supplies the upstream
 include name `pytorch_npu_helper.hpp` through a local header that resolves
 the packaged ACLNN library and retains workspace during queued submission.
 
@@ -47,15 +49,16 @@ continues to use `torch.ops.afd_ascend.afd_async_dispatch_send`. The November
 
 The CPU package test reads the working files and checks their paths and blobs
 against a [manifest from the pinned UMDK tree](../../../tests/unit/package/fixtures/umdk_afd_sources.json).
+Each of the three local fixes records both its upstream and its shipped blob.
 Run it after changing the vendored sources or updating the pin.
 
 ```bash
 python -m pytest -q tests/unit/package/test_afd_async_build.py -k pinned_umdk_git_blobs
 ```
 
-In the AArch64 CANN 9.2.0 build, the complete device ELF objects and their
-adjacent CANN JSON descriptors matched byte for byte between the upstream
-UMDK OPP, the plugin OPP and the plugin wheel.
+The following SHA-256 values describe the original, pre-fix AArch64 CANN
+9.2.0 baseline. Its upstream and plugin OPPs and wheel matched byte for byte.
+Use the current release's hashes when identifying the repaired senders.
 
 | Device kernel | ELF bytes | SHA-256 of the complete ELF |
 | --- | ---: | --- |
@@ -70,7 +73,7 @@ with the same toolchain. Each operator directory contains its ELF and descriptor
 
 ```bash
 kernel_dir=op_impl/ai_core/tbe/kernel/ascend950
-for op in dispatch_send dispatch_recv combine_send combine_recv; do
+for op in dispatch_recv combine_recv; do
     diff -r "$UMDK_VENDOR/$kernel_dir/afd_async_$op" "$AFD_VENDOR/$kernel_dir/afd_async_$op" || exit 1
 done
 ```

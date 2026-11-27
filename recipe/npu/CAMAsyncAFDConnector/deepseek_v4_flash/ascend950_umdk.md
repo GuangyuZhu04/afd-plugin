@@ -134,3 +134,20 @@ AIV 0 的 MTE 错误码 95 同时涵盖非法 GM 地址和跨设备访问超时�
 代码与用例。模型是否通过仍以本分支下一次真实的八卡运行结果为准。
 
 [11 月 26 日的运行记录与探针](https://github.com/GuangyuZhu04/afd-plugin/tree/fb7b1bc371bba1a2f450fbf6d859a79446bb1c00/docs/testing/ascend950_umdk_dsv4_flash_logs)
+
+## 11 月 27 日修复后的八卡验收
+
+框架分支已引入算子修复 `f4b1f20`。950 的 DispatchSend 和 CombineSend
+在设备标量栈上显式对齐本地工作对象。四个 `_arch35` 入口继续使用 !3969
+的接口，源端 lane、record、ledger 和 FFN transaction 保持相同布局。
+新上传的 DeepEP 参考实现在旧内核上也报 507035；它的原始 plog 将
+MTE 的故障 PC 从 `0x1b20` 修正为 `0x1714`。
+[独立参考用例与排查记录](https://github.com/GuangyuZhu04/afd-plugin/blob/88194220788a6d6fe524c9b0464b12fbacd194f2/docs/npu/ascend950_umdk_507035_root_cause_investigation.md)
+
+在之前的板测镜像上，选择 CANN 9.2.1、CPython 3.12、torch
+`2.10.0+cpu`、torch-npu `2.10.0.post7` 配套的修复版 wheel。
+保留本轮 `umdk-runtime.json` 中的设备 ELF SHA-256；旧测试的 DispatchSend
+哈希是 `2290fc090ffcd40f47205766b6287f67e1ca6bf63c82f5fd29541aa4c303dae0`。
+先执行四卡 1 行、65 行，再执行八卡 64 行、4096 行的数值回环。
+这些用例同时核对路由记录中的专家 ID、权重和回传 BF16 结果。回环通过后，
+再按上文拉起模型，保留本轮十路请求逐条校验和清理结果。
