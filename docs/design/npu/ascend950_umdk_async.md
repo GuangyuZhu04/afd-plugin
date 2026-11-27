@@ -1,9 +1,9 @@
 # Ascend 950 registered-buffer AFD transport
 
 The Ascend 950 plugin selects the four operators in
-`torch.ops.umdk_cam_op_lib.afd_async_*`. The plugin builds and ships the four
+`torch.ops.umdk_cam_op_lib.afd_async_*_arch35`. The plugin builds and ships the four
 operator directories, ACLNN headers and implementations from UMDK
-`cam_feature@dcc0350e`, alongside synchronous A2E/E2A. Install this same
+`cam_feature@fee97356`, alongside synchronous A2E/E2A. Install this same
 plugin build on all A/F ranks. A separate UMDK wheel would register the same
 operator definitions twice. Ascend 910C keeps the
 compact `torch.ops.afd_ascend` operators, HCCL windows and existing connector
@@ -21,7 +21,7 @@ initialization.
 The implementation baseline for the owner and the FFN poll/scheduler/compute-ready
 JIT is [DeepEP-Ascend at 25b5153e](https://github.com/puxiaokun3721/DeepEP-Ascend/tree/25b5153eb2549107c13c8d462e325ac28cea8dea).
 Use its matching DeepJIT submodule and CANN environment. The independent
-[UMDK caller](https://gitcode.com/openeuler/umdk/blob/dcc0350e149955fcb2d1975bab189749aa9aaba9/test/cam/afd_async_benchmark_runtime.py#L277)
+[UMDK caller](https://gitcode.com/openeuler/umdk/blob/fee97356e28f9945b44ceb3372bac89f9332a515/test/cam/afd_async_benchmark_runtime.py#L277)
 shows the four native calls and registered-buffer lifetimes. The legacy FFN
 batch descriptor carries one layer ID. UMDK groups carry an explicit layer
 slot and independent valid and physical row counts. Reusing the legacy third
@@ -31,13 +31,19 @@ tokens.
 ## UMDK implementation baseline
 
 The four Ascend 950 operators are mirrored from
-[`openeuler/umdk@dcc0350e`](https://gitcode.com/openeuler/umdk/commit/dcc0350e149955fcb2d1975bab189749aa9aaba9).
+[`openeuler/umdk@fee97356`](https://gitcode.com/openeuler/umdk/commit/fee97356e28f9945b44ceb3372bac89f9332a515).
 The 43 kernel, shared device, host tiling and ACLNN source files and the four
 PyTorch binding translation units have the same Git blob IDs as the originals.
 This includes the dispatch and combine algorithms, record layouts, FFN
 transaction logic and ACK publication. The plugin supplies the upstream
 include name `pytorch_npu_helper.hpp` through a local header that resolves
 the packaged ACLNN library and retains workspace during queued submission.
+
+UMDK !3969 assigned separate PyTorch names to each architecture. For example,
+the 950 caller uses `torch.ops.umdk_cam_op_lib.afd_async_dispatch_send_arch35`
+and the device API is `aclnnAfdAsyncDispatchSend`. The 910C plugin caller
+continues to use `torch.ops.afd_ascend.afd_async_dispatch_send`. The November
+26 hardware report predates this binding rename.
 
 The CPU package test reads the working files and checks their paths and blobs
 against a [manifest from the pinned UMDK tree](../../../tests/unit/package/fixtures/umdk_afd_sources.json).

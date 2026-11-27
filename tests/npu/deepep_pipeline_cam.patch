@@ -5,7 +5,7 @@
  AFDBuffer still owns the device context, the transport registration and the
  scheduler side (ffnScheduler/computeReady). The four communication operators are
 -the CAM custom ops (torch.ops.umdk_cam_op_lib.cam_deepep_*), launched with the
-+the CAM custom ops (torch.ops.umdk_cam_op_lib.afd_async_*), launched with the
++the CAM custom ops (torch.ops.umdk_cam_op_lib.afd_async_*_arch35), launched with the
  values camConfig() reports for this owner so the harness cannot drift from the
  JIT-launched production path. The default milestone is single round
  (round_step=0); multi-round stays available through --round-step.
@@ -29,7 +29,7 @@
  def receive(owner, cfg, group_name, source_task, status_i32, progress, *, start=False):
      """CAM combine_recv in place of owner.combineRecv; outputs are the owner buffers."""
 -    CAM.cam_deepep_combine_recv(
-+    CAM.afd_async_combine_recv(
++    CAM.afd_async_combine_recv_arch35(
          owner.payload, source_task.task, owner.context, owner.control_buffer,
          owner.round_ledger, owner.combine_recv_workspace, source_task.mask,
          source_task.output, source_task.idx, source_task.weights, status_i32, progress,
@@ -38,7 +38,7 @@
  def send_dispatch(owner, cfg, group_name, source_task, sf, jetty, status_i32):
      """CAM dispatch_send in place of owner.dispatchSend."""
 -    CAM.cam_deepep_dispatch_send(
-+    CAM.afd_async_dispatch_send(
++    CAM.afd_async_dispatch_send_arch35(
          source_task.x, sf, source_task.idx, source_task.weights, source_task.mask,
          source_task.task, owner.context, owner.control_buffer, owner.round_ledger,
          owner.workspace, jetty, status_i32, group_name,
@@ -47,7 +47,7 @@
  def recv_dispatch(owner, cfg, group_name, recv_sf):
      """CAM dispatch_recv in place of owner.dispatchRecv."""
 -    CAM.cam_deepep_dispatch_recv(
-+    CAM.afd_async_dispatch_recv(
++    CAM.afd_async_dispatch_recv_arch35(
          owner.payload, owner.context, owner.active, owner.execution_state,
          owner.recv_workspace, owner.control_buffer,
          owner.recv_x, recv_sf, owner.recv_src_metadata, group_name,
@@ -56,7 +56,7 @@
  def send_combine(owner, cfg, group_name, jetty):
      """CAM combine_send in place of owner.combineSend; completion is an owner buffer."""
 -    CAM.cam_deepep_combine_send(
-+    CAM.afd_async_combine_send(
++    CAM.afd_async_combine_send_arch35(
          owner.combine_x, owner.recv_src_metadata, owner.context, owner.active,
          owner.control_buffer, owner.execution_state, owner.combine_send_workspace,
          jetty, owner.completion, group_name,
@@ -65,7 +65,7 @@
              _ok = 0
              try:
 -                CAM.cam_deepep_dispatch_recv(
-+                CAM.afd_async_dispatch_recv(
++                CAM.afd_async_dispatch_recv_arch35(
                      owner.payload, owner.context, owner.active, owner.execution_state,
                      owner.recv_workspace, owner.control_buffer,
                      owner.recv_x, recv_sf, owner.recv_src_metadata, group_name,

@@ -45,7 +45,7 @@ def schema_of(op):
 
 class TestAfdAsyncCombineMeta:
     def test_schema_marks_mutable_inputs(self):
-        send = schema_of("afd_async_combine_send")
+        send = schema_of("afd_async_combine_send_arch35")
         # The send path advances the caller's control plane and fills completion.
         assert "Tensor(a!) control_buffer" in send
         assert "Tensor(b!) execution_state" in send
@@ -53,7 +53,7 @@ class TestAfdAsyncCombineMeta:
         assert "Tensor(d!) completion" in send
         assert "-> Tensor(d!)" in send
 
-        recv = schema_of("afd_async_combine_recv")
+        recv = schema_of("afd_async_combine_recv_arch35")
         # The five preallocated receive buffers are both written and returned.
         assert "Tensor(d!) combined_x" in recv
         assert "Tensor(e!) combined_topk_idx" in recv
@@ -78,7 +78,7 @@ class TestAfdAsyncCombineMeta:
         jetty_ptrs = meta_tensor([8], torch.int64)
         completion = meta_tensor([16], torch.uint8)
 
-        out = torch.ops.umdk_cam_op_lib.afd_async_combine_send(
+        out = torch.ops.umdk_cam_op_lib.afd_async_combine_send_arch35(
             x,
             src_metadata,
             context,
@@ -118,7 +118,7 @@ class TestAfdAsyncCombineMeta:
         recv_status = meta_tensor([16], torch.int32)
         return_progress = meta_tensor([16], torch.uint8)
 
-        outs = torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+        outs = torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
             payload,
             task_info,
             context,
@@ -163,7 +163,7 @@ class TestAfdAsyncCombineMeta:
         topk_weights = meta_tensor([4, 2], torch.float32)
         recv_status = meta_tensor([8], torch.int32)
         return_progress = meta_tensor([0], torch.uint8)
-        outs = torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+        outs = torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
             meta_tensor([1024], torch.uint8),
             meta_tensor([64], torch.uint8),
             meta_tensor([256], torch.uint8),
@@ -229,7 +229,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_send_rejects_completion_dtype(self):
         with pytest.raises(RuntimeError, match="completion must have dtype"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_send(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_send_arch35(
                 *self.send_args(completion=meta_tensor([16], torch.int32)),
                 2,
                 2,
@@ -247,7 +247,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_send_rejects_rows_below_padded_tokens(self):
         with pytest.raises(RuntimeError, match="x rows must cover max_padded_tokens"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_send(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_send_arch35(
                 *self.send_args(
                     x=meta_tensor([4, 128], torch.bfloat16),
                     src_metadata=meta_tensor([4, 4], torch.int32),
@@ -268,7 +268,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_send_rejects_bad_tile_size(self):
         with pytest.raises(RuntimeError, match="num_tokens_per_tile out of range"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_send(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_send_arch35(
                 *self.send_args(),
                 2,
                 2,
@@ -319,7 +319,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_recv_rejects_topk_idx_dtype(self):
         with pytest.raises(RuntimeError, match="combined_topk_idx must have dtype"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
                 *self.recv_args(combined_topk_idx=meta_tensor([4, 2], torch.int32)),
                 2,
                 2,
@@ -336,7 +336,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_recv_rejects_hidden_not_multiple_of_128(self):
         with pytest.raises(RuntimeError, match="multiple of 128"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
                 *self.recv_args(combined_x=meta_tensor([4, 130], torch.bfloat16)),
                 2,
                 2,
@@ -353,7 +353,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_recv_rejects_progress_byte_mismatch(self):
         with pytest.raises(RuntimeError, match="carry return_progress_bytes bytes"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
                 *self.recv_args(return_progress=meta_tensor([8], torch.uint8)),
                 2,
                 2,
@@ -370,7 +370,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_recv_rejects_bad_round_step(self):
         with pytest.raises(RuntimeError, match="round_step must be 0 or 1"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
                 *self.recv_args(),
                 2,
                 2,
@@ -387,7 +387,7 @@ class TestAfdAsyncCombineMetaRejects:
 
     def test_recv_rejects_status_len_mismatch(self):
         with pytest.raises(RuntimeError, match="recv_status must be"):
-            torch.ops.umdk_cam_op_lib.afd_async_combine_recv(
+            torch.ops.umdk_cam_op_lib.afd_async_combine_recv_arch35(
                 *self.recv_args(recv_status=meta_tensor([8], torch.int32)),
                 2,
                 2,

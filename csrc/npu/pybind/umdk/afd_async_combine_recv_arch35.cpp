@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- * Description: afd_async_combine_recv pybind extension file.
+ * Description: afd_async_combine_recv_arch35 pybind extension file.
  * Create: 2026-11-03
  * Note: combined_x / combined_topk_idx / topk_weights / recv_status /
  *       return_progress are caller-owned so the scheduler and the accuracy
@@ -47,13 +47,13 @@ constexpr size_t kOutReturnProgress = 4;
 
 void CheckDtype(const at::Tensor &t, at::ScalarType want, const char *name)
 {
-    TORCH_CHECK(t.scalar_type() == want, "afd_async_combine_recv: ", name,
+    TORCH_CHECK(t.scalar_type() == want, "afd_async_combine_recv_arch35: ", name,
         " must have dtype ", want, ", got ", t.scalar_type());
 }
 
 void CheckDim(const at::Tensor &t, int64_t dim, const char *name)
 {
-    TORCH_CHECK(t.dim() == dim, "afd_async_combine_recv: ", name, " must be ",
+    TORCH_CHECK(t.dim() == dim, "afd_async_combine_recv_arch35: ", name, " must be ",
         dim, "-D, got ", t.dim(), "-D");
 }
 
@@ -64,7 +64,7 @@ void CheckByteBlob(const at::Tensor &t, const char *name)
 }
 }  // namespace
 
-CombineRecvOut AfdAsyncCombineRecvImplNpu(
+CombineRecvOut AfdAsyncCombineRecvArch35ImplNpu(
     const at::Tensor &payload,
     const at::Tensor &taskInfo,
     const at::Tensor &context,
@@ -123,7 +123,7 @@ static void CheckCombineValueOutputs(const at::Tensor &combinedX, const at::Tens
         "combine_recv: topk_weights must be [num_token_capacity, num_topk]");
 }
 
-CombineRecvOut AfdAsyncCombineRecvImplMeta(
+CombineRecvOut AfdAsyncCombineRecvArch35ImplMeta(
     const at::Tensor &payload,
     const at::Tensor &taskInfo,
     const at::Tensor &context,
@@ -199,7 +199,7 @@ CombineRecvOut AfdAsyncCombineRecvImplMeta(
     return std::make_tuple(combinedX, combinedTopkIdx, topkWeights, recvStatus, returnProgress);
 }
 
-CombineRecvOut AfdAsyncCombineRecvImpl(
+CombineRecvOut AfdAsyncCombineRecvArch35Impl(
     const at::Tensor &payload,
     const at::Tensor &taskInfo,
     const at::Tensor &context,
@@ -226,8 +226,8 @@ CombineRecvOut AfdAsyncCombineRecvImpl(
     const int64_t numVecCores)
 {
     static auto op = torch::Dispatcher::singleton()
-                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_combine_recv", "")
-                         .typed<decltype(AfdAsyncCombineRecvImpl)>();
+                         .findSchemaOrThrow("umdk_cam_op_lib::afd_async_combine_recv_arch35", "")
+                         .typed<decltype(AfdAsyncCombineRecvArch35Impl)>();
     return op.call(payload, taskInfo, context, controlBuffer, roundLedger,
         afdWorkspace, tokenMask, combinedX, combinedTopkIdx, topkWeights,
         recvStatus, returnProgress, groupEp, numExperts, numRanks, numTopk,
@@ -268,7 +268,7 @@ public:
         const int64_t numVecCores)
     {
         at::AutoDispatchBelowADInplaceOrView guard;
-        const auto outs = AfdAsyncCombineRecvImpl(payload, taskInfo, context,
+        const auto outs = AfdAsyncCombineRecvArch35Impl(payload, taskInfo, context,
             controlBuffer, roundLedger, afdWorkspace, tokenMask, combinedX,
             combinedTopkIdx, topkWeights, recvStatus, returnProgress, groupEp,
             numExperts, numRanks, numTopk, roundStep, start, numHidden,
@@ -286,7 +286,7 @@ public:
     }
 };
 
-CombineRecvOut AfdAsyncCombineRecvImplAutograd(
+CombineRecvOut AfdAsyncCombineRecvArch35ImplAutograd(
     const at::Tensor &payload,
     const at::Tensor &taskInfo,
     const at::Tensor &context,
@@ -324,15 +324,15 @@ CombineRecvOut AfdAsyncCombineRecvImplAutograd(
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, PrivateUse1, m)
 {
-    m.impl("afd_async_combine_recv", &AfdAsyncCombineRecvImplNpu);
+    m.impl("afd_async_combine_recv_arch35", &AfdAsyncCombineRecvArch35ImplNpu);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, AutogradPrivateUse1, m)
 {
-    m.impl("afd_async_combine_recv", &AfdAsyncCombineRecvImplAutograd);
+    m.impl("afd_async_combine_recv_arch35", &AfdAsyncCombineRecvArch35ImplAutograd);
 }
 
 TORCH_LIBRARY_IMPL(umdk_cam_op_lib, Meta, m)
 {
-    m.impl("afd_async_combine_recv", &AfdAsyncCombineRecvImplMeta);
+    m.impl("afd_async_combine_recv_arch35", &AfdAsyncCombineRecvArch35ImplMeta);
 }

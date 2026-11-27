@@ -66,10 +66,10 @@ if(AFD_SOC_VERSION STREQUAL "910c" OR AFD_SOC_VERSION MATCHES "^ascend910_93")
 elseif(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
   target_sources(afd_plugin_ascend_C PRIVATE
     umdk/registrations.cpp
-    umdk/afd_async_dispatch_send.cpp
-    umdk/afd_async_dispatch_recv.cpp
-    umdk/afd_async_combine_send.cpp
-    umdk/afd_async_combine_recv.cpp)
+    umdk/afd_async_dispatch_send_arch35.cpp
+    umdk/afd_async_dispatch_recv_arch35.cpp
+    umdk/afd_async_combine_send_arch35.cpp
+    umdk/afd_async_combine_recv_arch35.cpp)
   target_compile_definitions(afd_plugin_ascend_C PRIVATE AFD_USE_UMDK_ASYNC=1)
 else()
   message(FATAL_ERROR "Unsupported AFD_SOC_VERSION: ${AFD_SOC_VERSION}")

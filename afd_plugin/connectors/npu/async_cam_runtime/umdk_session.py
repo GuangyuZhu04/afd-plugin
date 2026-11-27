@@ -222,7 +222,7 @@ class UmdkSession(FFNExecutionSession):
         with torch.npu.stream(self.send_stream):
             self.send_stream.wait_event(ready)
             n = hidden.size(0)
-            self.ops.afd_async_dispatch_send(
+            self.ops.afd_async_dispatch_send_arch35(
                 hidden,
                 self.sf,
                 idx[:n],
@@ -265,7 +265,7 @@ class UmdkSession(FFNExecutionSession):
             self._check_dispatch_status(p)
         else:
             torch.npu.current_stream(self.device).wait_event(p.inputs_ready)
-        self.ops.afd_async_combine_recv(
+        self.ops.afd_async_combine_recv_arch35(
             o.payload,
             p.task,
             o.context,
@@ -356,7 +356,7 @@ class UmdkSession(FFNExecutionSession):
                     return None
                 if monotonic() >= deadline:
                     raise TimeoutError("UMDK timed out waiting for an FFN transaction")
-        self.ops.afd_async_dispatch_recv(
+        self.ops.afd_async_dispatch_recv_arch35(
             o.payload,
             o.context,
             o.active,
@@ -431,7 +431,7 @@ class UmdkSession(FFNExecutionSession):
         if not result.is_set_to(target):
             target.copy_(result)
         o.computeReady()
-        self.ops.afd_async_combine_send(
+        self.ops.afd_async_combine_send_arch35(
             o.combine_x,
             o.recv_src_metadata,
             o.context,
