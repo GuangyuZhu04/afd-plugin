@@ -1,0 +1,1136 @@
+[default0]:[W1126 13:41:45.419057359 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 900000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 1836000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+[default0]:  return func(*args, **kwargs)
+[default1]:[rank1]: Traceback (most recent call last):
+[default1]:[rank1]:   File "/work/txn_roundtrip.py", line 197, in <module>
+[default1]:[rank1]:     main()
+[default1]:[rank1]:   File "/work/txn_roundtrip.py", line 128, in main
+[default1]:[rank1]:     torch.npu.synchronize()
+[default1]:[rank1]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 75, in synchronize
+[default1]:[rank1]:     return torch_npu._C._npu_synchronize()
+[default1]:[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default1]:[rank1]: RuntimeError: npuSynchronizeDevice:../torch_npu/csrc/core/npu/NPUStream.cpp:703 NPU function error: device error type 3, error code is 507035
+[default1]:[rank1]: [ERROR] 2026-11-26-13:42:26 (PID:4348, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[default1]:[rank1]: [Error]: The vector core execution is abnormal. 
+[default1]:[rank1]:         Rectify the fault based on the error information in the ascend log.
+[default1]:[rank1]: EZ9999: Internal error!
+[default1]:[rank1]: EZ9999[PID: 4348] 2026-11-26-13:42:26.713.725 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040820000, current: 0x120040821b20, sc error info: 0xffffffffffff, su error info: 0x12521dc02ffea578,0xde4177df1800401c, mte error info: 0x285c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0x80000000, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]: TraceBack (most recent call last):
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 1, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03cfe4581,0xd6e57e771800401c, mte error info: 0x520c9d00002fc40, vec error info: 0x3b3fb9ff003eef5f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 2, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03bfc5b8d,0x5ffffbdd1800401c, mte error info: 0xcc06c00002d9c3, vec error info: 0x6b67c7ef007fffb9, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 3, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c031fc0000,0xffde2ddf1800401c, mte error info: 0x520ca200002fc40, vec error info: 0xffde563f007fdfff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 4, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03ffc5b8d,0xfe4e6b791800401c, mte error info: 0x20007040002d9c3, vec error info: 0xe7fffff400307f9c, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 5, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c030fe0000,0xe517cc3f1800401c, mte error info: 0x520ca700002fc40, vec error info: 0xe7d3cf16003e963f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 6, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c037f65b8d,0xf1df97fd1800401c, mte error info: 0x4c907440002d9c3, vec error info: 0x7b7fea3c003ff62f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 7, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc038de0000,0xdb89fb551800401c, mte error info: 0x520cac00002fc40, vec error info: 0xa7feffde003dfc7e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 8, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03fee5b8d,0xd92b3ffc1800401c, mte error info: 0x5b8d, vec error info: 0xbdfa272f007cef1f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 9, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03dba0000,0x517cfd3f1800401c, mte error info: 0x27633, vec error info: 0x975ef3ff003ee36e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 10, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03a8c5b8d,0xf7fbfe7f1800401c, mte error info: 0x5b8d, vec error info: 0xffff3d77003fe77f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 11, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc019a80000,0xd5c3c61f1800401c, mte error info: 0x27633, vec error info: 0xfff5fb5d003eff7d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 12, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01b0a5b8d,0xfecd7ff91800401c, mte error info: 0x5b8d, vec error info: 0xd877fc6f007d7f75, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 13, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01c0a0000,0xecdafdbe1800401c, mte error info: 0x27633, vec error info: 0xf777abbf0027ebda, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 14, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c019f65b8d,0xf07dfddd1800401c, mte error info: 0x5b8d, vec error info: 0xf77fb3ff007ffb79, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 15, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03dae0000,0xd9df55fd1800401c, mte error info: 0x27633, vec error info: 0x6bd3feff007ee39f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 36, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c037fe4581,0xffefdffd1800401c, mte error info: 0x5b8d, vec error info: 0xd3eefbde007f5ff7, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 37, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c029984581,0x4bffffff1800401c, mte error info: 0x27633, vec error info: 0x793fb251003ddffb, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 38, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03f7c5b8d,0xfc02ffff1800401c, mte error info: 0x5b8d, vec error info: 0xd5edfc940076cf4f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 39, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bbe0000,0xdc9d89fd1800401c, mte error info: 0x27633, vec error info: 0xf35ddccc001cf742, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 40, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c001445b8d,0x9fcf37f71800401c, mte error info: 0x5b8d, vec error info: 0xf7d7fec7003e7a7f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 41, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc025f80000,0xdc37f7ff1800401c, mte error info: 0x27633, vec error info: 0xb4fbfdff007ffdd6, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 42, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01f3e5b8d,0x7f7f7f911800401c, mte error info: 0x5b8d, vec error info: 0x1f9fffef005d9f5d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 43, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bbc0000,0x5ffd7ed71800401c, mte error info: 0x27633, vec error info: 0xf7f3f9fd007fff37, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 44, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01ffa5b8d,0x7bd7ffff1800401c, mte error info: 0x5b8d, vec error info: 0xff79fdbf003fe777, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 45, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc02ab80000,0x6ffad7df1800401c, mte error info: 0x4e13a100002fc40, vec error info: 0xae3bffff0067fee5, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 46, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c011f85b8d,0xf5fffffd1800401c, mte error info: 0x5b8d, vec error info: 0x84fdfffd007feffa, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 47, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc039ea0000,0x56f4eaef1800401c, mte error info: 0x4e13a600002fc40, vec error info: 0x9ffffef5007d7bef, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 48, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03ffe5b8d,0xffefc9af1800401c, mte error info: 0x5b8d, vec error info: 0x778f3ede005df4ff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 49, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c0398e0000,0x6bec1dd61800401c, mte error info: 0x4e13ab00002fc40, vec error info: 0xfffffffe007ee67f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 50, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc027ba5b8d,0x8efcf9db1800401c, mte error info: 0x5b8d, vec error info: 0xff79bf7d0077dd5d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 222, the error is aivec error, core id is 51, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03dde0000,0x5fe63d7f1800401c, mte error info: 0x4e13b000002fc40, vec error info: 0xff5ee67f007f5478, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default1]:[rank1]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default1]:[rank1]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default1]:[rank1]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[default1]:[rank1]:        rtDeviceSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default1]:
+[default0]:[rank0]: Traceback (most recent call last):
+[default0]:[rank0]:   File "/work/txn_roundtrip.py", line 197, in <module>
+[default0]:[rank0]:     main()
+[default0]:[rank0]:   File "/work/txn_roundtrip.py", line 128, in main
+[default0]:[rank0]:     torch.npu.synchronize()
+[default0]:[rank0]:   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/npu/utils.py", line 75, in synchronize
+[default0]:[rank0]:     return torch_npu._C._npu_synchronize()
+[default0]:[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[default0]:[rank0]: RuntimeError: npuSynchronizeDevice:../torch_npu/csrc/core/npu/NPUStream.cpp:703 NPU function error: device error type 3, error code is 507035
+[default0]:[rank0]: [ERROR] 2026-11-26-13:42:26 (PID:4347, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[default0]:[rank0]: [Error]: The vector core execution is abnormal. 
+[default0]:[rank0]:         Rectify the fault based on the error information in the ascend log.
+[default0]:[rank0]: EZ9999: Internal error!
+[default0]:[rank0]: EZ9999[PID: 4347] 2026-11-26-13:42:26.726.053 (EZ9999):  An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 0, error code = 95, dump info: pc start: 0x120040820000, current: 0x120040821b20, sc error info: 0xffffffffffff, su error info: 0x12521dc01ff4a578,0xeffffef61800401c, mte error info: 0x285c5, vec error info: 0x4081833000394829, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0x80000000, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(95) errorStr: The MTE instruction accesses an invalid GM address or the cross-device memory access timeout. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]: TraceBack (most recent call last):
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 1, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc019aa4581,0x646c52f21800401c, mte error info: 0x6a00002d9c3, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 2, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc038f45b8d,0xd7d8dde51800401c, mte error info: 0xcc06c00002d9c3, vec error info: 0x7f7df7bf007fd65f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 3, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01bea39ed,0x575d5fdd1800401c, mte error info: 0x4c906e00002d9c3, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 4, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03ffc5b8d,0xfffdffff1800401c, mte error info: 0xcc07040002ae41, vec error info: 0xba9d570000394558, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 5, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c018e839ed,0xcf75d13d1800401c, mte error info: 0x40007240002d9c3, vec error info: 0xba9d59d000394558, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 6, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c02fcc5b8d,0xf5cdf79d1800401c, mte error info: 0x40007440002d9c3, vec error info: 0xd77fabf40074f6ff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 7, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03f5e39ed,0x7f1ee1d91800401c, mte error info: 0x60007640002d9c3, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 8, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03e585b8d,0xdc5df5ff1800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 9, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc018d639ed,0x7f4dfcf11800401c, mte error info: 0x2bebc, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 10, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc027e85b8d,0xdfdff4fe1800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 11, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01c3a39ed,0xe759fcdb1800401c, mte error info: 0x2bebc, vec error info: 0xb4befd3f0016d397, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 12, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc030f85b8d,0x6d6df3ff1800401c, mte error info: 0x5b8d, vec error info: 0xff3ddb3b007ffffd, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 13, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc022ec39ed,0x4f6cf6771800401c, mte error info: 0x2bebc, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 14, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01bd85b8d,0x74d5c7261800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 15, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c038e839ed,0xffbfc1ed1800401c, mte error info: 0x2bebc, vec error info: 0x7576ffdf007ffaff, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 36, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03f3e1a47,0xd7fd5eff1800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 37, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03ffc4581,0xd7cdfedb1800401c, mte error info: 0x2bebc, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 38, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01b665b8d,0xfdfffffd1800401c, mte error info: 0x5b8d, vec error info: 0x7fdffbde003fcffe, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 39, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01ffe39ed,0x72fefeff1800401c, mte error info: 0x2bebc, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 40, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03ffe5b8d,0xfedfff751800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 41, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc0181e39ed,0xfefff8351800401c, mte error info: 0x2bebc, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 42, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03cfe5b8d,0xf075633e1800401c, mte error info: 0x5b8d, vec error info: 0xfeabfffd005df0fd, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 43, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03b8839ed,0xd7bbccff1800401c, mte error info: 0x2bebc, vec error info: 0xfefd671f002c7f5b, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 44, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c01bfe5b8d,0xfd9fe1cc1800401c, mte error info: 0x5b8d, vec error info: 0x7c3dffa5007eff7f, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 45, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc01bde39ed,0xed7f7efd1800401c, mte error info: 0x2bebc, vec error info: 0xffbdbffd00797ffd, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 46, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c019ba5b8d,0xff5fddd01800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 47, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc03dfc39ed,0xc9ffd75e1800401c, mte error info: 0x2bebc, vec error info: 0x7d9ffff3003ed65d, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 48, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c038b65b8d,0xf5bff7dc1800401c, mte error info: 0x5b8d, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 49, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c03d8039ed,0xff57e7d11800401c, mte error info: 0x2bebc, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 50, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0x12521dc038205b8d,0xddcd773f1800401c, mte error info: 0x5b8d, vec error info: 0xfff3eff5007d7fdf, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurs on the device(chipId:0, dieId:0), the serial number is 283, the error is aivec error, core id is 51, error code = 0, dump info: pc start: 0x120040820000, current: 0x12004082410c, sc error info: 0xffffffffffff, su error info: 0xe4e19c02f8e39ed,0xaceed6741800401c, mte error info: 0x2bed3, vec error info: 0x602b69200031d83e, cube error info: 0, l1 error info: 0, aic error mask: 0x80395856, para base: 0x12004c603d00, mte error: 0, aic cond: 0.
+[default0]:[rank0]: The extend info: errcode:(0) errorStr: timeout or trap error. subErrType: 0x4.
+[default0]:[rank0]: For details, see the troubleshooting document on the Ascend official website. Search for the keyword "AI Core Error".[FUNC:PrintDavidCoreInfo][FILE:device_error_proc_c.cc][LINE:720]
+[default0]:[rank0]:        An error occurred in the kernel task, retCode=0x31, [vector core exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1030]
+[default0]:[rank0]:        rtDeviceSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default0]:
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default1]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default1]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:13: FutureWarning: triton.language.extra.cann.extension.atan2 is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.atan2 instead.
+[default0]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.atan2")
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:35: FutureWarning: triton.language.extra.cann.extension.isfinited is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.isfinited instead.
+[default0]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.isfinited")
+[default0]:/usr/local/python3.12.16/lib/python3.12/site-packages/triton/language/extra/cann/extension/math_ops.py:49: FutureWarning: triton.language.extra.cann.extension.finitef is deprecated and will be removed in the next release; use triton.language.extra.cann.libdevice.finitef instead.
+[default0]:  @_deprecated(replacement="triton.language.extra.cann.libdevice.finitef")
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] Failed to shutdown process group during NPU exit.
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] Traceback (most recent call last):
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582]   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/distributed/distributed_c10d.py", line 580, in _destructor_process_group
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582]     pg_to_shutdown.shutdown()
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUStream.cpp:414 NPU function error: device error type 3, error code is 507035
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] [ERROR] 2026-11-26-13:42:26 (PID:4348, Device:1, RankID:1) ERR00100 PTA call acl api failed
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] [Error]: The vector core execution is abnormal. 
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582]         Rectify the fault based on the error information in the ascend log.
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999: Internal error!
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999[PID: 4348] 2026-11-26-13:42:26.725.688 (EE9999):  rtStreamSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] TraceBack (most recent call last):
+[default1]:[rank1]:W1126 13:42:26.726000 4348 site-packages/torch_npu/distributed/distributed_c10d.py:582] 
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] Failed to shutdown process group during NPU exit.
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] Traceback (most recent call last):
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582]   File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch_npu/distributed/distributed_c10d.py", line 580, in _destructor_process_group
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582]     pg_to_shutdown.shutdown()
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] RuntimeError: synchronize:../torch_npu/csrc/core/npu/NPUStream.cpp:414 NPU function error: device error type 3, error code is 507035
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] [ERROR] 2026-11-26-13:42:26 (PID:4347, Device:0, RankID:0) ERR00100 PTA call acl api failed
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] [Error]: The vector core execution is abnormal. 
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582]         Rectify the fault based on the error information in the ascend log.
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999: Internal error!
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] EE9999[PID: 4347] 2026-11-26-13:42:26.741.003 (EE9999):  rtStreamSynchronizeWithTimeout execution failed, reason=vector core exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:76]
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] TraceBack (most recent call last):
+[default0]:[rank0]:W1126 13:42:26.741000 4347 site-packages/torch_npu/distributed/distributed_c10d.py:582] 
+[default0]:AFD_HCCL_DESTROY rank=0 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default0]:AFD_HCCL_DESTROY rank=0 stage=table_free_end idx=-1 rc=0 t_us=69
+[default0]:AFD_HCCL_DESTROY rank=0 stage=channel_destroy_begin idx=-1 rc=0 t_us=72
+[default1]:AFD_HCCL_DESTROY rank=1 stage=table_free_begin idx=-1 rc=0 t_us=0
+[default1]:AFD_HCCL_DESTROY rank=1 stage=table_free_end idx=-1 rc=0 t_us=56
+[default1]:AFD_HCCL_DESTROY rank=1 stage=channel_destroy_begin idx=-1 rc=0 t_us=59
+[default1]:AFD_HCCL_DESTROY rank=1 stage=channel_destroy_end idx=-1 rc=0 t_us=2419004
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=0 rc=0 t_us=2419023
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=0 rc=0 t_us=2419057
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=0 rc=0 t_us=2419059
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=0 rc=0 t_us=2419365
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=1 rc=0 t_us=2419367
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=1 rc=0 t_us=2419375
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=1 rc=0 t_us=2419376
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=1 rc=0 t_us=2419548
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=2 rc=0 t_us=2419550
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=2 rc=0 t_us=2419555
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=2 rc=0 t_us=2419556
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=2 rc=0 t_us=2419750
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=3 rc=0 t_us=2419751
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=3 rc=0 t_us=2419757
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=3 rc=0 t_us=2419758
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=3 rc=0 t_us=2419932
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=4 rc=0 t_us=2419934
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=4 rc=0 t_us=2419938
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=4 rc=0 t_us=2419939
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=4 rc=0 t_us=2420146
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=5 rc=0 t_us=2420148
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=5 rc=0 t_us=2420154
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=5 rc=0 t_us=2420155
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=5 rc=0 t_us=2420318
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=6 rc=0 t_us=2420320
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=6 rc=0 t_us=2420325
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=6 rc=0 t_us=2420326
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=6 rc=0 t_us=2420488
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=7 rc=0 t_us=2420490
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=7 rc=0 t_us=2420495
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=7 rc=0 t_us=2420496
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=7 rc=0 t_us=2420649
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=8 rc=0 t_us=2420651
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=8 rc=0 t_us=2420656
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=8 rc=0 t_us=2420658
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=8 rc=0 t_us=2420835
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=9 rc=0 t_us=2420837
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=9 rc=0 t_us=2420842
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=9 rc=0 t_us=2420843
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=9 rc=0 t_us=2420983
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=10 rc=0 t_us=2420988
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=10 rc=0 t_us=2420993
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=10 rc=0 t_us=2420995
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=10 rc=0 t_us=2421135
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=11 rc=0 t_us=2421137
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=11 rc=0 t_us=2421141
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=11 rc=0 t_us=2421142
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=11 rc=0 t_us=2421280
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=12 rc=0 t_us=2421282
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=12 rc=0 t_us=2421287
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=12 rc=0 t_us=2421288
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=12 rc=0 t_us=2421439
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=13 rc=0 t_us=2421440
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=13 rc=0 t_us=2421445
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=13 rc=0 t_us=2421446
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=13 rc=0 t_us=2421585
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=14 rc=0 t_us=2421587
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=14 rc=0 t_us=2421591
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=14 rc=0 t_us=2421592
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=14 rc=0 t_us=2421756
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=15 rc=0 t_us=2421758
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=15 rc=0 t_us=2421762
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=15 rc=0 t_us=2421763
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=15 rc=0 t_us=2421904
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=16 rc=0 t_us=2421906
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=16 rc=0 t_us=2421910
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=16 rc=0 t_us=2421911
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=16 rc=0 t_us=2422060
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=17 rc=0 t_us=2422062
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=17 rc=0 t_us=2422066
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=17 rc=0 t_us=2422067
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=17 rc=0 t_us=2422209
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=18 rc=0 t_us=2422211
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=18 rc=0 t_us=2422216
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=18 rc=0 t_us=2422217
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=18 rc=0 t_us=2422355
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=19 rc=0 t_us=2422357
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=19 rc=0 t_us=2422361
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=19 rc=0 t_us=2422362
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=19 rc=0 t_us=2422507
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=20 rc=0 t_us=2422508
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=20 rc=0 t_us=2422513
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=20 rc=0 t_us=2422514
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=20 rc=0 t_us=2422654
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=21 rc=0 t_us=2422655
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=21 rc=0 t_us=2422660
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=21 rc=0 t_us=2422661
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=21 rc=0 t_us=2422802
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=22 rc=0 t_us=2422804
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=22 rc=0 t_us=2422809
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=22 rc=0 t_us=2422810
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=22 rc=0 t_us=2422984
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=23 rc=0 t_us=2422986
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=23 rc=0 t_us=2422990
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=23 rc=0 t_us=2422991
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=23 rc=0 t_us=2423132
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=24 rc=0 t_us=2423134
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=24 rc=0 t_us=2423138
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=24 rc=0 t_us=2423139
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=24 rc=0 t_us=2423270
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=25 rc=0 t_us=2423272
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=25 rc=0 t_us=2423276
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=25 rc=0 t_us=2423277
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=25 rc=0 t_us=2423440
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=26 rc=0 t_us=2423442
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=26 rc=0 t_us=2423447
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=26 rc=0 t_us=2423448
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=26 rc=0 t_us=2423588
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=27 rc=0 t_us=2423589
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=27 rc=0 t_us=2423594
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=27 rc=0 t_us=2423595
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=27 rc=0 t_us=2423738
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=28 rc=0 t_us=2423740
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=28 rc=0 t_us=2423744
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=28 rc=0 t_us=2423745
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=28 rc=0 t_us=2424031
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=29 rc=0 t_us=2424033
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=29 rc=0 t_us=2424038
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=29 rc=0 t_us=2424039
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=29 rc=0 t_us=2424219
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=30 rc=0 t_us=2424221
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=30 rc=0 t_us=2424226
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=30 rc=0 t_us=2424227
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=30 rc=0 t_us=2424375
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=31 rc=0 t_us=2424377
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=31 rc=0 t_us=2424382
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=31 rc=0 t_us=2424383
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=31 rc=0 t_us=2424532
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=32 rc=0 t_us=2424534
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=32 rc=0 t_us=2424540
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=32 rc=0 t_us=2424541
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=32 rc=0 t_us=2424546
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=33 rc=0 t_us=2424547
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=33 rc=0 t_us=2424553
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=33 rc=0 t_us=2424554
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=33 rc=0 t_us=2424557
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=34 rc=0 t_us=2424558
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=34 rc=0 t_us=2424562
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=34 rc=0 t_us=2424563
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=34 rc=0 t_us=2424567
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=35 rc=0 t_us=2424568
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=35 rc=0 t_us=2424572
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=35 rc=0 t_us=2424573
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=35 rc=0 t_us=2424577
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=36 rc=0 t_us=2424578
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=36 rc=0 t_us=2424582
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=36 rc=0 t_us=2424583
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=36 rc=0 t_us=2424586
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=37 rc=0 t_us=2424587
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=37 rc=0 t_us=2424592
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=37 rc=0 t_us=2424593
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=37 rc=0 t_us=2424597
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=38 rc=0 t_us=2424598
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=38 rc=0 t_us=2424602
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=38 rc=0 t_us=2424603
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=38 rc=0 t_us=2424606
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=39 rc=0 t_us=2424607
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=39 rc=0 t_us=2424611
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=39 rc=0 t_us=2424612
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=39 rc=0 t_us=2424615
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=40 rc=0 t_us=2424616
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=40 rc=0 t_us=2424621
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=40 rc=0 t_us=2424622
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=40 rc=0 t_us=2424628
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=41 rc=0 t_us=2424629
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=41 rc=0 t_us=2424633
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=41 rc=0 t_us=2424634
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=41 rc=0 t_us=2424637
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=42 rc=0 t_us=2424637
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=42 rc=0 t_us=2424641
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=42 rc=0 t_us=2424642
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=42 rc=0 t_us=2424645
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=43 rc=0 t_us=2424646
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=43 rc=0 t_us=2424650
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=43 rc=0 t_us=2424651
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=43 rc=0 t_us=2424655
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=44 rc=0 t_us=2424656
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=44 rc=0 t_us=2424660
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=44 rc=0 t_us=2424661
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=44 rc=0 t_us=2424664
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=45 rc=0 t_us=2424664
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=45 rc=0 t_us=2424669
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=45 rc=0 t_us=2424669
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=45 rc=0 t_us=2424672
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=46 rc=0 t_us=2424673
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=46 rc=0 t_us=2424677
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=46 rc=0 t_us=2424678
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=46 rc=0 t_us=2424680
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=47 rc=0 t_us=2424681
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=47 rc=0 t_us=2424686
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=47 rc=0 t_us=2424687
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=47 rc=0 t_us=2424690
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=48 rc=0 t_us=2424691
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=48 rc=0 t_us=2424695
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=48 rc=0 t_us=2424696
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=48 rc=0 t_us=2424699
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=49 rc=0 t_us=2424700
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=49 rc=0 t_us=2424704
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=49 rc=0 t_us=2424705
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=49 rc=0 t_us=2424708
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=50 rc=0 t_us=2424709
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=50 rc=0 t_us=2424713
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=50 rc=0 t_us=2424714
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=50 rc=0 t_us=2424717
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=51 rc=0 t_us=2424718
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=51 rc=0 t_us=2424722
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=51 rc=0 t_us=2424723
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=51 rc=0 t_us=2424726
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=52 rc=0 t_us=2424727
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=52 rc=0 t_us=2424731
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=52 rc=0 t_us=2424732
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=52 rc=0 t_us=2424735
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=53 rc=0 t_us=2424736
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=53 rc=0 t_us=2424739
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=53 rc=0 t_us=2424740
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=53 rc=0 t_us=2424743
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=54 rc=0 t_us=2424744
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=54 rc=0 t_us=2424748
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=54 rc=0 t_us=2424751
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=54 rc=0 t_us=2424754
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=55 rc=0 t_us=2424755
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=55 rc=0 t_us=2424759
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=55 rc=0 t_us=2424760
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=55 rc=0 t_us=2424763
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=56 rc=0 t_us=2424764
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=56 rc=0 t_us=2424768
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=56 rc=0 t_us=2424769
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=56 rc=0 t_us=2424772
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=57 rc=0 t_us=2424773
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=57 rc=0 t_us=2424777
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=57 rc=0 t_us=2424778
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=57 rc=0 t_us=2424781
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=58 rc=0 t_us=2424782
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=58 rc=0 t_us=2424786
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=58 rc=0 t_us=2424787
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=58 rc=0 t_us=2424790
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=59 rc=0 t_us=2424791
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=59 rc=0 t_us=2424795
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=59 rc=0 t_us=2424796
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=59 rc=0 t_us=2424799
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=60 rc=0 t_us=2424800
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=60 rc=0 t_us=2424805
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=60 rc=0 t_us=2424806
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=60 rc=0 t_us=2424809
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=61 rc=0 t_us=2424810
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=61 rc=0 t_us=2424815
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=61 rc=0 t_us=2424815
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=61 rc=0 t_us=2424819
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=62 rc=0 t_us=2424820
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=62 rc=0 t_us=2424825
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=62 rc=0 t_us=2424825
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=62 rc=0 t_us=2424830
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=63 rc=0 t_us=2424831
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=63 rc=0 t_us=2424835
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=63 rc=0 t_us=2424836
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=63 rc=0 t_us=2424839
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=64 rc=0 t_us=2424840
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=64 rc=0 t_us=2424845
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=64 rc=0 t_us=2424846
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=64 rc=0 t_us=2424851
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=65 rc=0 t_us=2424852
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=65 rc=0 t_us=2424856
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=65 rc=0 t_us=2424857
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=65 rc=0 t_us=2424860
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=66 rc=0 t_us=2424861
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=66 rc=0 t_us=2425261
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=66 rc=0 t_us=2425264
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=66 rc=0 t_us=2425270
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=67 rc=0 t_us=2425271
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=67 rc=0 t_us=2425275
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=67 rc=0 t_us=2425276
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=67 rc=0 t_us=2425282
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=68 rc=0 t_us=2425283
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=68 rc=0 t_us=2425287
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=68 rc=0 t_us=2425290
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=68 rc=0 t_us=2425293
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=69 rc=0 t_us=2425294
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=69 rc=0 t_us=2425299
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=69 rc=0 t_us=2425300
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=69 rc=0 t_us=2425303
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=70 rc=0 t_us=2425304
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=70 rc=0 t_us=2425308
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=70 rc=0 t_us=2425309
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=70 rc=0 t_us=2425312
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=71 rc=0 t_us=2425313
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=71 rc=0 t_us=2425317
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=71 rc=0 t_us=2425318
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=71 rc=0 t_us=2425320
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=72 rc=0 t_us=2425321
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=72 rc=0 t_us=2425325
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=72 rc=0 t_us=2425326
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=72 rc=0 t_us=2425331
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=73 rc=0 t_us=2425332
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=73 rc=0 t_us=2425336
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=73 rc=0 t_us=2425337
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=73 rc=0 t_us=2425341
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=74 rc=0 t_us=2425342
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=74 rc=0 t_us=2425346
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=74 rc=0 t_us=2425347
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=74 rc=0 t_us=2425350
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=75 rc=0 t_us=2425351
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=75 rc=0 t_us=2425354
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=75 rc=0 t_us=2425355
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=75 rc=0 t_us=2425359
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=76 rc=0 t_us=2425360
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=76 rc=0 t_us=2425364
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=76 rc=0 t_us=2425365
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=76 rc=0 t_us=2425367
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=77 rc=0 t_us=2425368
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=77 rc=0 t_us=2425372
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=77 rc=0 t_us=2425373
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=77 rc=0 t_us=2425377
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=78 rc=0 t_us=2425378
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=78 rc=0 t_us=2425382
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=78 rc=0 t_us=2425383
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=78 rc=0 t_us=2425386
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=79 rc=0 t_us=2425387
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=79 rc=0 t_us=2425391
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=79 rc=0 t_us=2425392
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=79 rc=0 t_us=2425395
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=80 rc=0 t_us=2425396
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=80 rc=0 t_us=2425401
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=80 rc=0 t_us=2425402
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=80 rc=0 t_us=2425405
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=81 rc=0 t_us=2425406
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=81 rc=0 t_us=2425410
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=81 rc=0 t_us=2425411
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=81 rc=0 t_us=2425415
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=82 rc=0 t_us=2425416
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=82 rc=0 t_us=2425420
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=82 rc=0 t_us=2425423
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=82 rc=0 t_us=2425426
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=83 rc=0 t_us=2425427
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=83 rc=0 t_us=2425431
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=83 rc=0 t_us=2425432
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=83 rc=0 t_us=2425435
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=84 rc=0 t_us=2425436
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=84 rc=0 t_us=2425441
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=84 rc=0 t_us=2425442
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=84 rc=0 t_us=2425447
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=85 rc=0 t_us=2425448
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=85 rc=0 t_us=2425452
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=85 rc=0 t_us=2425453
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=85 rc=0 t_us=2425456
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=86 rc=0 t_us=2425457
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=86 rc=0 t_us=2425461
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=86 rc=0 t_us=2425462
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=86 rc=0 t_us=2425466
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=87 rc=0 t_us=2425467
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=87 rc=0 t_us=2425471
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=87 rc=0 t_us=2425472
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=87 rc=0 t_us=2425475
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=88 rc=0 t_us=2425476
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=88 rc=0 t_us=2425480
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=88 rc=0 t_us=2425481
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=88 rc=0 t_us=2425485
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=89 rc=0 t_us=2425485
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=89 rc=0 t_us=2425490
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=89 rc=0 t_us=2425491
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=89 rc=0 t_us=2425494
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=90 rc=0 t_us=2425495
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=90 rc=0 t_us=2425499
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=90 rc=0 t_us=2425500
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=90 rc=0 t_us=2425503
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=91 rc=0 t_us=2425504
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=91 rc=0 t_us=2425508
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=91 rc=0 t_us=2425509
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=91 rc=0 t_us=2425512
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=92 rc=0 t_us=2425513
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=92 rc=0 t_us=2425517
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=92 rc=0 t_us=2425518
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=92 rc=0 t_us=2425521
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=93 rc=0 t_us=2425522
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=93 rc=0 t_us=2425526
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=93 rc=0 t_us=2425527
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=93 rc=0 t_us=2425529
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=94 rc=0 t_us=2425530
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=94 rc=0 t_us=2425534
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=94 rc=0 t_us=2425535
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=94 rc=0 t_us=2425538
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_begin idx=95 rc=0 t_us=2425539
+[default1]:AFD_HCCL_DESTROY rank=1 stage=mem_unreg_end idx=95 rc=0 t_us=2425543
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_begin idx=95 rc=0 t_us=2425544
+[default1]:AFD_HCCL_DESTROY rank=1 stage=endpoint_destroy_end idx=95 rc=0 t_us=2425547
+[default1]:AFD_HCCL_DESTROY rank=1 stage=memory_reset_begin idx=-1 rc=0 t_us=2425548
+[default1]:AFD_HCCL_DESTROY rank=1 stage=memory_reset_end idx=-1 rc=0 t_us=2426468
+[default0]:AFD_HCCL_DESTROY rank=0 stage=channel_destroy_end idx=-1 rc=0 t_us=2906687
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=0 rc=0 t_us=2906715
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=0 rc=0 t_us=2906760
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=0 rc=0 t_us=2906762
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=0 rc=0 t_us=2906782
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=1 rc=0 t_us=2906783
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=1 rc=0 t_us=2906793
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=1 rc=0 t_us=2906794
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=1 rc=0 t_us=2906801
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=2 rc=0 t_us=2906802
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=2 rc=0 t_us=2906808
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=2 rc=0 t_us=2906809
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=2 rc=0 t_us=2906813
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=3 rc=0 t_us=2906814
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=3 rc=0 t_us=2906819
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=3 rc=0 t_us=2906820
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=3 rc=0 t_us=2906823
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=4 rc=0 t_us=2906824
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=4 rc=0 t_us=2906829
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=4 rc=0 t_us=2906830
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=4 rc=0 t_us=2906835
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=5 rc=0 t_us=2906836
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=5 rc=0 t_us=2906840
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=5 rc=0 t_us=2906841
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=5 rc=0 t_us=2906847
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=6 rc=0 t_us=2906848
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=6 rc=0 t_us=2906852
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=6 rc=0 t_us=2906853
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=6 rc=0 t_us=2906857
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=7 rc=0 t_us=2906858
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=7 rc=0 t_us=2906862
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=7 rc=0 t_us=2906863
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=7 rc=0 t_us=2906869
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=8 rc=0 t_us=2906870
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=8 rc=0 t_us=2906874
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=8 rc=0 t_us=2906875
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=8 rc=0 t_us=2906879
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=9 rc=0 t_us=2906880
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=9 rc=0 t_us=2906884
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=9 rc=0 t_us=2906885
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=9 rc=0 t_us=2906889
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=10 rc=0 t_us=2906890
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=10 rc=0 t_us=2906894
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=10 rc=0 t_us=2906895
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=10 rc=0 t_us=2906899
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=11 rc=0 t_us=2906900
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=11 rc=0 t_us=2906915
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=11 rc=0 t_us=2906916
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=11 rc=0 t_us=2906919
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=12 rc=0 t_us=2906920
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=12 rc=0 t_us=2906925
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=12 rc=0 t_us=2906925
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=12 rc=0 t_us=2906929
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=13 rc=0 t_us=2906930
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=13 rc=0 t_us=2906934
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=13 rc=0 t_us=2906935
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=13 rc=0 t_us=2906938
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=14 rc=0 t_us=2906939
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=14 rc=0 t_us=2906944
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=14 rc=0 t_us=2906945
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=14 rc=0 t_us=2906948
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=15 rc=0 t_us=2906949
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=15 rc=0 t_us=2906953
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=15 rc=0 t_us=2906954
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=15 rc=0 t_us=2906958
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=16 rc=0 t_us=2906959
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=16 rc=0 t_us=2906963
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=16 rc=0 t_us=2906964
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=16 rc=0 t_us=2906968
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=17 rc=0 t_us=2906969
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=17 rc=0 t_us=2906973
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=17 rc=0 t_us=2906974
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=17 rc=0 t_us=2906979
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=18 rc=0 t_us=2906980
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=18 rc=0 t_us=2906985
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=18 rc=0 t_us=2906986
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=18 rc=0 t_us=2906989
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=19 rc=0 t_us=2906990
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=19 rc=0 t_us=2906994
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=19 rc=0 t_us=2906995
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=19 rc=0 t_us=2906999
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=20 rc=0 t_us=2907000
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=20 rc=0 t_us=2907006
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=20 rc=0 t_us=2907007
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=20 rc=0 t_us=2907011
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=21 rc=0 t_us=2907012
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=21 rc=0 t_us=2907016
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=21 rc=0 t_us=2907017
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=21 rc=0 t_us=2907021
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=22 rc=0 t_us=2907022
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=22 rc=0 t_us=2907028
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=22 rc=0 t_us=2907028
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=22 rc=0 t_us=2907032
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=23 rc=0 t_us=2907033
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=23 rc=0 t_us=2907037
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=23 rc=0 t_us=2907038
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=23 rc=0 t_us=2907042
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=24 rc=0 t_us=2907043
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=24 rc=0 t_us=2907047
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=24 rc=0 t_us=2907048
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=24 rc=0 t_us=2907051
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=25 rc=0 t_us=2907052
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=25 rc=0 t_us=2907059
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=25 rc=0 t_us=2907060
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=25 rc=0 t_us=2907064
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=26 rc=0 t_us=2907065
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=26 rc=0 t_us=2907069
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=26 rc=0 t_us=2907070
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=26 rc=0 t_us=2907075
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=27 rc=0 t_us=2907076
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=27 rc=0 t_us=2907080
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=27 rc=0 t_us=2907081
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=27 rc=0 t_us=2907084
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=28 rc=0 t_us=2907085
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=28 rc=0 t_us=2907090
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=28 rc=0 t_us=2907091
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=28 rc=0 t_us=2907095
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=29 rc=0 t_us=2907096
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=29 rc=0 t_us=2907100
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=29 rc=0 t_us=2907101
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=29 rc=0 t_us=2907104
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=30 rc=0 t_us=2907105
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=30 rc=0 t_us=2907110
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=30 rc=0 t_us=2907111
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=30 rc=0 t_us=2907114
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=31 rc=0 t_us=2907115
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=31 rc=0 t_us=2907120
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=31 rc=0 t_us=2907121
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=31 rc=0 t_us=2907125
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=32 rc=0 t_us=2907126
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=32 rc=0 t_us=2907131
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=32 rc=0 t_us=2907132
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=32 rc=0 t_us=2907136
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=33 rc=0 t_us=2907137
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=33 rc=0 t_us=2907142
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=33 rc=0 t_us=2907143
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=33 rc=0 t_us=2907146
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=34 rc=0 t_us=2907147
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=34 rc=0 t_us=2907151
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=34 rc=0 t_us=2907152
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=34 rc=0 t_us=2907157
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=35 rc=0 t_us=2907158
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=35 rc=0 t_us=2907162
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=35 rc=0 t_us=2907163
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=35 rc=0 t_us=2907167
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=36 rc=0 t_us=2907168
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=36 rc=0 t_us=2907172
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=36 rc=0 t_us=2907173
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=36 rc=0 t_us=2907177
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=37 rc=0 t_us=2907178
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=37 rc=0 t_us=2907182
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=37 rc=0 t_us=2907183
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=37 rc=0 t_us=2907187
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=38 rc=0 t_us=2907188
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=38 rc=0 t_us=2907193
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=38 rc=0 t_us=2907193
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=38 rc=0 t_us=2907197
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=39 rc=0 t_us=2907200
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=39 rc=0 t_us=2907205
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=39 rc=0 t_us=2907206
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=39 rc=0 t_us=2907209
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=40 rc=0 t_us=2907210
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=40 rc=0 t_us=2907214
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=40 rc=0 t_us=2907215
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=40 rc=0 t_us=2907219
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=41 rc=0 t_us=2907220
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=41 rc=0 t_us=2907224
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=41 rc=0 t_us=2907225
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=41 rc=0 t_us=2907228
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=42 rc=0 t_us=2907229
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=42 rc=0 t_us=2907234
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=42 rc=0 t_us=2907235
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=42 rc=0 t_us=2907241
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=43 rc=0 t_us=2907242
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=43 rc=0 t_us=2907246
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=43 rc=0 t_us=2907247
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=43 rc=0 t_us=2907251
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=44 rc=0 t_us=2907252
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=44 rc=0 t_us=2907257
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=44 rc=0 t_us=2907258
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=44 rc=0 t_us=2907264
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=45 rc=0 t_us=2907265
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=45 rc=0 t_us=2907270
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=45 rc=0 t_us=2907270
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=45 rc=0 t_us=2907274
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=46 rc=0 t_us=2907275
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=46 rc=0 t_us=2907280
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=46 rc=0 t_us=2907281
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=46 rc=0 t_us=2907285
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=47 rc=0 t_us=2907286
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=47 rc=0 t_us=2907290
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=47 rc=0 t_us=2907291
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=47 rc=0 t_us=2907295
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=48 rc=0 t_us=2907296
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=48 rc=0 t_us=2907300
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=48 rc=0 t_us=2907301
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=48 rc=0 t_us=2907304
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=49 rc=0 t_us=2907305
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=49 rc=0 t_us=2907309
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=49 rc=0 t_us=2907310
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=49 rc=0 t_us=2907314
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=50 rc=0 t_us=2907315
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=50 rc=0 t_us=2907319
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=50 rc=0 t_us=2907320
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=50 rc=0 t_us=2907326
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=51 rc=0 t_us=2907327
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=51 rc=0 t_us=2907331
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=51 rc=0 t_us=2907332
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=51 rc=0 t_us=2907335
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=52 rc=0 t_us=2907336
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=52 rc=0 t_us=2907340
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=52 rc=0 t_us=2907341
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=52 rc=0 t_us=2907345
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=53 rc=0 t_us=2907348
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=53 rc=0 t_us=2907352
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=53 rc=0 t_us=2907353
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=53 rc=0 t_us=2907357
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=54 rc=0 t_us=2907358
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=54 rc=0 t_us=2907362
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=54 rc=0 t_us=2907363
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=54 rc=0 t_us=2907367
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=55 rc=0 t_us=2907368
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=55 rc=0 t_us=2907372
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=55 rc=0 t_us=2907373
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=55 rc=0 t_us=2907379
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=56 rc=0 t_us=2907380
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=56 rc=0 t_us=2907384
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=56 rc=0 t_us=2907385
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=56 rc=0 t_us=2907389
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=57 rc=0 t_us=2907390
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=57 rc=0 t_us=2907394
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=57 rc=0 t_us=2907395
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=57 rc=0 t_us=2907400
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=58 rc=0 t_us=2907401
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=58 rc=0 t_us=2907405
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=58 rc=0 t_us=2907406
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=58 rc=0 t_us=2907410
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=59 rc=0 t_us=2907411
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=59 rc=0 t_us=2907416
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=59 rc=0 t_us=2907416
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=59 rc=0 t_us=2907422
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=60 rc=0 t_us=2907423
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=60 rc=0 t_us=2907427
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=60 rc=0 t_us=2907428
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=60 rc=0 t_us=2907431
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=61 rc=0 t_us=2907432
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=61 rc=0 t_us=2907436
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=61 rc=0 t_us=2907437
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=61 rc=0 t_us=2907442
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=62 rc=0 t_us=2907443
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=62 rc=0 t_us=2907448
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=62 rc=0 t_us=2907449
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=62 rc=0 t_us=2907453
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=63 rc=0 t_us=2907454
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=63 rc=0 t_us=2907457
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=63 rc=0 t_us=2907457
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=63 rc=0 t_us=2907463
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=64 rc=0 t_us=2907464
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=64 rc=0 t_us=2907469
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=64 rc=0 t_us=2907470
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=64 rc=0 t_us=2907475
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=65 rc=0 t_us=2907476
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=65 rc=0 t_us=2907481
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=65 rc=0 t_us=2907482
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=65 rc=0 t_us=2907485
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=66 rc=0 t_us=2907486
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=66 rc=0 t_us=2907491
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=66 rc=0 t_us=2907491
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=66 rc=0 t_us=2907496
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=67 rc=0 t_us=2907499
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=67 rc=0 t_us=2907503
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=67 rc=0 t_us=2907504
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=67 rc=0 t_us=2907508
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=68 rc=0 t_us=2907508
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=68 rc=0 t_us=2907513
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=68 rc=0 t_us=2907514
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=68 rc=0 t_us=2907518
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=69 rc=0 t_us=2907519
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=69 rc=0 t_us=2907523
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=69 rc=0 t_us=2907524
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=69 rc=0 t_us=2907528
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=70 rc=0 t_us=2907529
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=70 rc=0 t_us=2907533
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=70 rc=0 t_us=2907534
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=70 rc=0 t_us=2907538
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=71 rc=0 t_us=2907539
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=71 rc=0 t_us=2907543
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=71 rc=0 t_us=2907544
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=71 rc=0 t_us=2907548
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=72 rc=0 t_us=2907549
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=72 rc=0 t_us=2907553
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=72 rc=0 t_us=2907554
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=72 rc=0 t_us=2907557
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=73 rc=0 t_us=2907558
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=73 rc=0 t_us=2907562
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=73 rc=0 t_us=2907563
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=73 rc=0 t_us=2907567
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=74 rc=0 t_us=2907568
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=74 rc=0 t_us=2907572
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=74 rc=0 t_us=2907573
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=74 rc=0 t_us=2907576
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=75 rc=0 t_us=2907577
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=75 rc=0 t_us=2907581
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=75 rc=0 t_us=2907582
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=75 rc=0 t_us=2907586
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=76 rc=0 t_us=2907587
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=76 rc=0 t_us=2907591
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=76 rc=0 t_us=2907592
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=76 rc=0 t_us=2907597
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=77 rc=0 t_us=2907598
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=77 rc=0 t_us=2907602
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=77 rc=0 t_us=2907603
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=77 rc=0 t_us=2907607
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=78 rc=0 t_us=2907608
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=78 rc=0 t_us=2907612
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=78 rc=0 t_us=2907613
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=78 rc=0 t_us=2907616
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=79 rc=0 t_us=2907617
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=79 rc=0 t_us=2907621
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=79 rc=0 t_us=2907622
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=79 rc=0 t_us=2907626
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=80 rc=0 t_us=2907627
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=80 rc=0 t_us=2907631
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=80 rc=0 t_us=2907632
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=80 rc=0 t_us=2907635
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=81 rc=0 t_us=2907638
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=81 rc=0 t_us=2907642
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=81 rc=0 t_us=2907643
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=81 rc=0 t_us=2907647
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=82 rc=0 t_us=2907648
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=82 rc=0 t_us=2907652
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=82 rc=0 t_us=2907653
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=82 rc=0 t_us=2907656
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=83 rc=0 t_us=2907657
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=83 rc=0 t_us=2907661
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=83 rc=0 t_us=2907662
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=83 rc=0 t_us=2907666
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=84 rc=0 t_us=2907667
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=84 rc=0 t_us=2907671
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=84 rc=0 t_us=2907672
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=84 rc=0 t_us=2907675
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=85 rc=0 t_us=2907676
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=85 rc=0 t_us=2907681
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=85 rc=0 t_us=2907682
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=85 rc=0 t_us=2907685
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=86 rc=0 t_us=2907686
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=86 rc=0 t_us=2907690
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=86 rc=0 t_us=2907691
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=86 rc=0 t_us=2907701
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=87 rc=0 t_us=2907706
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=87 rc=0 t_us=2907711
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=87 rc=0 t_us=2907712
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=87 rc=0 t_us=2907716
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=88 rc=0 t_us=2907717
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=88 rc=0 t_us=2907721
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=88 rc=0 t_us=2907722
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=88 rc=0 t_us=2907726
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=89 rc=0 t_us=2907727
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=89 rc=0 t_us=2907731
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=89 rc=0 t_us=2907732
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=89 rc=0 t_us=2907735
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=90 rc=0 t_us=2907736
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=90 rc=0 t_us=2907740
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=90 rc=0 t_us=2907741
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=90 rc=0 t_us=2907744
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=91 rc=0 t_us=2907745
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=91 rc=0 t_us=2907749
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=91 rc=0 t_us=2907750
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=91 rc=0 t_us=2907754
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=92 rc=0 t_us=2907755
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=92 rc=0 t_us=2907759
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=92 rc=0 t_us=2907760
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=92 rc=0 t_us=2907763
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=93 rc=0 t_us=2907764
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=93 rc=0 t_us=2907768
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=93 rc=0 t_us=2907769
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=93 rc=0 t_us=2907773
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=94 rc=0 t_us=2907774
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=94 rc=0 t_us=2907778
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=94 rc=0 t_us=2907779
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=94 rc=0 t_us=2907785
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_begin idx=95 rc=0 t_us=2907786
+[default0]:AFD_HCCL_DESTROY rank=0 stage=mem_unreg_end idx=95 rc=0 t_us=2907788
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_begin idx=95 rc=0 t_us=2907789
+[default0]:AFD_HCCL_DESTROY rank=0 stage=endpoint_destroy_end idx=95 rc=0 t_us=2907793
+[default0]:AFD_HCCL_DESTROY rank=0 stage=memory_reset_begin idx=-1 rc=0 t_us=2907794
+[default0]:AFD_HCCL_DESTROY rank=0 stage=memory_reset_end idx=-1 rc=0 t_us=2908191
+W1126 13:42:41.644000 4332 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 4347 closing signal SIGTERM
+W1126 13:42:41.645000 4332 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 4349 closing signal SIGTERM
+W1126 13:42:41.646000 4332 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 4350 closing signal SIGTERM
+E1126 13:42:42.009000 4332 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: -11) local_rank: 1 (pid: 4348) of binary: /usr/local/python3.12.16/bin/python3
+[default0]:rank=0 GROUP=group_name_0 role=A
+[default0]:rank=0 STAGE built payload=100663296 ctx=832 lanes=2 experts=256 window=2048 cc=256
+[default0]:rank=0 STAGE prepared
+[default0]:rank=0 TASK=[2, 0, 0, 0, 2, 8, 1, 1]
+[default1]:rank=1 GROUP=group_name_0 role=A
+[default1]:rank=1 STAGE built payload=100663296 ctx=832 lanes=2 experts=256 window=2048 cc=256
+[default3]:rank=3 GROUP=group_name_0 role=F
+[default3]:rank=3 STAGE built payload=35751936 ctx=832 lanes=2 experts=256 window=2048 cc=256
+[default2]:rank=2 GROUP=group_name_0 role=F
+[default2]:rank=2 STAGE built payload=35751936 ctx=832 lanes=2 experts=256 window=2048 cc=256
+[default1]:rank=1 STAGE prepared
+[default1]:rank=1 TASK=[2, 1, 0, 0, 2, 8, 1, 1]
+[default3]:rank=3 STAGE F prepared q=4096 qa=4096
+[default3]:rank=3 STAGE prepared
+[default3]:rank=3 TASK=[2, 3, 0, 0, 2, 8, 1, 1]
+[default1]:rank=1 STAGE barrier1
+[default0]:rank=0 STAGE barrier1
+[default2]:rank=2 STAGE F prepared q=4096 qa=4096
+[default2]:rank=2 STAGE prepared
+[default2]:rank=2 TASK=[2, 2, 0, 0, 2, 8, 1, 1]
+[default2]:rank=2 STAGE barrier1
+[default2]:rank=2 STAGE F ffnPoll_ok
+[default2]:rank=2 STAGE F ffnScheduler_ok
+[default3]:rank=3 STAGE barrier1
+[default3]:rank=3 STAGE F ffnPoll_ok
+[default3]:rank=3 STAGE F ffnScheduler_ok
+Traceback (most recent call last):
+  File "/usr/local/python3.12.16/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 317, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+======================================================
+/work/txn_roundtrip.py FAILED
+------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-26_13:42:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 4347)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 4347
+[2]:
+  time      : 2026-11-26_13:42:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 2 (local_rank: 2)
+  exitcode  : -15 (pid: 4349)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 4349
+[3]:
+  time      : 2026-11-26_13:42:42
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 3 (local_rank: 3)
+  exitcode  : -15 (pid: 4350)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 4350
+------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-26_13:42:41
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 1 (local_rank: 1)
+  exitcode  : -11 (pid: 4348)
+  error_file: <N/A>
+  traceback : Signal 11 (SIGSEGV) received by PID 4348
+======================================================
+[ERROR] 2026-11-26-13:42:42 (PID:4332, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception

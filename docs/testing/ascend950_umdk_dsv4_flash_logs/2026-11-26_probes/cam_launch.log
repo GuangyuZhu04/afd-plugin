@@ -1,0 +1,5 @@
+[default0]:[W1126 14:23:02.220154328 ProcessGroupHCCL.cpp:1372] Warning: The watchdog timeout 600000ms(which is set by init_process_group) is less than or equal to HCCL execution timeout 1836000ms! The plog may not be recorded. (function ProcessGroupHCCL)
+[default1]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default0]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default3]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0
+[default2]:AFD_GROUP_CLEANUP own_free_rc=0 all_free_rc=0

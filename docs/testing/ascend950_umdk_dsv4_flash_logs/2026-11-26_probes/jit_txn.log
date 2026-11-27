@@ -1,0 +1,76 @@
+[default0]:Traceback (most recent call last):
+[default0]:  File "/work/afd-ref/tests/afd/run_jit_txn.py", line 25, in <module>
+[default0]:    import deep_ep
+[default0]:ModuleNotFoundError: No module named 'deep_ep'
+[default3]:Traceback (most recent call last):
+[default3]:  File "/work/afd-ref/tests/afd/run_jit_txn.py", line 25, in <module>
+[default3]:    import deep_ep
+[default3]:ModuleNotFoundError: No module named 'deep_ep'
+[default1]:Traceback (most recent call last):
+[default1]:  File "/work/afd-ref/tests/afd/run_jit_txn.py", line 25, in <module>
+[default1]:    import deep_ep
+[default1]:ModuleNotFoundError: No module named 'deep_ep'
+[default2]:Traceback (most recent call last):
+[default2]:  File "/work/afd-ref/tests/afd/run_jit_txn.py", line 25, in <module>
+[default2]:    import deep_ep
+[default2]:ModuleNotFoundError: No module named 'deep_ep'
+W1126 14:00:37.624000 347 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 363 closing signal SIGTERM
+W1126 14:00:37.625000 347 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 364 closing signal SIGTERM
+E1126 14:00:37.823000 347 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: 1) local_rank: 0 (pid: 362) of binary: /usr/local/python3.12.16/bin/python3
+[default0]:[ERROR] 2026-11-26-14:00:37 (PID:362, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default3]:[ERROR] 2026-11-26-14:00:37 (PID:365, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default1]:[ERROR] 2026-11-26-14:00:37 (PID:363, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+[default2]:[ERROR] 2026-11-26-14:00:37 (PID:364, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
+Traceback (most recent call last):
+  File "/usr/local/python3.12.16/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/python3.12.16/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 317, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+tests/afd/run_jit_txn.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-26_14:00:37
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 365)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2026-11-26_14:00:37
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 1 (local_rank: 1)
+  exitcode  : -15 (pid: 363)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 363
+[3]:
+  time      : 2026-11-26_14:00:37
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 2 (local_rank: 2)
+  exitcode  : -15 (pid: 364)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 364
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-26_14:00:37
+  host      : liteserver-hps-tokens2-00008.novalocal
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 362)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+[ERROR] 2026-11-26-14:00:37 (PID:347, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception
