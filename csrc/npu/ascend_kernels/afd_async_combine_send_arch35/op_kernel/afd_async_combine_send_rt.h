@@ -759,8 +759,9 @@ __aicore__ inline void combine_send_body(const CombineSendParams &p, __gm__ bflo
                                          __gm__ void *workspace, __gm__ void *jetty_ptrs,
                                          __gm__ AFDCompletion *completion)
 {
-    CombineSender worker{p,         x,          src_metadata, context, active, control_buffer, execution_state,
+    ScalarWorkerStorage<CombineSender> storage;
+    auto *worker = ::new (storage) CombineSender{p,         x,          src_metadata, context, active, control_buffer, execution_state,
                          workspace, jetty_ptrs, completion};
-    worker.run();
+    worker->run();
 }
 } // namespace afd_async::afd::rt

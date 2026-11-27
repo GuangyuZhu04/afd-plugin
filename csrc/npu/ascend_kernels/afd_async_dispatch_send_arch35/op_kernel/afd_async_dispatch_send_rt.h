@@ -35,7 +35,8 @@ namespace afd_async::afd::rt {
 // time from Params instead of from static maxima: the contract domain (2048
 // experts, topk 32, 16 KiB hidden) would need more UB than an A5 vector core
 // owns. Every region starts 32-byte aligned, mirroring the native AFD layout.
-struct alignas(kNumUbAlignmentBytes) Params {
+// The UB offset allocator aligns sizeof(Params) to 32 bytes independently.
+struct Params {
     uint32_t num_ranks;
     uint32_t num_experts;
     uint32_t experts_per_rank;
@@ -850,9 +851,10 @@ __aicore__ inline void dispatch_body(const Params &p, __gm__ void *x, __gm__ sf_
                                      __gm__ void *workspace, __gm__ void *jetty_ptrs, __gm__ uint32_t *send_status,
                                      const int sf_token_stride, const int sf_hidden_stride)
 {
-    DispatchSender worker{p,          x,          sf,          topk_idx,        topk_weights,
+    ScalarWorkerStorage<DispatchSender> storage;
+    auto *worker = ::new (storage) DispatchSender{p,          x,          sf,          topk_idx,        topk_weights,
                           token_mask, task_info,  context,     control_buffer,  round_ledger,
                           workspace,  jetty_ptrs, send_status, sf_token_stride, sf_hidden_stride};
-    worker.run();
+    worker->run();
 }
 } // namespace afd_async::afd::rt

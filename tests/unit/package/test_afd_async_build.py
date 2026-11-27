@@ -76,8 +76,8 @@ def test_afd_async_arch35_selector_is_specific_to_950():
     assert _run_select_ops("--soc", "ascend910_93", *args).returncode != 0
 
 
-def test_950_native_sources_match_the_pinned_umdk_git_blobs():
-    """Compare shipped sources to upstream Git IDs, including uncommitted edits."""
+def test_950_native_sources_match_pinned_umdk_git_blobs_and_plugin_fixes():
+    """Pin the source and result of each local fix as well as all other files."""
     reference = json.loads(
         (Path(__file__).parent / "fixtures/umdk_afd_sources.json").read_text("utf-8")
     )
@@ -112,8 +112,12 @@ def test_950_native_sources_match_the_pinned_umdk_git_blobs():
             blobs[name] = hashlib.sha1(
                 header + content, usedforsecurity=False
             ).hexdigest()
-    assert blobs == reference["blobs"], (
-        f"Sources differ from UMDK {reference['commit']}"
+    expected = reference["blobs"].copy()
+    for name, fix in reference["plugin_fixes"].items():
+        assert expected[name] == fix["upstream_blob"]
+        expected[name] = fix["plugin_blob"]
+    assert blobs == expected, (
+        f"Sources differ from the recorded UMDK {reference['commit']} port"
     )
 
 

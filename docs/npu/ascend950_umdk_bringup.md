@@ -50,11 +50,15 @@ FFN slice allocation has 16384 rows. The first step puts every source on
 the same layer with the dummy gate's balanced IDs. Later steps exercise
 mixed layers, empty sources/destinations and slot reuse. Each source compares
 every returned BF16 element with an independent expert-weighted reference.
+It also checks the last published round's metadata byte for byte, including
+INT64 expert IDs, FP32 weights, relative token index, mask and padding.
 
 ```bash
 export ASCEND_RT_VISIBLE_DEVICES=0,1,2,3
-torchrun --standalone --nproc-per-node=4 --log-dir "$run/small" --tee 3 \
-  tests/npu/umdk_roundtrip.py --profile small
+for rows in 1 65; do
+  torchrun --standalone --nproc-per-node=4 --log-dir "$run/small-$rows" --tee 3 \
+    tests/npu/umdk_roundtrip.py --profile small --rows "$rows" || exit 1
+done
 export ASCEND_RT_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 for rows in 64 4096; do
   torchrun --standalone --nproc-per-node=8 --log-dir "$run/flash-$rows" --tee 3 \
@@ -108,3 +112,34 @@ on upstream `cam_feature` at `fee97356`.
 [Archived run, probes and provenance](https://github.com/GuangyuZhu04/afd-plugin/tree/fb7b1bc371bba1a2f450fbf6d859a79446bb1c00/docs/testing/ascend950_umdk_dsv4_flash_logs)
 · [UMDK cam_feature](https://gitcode.com/openeuler/umdk/tree/fee97356e28f9945b44ceb3372bac89f9332a515)
 · [UMDK issue 1110](https://gitcode.com/openeuler/umdk/issues/1110)
+
+## November 27 sender fix
+
+The five captures on framework commit `893f765` and the independent DeepEP
+CAM pipeline all used the same CANN 9.2.1 DispatchSend ELF (SHA-256
+`2290fc090ffcd40f47205766b6287f67e1ca6bf63c82f5fd29541aa4c303dae0`).
+The raw plogs report a scalar PC of `0x1b20` and an MTE-corrected PC of
+`0x1714`, the first GM-to-UB read of the expert IDs. The 72-byte tiling dump
+starts with the correctly populated 64-byte operator struct, followed by eight
+bytes outside that struct. The compiled entry copies the 64-byte struct.
+[Device captures](https://github.com/GuangyuZhu04/afd-plugin/tree/50f8cb9ddf09b5f2948820af10bd27d666a0dd13/docs/testing/ascend950_umdk_dsv4_flash_logs)
+· [Independent pipeline and bisection](https://github.com/GuangyuZhu04/afd-plugin/blob/88194220788a6d6fe524c9b0464b12fbacd194f2/docs/npu/ascend950_umdk_507035_root_cause_investigation.md)
+
+In the captured binary, the entry aligns its frame pointer to 32 bytes and
+places the worker at `frame_pointer - 1768`, an address ending in 24 modulo 32.
+The instructions at `0x1e8..0x200` use bitwise OR with 8, 16 and 24 to
+address the first three pointer fields. For that base all three stores go to
+the same location. CombineSend has the same collision for its input, source
+metadata and context pointers. Both senders now align the actual stack address
+before constructing the worker. This preserves their original DMA operations,
+queue protocol and record layouts.
+
+With the captured one-row inputs, the old DispatchSend produced IDs
+`[0, 0]` in the 950 simulator. The repaired sender published `[0, 1]` and the
+entire 64-byte record matched the expected bytes. In a separate two-row
+CombineSend test, the old kernel returned execution state `ABORTED/BAD_ABI`.
+The repaired kernel returned `COMMITTED/OK`, and its two 512-byte WRITE
+descriptors contained the expected BF16 source and destination addresses.
+These tests used real ACLNN kernels on simulated device memory, with software
+queue completions. Use the four- and eight-device cases above to verify the
+physical transport, then run the model acceptance on the framework branch.

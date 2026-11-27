@@ -81,6 +81,24 @@ constexpr int64_t kDefaultTimeoutCycles = 1000000000;
 // used as the budget; the host still validates against GetCoreMemSize(UB).
 constexpr uint32_t kMaxPhysicalUbBytes = 253952;
 
+// The 3510 CCE scalar frame can place an over-aligned aggregate at an
+// 8-byte offset while lowering member addresses as if it were 32-byte
+// aligned. Align the actual address before constructing the local worker.
+// The byte array lives on the scalar stack for the entire kernel call.
+template <typename Worker>
+struct ScalarWorkerStorage {
+    uint8_t bytes[sizeof(Worker) + alignof(Worker) - 1];
+
+    __aicore__ void *address()
+    {
+        // Keep the backend from deriving the address from an assumed stack
+        // alignment and folding away the mask.
+        volatile uintptr_t base = reinterpret_cast<uintptr_t>(bytes);
+        constexpr uintptr_t mask = alignof(Worker) - 1;
+        return reinterpret_cast<void *>((base + mask) & ~mask);
+    }
+};
+
 __aicore__ inline void local_join()
 {
     asc_sync_notify(PIPE_MTE3, PIPE_V, EVENT_ID0);
@@ -296,3 +314,10 @@ __aicore__ inline void append_write_task(handle::HcommJetty &jetty, const handle
     }
 }
 } // namespace afd_async::afd::rt
+
+// Device placement construction. The tag restricts this overload to AFD scalar workers.
+template <typename Worker>
+__aicore__ inline void *operator new(size_t, afd_async::afd::rt::ScalarWorkerStorage<Worker> &storage)
+{
+    return storage.address();
+}

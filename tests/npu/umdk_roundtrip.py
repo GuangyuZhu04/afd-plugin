@@ -45,6 +45,35 @@ SMALL = Profile(2, 2, 1, 256, 4, 2, 65, 64, (2, 5))
 FLASH = Profile(4, 4, 2, 4096, 256, 6, 4096, 262144, tuple(range(43)))
 
 
+def check_last_dispatch_records(session, ids, weights):
+    """Compare the sender's last published BF16 wire records before slot reuse."""
+    rows, k = ids.shape
+    if not rows:
+        return
+    begin = ((rows - 1) // session.window) * session.window
+    # AFDWorkspace reserves int32 route slots for C_m*K, followed by records.
+    # TokenLayout aligns the IDs and the end of each metadata record to 32 B.
+    metadata_offset = (4 * session.window * k + 31) // 32 * 32
+    weight_offset = (8 * k + 31) // 32 * 32
+    token_offset = weight_offset + 4 * k
+    stride = (token_offset + 8 + 31) // 32 * 32
+    count = rows - begin
+    actual = session.owner.workspace.narrow(0, metadata_offset, count * stride).cpu()
+    expected = torch.zeros((count, stride), dtype=torch.uint8)
+    expected[:, : 8 * k] = ids[begin:].cpu().contiguous().view(torch.uint8)
+    expected[:, weight_offset:token_offset] = (
+        weights[begin:].cpu().contiguous().view(torch.uint8)
+    )
+    expected[:, token_offset : token_offset + 4] = (
+        torch.arange(count, dtype=torch.int32).view(count, 1).view(torch.uint8)
+    )
+    mask = (1 << k) - 1 if k < 32 else -1
+    expected[:, token_offset + 4 : token_offset + 8] = torch.full(
+        (count, 1), mask, dtype=torch.int32
+    ).view(torch.uint8)
+    torch.testing.assert_close(actual.view_as(expected), expected, rtol=0, atol=0)
+
+
 def source_round(session, profile, rank, step, rows, device):
     layer = (
         profile.layers[0]
@@ -59,12 +88,16 @@ def source_round(session, profile, rank, step, rows, device):
     domain = profile.experts // profile.receivers if step == 2 else profile.experts
     ids = (token * profile.topk + slot) % domain
     weights = ((slot + 1).float() / 16).expand(n, -1).contiguous()
+    if step:
+        # Distinguish a later round from the same local rows in round zero.
+        weights = weights + (token % 7).float() / 32
     column = torch.arange(profile.hidden, device=device)
     # X in {-1, 0, 1} times an integer gain <= 251 is exactly representable in BF16.
     x = ((token * 7 + column + rank + step) % 17 % 3 - 1).bfloat16()
     print(f"rank={rank} step={step} layer={layer} valid_rows={n} dispatch", flush=True)
     session.dispatch(context, x, ids, weights, n)
     actual = session.combine(step, context)
+    check_last_dispatch_records(session, ids, weights)
     gains = 1 + (layer + ids) % 251
     expected = (x.float() * (gains * weights).sum(dim=1, keepdim=True)).bfloat16()
     torch.testing.assert_close(actual, expected, rtol=0, atol=0)
