@@ -1,0 +1,40 @@
+diff --git a/vllm_ascend/attention/dsa_v1.py b/vllm_ascend/attention/dsa_v1.py
+index 5addc6b..d9afdbb 100644
+--- a/vllm_ascend/attention/dsa_v1.py
++++ b/vllm_ascend/attention/dsa_v1.py
+@@ -93,6 +93,7 @@ else:
+ 
+ # The SAS and QLI metadata operators use a fixed 1024-element int32 layout.
+ DSA_METADATA_BUFFER_SIZE = 1024
++SAS_METADATA_BUFFER_SIZE = 2048
+ 
+ 
+ class OProjBufferPool:
+@@ -817,7 +818,7 @@ class AscendDSAMetadataBuilder(AttentionMetadataBuilder[AscendDSAMetadata]):
+         max_num_reqs = scheduler_config.max_num_seqs * self._request_capacity_factor
+         self.start_pos_prefill: torch.Tensor = torch.zeros(max_num_reqs, dtype=torch.int32, device=self.device)
+         self.sas_metadata_buffer: torch.Tensor = torch.zeros(
+-            DSA_METADATA_BUFFER_SIZE, dtype=torch.int32, device=self.device
++            SAS_METADATA_BUFFER_SIZE, dtype=torch.int32, device=self.device
+         )
+         self.qli_metadata_buffer: torch.Tensor = torch.zeros(
+             DSA_METADATA_BUFFER_SIZE, dtype=torch.int32, device=self.device
+@@ -1130,7 +1131,8 @@ class AscendDSAMetadataBuilder(AttentionMetadataBuilder[AscendDSAMetadata]):
+             )
+             metadata_cache[layer_name] = sas_metadata
+ 
+-        self.sas_metadata_buffer[:DSA_METADATA_BUFFER_SIZE] = sas_metadata
++        self.sas_metadata_buffer[:SAS_METADATA_BUFFER_SIZE].copy_(
++            sas_metadata[:SAS_METADATA_BUFFER_SIZE].reshape(-1))
+         return self.sas_metadata_buffer
+ 
+     def _build_dspark_sparse_flash_mla_metadata(
+@@ -1509,7 +1511,7 @@ class AscendDSAMetadataBuilder(AttentionMetadataBuilder[AscendDSAMetadata]):
+                     ori_topk_length=dspark_swa_topk_lengths,
+                     ori_topk=dspark_swa_indices.shape[-1],
+                 )
+-                self.sas_metadata_buffer[:DSA_METADATA_BUFFER_SIZE].copy_(result[:DSA_METADATA_BUFFER_SIZE])
++                self.sas_metadata_buffer[:SAS_METADATA_BUFFER_SIZE].copy_(result[:SAS_METADATA_BUFFER_SIZE])
+                 return self.sas_metadata_buffer
+             return self._build_sas_metadata(
+                 metadata_cache=metadata_cache,

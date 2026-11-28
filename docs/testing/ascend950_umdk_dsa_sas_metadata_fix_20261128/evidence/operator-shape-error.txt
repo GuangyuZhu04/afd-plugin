@@ -1,0 +1,12 @@
+(Worker_DP0_TP0_EP0 pid=173039) ERROR 11-28 03:16:33 [multiproc_executor.py:1063] RuntimeError: call aclnnSparseFlashMla failed, detail:[PID: 173039] 2026-11-28-03:16:33.050.069 Invalid_Argument_Tensor_Shape(EZ0009): Parameter met
+(Worker_DP0_TP0_EP0 pid=173039) ERROR 11-28 03:16:33 [multiproc_executor.py:1063]         Failed to execute operator SparseFlashMla_0. Reason: Failed to execute tiling function.
+(Worker_DP1_TP0_EP2 pid=173035) ERROR 11-28 03:16:33 [multiproc_executor.py:1063] RuntimeError: call aclnnSparseFlashMla failed, detail:[PID: 173035] 2026-11-28-03:16:33.050.443 Invalid_Argument_Tensor_Shape(EZ0009): Parameter met
+(Worker_DP1_TP0_EP2 pid=173035) ERROR 11-28 03:16:33 [multiproc_executor.py:1063]         Failed to execute operator SparseFlashMla_0. Reason: Failed to execute tiling function.
+(Worker_DP1_TP1_EP3 pid=173036) ERROR 11-28 03:16:33 [multiproc_executor.py:1063] RuntimeError: call aclnnSparseFlashMla failed, detail:[PID: 173036] 2026-11-28-03:16:33.050.444 Invalid_Argument_Tensor_Shape(EZ0009): Parameter met
+(Worker_DP1_TP1_EP3 pid=173036) ERROR 11-28 03:16:33 [multiproc_executor.py:1063]         Failed to execute operator SparseFlashMla_0. Reason: Failed to execute tiling function.
+(Worker_DP0_TP1_EP1 pid=173040) ERROR 11-28 03:16:33 [multiproc_executor.py:1063] RuntimeError: call aclnnSparseFlashMla failed, detail:[PID: 173040] 2026-11-28-03:16:33.050.102 Invalid_Argument_Tensor_Shape(EZ0009): Parameter met
+(Worker_DP0_TP1_EP1 pid=173040) ERROR 11-28 03:16:33 [multiproc_executor.py:1063]         Failed to execute operator SparseFlashMla_0. Reason: Failed to execute tiling function.
+(EngineCore_DP1 pid=172683) ERROR 11-28 03:16:33 [async_dp_engine.py:204] RuntimeError: Worker failed with error 'call aclnnSparseFlashMla failed, detail:[PID: 173035] 2026-11-28-03:16:33.050.443 Invalid_Argument_Tensor_Shape(EZ00
+(EngineCore_DP1 pid=172683) ERROR 11-28 03:16:33 [async_dp_engine.py:204]         Failed to execute operator SparseFlashMla_0. Reason: Failed to execute tiling function.
+(EngineCore_DP0 pid=172682) ERROR 11-28 03:16:33 [async_dp_engine.py:204] RuntimeError: Worker failed with error 'call aclnnSparseFlashMla failed, detail:[PID: 173039] 2026-11-28-03:16:33.050.069 Invalid_Argument_Tensor_Shape(EZ00
+(EngineCore_DP0 pid=172682) ERROR 11-28 03:16:33 [async_dp_engine.py:204]         Failed to execute operator SparseFlashMla_0. Reason: Failed to execute tiling function.
