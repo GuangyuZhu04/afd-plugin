@@ -17,14 +17,46 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 NAME=${1:-afd-e2e-$(date +%m%d%H%M)}
 
 afd_log_step "preflight: image and host paths"
+
+if [ -z "$AFD_IMAGE" ]; then
+    echo "ERROR: AFD_IMAGE is not set." >&2
+    echo "       The image is a site-specific build; there is no portable default." >&2
+    echo "       Set it to the image you imported:" >&2
+    echo "         export AFD_IMAGE=your-image:tag" >&2
+    echo "       One team's build of this stack is $AFD_IMAGE_HINT" >&2
+    echo "       (see docs/environment.md, Importing the image)." >&2
+    exit 1
+fi
+
+# Two different failures produce the same "not found" here and need different
+# fixes: an unreachable daemon is not a missing image.
+if ! docker info >/dev/null 2>&1; then
+    echo "ERROR: cannot reach the docker daemon." >&2
+    echo "       DOCKER_HOST=${DOCKER_HOST:-unset}" >&2
+    echo "       If the image lives on another daemon, set AFD_DOCKER_HOST to" >&2
+    echo "       its socket; otherwise check that dockerd is running." >&2
+    exit 1
+fi
 docker image inspect "$AFD_IMAGE" >/dev/null 2>&1 || {
-    echo "ERROR: image $AFD_IMAGE not found on $AFD_DOCKER_HOST" >&2
-    echo "       list it with: docker images" >&2
+    echo "ERROR: the daemon is reachable but has no image $AFD_IMAGE" >&2
+    echo "       images present:" >&2
+    docker images --format '         {{.Repository}}:{{.Tag}}' 2>/dev/null | head -12 >&2
+    echo "       import one with: docker load -i <file>.tar" >&2
+    echo "       then export AFD_IMAGE to its name." >&2
     exit 1
 }
 for p in "$AFD_URMA_ROOT/urma-core" "$AFD_URMA_ROOT/urma-providers" "$AFD_MODEL"; do
     [ -e "$p" ] || { echo "ERROR: missing host path $p" >&2; exit 1; }
 done
+
+# Reuse the container this workspace already recorded. Without this every run of
+# 00_setup_all.sh created another container, and on a shared host those pile up
+# against the disk and the image cache while nothing points at them any more.
+RECORDED=$(cat "$AFD_WORK/.container-name" 2>/dev/null || true)
+if [ -n "$RECORDED" ] && docker ps -a --format '{{.Names}}' | grep -qx "$RECORDED"; then
+    NAME=$RECORDED
+    echo "reusing the container this workspace already records: $NAME"
+fi
 
 if docker ps -a --format '{{.Names}}' | grep -qx "$NAME"; then
     echo "container $NAME already exists; starting it"

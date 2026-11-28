@@ -49,11 +49,19 @@ if [ -z "${AFD_WORK:-}" ]; then
     AFD_WORK=$_afd_derived_work
 fi
 
-AFD_IMAGE=${AFD_IMAGE:-vllm-ascend-a5:032-megamoe-20261125}
-# The image lives on a second dockerd whose root is on the data disk; the
-# default daemon has ~8 GB free and does not carry it.
-AFD_DOCKER_HOST=${AFD_DOCKER_HOST:-unix:///var/run/docker-network-lab.sock}
-export DOCKER_HOST=$AFD_DOCKER_HOST
+# The image is site-specific: it is one team's build of vLLM-Ascend for this
+# SoC. It cannot be defaulted to something that exists everywhere, so requiring
+# it is honest; a fallback name would fail later, inside the container, with a
+# message about a missing module.
+AFD_IMAGE=${AFD_IMAGE:-}
+AFD_IMAGE_HINT=${AFD_IMAGE_HINT:-vllm-ascend-a5:032-megamoe-20261125}
+
+# Leave the docker endpoint alone unless asked. `docker` already resolves the
+# local default socket, and overriding it with a site-specific path turned
+# "no such socket" into "image not found" on every other machine.
+if [ -n "${AFD_DOCKER_HOST:-}" ]; then
+    export DOCKER_HOST=$AFD_DOCKER_HOST
+fi
 
 AFD_URMA_ROOT=${AFD_URMA_ROOT:-/mnt/xds/sfs/950-DT/images/dependency/libs}
 AFD_MODEL=${AFD_MODEL:-/mnt/xds/sfs/DeepSeek-V4-Flash}

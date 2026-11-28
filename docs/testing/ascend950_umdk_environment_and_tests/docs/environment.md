@@ -60,6 +60,41 @@ $AFD_WORK/
   runs/  artifacts/  logs/     written by the scripts
 ```
 
+## Importing the image
+
+The image is a site-specific build; `AFD_IMAGE` has no portable default and the
+setup stops if it is unset. Load the image on the daemon that will run the
+container, then export its name.
+
+```bash
+docker load -i /path/to/vllm-ascend-a5-032-megamoe-20261125.tar
+docker images | grep megamoe        # confirm the tag you will export
+export AFD_IMAGE=vllm-ascend-a5:032-megamoe-20261125
+```
+
+A prebuilt archive of this build exists on the shared NFS mount, so a host that
+mounts `/mnt/xds/sfs` does not need to export or copy one:
+
+```text
+/mnt/xds/sfs/x00991183/vllm-ascend-a5-032-megamoe-20261125.tar   27 GB
+```
+
+Its `manifest.json` names config `sha256:dc0a9cd3eb22...`, which is the image
+ID of the build the tests below were run against.
+
+**Pick the daemon deliberately.** A host can run more than one `dockerd`; the
+image is only present on the one that loaded it. `docker` uses the local socket
+unless `DOCKER_HOST` says otherwise, and `AFD_DOCKER_HOST` is how these scripts
+set that. If a daemon holds the image, point at it:
+
+```bash
+export AFD_DOCKER_HOST=unix:///var/run/docker-network-lab.sock
+```
+
+The setup distinguishes the two failures, because they need different fixes:
+an unreachable daemon prints the endpoint it tried, a reachable daemon without
+the image lists what it does have.
+
 ## Order of operations
 
 ```bash
@@ -184,3 +219,13 @@ Every script reads `AFD_WORK`, `AFD_IMAGE`, `AFD_DOCKER_HOST`, `AFD_URMA_ROOT`,
 `AFD_MODEL` and `AFD_PROXY` from the environment, and discovers the HCCL
 address from the default route. On a different host, set those instead of
 editing the scripts.
+
+Two of them have no usable default and are checked before anything else runs:
+
+| Variable | Behaviour when unset |
+| --- | --- |
+| `AFD_WORK` | derived from the checkout; refused outright if that lands on `/` |
+| `AFD_IMAGE` | setup stops and names the import command, because the image is site-specific |
+
+`AFD_DOCKER_HOST` is left unset by default so `docker` uses whatever local
+socket the host has; set it only when the image lives on a different daemon.
