@@ -47,6 +47,8 @@ if [[ -n ${AFD_RUNTIME_REQUIREMENTS:-} ]]; then
 fi
 # A toolchain image supplies the vendor-matched torch stack and serving dependencies.
 python -c 'import torch,torch_npu; print("torch",torch.__version__,"torch_npu",torch_npu.__version__)'
+npu_lib=$(python -c 'from importlib.util import find_spec; from pathlib import Path; print(Path(find_spec("torch_npu").origin).resolve().parent / "lib")')
+export LD_LIBRARY_PATH="$npu_lib:${LD_LIBRARY_PATH:-}"
 vllm_sha=62d4bc3c7e33b1b6c906e233e6af2d3506c482ca
 ascend_sha=7dcdb690caf879a17ab07382880d5773f5202e20
 deep_sha=25b5153eb2549107c13c8d462e325ac28cea8dea
@@ -100,7 +102,8 @@ if [[ $mode == wheels || -n ${DEEPEP_WHEEL:-} ]]; then
     install_checked "${DEEPEP_WHEEL:?}" "${DEEPEP_WHEEL_SHA256:?}"
 elif [[ $mode == source || -n ${DEEPEP_SOURCE:-} ]] || ! python -c 'from deep_ep import AFDBuffer'; then
     if [[ ${AFD_INSTALL_BUILD_DEPS:-0} == 1 ]]; then
-        dnf install -y gcc-toolset-14-gcc-c++ gcc-toolset-14-libstdc++-devel elfutils-libelf-devel elfutils-devel
+        dnf install -y gcc-toolset-14-gcc-c++ gcc-toolset-14-libstdc++-devel gcc-toolset-14-libgcc \
+            elfutils-libelf-devel elfutils-devel
     fi
     if [[ -z ${CXX:-} ]] && command -v rpm >/dev/null && rpm -q gcc-toolset-14-gcc-c++ >/dev/null; then
         CXX=$(rpm -ql gcc-toolset-14-gcc-c++ | awk '/\/bin\/g\+\+$/ {print; exit}')
@@ -108,8 +111,9 @@ elif [[ $mode == source || -n ${DEEPEP_SOURCE:-} ]] || ! python -c 'from deep_ep
         stdlib=$("$CXX" -print-file-name=libstdc++.so.6)
         export LD_LIBRARY_PATH="${stdlib%/*}:${LD_LIBRARY_PATH:-}"
     fi
-    printf '#include <format>\n#include <libelf.h>\n#include <elfutils/libdwfl.h>\n' | "${CXX:-c++}" -std=c++20 -x c++ -fsyntax-only - || {
-        echo 'DeepEP needs C++20 <format>, libelf.h and elfutils/libdwfl.h; in the openEuler container set AFD_INSTALL_BUILD_DEPS=1.' >&2
+    printf '#include <format>\n#include <libelf.h>\n#include <elfutils/libdwfl.h>\nint main(){return std::format("{}", 1).empty();}\n' |
+        "${CXX:-c++}" -std=c++20 -x c++ - -o "$build/check-compiler" && "$build/check-compiler" || {
+        echo 'DeepEP needs a working C++20 compile/link environment and elfutils headers. In the openEuler container set AFD_INSTALL_BUILD_DEPS=1.' >&2
         exit 1
     }
     checkout "${DEEPEP_SOURCE:-https://github.com/puxiaokun3721/DeepEP-Ascend.git}" "$deep_sha" deepep-src
