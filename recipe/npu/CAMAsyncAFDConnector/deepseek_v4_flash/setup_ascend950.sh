@@ -100,7 +100,7 @@ if [[ $mode == wheels || -n ${DEEPEP_WHEEL:-} ]]; then
     install_checked "${DEEPEP_WHEEL:?}" "${DEEPEP_WHEEL_SHA256:?}"
 elif [[ $mode == source || -n ${DEEPEP_SOURCE:-} ]] || ! python -c 'from deep_ep import AFDBuffer'; then
     if [[ ${AFD_INSTALL_BUILD_DEPS:-0} == 1 ]]; then
-        dnf install -y gcc-toolset-14-gcc-c++ gcc-toolset-14-libstdc++-devel elfutils-libelf-devel
+        dnf install -y gcc-toolset-14-gcc-c++ gcc-toolset-14-libstdc++-devel elfutils-libelf-devel elfutils-devel
     fi
     if [[ -z ${CXX:-} ]] && command -v rpm >/dev/null && rpm -q gcc-toolset-14-gcc-c++ >/dev/null; then
         CXX=$(rpm -ql gcc-toolset-14-gcc-c++ | awk '/\/bin\/g\+\+$/ {print; exit}')
@@ -108,8 +108,8 @@ elif [[ $mode == source || -n ${DEEPEP_SOURCE:-} ]] || ! python -c 'from deep_ep
         stdlib=$("$CXX" -print-file-name=libstdc++.so.6)
         export LD_LIBRARY_PATH="${stdlib%/*}:${LD_LIBRARY_PATH:-}"
     fi
-    printf '#include <format>\n#include <libelf.h>\n' | "${CXX:-c++}" -std=c++20 -x c++ -fsyntax-only - || {
-        echo 'DeepEP needs C++20 <format> and libelf.h; in the openEuler container set AFD_INSTALL_BUILD_DEPS=1.' >&2
+    printf '#include <format>\n#include <libelf.h>\n#include <elfutils/libdwfl.h>\n' | "${CXX:-c++}" -std=c++20 -x c++ -fsyntax-only - || {
+        echo 'DeepEP needs C++20 <format>, libelf.h and elfutils/libdwfl.h; in the openEuler container set AFD_INSTALL_BUILD_DEPS=1.' >&2
         exit 1
     }
     checkout "${DEEPEP_SOURCE:-https://github.com/puxiaokun3721/DeepEP-Ascend.git}" "$deep_sha" deepep-src
