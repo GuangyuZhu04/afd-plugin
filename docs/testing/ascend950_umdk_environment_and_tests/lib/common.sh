@@ -24,7 +24,30 @@ _afd_testing=$(cd "$_afd_self/../.." && pwd)
 AFD_REPO=${AFD_REPO:-$(cd "$_afd_testing/../.." && pwd)}
 # The workspace mounted at /work holds the source trees under src/, so it is
 # the parent of the checkout, not the checkout itself.
-AFD_WORK=${AFD_WORK:-$(dirname "$(dirname "$AFD_REPO")")}
+#
+# Derivation alone is not safe. A checkout shallow enough to have no grandparent
+# (for example /tmp/clone-verify, or any directory directly under /) resolves
+# AFD_WORK to "/". The scripts then mount the host root at /work, write their
+# run directories into /, and report success. Require the derived path to be a
+# real directory that is neither the filesystem root nor the checkout itself.
+_afd_derived_work=$(dirname "$(dirname "$AFD_REPO")")
+if [ -z "${AFD_WORK:-}" ]; then
+    case "$_afd_derived_work" in
+        /|"$AFD_REPO")
+            echo "ERROR: cannot derive the workspace from \$AFD_REPO=$AFD_REPO" >&2
+            echo "       AFD_WORK defaults to the parent of the checkout, which here is" >&2
+            echo "       '$_afd_derived_work'. Set it explicitly:" >&2
+            echo "         export AFD_WORK=/path/to/workspace" >&2
+            echo "       The workspace must hold src/ with the three source trees, and" >&2
+            echo "       it is what the container sees at /work." >&2
+            # Sourced file: exit terminates the script that sourced it, which
+            # is the intent. A "return 1" would only give up on this file and
+            # let the caller continue with the bad path.
+            exit 1
+            ;;
+    esac
+    AFD_WORK=$_afd_derived_work
+fi
 
 AFD_IMAGE=${AFD_IMAGE:-vllm-ascend-a5:032-megamoe-20261125}
 # The image lives on a second dockerd whose root is on the data disk; the

@@ -83,5 +83,17 @@ print('PREFLIGHT_OK')
 PY
 "
 
+# The checks above end in an exit status, and without this the script reported
+# success after printing a traceback: the Python body exits non-zero, docker
+# exec forwards it, and nothing looked. A preflight that cannot fail is worse
+# than none, because the next script trusts it.
+RC=$?
+if [ "$RC" -ne 0 ]; then
+    echo
+    echo "PREFLIGHT_FAILED (exit $RC)" >&2
+    echo "  the checks above reported a problem; fix it before running a test" >&2
+    exit "$RC"
+fi
+
 echo
 echo 'environment verified'
