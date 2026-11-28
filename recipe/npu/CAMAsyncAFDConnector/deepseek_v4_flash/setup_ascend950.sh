@@ -73,7 +73,7 @@ install_checked() {
 build_wheel() {
     local name=$1 src=$2
     mkdir "wheels/$name"
-    python -m pip wheel --no-deps --no-build-isolation "$src" -w "wheels/$name"
+    python -m pip wheel --no-deps --no-build-isolation "$build/$src" -w "wheels/$name"
     local files=("wheels/$name"/*.whl)
     [[ ${#files[@]} == 1 && -f ${files[0]} ]]
     built_wheel="$build/${files[0]}"
@@ -115,6 +115,22 @@ else
     python -m pip install --no-deps --force-reinstall "$plugin_wheel"
 fi
 sha256sum "$plugin_wheel" > "$build/plugin-wheel.sha256"
+wheel_rev=$(python - <<'PY'
+from importlib.metadata import version
+import re
+v = version("vllm-afd-plugin")
+m = re.fullmatch(r"0\.0\.0\+g([0-9a-f]{7,40})", v)
+if m is None:
+    raise SystemExit(f"Expected the board release wheel with a Git revision, found {v}")
+print(m[1])
+PY
+)
+wheel_commit=$(git -C "$repo" rev-parse --verify "$wheel_rev^{commit}")
+if ! git -C "$repo" diff --quiet "$wheel_commit" "$plugin_sha" -- \
+    afd_plugin csrc umdk_cam_op_lib.py setup.py setup.cfg pyproject.toml MANIFEST.in LICENSE .gitattributes; then
+    echo "Installed wheel $wheel_rev and checkout $plugin_sha have different package sources" >&2
+    exit 1
+fi
 printf '#!/usr/bin/env bash\nexec %q -m vllm.entrypoints.cli.main "$@"\n' "$build/venv/bin/python" > "$build/venv/bin/afd-board-vllm"
 chmod +x "$build/venv/bin/afd-board-vllm"
 # Record variables before starting a fresh Python process: the dynamic loader uses
@@ -123,6 +139,7 @@ env_file="$build/stack-env.sh"
 {
     printf 'source %q\nsource %q\n' "$cann" "$build/venv/bin/activate"
     printf 'export AFD_BOARD_COMMIT=%q SOC_VERSION=950 HCCL_OP_EXPANSION_MODE=AIV\n' "$plugin_sha"
+    printf 'export AFD_BOARD_WHEEL_COMMIT=%q\n' "$wheel_commit"
     printf 'export AFD_NPU_E2E_VLLM_BIN=%q\n' "$build/venv/bin/afd-board-vllm"
     for key in AFD_UMDK_VLLM_WHEEL_SHA256 AFD_UMDK_VLLM_ASCEND_WHEEL_SHA256; do
         [[ -z ${!key:-} ]] || printf 'export %s=%q\n' "$key" "${!key}"
@@ -140,7 +157,7 @@ PY
 set +u
 source "$env_file"
 set -u
-python - "${plugin_sha:0:7}" <<'PY'
+python - "$wheel_rev" <<'PY'
 import sys
 from importlib.metadata import version
 from importlib.util import find_spec
