@@ -228,3 +228,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# The `lib/` rule above targets build/lib from the packaging template. This
+# tree ships a shell library of its own, and the rule would otherwise drop it
+# without a word: the scripts source lib/common.sh, so a checkout missing it
+# fails on the first line with "No such file or directory".
+!docs/testing/ascend950_umdk_environment_and_tests/lib/
