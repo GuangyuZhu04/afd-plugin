@@ -8,6 +8,16 @@ host the container is recycled and a host-side script survives that.
 
 ## Start here
 
+The scripts expect the checkout at `<workspace>/src/afd-plugin` and treat the
+grandparent as the workspace. If yours is anywhere else, export it first:
+
+```bash
+export AFD_WORK=/path/to/workspace    # holds src/, runs/, artifacts/
+```
+
+Without that, a clone elsewhere is refused rather than guessed: see
+[Set the workspace first](docs/environment.md#set-the-workspace-first).
+
 ```bash
 cd docs/testing/ascend950_umdk_environment_and_tests
 

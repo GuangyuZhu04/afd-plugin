@@ -33,10 +33,38 @@ src/deepep/            DeepEP-Ascend at 25b5153e plus its DeepJIT submodule
 They are not fetched automatically because two of them need a pinned commit
 and a compiler toolchain; see *Obtaining the sources* below.
 
+## Set the workspace first
+
+The scripts derive `AFD_WORK` as the grandparent of the checkout, which is
+where they expect `src/` to live. That only works when the checkout is at
+`<workspace>/src/afd-plugin`. A checkout anywhere else has no grandparent to
+speak of, and the derivation must not guess.
+
+So if your clone is not at `<workspace>/src/afd-plugin`, set it:
+
+```bash
+export AFD_WORK=/path/to/workspace    # holds src/, runs/, artifacts/
+```
+
+The script stops with this instruction rather than continuing: a guessed `/`
+would start the container with the host root bind-mounted at `/work` and write
+its run directories into the filesystem root.
+
+The layout it expects:
+
+```text
+$AFD_WORK/
+  src/afd-plugin/          this checkout
+  src/vllm-ascend-pin/     pinned vllm-ascend
+  src/deepep/              pinned DeepEP-Ascend
+  runs/  artifacts/  logs/     written by the scripts
+```
+
 ## Order of operations
 
 ```bash
 cd docs/testing/ascend950_umdk_environment_and_tests
+export AFD_WORK=/path/to/workspace  # unless the layout above already holds
 bash setup/00_setup_all.sh          # container, deps, wheels, install, preflight
 ```
 
@@ -148,6 +176,9 @@ arities differ, the installed wheel does not match the source tree.
 | `HCCL function error create_config` | dies busy; wait for the tenant to finish |
 | `507035` inside the operator | a device or URMA library mount is missing |
 | image not found | the image lives on the second daemon; set `AFD_DOCKER_HOST` |
+| `cannot derive the workspace from $AFD_REPO` | the checkout is not at `<workspace>/src/afd-plugin`; `export AFD_WORK=...` |
+| `lib/common.sh: No such file or directory` | the clone predates the commit that added it; pull again |
+| `PREFLIGHT_FAILED` | a check above it reported the reason; the message names the step |
 
 Every script reads `AFD_WORK`, `AFD_IMAGE`, `AFD_DOCKER_HOST`, `AFD_URMA_ROOT`,
 `AFD_MODEL` and `AFD_PROXY` from the environment, and discovers the HCCL
