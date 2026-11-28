@@ -40,7 +40,7 @@ export ASCEND_PROCESS_LOG_PATH="$run/plog" ASCEND_DUMP_PATH="$run/extra-info" AS
 mkdir -p "$ASCEND_PROCESS_LOG_PATH" "$ASCEND_DUMP_PATH"
 ids=${AFD_E2E_DEVICES:-${ASCEND_RT_VISIBLE_DEVICES:-}}
 printf 'commit=%s\npython=%s\ndevices=%s\nstage=%s\n' "$commit" "$(command -v python)" "$ids" "$stage" > "$run/manifest.txt"
-python - "$commit" >> "$run/manifest.txt" <<'PY'
+python - "${AFD_BOARD_WHEEL_COMMIT:-$commit}" >> "$run/manifest.txt" <<'PY'
 import sys
 from importlib.metadata import distribution
 from pathlib import Path
@@ -48,9 +48,11 @@ import afd_plugin
 from afd_plugin.compat.npu.ops import get_afd_cust_opapi_path
 pkg = distribution("vllm-afd-plugin")
 installed = Path(pkg.locate_file("afd_plugin/__init__.py")).resolve()
-if Path(afd_plugin.__file__).resolve() != installed or not pkg.version.endswith("+g" + sys.argv[1][:7]):
+revision = pkg.version.partition("+g")[2]
+if Path(afd_plugin.__file__).resolve() != installed or not revision or not sys.argv[1].startswith(revision):
     raise RuntimeError(f"Loaded {afd_plugin.__file__} ({pkg.version}); expected the wheel for {sys.argv[1]}")
 print("plugin", pkg.version, installed, pkg.read_text("direct_url.json"))
+print("wheel_commit", sys.argv[1])
 print("plugin_opapi", get_afd_cust_opapi_path())
 PY
 for info in "${ASCEND_HOME_PATH:-/usr/local/Ascend/ascend-toolkit/latest}/version.cfg" /usr/local/Ascend/driver/version.info; do

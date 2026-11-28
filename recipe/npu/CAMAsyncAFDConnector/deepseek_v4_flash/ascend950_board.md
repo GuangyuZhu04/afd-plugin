@@ -44,6 +44,8 @@ source "$AFD_WORK/stack-env.sh"
 脚本从基础镜像继承 torch 和机器相关运行依赖，以免安装 vLLM-Ascend 时把匹配的 torch-npu 降级。可用 `AFD_RUNTIME_REQUIREMENTS` 指定基础镜像缺少的运行依赖锁文件，`AFD_WHEELHOUSE` 指定离线 pip 目录。源码模式需要能够取得 Git 子模块和原生构建依赖。完整离线部署可用 wheels 模式。使用本分支预编译插件时，额外传入 `AFD_PLUGIN_WHEEL` 和 `AFD_PLUGIN_WHEEL_SHA256`。脚本校验 wheel 版本中的提交号，0.32 框架 wheel 适用于历史分支。切换 CANN 或 torch ABI 后应在目标环境从源码构建。
 [本分支插件 wheel、独立 OPP 和 SHA256SUMS](https://github.com/GuangyuZhu04/afd-plugin/releases/tag/ascend950-umdk-flash-v034-20261128)
 
+激活文件分别记录测试代码和 wheel 的提交。复用旧 wheel 时，安装脚本会核对两个提交的插件、原生算子和打包输入；运行结果的 `manifest.txt` 记录两者身份。
+
 ## 上板执行
 
 ```bash
