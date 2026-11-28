@@ -31,6 +31,15 @@ afd_log_step "roundtrip $PROFILE rows=${ROWS:-default} devices=$DEVICES"
 echo "  run dir: $RUN"
 
 mkdir -p "$RUN/plog" "$RUN/extra-info"
+
+# Build the runner arguments on the host: PROFILE and ROWS are this script's
+# variables, and the container has no such names. Escaping them would hand the
+# container an unset variable, which set -u turns into an immediate abort.
+ARGS="--profile $PROFILE"
+[ -n "$ROWS" ] && ARGS="$ARGS --rows $ROWS"
+# RUN is a host path; the container reaches the same tree at /work.
+CRUN=$(afd_ctr_path "$RUN")
+
 afd_diexec "
   set -uo pipefail
   PY=/usr/local/python3.12.16/bin/python3
@@ -49,23 +58,33 @@ afd_diexec "
   export ASCEND_RT_VISIBLE_DEVICES=\"$DEVICES\"
   # Keep CANN process logs and device dumps on the persistent mount; a lost
   # dump is what makes the next failure unattributable.
-  export ASCEND_PROCESS_LOG_PATH=\"$RUN/plog\"
-  export ASCEND_WORK_PATH=\"$RUN\"
-  export ASCEND_DUMP_PATH=\"$RUN/extra-info\"
+  export ASCEND_PROCESS_LOG_PATH=\"$CRUN/plog\"
+  export ASCEND_WORK_PATH=\"$CRUN\"
+  export ASCEND_DUMP_PATH=\"$CRUN/extra-info\"
   # Run from a tests-only copy so the installed wheel supplies the plugin.
   rm -rf /tmp/rt-tests && mkdir -p /tmp/rt-tests
   git -C /work/src/afd-plugin archive HEAD tests | tar -x -C /tmp/rt-tests
   cd /tmp/rt-tests || exit 1
-  ARGS=\"--profile \$PROFILE\"
-  [ -n \"$ROWS\" ] && ARGS=\"\$ARGS --rows $ROWS\"
   timeout 1800 torchrun --standalone --nproc-per-node=$WORKERS \\
-    --log-dir \"$RUN/ranks\" --tee 3 \\
-    tests/npu/umdk_roundtrip.py \$ARGS > \"$RUN/roundtrip.log\" 2>&1
+    --log-dir \"$CRUN/ranks\" --tee 3 \\
+    tests/npu/umdk_roundtrip.py $ARGS > \"$CRUN/roundtrip.log\" 2>&1
   echo \"  exit=$?\"
 "
 
-echo
-grep -aoE 'numerical roundtrip passed|CombineRecv failed|50703[0-9]|invalid GM' \
-    "$RUN/roundtrip.log" 2>/dev/null | sort | uniq -c || true
+afd_log_step 'verdict'
+# Judge the run on the marker the harness prints only after the exact
+# comparison passes, not on the exit status of torchrun alone: a rank that
+# aborts still exits non-zero but so does a healthy run that the shell mangles.
+LOG=$RUN/roundtrip.log
+if grep -aq 'numerical roundtrip passed' "$LOG" 2>/dev/null; then
+    echo '  result: PASS (BF16 oracle matched on every rank)'
+    rc=0
+else
+    echo '  result: FAIL'
+    grep -aoE 'CombineRecv failed|DispatchRecv failed|50703[0-9]|invalid GM|timeout or trap|RuntimeError[^"]{0,90}' \
+        "$LOG" 2>/dev/null | sort | uniq -c | head -8
+    rc=1
+fi
 echo
 echo "evidence: $RUN"
+exit $rc

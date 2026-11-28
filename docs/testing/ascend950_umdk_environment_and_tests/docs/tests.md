@@ -13,6 +13,20 @@ four minutes to report.
 
 Every script checks for free dies before starting; the host is shared.
 
+Read that check carefully if you bypass it. The summary table that
+`npu-smi info` prints at the top can show "No running processes found" while
+the die is already busy: the per-die detail is the only reliable source.
+
+```bash
+npu-smi info                         # summary: can lag a starting process
+npu-smi info -t proc-mem -i 0        # per-die: what the scripts use
+```
+
+A process that started seconds ago shows up in `proc-mem` and not yet in the
+summary, so a summary-only check will happily start a run into a die another
+tenant just took. `afd_free_npus` in `lib/common.sh` counts `proc-mem` lines
+for this reason.
+
 ## 1. Operator roundtrip
 
 ```bash
@@ -35,6 +49,12 @@ UMDK Ascend 950 small numerical roundtrip passed
 The profile enforces its own rank count: `dsv4-flash` is 4A4F and the harness
 rejects a world size that is not sources plus receivers, so it cannot be run on
 four dies.
+
+This profile has been observed passing on eight Ascend 950DT dies
+(H=4096, topk 6, 256 experts, 4A4F, 4096 rows per source rank): every rank
+printed the marker above after matching the BF16 oracle. That makes it a usable
+canary — when it fails, the transport is broken; when it passes and the model
+case fails, the fault is above the transport.
 
 ## 2. Model acceptance
 
@@ -129,8 +149,38 @@ its dump and could not attribute the trap afterwards.
 | `aclnnXxx not in libopapi.so` | the toolkit does not ship that kernel; a version mismatch, not a config error |
 | `AI CPU kernel execution failed` | an AI CPU kernel failed inside the forward; the preceding log line names it |
 | `CombineRecv failed ... [3, 7]` | a peer never published its credit; look at the FFN side, which may not be running that step |
+| `Thread export failed ... commEngine[AICPU_TS]` | HCCL could not export its threads to the AI CPU engine; see below |
+| `current working operator name is HcclAllreduce` | the exception surfaced at a sync point, not here; the failing collective was an all-reduce started earlier |
 | `Engine core initialization failed` | services did not come up; the per-role log has the real exception |
 | all ten requests HTTP 500 | services started and rejected the work; run `20_diagnose.sh` |
+
+### The AICPU thread-export failure
+
+One failure family is worth spelling out because its Python traceback names the
+wrong function. The sequence, outermost first:
+
+```text
+torch.tensor(list(header), dtype=torch.uint8, device=self.device)
+  RuntimeError: ... current working operator name is HcclAllreduce
+HCCL  hcomm_thread_c_adpt.cc:377  ThreadKernelLaunchForComm failed, ret[15]
+HCCL  thread_c_adpt.cc:555        Thread export failed.
+                                  Export threadNum[1], commEngine[AICPU_TS]
+AICPU RunAicpuIndOpThreadInit (libccl_kernel.so) errorCode=0x2a
+```
+
+`ret[15]` is `HCCL_E_RUNTIME` — "call runtime api fail", per
+`hccl_types.h` in the toolkit. The `torch.tensor` call is only where an
+already-failed asynchronous collective became visible; it is a small host-to-
+device copy and is not itself doing an all-reduce.
+
+Two things follow. First, the line that raises is not the line to read; go to
+`plog` and match the timestamp. Second, this is an HCCL/AICPU environment
+fault, not an operator contract violation: the same four operators pass the
+roundtrip above at the same geometry, and the failing group is vLLM's own
+communication group, not `group_name_afd_async_cam`.
+
+Set `ASCEND_LAUNCH_BLOCKING=1` when you need the traceback to point at the
+real collective rather than the sync that noticed it, at the cost of speed.
 
 ## Before blaming the environment
 

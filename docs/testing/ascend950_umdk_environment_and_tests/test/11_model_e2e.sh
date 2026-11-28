@@ -29,6 +29,9 @@ mkdir -p "$RUN/plog" "$RUN/extra-info"
 
 # Reference the pinned stack versions the worker checks, then hand the whole
 # environment to the case in one process so nothing is inherited halfway.
+# RUN is a host path; the container reaches the same tree at /work.
+CRUN=$(afd_ctr_path "$RUN")
+
 afd_diexec "
   set -uo pipefail
   PY=/usr/local/python3.12.16/bin/python3
@@ -42,9 +45,9 @@ afd_diexec "
   export AFD_CUST_OPAPI_LIB_PATH=\"\$A/op_api/lib/libafd_umdk_opapi.so\"
   export SOC_VERSION=950 HCCL_OP_EXPANSION_MODE=AIV
   export HCCL_CONNECT_TIMEOUT=3600 HCCL_EXEC_TIMEOUT=2000
-  export ASCEND_PROCESS_LOG_PATH=\"$RUN/plog\"
-  export ASCEND_WORK_PATH=\"$RUN\"
-  export ASCEND_DUMP_PATH=\"$RUN/extra-info\"
+  export ASCEND_PROCESS_LOG_PATH=\"$CRUN/plog\"
+  export ASCEND_WORK_PATH=\"$CRUN\"
+  export ASCEND_DUMP_PATH=\"$CRUN/extra-info\"
 
   # The case reads its deployment from these.
   export AFD_E2E_BACKEND=npu
@@ -64,9 +67,9 @@ afd_diexec "
   git -C /work/src/afd-plugin archive HEAD tests | tar -x -C \"\$TESTS_DIR\"
   cd \"\$TESTS_DIR\" || exit 1
 
-  timeout $CASE_TIMEOUT \$PY -m pytest -q -s --basetemp \"$RUN/pytest\" \\
-    \"tests/e2e/models/deepseek_v4_flash/test_async_cam_npu.py::test_deepseek_v4_flash_async_cam[\$SCENARIO]\" \\
-    > \"$RUN/e2e.log\" 2>&1
+  timeout $CASE_TIMEOUT \$PY -m pytest -q -s --basetemp \"$CRUN/pytest\" \\
+    \"tests/e2e/models/deepseek_v4_flash/test_async_cam_npu.py::test_deepseek_v4_flash_async_cam[$SCENARIO]\" \\
+    > \"$CRUN/e2e.log\" 2>&1
   echo \"  exit=\$?\"
 "
 
