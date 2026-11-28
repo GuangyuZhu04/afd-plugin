@@ -234,3 +234,8 @@ __marimo__/
 # without a word: the scripts source lib/common.sh, so a checkout missing it
 # fails on the first line with "No such file or directory".
 !docs/testing/ascend950_umdk_environment_and_tests/lib/
+
+# This tree keeps whole device logs as evidence. `*.log` above would drop
+# them silently, and a partial record is what made an earlier investigation
+# of this transport unrecoverable.
+!docs/testing/ascend950_umdk_e2e_pass_20261128/**/*.log

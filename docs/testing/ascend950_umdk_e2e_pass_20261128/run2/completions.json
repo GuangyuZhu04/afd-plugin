@@ -1,0 +1,502 @@
+[
+  {
+    "index": 0,
+    "prompt": "Compute 12 + 7. Reply with just the number.",
+    "started_at": 2135920.560607122,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-b6a190e3d3c2bb5d\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"19\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-b6a190e3d3c2bb5d",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "19",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.485503422
+  },
+  {
+    "index": 1,
+    "prompt": "Compute 13 + 7. Reply with just the number.",
+    "started_at": 2135920.582206958,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-9bcbc8e7014e4251\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"20\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-9bcbc8e7014e4251",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "20",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.478388997
+  },
+  {
+    "index": 2,
+    "prompt": "Compute 14 + 7. Reply with just the number.",
+    "started_at": 2135920.58245809,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-a7c884cea1791bb9\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"21\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-a7c884cea1791bb9",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "21",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.998520474
+  },
+  {
+    "index": 3,
+    "prompt": "Compute 15 + 7. Reply with just the number.",
+    "started_at": 2135920.582719612,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-8f43f89bbfc52a7a\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"22\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-8f43f89bbfc52a7a",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "22",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.991003017
+  },
+  {
+    "index": 4,
+    "prompt": "Compute 16 + 7. Reply with just the number.",
+    "started_at": 2135920.582871592,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-b12cc76a28fc959e\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"23\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-b12cc76a28fc959e",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "23",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.998377683
+  },
+  {
+    "index": 5,
+    "prompt": "Compute 17 + 7. Reply with just the number.",
+    "started_at": 2135920.583018533,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-98d771c4d47d4584\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"24\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-98d771c4d47d4584",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "24",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.991712761
+  },
+  {
+    "index": 6,
+    "prompt": "Compute 18 + 7. Reply with just the number.",
+    "started_at": 2135920.583153814,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-9504464aa8d7bb8a\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"25\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-9504464aa8d7bb8a",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "25",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.999147548
+  },
+  {
+    "index": 7,
+    "prompt": "Compute 19 + 7. Reply with just the number.",
+    "started_at": 2135920.583284055,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-b8765ecdb2cc302b\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"26\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-b8765ecdb2cc302b",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "26",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.991835752
+  },
+  {
+    "index": 8,
+    "prompt": "Compute 20 + 7. Reply with just the number.",
+    "started_at": 2135920.583409236,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-88f1740b2c4ae799\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"27\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-88f1740b2c4ae799",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "27",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.999306129
+  },
+  {
+    "index": 9,
+    "prompt": "Compute 21 + 7. Reply with just the number.",
+    "started_at": 2135920.583531037,
+    "status_code": 200,
+    "response_body": "{\"id\":\"chatcmpl-bece8a363f1e28c5\",\"object\":\"chat.completion\",\"created\":1795860369,\"model\":\"dsv4-flash-attention\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"28\",\"refusal\":null,\"annotations\":null,\"audio\":null,\"function_call\":null,\"reasoning\":null},\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"token_ids\":null,\"routed_experts\":null}],\"service_tier\":null,\"system_fingerprint\":\"vllm-0.32.0-tp2-dp2-ep-3c35f358\",\"usage\":{\"prompt_tokens\":17,\"total_tokens\":19,\"completion_tokens\":2,\"prompt_tokens_details\":null,\"completion_tokens_details\":{\"reasoning_tokens\":0}},\"prompt_logprobs\":null,\"prompt_token_ids\":null,\"prompt_text\":null,\"kv_transfer_params\":null,\"ec_transfer_params\":null,\"metrics\":null}",
+    "response": {
+      "id": "chatcmpl-bece8a363f1e28c5",
+      "object": "chat.completion",
+      "created": 1795860369,
+      "model": "dsv4-flash-attention",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "28",
+            "refusal": null,
+            "annotations": null,
+            "audio": null,
+            "function_call": null,
+            "reasoning": null
+          },
+          "logprobs": null,
+          "finish_reason": "stop",
+          "stop_reason": null,
+          "token_ids": null,
+          "routed_experts": null
+        }
+      ],
+      "service_tier": null,
+      "system_fingerprint": "vllm-0.32.0-tp2-dp2-ep-3c35f358",
+      "usage": {
+        "prompt_tokens": 17,
+        "total_tokens": 19,
+        "completion_tokens": 2,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "prompt_logprobs": null,
+      "prompt_token_ids": null,
+      "prompt_text": null,
+      "kv_transfer_params": null,
+      "ec_transfer_params": null,
+      "metrics": null
+    },
+    "finished_at": 2135922.992222275
+  }
+]

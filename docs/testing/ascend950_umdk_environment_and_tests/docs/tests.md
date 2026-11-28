@@ -70,6 +70,20 @@ takes a few minutes before the first request can be answered.
 **Pass:** `acceptance_passed=True`, ten non-empty answers with
 `finish_reason=stop`, and `cleanup=passed`.
 
+Observed passing on eight dies with all four checks green:
+
+```text
+=== verdict ===
+  execution         : passed
+  cleanup           : passed
+  acceptance_passed : True
+```
+
+The launcher's own progress line is worth reading in full rather than grepping
+for the word "failed": it prints `Concurrent completions: 10/10 passed` on
+success, and a search for a phrase that does not exist there will report a
+passing run as a failure.
+
 > This case is a smoke test. Its own README records that A5 can corrupt part of
 > a concurrent batch, so a pass means the ten requests were served, not that the
 > answers are correct. Read the answer check the case reports rather than

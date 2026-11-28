@@ -69,10 +69,20 @@ The operator layer works. `507035`, the MTE invalid-GM trap that blocked the
 transport for several rounds, is gone: the roundtrip passes at both geometries
 and the DeepEP reference pipeline completes.
 
-The model does not yet serve. Both roles start, all eight UMDK buffers
-register, and the ten requests are issued, then rejected. The current blocker
-is a metadata size contract mismatch recorded in
+The model serves. Two consecutive runs of `test/11_model_e2e.sh` reported
+`acceptance_passed=True` with ten correct answers out of ten, both roles
+started, all eight UMDK buffers registered, and cleanup passed.
+
+That closed the last blocker, a metadata size contract mismatch fixed by the
+SAS buffer patch in
 [the sibling fix directory](../ascend950_umdk_dsa_sas_metadata_fix_20261128/README.md).
+The two runs and their full logs are in
+[the end-to-end record](../ascend950_umdk_e2e_pass_20261128/README.md).
+
+One failure seen in earlier runs, `Thread export failed` / `HCCL_E_RUNTIME`,
+did not appear in either passing run. It correlates with other tenants starting
+or stopping on this shared host, so read it as contention rather than a defect
+until a run reproduces it in isolation.
 
 The history behind those statements is in
 [the roundtrip record](../ascend950_umdk_dsv4_flash_logs/README.md) and

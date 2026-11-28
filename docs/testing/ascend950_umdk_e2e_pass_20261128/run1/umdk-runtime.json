@@ -1,0 +1,40 @@
+{
+  "packages": {
+    "vllm": "0.32.0+empty.g5df63a7",
+    "vllm-ascend": "0.32.0.dev0+gbd42eea",
+    "vllm-afd-plugin": "0.1.dev100+gtestfix",
+    "torch": "2.10.0+cpu",
+    "torch-npu": "2.10.0.post7"
+  },
+  "source_commits": {
+    "vllm": "5df63a7203cdb9328d824a27b682e77c7b9928be",
+    "vllm-ascend": "bd42eea01d8312c4df469fabaed45f77a12df4d3"
+  },
+  "packaged_kernel_sha256": {
+    "AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f.o": "d8d7ad2079727f7002e2637f7a377be2f7783ff2b18f9e6ec67944d8d70f4b89",
+    "AfdAsyncDispatchSend_21c646510794c58ff569a30a2208ad7f.json": "26945568ad48a9fca44c20b17e09026a10cbaaea3483901651f4a0b291d7c8fc",
+    "AfdAsyncDispatchRecv_67f9fc3b57d7d643eeb38619d77d0bbb.o": "e87ff38027a2d8a48069a7b62be4684b21c1f208bced013c571aafb7f7ca9516",
+    "AfdAsyncDispatchRecv_67f9fc3b57d7d643eeb38619d77d0bbb.json": "1328c0cb24e9c1c0ac922eceae4f236f3d493ac2d56b071609e8432972ae9600",
+    "AfdAsyncCombineSend_48465ce580a02d1113cc267b7418247f.o": "d061fe2d4ec3972ccf39f8eaf7dc67f659ae6221d8bc964431715a752293c839",
+    "AfdAsyncCombineSend_48465ce580a02d1113cc267b7418247f.json": "2ab5a8c09fad3b4b0a19f2026c9c47cecf7da3ec895badad87a6343c867454cc",
+    "AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12.o": "700bafb5abbb554caa59801dced3ca2aa0f58a4abdda3b191c2729efbaa79490",
+    "AfdAsyncCombineRecv_91445775f2d9669ef191a49c071d5d12.json": "9b91657d254c6ce8f89b26e3ee4ff479c2cb74b4155fa61b3134ee283fb79dfe"
+  },
+  "plugin_opapi": "/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/_cann_ops_custom/vendors/afd-plugin/op_api/lib/libafd_umdk_opapi.so",
+  "vendor_search_path": "/mnt/xds/sfs/_cann_ops_custom_copy/vendors/custom_transformer:/usr/local/python3.12.16/lib/python3.12/site-packages/afd_plugin/_cann_ops_custom/vendors/afd-plugin:/usr/local/python3.12.16/lib/python3.12/site-packages/fla_npu/opp/vendors/fla_npu_transformer:/usr/local/python3.12.16/lib/python3.12/site-packages/fla_npu/opp/vendors/fla_npu_transformer/op_api/lib",
+  "devices": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "cann_log_paths": {
+    "ASCEND_WORK_PATH": "/work/runs/model-e2e-1128175346",
+    "ASCEND_PROCESS_LOG_PATH": "/work/runs/model-e2e-1128175346/plog",
+    "ASCEND_DUMP_PATH": "/work/runs/model-e2e-1128175346/extra-info"
+  }
+}
