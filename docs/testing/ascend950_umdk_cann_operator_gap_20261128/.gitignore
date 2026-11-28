@@ -1,0 +1,2 @@
+# The repository ignores *.log globally; re-include captures under this tree.
+!*.log
