@@ -33,6 +33,12 @@ from afd_plugin.connectors.npu.async_cam_runtime.async_cam_startup import (
     POLL_SECONDS,
     FFNGraphPlan,
 )
+from afd_plugin.connectors.npu.async_cam_runtime.io_log import cam_logger
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_experts import UmdkExpertExecutor
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_session import (
+    UmdkSession,
+    UmdkSlice,
+)
 from afd_plugin.model_executor.ffn.npu.expert_weights import (
     QuantizedExpertWeights,
     expert_weight_signature,
@@ -43,6 +49,10 @@ if TYPE_CHECKING:
     from vllm.config import VllmConfig
     from vllm.tasks import SupportedTask
     from vllm.v1.kv_cache_interface import KVCacheConfig, KVCacheSpec
+
+    from afd_plugin.connectors.npu.async_cam_runtime.afd_async_mxfp import (
+        AfdAsyncMXFPExecutor,
+    )
 
 
 logger = init_logger(__name__)
@@ -74,6 +84,7 @@ class AsyncNPUFFNModelRunner:
         self.model_memory_usage = 0
         self.layer_ids: tuple[int, ...] = ()
         self._layered_executor: AsyncCAMLayeredExecutor | None = None
+        self._umdk_executor: UmdkExpertExecutor | AfdAsyncMXFPExecutor | None = None
         self._mega_executor: AsyncCAMMegaExecutor | None = None
         self.session = self.connector.ffn_session()
         self._first_step = True
@@ -319,6 +330,35 @@ class AsyncNPUFFNModelRunner:
 
     def _initialize_ffn_executor(self) -> str:
         assert self.model is not None
+        if self.connector.dynamic_quant == 0:
+            from afd_plugin.compat.npu.umdk_mxfp_stack import load_umdk_ffn_extension
+            from afd_plugin.connectors.npu.async_cam_runtime.afd_async_mxfp import (
+                AfdAsyncMXFPExecutor,
+            )
+            from afd_plugin.model_executor.models.npu.deepseek_v4 import (
+                AFDDeepseekV4ForCausalLM,
+            )
+
+            if not isinstance(self.session, UmdkSession):
+                raise ValueError("MXFP4 BF16 Push requires the Ascend 950 UMDK session")
+            if not isinstance(self.model, AFDDeepseekV4ForCausalLM):
+                raise ValueError("MXFP4 requires the DeepSeek-V4 FFN model adapter")
+            load_umdk_ffn_extension()
+            layers_by_id = self.model.get_mxfp_expert_layers()
+            if tuple(sorted(layers_by_id)) != self.layer_ids:
+                raise ValueError(
+                    "MXFP4 weights do not cover the negotiated MoE layer IDs"
+                )
+            self._umdk_executor = AfdAsyncMXFPExecutor(
+                layers_by_id, self.connector.expert_per_rank
+            )
+            cam_logger.info(
+                "UMDK W4A8MXFP executor: world_rank=%d layers=%d local_experts=%d",
+                self.connector.world_rank,
+                len(layers_by_id),
+                self.connector.expert_per_rank,
+            )
+            return self._umdk_executor.signature
         layers, reason = self.model.get_quantized_expert_weights()
         if not layers:
             raise ValueError(f"layered GMM target weights are unsupported: {reason}")
@@ -342,6 +382,9 @@ class AsyncNPUFFNModelRunner:
                 capacity=capacity,
             )
             return "native_mc2:" + expert_weight_signature(layers, capacity)
+        if isinstance(self.session, UmdkSession):
+            self._umdk_executor = UmdkExpertExecutor(layers)
+            return "umdk:" + expert_weight_signature(layers, capacity)
         self._layered_executor = AsyncCAMLayeredExecutor(layers)
         logger.info(
             "Async CAM layered GMM quant=%s layers=%d mode=%s layer_mapping=%s "
@@ -396,6 +439,9 @@ class AsyncNPUFFNModelRunner:
         single: bool = False,
     ) -> torch.Tensor | None:
         assert self.model is not None
+        if isinstance(self.session, UmdkSession):
+            # UMDK selects a transaction slice across layers on each poll.
+            return self._run_ffn_transaction()
         rank_ffn_output = None
         for _ in self.layer_ids[:1] if single else self.layer_ids:
             rank_ffn_output = self._run_ffn_transaction()
@@ -403,9 +449,23 @@ class AsyncNPUFFNModelRunner:
 
     def _run_ffn_transaction(
         self, *, retained_tensors: list[torch.Tensor] | None = None
-    ) -> torch.Tensor:
+    ) -> torch.Tensor | None:
         if self._mega_executor is not None:
             return self._mega_executor()
+        if isinstance(self.session, UmdkSession):
+            assert self._umdk_executor is not None
+            payload = self.session.receive(wait=False)
+            if payload is None:
+                return None
+            state = payload.context.states
+            assert isinstance(state, UmdkSlice)
+            output = self._umdk_executor(
+                payload.hidden_states,
+                state.groups,
+                self.session.result_buffer(payload.context),
+            )
+            self.connector.send_ffn_output(output, payload.context)
+            return output
         assert self._layered_executor is not None
         payload = self.connector.recv_attn_output()
         if retained_tensors is not None:
@@ -464,6 +524,7 @@ class AsyncNPUFFNModelRunner:
         self.connector.close()
         self._mega_executor = None
         self._layered_executor = None
+        self._umdk_executor = None
         free_before_shutdown(self.vllm_config)
         self.model = None
         self.draft_model = None

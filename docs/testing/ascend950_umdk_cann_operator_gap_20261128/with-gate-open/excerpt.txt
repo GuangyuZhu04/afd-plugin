@@ -1,0 +1,29 @@
+[ffn] (Worker_DP2_EP2 pid=148496) INFO 11-28 01:45:02 [async_ffn_model_runner.py:353] UMDK W4A8MXFP executor: world_rank=6 layers=43 local_experts=64
+[ffn] (Worker_DP1_EP1 pid=148494) INFO 11-28 01:45:02 [async_ffn_model_runner.py:353] UMDK W4A8MXFP executor: world_rank=5 layers=43 local_experts=64
+[ffn] (Worker_DP3_EP3 pid=148495) INFO 11-28 01:45:02 [async_ffn_model_runner.py:353] UMDK W4A8MXFP executor: world_rank=7 layers=43 local_experts=64
+[ffn] (Worker_DP0_EP0 pid=148497) INFO 11-28 01:45:02 [async_ffn_model_runner.py:353] UMDK W4A8MXFP executor: world_rank=4 layers=43 local_experts=64
+[attention] (Worker_DP1_TP1_EP3 pid=148547) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=attention world_rank=3 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[ffn] (Worker_DP0_EP0 pid=148497) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=ffn world_rank=4 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[ffn] (Worker_DP1_EP1 pid=148494) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=ffn world_rank=5 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[attention] (Worker_DP0_TP0_EP0 pid=148550) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=attention world_rank=0 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[attention] (Worker_DP0_TP1_EP1 pid=148551) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=attention world_rank=1 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[attention] (Worker_DP1_TP0_EP2 pid=148546) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=attention world_rank=2 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[ffn] (Worker_DP3_EP3 pid=148495) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=ffn world_rank=7 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[ffn] (Worker_DP2_EP2 pid=148496) INFO 11-28 01:46:08 [umdk_session.py:181] UMDK AFD registered buffers: role=ffn world_rank=6 schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35 lane_rows=4096 layers=43
+[attention] (Worker_DP0_TP0_EP0 pid=148550) ERROR 11-28 01:46:09 [multiproc_executor.py:1063] RuntimeError: aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.
+[attention] (Worker_DP0_TP1_EP1 pid=148551) ERROR 11-28 01:46:09 [multiproc_executor.py:1063] RuntimeError: aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.
+[attention] (Worker_DP1_TP0_EP2 pid=148546) ERROR 11-28 01:46:09 [multiproc_executor.py:1063] RuntimeError: aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.
+[attention] (Worker_DP1_TP1_EP3 pid=148547) ERROR 11-28 01:46:09 [multiproc_executor.py:1063] RuntimeError: aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.
+[attention] (EngineCore_DP0 pid=148193) ERROR 11-28 01:46:09 [async_dp_engine.py:202] RuntimeError: Worker failed with error 'aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.', please check t
+[attention] (EngineCore_DP1 pid=148194) ERROR 11-28 01:46:09 [async_dp_engine.py:202] RuntimeError: Worker failed with error 'aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.', please check t
+[ffn] INFO:     Application startup complete.
+[attention] RuntimeError: Worker failed with error 'aclnnRmsNormCast or aclnnRmsNormCastGetWorkspaceSize not in libopapi.so, or libopapi.sonot found.', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP2 pid=148186) ERROR 11-28 01:46:29 [engine_core.py:715] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP3 pid=148187) ERROR 11-28 01:46:29 [engine_core.py:715] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP1 pid=148185) ERROR 11-28 01:46:29 [engine_core.py:715] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP0 pid=148184) ERROR 11-28 01:46:29 [engine_core.py:715] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP0 pid=148184) ERROR 11-28 01:46:31 [core.py:1512] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP1 pid=148185) ERROR 11-28 01:46:31 [core.py:1512] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP2 pid=148186) ERROR 11-28 01:46:31 [core.py:1512] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+[ffn] (EngineCore_DP3 pid=148187) ERROR 11-28 01:46:31 [core.py:1512] RuntimeError: Worker failed with error 'AFD NPU FFN worker loop failed', please check the stack trace above for the root cause
+E2E CASE afd-dsv4-flash-async-cam-dp2tp2-ep4: failed; configuration=qualified; acceptance_passed=False

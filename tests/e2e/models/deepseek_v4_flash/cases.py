@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
+# Description: DSV4 single-deployment declarations, separate from dedicated/multi-pod
+#              runs.
+# Create: 2026-11-13
+# Note: Each case declares its topology and acceptance checks.
+# History: 2026-11-13 create
 """DSV4 single-deployment declarations, separate from dedicated/multi-pod runs.
 
 Importing IDs is safe. Checkpoint quantization is resolved only by build_case
@@ -10,7 +15,13 @@ are also used by the unmigrated dedicated and multi-pod executors.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
+from importlib.metadata import version
+from ipaddress import ip_address
+from pathlib import Path
+from shutil import copyfile
 
 from tests.e2e.case import (
     CLEANUP_PROFILE_NPU_ASYNC_CAM_LEGACY,
@@ -38,10 +49,7 @@ from tests.e2e.models.deepseek_v4_flash.completions import CompletionTask
 
 GPU_BASIC_IDS = gpu_config.DSV4_GPU_BASIC_SCENARIOS
 GPU_DBO_IDS = gpu_config.DSV4_GPU_DBO_SCENARIOS
-NPU_ASYNC_IDS = (
-    config.DSV4_ASYNC_CAM_SCENARIO,
-    config.DSV4_ASYNC_CAM_MEGA_SCENARIO,
-)
+NPU_ASYNC_IDS = tuple(config.DSV4_ASYNC_SHAPES)
 NPU_SYNC_IDS = config.DSV4_SYNC_CAMP2P_SCENARIOS
 GSM8K_SAMPLES = 7
 GSM8K_THRESHOLD = 0.27
@@ -177,23 +185,42 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
     max_num_batched_tokens = _budget(args.common_vllm_arg, "--max-num-batched-tokens")
     graph = shape is not None and config.sync_use_graph(shape)
     execution = EXECUTION_FULL_DECODE_GRAPH if graph else EXECUTION_EAGER
-    attention_ranks = (
-        config.DSV4_ATTENTION_RANKS if shape is None else shape.attention_ranks
+    topology: config.DSV4AsyncShape | config.DSV4SyncShape = (
+        config.DSV4_ASYNC_SHAPES[case_id] if shape is None else shape
     )
-    ffn_ranks = config.DSV4_FFN_RANKS if shape is None else shape.ffn_ranks
-    attention_tp = (
-        config.DSV4_ATTENTION_TP_SIZE if shape is None else shape.attention_tp_size
-    )
+    attention_ranks = topology.attention_ranks
+    ffn_ranks = topology.ffn_ranks
+    attention_tp = topology.attention_tp_size
     ffn_tp = 1 if shape is None else shape.ffn_tp_size
-    if asynchronous:
-        # The existing async path enables native DBO only on Attention, using
-        # upstream defaults; it does not claim a DBO execution acceptance check.
+    attention_dbo = "--enable-dbo" in args.attention_vllm_arg
+    if attention_dbo:
+        # The deployment owns the DBO flag. Its A3 profile uses native thresholds.
         args.attention_vllm_arg.remove("--enable-dbo")
     connector_extra_config = (
         json.loads(args.afd_connector_extra_config[0])
         if args.afd_connector_extra_config
         else {}
     )
+    worker_environment: tuple[tuple[str, str], ...] = ()
+    ffn_config: dict[str, bool | int] = dict(
+        config.additional_config("ffn", async_cam=asynchronous)
+    )
+    if case_id == config.DSV4_ASYNC_CAM_A5_SCENARIO:
+        address = ip_address(environment.afd_host)
+        if address.is_loopback or address.is_unspecified or address.is_multicast:
+            raise ValueError(
+                "A5 async CAM requires --afd-host to advertise the HCCL interface IP"
+            )
+        # UMDK owns the registered data windows. This setting sizes the HCCL domain.
+        # Load ordinary packed weights and scales for the local MXFP4 MLP.
+        ffn_config["enable_fused_mc2"] = 0
+        worker_environment = (
+            ("VLLM_LOGGING_LEVEL", "INFO"),
+            ("BATCH_SIZE_FACTOR", "1.0"),
+            ("HCCL_BUFFSIZE", str(connector_extra_config["hccl_buffer_size"])),
+            ("HCCL_OP_EXPANSION_MODE", "AIV"),
+            ("HCCL_IF_IP", environment.afd_host),
+        )
     checks: tuple[Mrv2Check | PullMegaCheck, ...] = ()
     if mega:
         connector_extra_config["ffn_mega_moe"] = True
@@ -201,7 +228,8 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
     elif graph:
         checks = (Mrv2Check(("attention", "ffn"), graph=True),)
     compilation = None if shape is None else config.sync_compilation_config(shape)
-    return Case(
+    case_type = UmdkFlashCase if case_id == config.DSV4_ASYNC_CAM_A5_SCENARIO else Case
+    return case_type(
         id=case_id,
         model="DeepSeek-V4-Flash",
         served_model_name_prefix="dsv4-flash" if asynchronous else "dsv4-flash-sync",
@@ -211,7 +239,7 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
                 attention_ranks // attention_tp,
                 attention_tp,
                 execution,
-                dbo=DboConfig() if asynchronous else None,
+                dbo=DboConfig() if attention_dbo else None,
                 vllm_args=tuple(args.attention_vllm_arg),
                 additional_config=tuple(
                     config.additional_config(
@@ -224,16 +252,14 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
                 ffn_tp,
                 execution,
                 vllm_args=tuple(args.ffn_vllm_arg),
-                additional_config=tuple(
-                    config.additional_config("ffn", async_cam=asynchronous).items()
-                ),
+                additional_config=tuple(ffn_config.items()),
             ),
             connector=args.afd_connector,
             compute_gate_on_attention=args.compute_gate_on_attention,
             connector_extra_config=tuple(connector_extra_config.items()),
             pin_attention_address=args.attention_data_parallel_address is not None,
             cleanup_profile=CLEANUP_PROFILE_NPU_ASYNC_CAM_LEGACY
-            if asynchronous and not mega
+            if case_id == config.DSV4_ASYNC_CAM_SCENARIO
             else CLEANUP_PROFILE_STRICT,
             shutdown_timeout_s=NPU_ASYNC_VLLM_SHUTDOWN_TIMEOUT_S
             if asynchronous
@@ -257,16 +283,85 @@ def _npu_case(case_id: str, environment: CaseEnvironment) -> Case:
             max_num_batched_tokens=max_num_batched_tokens,
         ),
         common_vllm_args=tuple(args.common_vllm_arg),
+        worker_environment=worker_environment,
         phases=(
             Phase(
                 "evaluation",
                 CompletionTask(
-                    check_answer=True if shape is None else shape.check_answer
+                    check_answer=True if shape is None else shape.check_answer,
+                    umdk_rank_counts=(attention_ranks, ffn_ranks)
+                    if case_id == config.DSV4_ASYNC_CAM_A5_SCENARIO
+                    else None,
                 ),
                 checks,
             ),
         ),
     )
+
+
+class UmdkFlashCase(Case):
+    def prepare_worker_environment(
+        self, environment: CaseEnvironment
+    ) -> dict[str, str]:
+        # Resolve the installed packages only on the launch host. --describe
+        # remains usable on a CPU-only machine without vLLM or the plugin wheel.
+        from afd_plugin.compat.npu.ops import (
+            AFD_CUST_OPAPI_ENV,
+            get_afd_cann_vendor_path,
+        )
+        from afd_plugin.compat.npu.umdk_mxfp_stack import (
+            UMDK_MXFP_STACK,
+            check_umdk_mxfp_stack,
+            umdk_worker_environment,
+        )
+
+        vendors = umdk_worker_environment()
+        versions = check_umdk_mxfp_stack()
+        versions.update(
+            {pkg: version(pkg) for pkg in ("vllm-afd-plugin", "torch", "torch-npu")}
+        )
+        out = environment.output_path.resolve()
+        logs = {}
+        for key, default in (
+            ("ASCEND_WORK_PATH", out),
+            ("ASCEND_PROCESS_LOG_PATH", out / "plog"),
+            ("ASCEND_DUMP_PATH", out / "extra-info"),
+        ):
+            path = Path(os.environ.get(key) or default).resolve()
+            path.mkdir(parents=True, exist_ok=True)
+            logs[key] = str(path)
+
+        kernels = get_afd_cann_vendor_path() / "op_impl/ai_core/tbe/kernel/ascend950"
+        saved = out / "packaged-kernels"
+        saved.mkdir(parents=True, exist_ok=True)
+        digests = {}
+        for op in ("dispatch_send", "dispatch_recv", "combine_send", "combine_recv"):
+            objects = sorted((kernels / ("afd_async_" + op)).glob("*.o"))
+            if not objects:
+                raise RuntimeError(
+                    f"950 wheel has no device object for {op} under {kernels}"
+                )
+            for obj in objects:
+                for source in (obj, obj.with_suffix(".json")):
+                    dest = saved / source.name
+                    copyfile(source, dest)
+                    digests[dest.name] = hashlib.sha256(dest.read_bytes()).hexdigest()
+        (out / "umdk-runtime.json").write_text(
+            json.dumps(
+                {
+                    "packages": versions,
+                    "source_commits": dict(UMDK_MXFP_STACK),
+                    "packaged_kernel_sha256": digests,
+                    "plugin_opapi": vendors[AFD_CUST_OPAPI_ENV],
+                    "vendor_search_path": vendors["ASCEND_CUSTOM_OPP_PATH"],
+                    "devices": environment.devices,
+                    "cann_log_paths": logs,
+                },
+                indent=2,
+            )
+            + "\n"
+        )
+        return {**dict(self.worker_environment), **vendors, **logs}
 
 
 if __name__ == "__main__":

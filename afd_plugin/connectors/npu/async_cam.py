@@ -24,8 +24,8 @@ from typing import TYPE_CHECKING, Any, Final, cast
 
 import torch
 from torch import Tensor
-from vllm.logger import init_logger
 
+from afd_plugin.compat.npu.ops import uses_umdk_async
 from afd_plugin.config import AFDConfig
 from afd_plugin.config_utils import (
     coerce_extra_bool,
@@ -54,6 +54,8 @@ from afd_plugin.connectors.npu.async_cam_runtime.async_cam_startup import (
     POLL_SECONDS,
     AsyncCAMGraphStartup,
 )
+from afd_plugin.connectors.npu.async_cam_runtime.io_log import log_cam_op_values
+from afd_plugin.connectors.npu.async_cam_runtime.umdk_session import UmdkSession
 from afd_plugin.distributed import (
     create_hccl_process_group_options,
     init_afd_process_group,
@@ -65,8 +67,6 @@ if TYPE_CHECKING:
     from torch.distributed.distributed_c10d import ProcessGroup
     from vllm.config import VllmConfig
     from vllm.model_executor.layers.fused_moe import FusedMoERouter
-
-logger = init_logger(__name__)
 
 AFD_ASYNC_CAM_GROUP_NAME = "afd_async_cam"
 ATTN_RANKS_PER_DP_CONFIG_KEY = "attn_ranks_per_dp"
@@ -293,8 +293,21 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
         self.graph_startup = AsyncCAMGraphStartup(
             self.world_rank, self.attn_size, self.topology.world_size
         )
-        self._session: PushCAMSession | PullCAMSession = (
-            PullCAMSession(
+        self._session: PushCAMSession | PullCAMSession | UmdkSession
+        if uses_umdk_async():
+            if extra_info.ffn_mega_moe or self.activation_dtype != torch.bfloat16:
+                raise ValueError("Ascend 950 UMDK requires BF16 Push transport")
+            self._session = UmdkSession(
+                self.graph_startup,
+                self.topology,
+                self.hidden_size,
+                self.topk,
+                self.max_num_batched_tokens // self.tp_size,
+                self.tp_size,
+                cam_receive_capacity(),
+            )
+        elif extra_info.ffn_mega_moe:
+            self._session = PullCAMSession(
                 self.graph_startup,
                 self.topology,
                 hidden_size=self.hidden_size,
@@ -303,9 +316,8 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
                 tp_size=self.tp_size,
                 receive_capacity=cam_receive_capacity(),
             )
-            if extra_info.ffn_mega_moe
-            else PushCAMSession(self.activation_dtype)
-        )
+        else:
+            self._session = PushCAMSession(self.activation_dtype)
 
     @property
     def comm_args(self) -> Tensor | None:
@@ -351,6 +363,9 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
         self.group_name = str(backend.get_hccl_comm_name(self.world_rank))
         try:
             self._session.initialize(f"npu:{self.local_rank}", self.group_name)
+            if isinstance(self._session, UmdkSession):
+                # Wait for all registered remote windows before the first publication.
+                self.graph_startup.phase("umdk-registered", timeout_seconds=1800)
         except Exception as exc:
             self.graph_startup.fail(exc)
             raise
@@ -359,20 +374,27 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             self._run_attention_graph_startup()
 
     def _initialize_graph_startup(self, store: Store) -> None:
-        signature = repr(
-            (
-                self.attn_size,
-                self.ffn_size,
-                self.hidden_size,
-                self.topk,
-                self.num_routed_experts,
-                str(self.activation_dtype),
-                self.dynamic_quant,
-                self.tp_size,
-                self.max_num_batched_tokens,
-            )
+        geometry: tuple[int | str, ...] = (
+            self.attn_size,
+            self.ffn_size,
+            self.hidden_size,
+            self.topk,
+            self.num_routed_experts,
+            str(self.activation_dtype),
+            self.dynamic_quant,
+            self.tp_size,
+            self.max_num_batched_tokens,
         )
-        signature = self._session.signature_prefix + signature
+        if isinstance(self._session, UmdkSession):
+            # The AFDBuffer payload window and FFN row budget are distinct
+            # from the HCCL group's allocation. Agree before creating either.
+            hccl_mib = self.hccl_buffer_size_mb or os.environ.get("HCCL_BUFFSIZE", "")
+            geometry += (
+                self._session.window,
+                self._session.backend_rows,
+                str(hccl_mib),
+            )
+        signature = self._session.signature_prefix + repr(geometry)
         self.graph_startup.initialize(store, signature)
         if self.graph_startup.mode == "full":
             try:
@@ -482,7 +504,9 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             raise RuntimeError(
                 "CAMAsyncAFDConnector send_attn_output requires topk_ids/topk_weights",
             )
-        topk_ids = topk_ids.to(dtype=torch.int32).contiguous()
+        topk_ids = topk_ids.to(
+            dtype=torch.int64 if isinstance(self._session, UmdkSession) else torch.int32
+        ).contiguous()
         topk_weights = topk_weights.to(dtype=torch.float32).contiguous()
         _validate_topk_payload(
             topk_ids,
@@ -495,6 +519,16 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
                 "Async CAM batch exceeds max_num_batched_tokens / TP capacity"
             )
         hidden_states = hidden_states.contiguous()
+        if isinstance(self._session, UmdkSession):
+            layout = kwargs.get("dispatch_layout")
+            self._session.dispatch(
+                context,
+                hidden_states,
+                topk_ids,
+                topk_weights,
+                layout.valid_local_tokens if layout is not None else states.batch_size,
+            )
+            return
         args = self._cam_args(states) | dict(
             x=hidden_states,
             expert_ids=topk_ids,
@@ -505,7 +539,7 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             tp_size=self.tp_size,
             dynamic_quant=self.dynamic_quant,
         )
-        _log_cam_op_values("async_dispatch_send", "inputs", **args)
+        log_cam_op_values("afd_async_dispatch_send", "inputs", **args)
         self._session.dispatch((context, topk_ids, topk_weights), **args)
 
     def recv_ffn_output(
@@ -517,6 +551,8 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
         """Combine the oldest matching Push dispatch or the exclusive Pull window."""
         self._require_initialized()
         context = kwargs.get("context")
+        if isinstance(self._session, UmdkSession):
+            return self._session.combine(ubatch_idx, context)
         payload = self._session.pending_for(ubatch_idx)
         if payload is None:
             raise RuntimeError(
@@ -545,9 +581,9 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             batch_size=states.batch_size,
             attn_rank_id=self.world_rank,
         )
-        _log_cam_op_values("async_combine_recv", "inputs", **args)
+        log_cam_op_values("afd_async_combine_recv", "inputs", **args)
         output = self._session.combine(ubatch_idx, **args)
-        _log_cam_op_values("async_combine_recv", "outputs", output=output)
+        log_cam_op_values("afd_async_combine_recv", "outputs", output=output)
         return output
 
     def recv_attn_output(
@@ -556,6 +592,10 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
         **kwargs: Any,
     ) -> AFDA2FTransferPayload:
         """Receive a Push work item and preserve its compact return metadata."""
+        if isinstance(self._session, UmdkSession):
+            payload = self._session.receive(wait=True)
+            assert payload is not None
+            return payload
         session = self._require_push_session()
         batch_size = int(kwargs.get("batch_size", self.max_num_batched_tokens) or 1)
         layer_idx = int(kwargs.get("layer_idx", 0) or 0)
@@ -582,11 +622,11 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             tp_size=self.tp_size,
             dynamic_quant=self.dynamic_quant,
         )
-        _log_cam_op_values("async_dispatch_recv", "inputs", **args)
+        log_cam_op_values("afd_async_dispatch_recv", "inputs", **args)
         outputs = torch.ops.afd_ascend.afd_async_dispatch_recv(**args)
         hidden_states, dynamic_scales, batch_info, expert_token_nums = outputs
-        _log_cam_op_values(
-            "async_dispatch_recv",
+        log_cam_op_values(
+            "afd_async_dispatch_recv",
             "outputs",
             hidden_states=hidden_states,
             dynamic_scales=dynamic_scales,
@@ -608,6 +648,9 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
         **kwargs: Any,
     ) -> None:
         """Return a Push work item with its original dispatch metadata."""
+        if isinstance(self._session, UmdkSession):
+            self._session.send_ffn(ffn_output, context)
+            return
         self._require_push_session()
         states = _require_async_transfer_state(context)
         token_nums_rankid_layeridx = states.token_nums_rankid_layeridx
@@ -625,7 +668,7 @@ class CAMAsyncAFDConnector(AFDConnectorBase):
             moe_rank_id=self.world_rank,
             tp_size=self.tp_size,
         )
-        _log_cam_op_values("async_combine_send", "inputs", **args)
+        log_cam_op_values("afd_async_combine_send", "inputs", **args)
         states.send_completion = torch.ops.afd_ascend.afd_async_combine_send(**args)
 
     def _require_push_session(self) -> PushCAMSession:
@@ -712,34 +755,6 @@ def _require_async_transfer_state(
             "transfer context",
         )
     return states
-
-
-_CAM_LOG_SKIPPED_ARGS = frozenset({"comm_args", "comm_id", "group_name"})
-_CAM_OP_IO_LOG_ENV = "AFD_CAM_OP_IO_LOG"
-
-
-def _log_cam_op_values(op_name: str, label: str, **kwargs: object) -> None:
-    if os.environ.get(_CAM_OP_IO_LOG_ENV, "").lower() not in {
-        "1",
-        "true",
-        "yes",
-        "on",
-    }:
-        return
-    lines: list[str] = []
-    for name, value in kwargs.items():
-        if name in _CAM_LOG_SKIPPED_ARGS:
-            continue
-        if isinstance(value, Tensor):
-            description = (
-                f"Tensor(dtype={value.dtype}, shape={tuple(value.shape)}, "
-                f"device={value.device})"
-            )
-
-        else:
-            description = repr(value)
-        lines.append(f"  {name}={description}")
-    logger.warning("AFD CAM %s %s:\n%s", op_name, label, "\n".join(lines))
 
 
 def _validate_topk_payload(

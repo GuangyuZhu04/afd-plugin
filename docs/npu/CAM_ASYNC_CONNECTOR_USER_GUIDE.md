@@ -10,6 +10,12 @@ Use the pinned dependency pair in the
 Current runtime constraints and validation evidence are summarized in the
 [runtime matrix](../support.md#tested-runtime-matrix).
 
+The [eight-die DeepSeek-V4-Flash case](../../tests/e2e/README.md#dsv4-flash-umdk-async-cam-on-ascend-950-local-8-npus)
+uses the UMDK registered-buffer operators on Ascend 950. It selects BF16 dispatch
+(`dynamicQuant=0`) and W4A8MXFP experts, with eager ModelRunnerV2 on both
+roles, no DBO, and a 2048 MiB HCCL domain. The case guide includes the role
+layout, checkpoint and network settings, answer oracle and validation status.
+
 > [!WARNING]
 > CAM async is experimental. V4 true DBO boundary qualification and performance
 > remain unverified. The [0.32 validation record](https://github.com/vllm-project/afd-plugin/pull/507)
@@ -39,11 +45,13 @@ the existing constraints. The target Attention graph profile is described below.
 
 ## ModelRunnerV2 deployment
 
-Set `VLLM_USE_V2_MODEL_RUNNER=1` and `VLLM_PLUGINS=ascend,afd` on both roles.
+Set `VLLM_USE_V2_MODEL_RUNNER=1` and `VLLM_PLUGINS=ascend,ascend_model,afd` on both roles.
+`ascend_model` registers native DeepSeek-V4 for the initial checkpoint inspection.
+`afd` registers the role-specific AFD model.
 Attention uses native Ascend ModelRunnerV2; FFN uses the independent
 `AsyncNPUFFNModelRunner`. Neither role selects or falls back to MRV1. Use the pinned vLLM/vLLM-Ascend pair in the installation instructions.
 
-The V2 Async CAM contract is:
+The 910C/A3 ModelRunnerV2 Async CAM contract is:
 
 - DeepSeek-V4 with homogeneous W4A8 or W8A8 routed experts on Ascend 910C/A3;
 - eager Attention or the target graph profile below, and `--enable-expert-parallel` on both roles, with
@@ -112,15 +120,15 @@ DP replicas, each replica can continue its CAM dispatch/combine work without
 waiting for every other replica to reach the same communication point. This
 eliminates unnecessary idle time caused by DP request imbalance.
 
-One MoE layer follows this sequence:
+On 910C, one MoE layer follows this sequence:
 
 1. Attention computes top-k expert IDs and weights.
-2. `async_dispatch_send` sends hidden states and routing IDs into the CAM group.
-3. Each FFN rank calls `async_dispatch_recv` and receives its routed expert
+2. `afd_async_dispatch_send` sends hidden states and routing IDs into the CAM group.
+3. Each FFN rank calls `afd_async_dispatch_recv` and receives its routed expert
    tokens, compact metadata, per-expert counts, and optional dynamic-quant scales.
 4. The FFN worker executes its local routed experts; Attention computes shared experts.
-5. `async_combine_send` returns those outputs with the dispatch metadata.
-6. Attention calls `async_combine_recv`; CAM routes, weights, and combines the
+5. `afd_async_combine_send` returns those outputs with the dispatch metadata.
+6. Attention calls `afd_async_combine_recv`; CAM routes, weights, and combines the
    expert results for the original tokens, then adds its local shared output.
 
 CAM dispatch payloads carry the token-count and routing metadata. Consequently,
@@ -213,10 +221,10 @@ Enable native DBO through Attention CLI flags, not connector extra config.
 
 | Field | Type | Default | Meaning and constraint |
 | --- | --- | --- | --- |
-| `dynamicQuant` | `int` | `0` | Set to `1`: FFN receives dynamically quantized routed activations and scale tensors. The default `0` is not supported by the layered FFN path. |
+| `dynamicQuant` | `int` | `0` | The A3 layered FFN uses `1` for quantized activations and scale tensors; the 950 eager W4A8MXFP case uses `0` for BF16 transport and expert-side block quantization. |
 | `ffn_mega_moe` | `bool` | `false` | Selects Mega FFN with Pull transport; requires `dynamicQuant=1` and the same setting on all A/F ranks. See the [Pull execution session](../design/npu/async_ffn_runtime.md#opt-in-pull-execution-session). |
 | `attn_ranks_per_dp` | `int` | `1` | Positive Attention TP rank count per DP replica. It is the CAM Attention grouping width and is independent of the FFN process's local TP size. |
-| `hccl_buffer_size` | `int` | unset | Positive CAM HCCL buffer size in MB. The override applies only to the `afd_async_cam` communication domain. When unset, HCCL uses `HCCL_BUFFSIZE`, then its built-in default. Configure the same value on every Attention and FFN rank in the domain. |
+| `hccl_buffer_size` | `int` | unset | CAM HCCL domain window in MiB. A5 BF16 Push checks it against the tiling value on every rank, as described below. Other paths use HCCL's environment and built-in defaults when the override is unset. |
 
 For a DP+SP deployment such as DP3TP2 Attention + DP2TP1/EP2 FFN, set
 `VLLM_ASCEND_ENABLE_FLASHCOMM1=1` only on Attention and explicitly set it to
@@ -294,7 +302,7 @@ all-gather/reduce-scatter for TP-sharded weights with SP and all-reduce without
 SP. Replicated weights use local SP tokens or split/gather full tokens. Shared
 weights and intermediates are included in Attention memory profiling.
 
-Set `connector_extra_config.hccl_buffer_size` when the CAM domain needs a
+On the 910C compact path, set `connector_extra_config.hccl_buffer_size` when the CAM domain needs a
 larger buffer. Also set `HCCL_BUFFSIZE` to that same effective size on every
 rank: Async CAM host tiling reads the environment, whereas HCCL allocation
 can use the domain override. For the JSON example above, export
@@ -302,13 +310,21 @@ can use the domain override. For the JSON example above, export
 capacity and tail-state address. `HCCL_BUFFSIZE` also affects unrelated groups
 without explicit overrides; see the [operator window contract](../design/npu/cam_async_routed_ops.md#communication-window-configuration).
 
+On Ascend 950, the Store handshake checks the UMDK protocol, lane and receive
+capacities, model geometry, and effective HCCL group size across A/F ranks.
+`deep_ep.AFDBuffer` owns the registered data and control windows. The eight-rank
+case uses a 2048 MiB HCCL domain. UMDK admits up to 32,768 source rows on
+each Attention rank (65,536 divisible batch tokens at TP2). The case uses
+8,192 batch tokens and 4,096 rows per source.
+
 For the experimental FlashComm1/SP cases, set
 `VLLM_ASCEND_ENABLE_FLASHCOMM1=1` only on Attention. Set it to `0` for plain TP
 Attention and on every FFN process.
 
 At initialization, the runtime verifies all four
-`torch.ops.afd_ascend.afd_async_*` operators and logs the plugin version and
-actual vendor library path. Missing source operators fail startup.
+`torch.ops.afd_ascend.afd_async_*` operators on 910C, or the four
+`torch.ops.umdk_cam_op_lib.afd_async_*_arch35` operators and the registered-buffer
+vendor library on Ascend 950. Missing source operators fail startup.
 
 ## Current limitations
 

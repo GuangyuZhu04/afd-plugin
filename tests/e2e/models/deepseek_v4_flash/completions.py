@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -147,6 +148,7 @@ class CompletionTask:
     timeout_s: float = DSV4_REQUEST_TIMEOUT_S
     first_operand: int = DSV4_PROMPT_FIRST_OPERAND
     second_operand: int = DSV4_PROMPT_SECOND_OPERAND
+    umdk_rank_counts: tuple[int, int] | None = None
 
     def resolve(
         self, environment: Mapping[str, str]
@@ -169,7 +171,52 @@ class CompletionTask:
             first_operand=self.first_operand,
             second_operand=self.second_operand,
         )
-        return {"request_count": self.num_requests, "answer_checked": self.check_answer}
+        result: dict[str, JsonValue] = {
+            "request_count": self.num_requests,
+            "answer_checked": self.check_answer,
+        }
+        if self.umdk_rank_counts:
+            result["umdk"] = _registered_mxfp_workers(
+                output_path.parent, *self.umdk_rank_counts
+            )
+        return result
+
+
+def _registered_mxfp_workers(
+    directory: Path, attention: int, ffn: int
+) -> dict[str, JsonValue]:
+    """Attribute the successful answers to registered UMDK workers and MXFP4 weights."""
+    ranks: dict[str, JsonValue] = {}
+    for role, expected in (
+        ("attention", set(range(attention))),
+        ("ffn", set(range(attention, attention + ffn))),
+    ):
+        registered, mxfp = set(), set()
+        with (directory / f"{role}.log").open(
+            encoding="utf-8", errors="replace"
+        ) as log:
+            for line in log:
+                if match := re.search(
+                    rf"UMDK AFD registered buffers: role={role} world_rank=(\d+) "
+                    r"schema=umdk_cam_op_lib::afd_async_dispatch_send_arch35\b",
+                    line,
+                ):
+                    registered.add(int(match[1]))
+                if role == "ffn" and (
+                    match := re.search(
+                        r"UMDK W4A8MXFP executor: world_rank=(\d+)\b", line
+                    )
+                ):
+                    mxfp.add(int(match[1]))
+        if registered != expected or (role == "ffn" and mxfp != expected):
+            raise RuntimeError(
+                f"Incomplete UMDK evidence for {role}: expected={sorted(expected)}, "
+                f"registered={sorted(registered)}, MXFP4={sorted(mxfp)}"
+            )
+        ranks[role] = sorted(registered)
+        if role == "ffn":
+            ranks["mxfp4"] = sorted(mxfp)
+    return ranks
 
 
 def validate_response(result: dict, *, check_answer: bool = True) -> None:

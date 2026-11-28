@@ -1,0 +1,23 @@
+[ffn] (EngineCore_DP3 pid=163754) INFO 11-28 02:00:08 [multiproc_executor.py:486] [shutdown] Executor: all workers exited gracefully
+[ffn] (EngineCore_DP0 pid=163751) INFO 11-28 02:00:08 [multiproc_executor.py:486] [shutdown] Executor: all workers exited gracefully
+[ffn] (EngineCore_DP1 pid=163752) INFO 11-28 02:00:08 [multiproc_executor.py:486] [shutdown] Executor: all workers exited gracefully
+[ffn] (EngineCore_DP2 pid=163753) INFO 11-28 02:00:08 [multiproc_executor.py:486] [shutdown] Executor: all workers exited gracefully
+[ffn] (EngineCore_DP3 pid=163754) ERROR 11-28 02:00:08 [core.py:1510] EngineCore failed to start.
+[ffn] (EngineCore_DP3 pid=163754) ERROR 11-28 02:00:08 [core.py:1510] Traceback (most recent call last):
+[attention] (EngineCore_DP0 pid=163760) INFO 11-28 02:00:08 [multiproc_executor.py:486] [shutdown] Executor: all workers exited gracefully
+[ffn] Traceback (most recent call last):
+[ffn] (EngineCore_DP0 pid=163751) ERROR 11-28 02:00:08 [core.py:1510] EngineCore failed to start.
+[ffn] (EngineCore_DP0 pid=163751) ERROR 11-28 02:00:08 [core.py:1510] Traceback (most recent call last):
+[ffn] (EngineCore_DP1 pid=163752) ERROR 11-28 02:00:08 [core.py:1510] EngineCore failed to start.
+[ffn] (EngineCore_DP1 pid=163752) ERROR 11-28 02:00:08 [core.py:1510] Traceback (most recent call last):
+[attention] (EngineCore_DP0 pid=163760) ERROR 11-28 02:00:08 [async_dp_engine.py:202] EngineCore failed to start.
+[attention] (EngineCore_DP0 pid=163760) ERROR 11-28 02:00:08 [async_dp_engine.py:202] Traceback (most recent call last):
+[attention] Traceback (most recent call last):
+[ffn] (EngineCore_DP2 pid=163753) ERROR 11-28 02:00:08 [core.py:1510] EngineCore failed to start.
+[ffn] (EngineCore_DP2 pid=163753) ERROR 11-28 02:00:08 [core.py:1510] Traceback (most recent call last):
+[attention] (EngineCore_DP1 pid=163761) INFO 11-28 02:00:08 [multiproc_executor.py:486] [shutdown] Executor: all workers exited gracefully
+[attention] (EngineCore_DP1 pid=163761) ERROR 11-28 02:00:08 [async_dp_engine.py:202] EngineCore failed to start.
+[attention] (EngineCore_DP1 pid=163761) ERROR 11-28 02:00:08 [async_dp_engine.py:202] Traceback (most recent call last):
+[attention] RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+[ffn] RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+Traceback (most recent call last):

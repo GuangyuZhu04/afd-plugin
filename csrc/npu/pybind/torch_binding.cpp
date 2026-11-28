@@ -148,4 +148,9 @@ TORCH_LIBRARY(afd_ascend, ops) {
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.doc() = "AFD Ascend A2E/E2A custom operator bindings";
+#ifdef AFD_USE_UMDK_ASYNC
+  m.attr("uses_umdk_async") = true;
+#else
+  m.attr("uses_umdk_async") = false;
+#endif
 }

@@ -1,5 +1,10 @@
 # DeepSeek-V4-Flash DSpark A/F execution
 
+For the Ascend 950 W4A8MXFP checkpoint, use the
+[eight-device UMDK eager deployment](ascend950_umdk.md).
+The [board setup and test scripts](ascend950_board.md) install the pinned stack
+and run the single-device, HCCL, roundtrip and model checks on a new host.
+
 This recipe configures target and draft A/F execution using the existing
 Async CAM transport. Attention retains attention, routing, shared experts,
 request KV and native speculative decoding. The FFN group loads one read-only
@@ -120,7 +125,7 @@ Launch F and A with their usual Async CAM arguments, adding the same
 `--speculative-config "$DSPARK_CONFIG"` to both:
 
 ```bash
-ASCEND_RT_VISIBLE_DEVICES="$F_DEVICES" VLLM_PLUGINS=ascend,afd \
+ASCEND_RT_VISIBLE_DEVICES="$F_DEVICES" VLLM_PLUGINS=ascend,ascend_model,afd \
 vllm serve "$MODEL" "${COMMON_ARGS[@]}" "${FFN_EXEC_ARGS[@]}" \
   --port 7101 --data-parallel-rpc-port 17101 \
   --tensor-parallel-size 1 --data-parallel-size "$NUM_F" \
@@ -139,7 +144,7 @@ vllm serve "$MODEL" "${COMMON_ARGS[@]}" "${FFN_EXEC_ARGS[@]}" \
 ```
 
 ```bash
-ASCEND_RT_VISIBLE_DEVICES="$A_DEVICES" VLLM_PLUGINS=ascend,afd \
+ASCEND_RT_VISIBLE_DEVICES="$A_DEVICES" VLLM_PLUGINS=ascend,ascend_model,afd \
 vllm serve "$MODEL" "${COMMON_ARGS[@]}" "${A_EXEC_ARGS[@]}" \
   --port 7100 --data-parallel-rpc-port 17100 \
   --tensor-parallel-size "$A_TP" --data-parallel-size "$A_DP" \

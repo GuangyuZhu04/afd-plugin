@@ -1,7 +1,7 @@
 # Routed-only CAM asynchronous operators
 
 The AFD native package contains four experimental asynchronous communication
-operators for Ascend 910C (`ascend910_93`) and 950 (`ascend950`). They use the
+operators for Ascend 910C (`ascend910_93`). They use the
 `cam_async_routed_only_compact_v2` protocol: only routed experts participate
 in dispatch and combine; shared-expert payloads and reserved expert slots are
 absent.
@@ -62,11 +62,8 @@ SOC_VERSION=910c AFD_BUILD_ASCEND_OPS=1 \
   pip install -e . -v --no-build-isolation
 ```
 
-Both builds select A2E/E2A and all four routed-only operators. For Atlas A5
-use `SOC_VERSION=950`. The build selects compact/MTE kernel sources under
-`csrc/npu/ascend_kernels/afd_async_*_arch35/` and shares the compact PyTorch schemas
-with 910C. `setup.py` passes the same `SOC_VERSION` to the ACLNN build and
-the extension CMake configuration (`AFD_SOC_VERSION`).
+Ascend 950 uses the UMDK registered-buffer protocol and dispatcher namespace.
+See the [950 integration](ascend950_umdk_async.md) for its build and checks.
 
 `AFD_SKIP_ACLNN_BUILD=1` requires an existing, matching AFD vendor package
 with all four async ACLNN symbols. Rebuild the complete operator package after
@@ -178,8 +175,7 @@ SOC_VERSION=910c python -m pytest -q -ra \
   tests/npu/test_afd_async_ops.py
 ```
 
-Set `SOC_VERSION=950` to check the 950 build. A matching compiled extension
-is required for Meta evidence. Record dependency skips separately.
+The compact Meta suite exercises the compiled 910C extension.
 
 Before claiming device support, record the exact AFD revision, CANN/HCCL,
 torch-npu and PyTorch versions, device IDs, topology, commands, logs, and

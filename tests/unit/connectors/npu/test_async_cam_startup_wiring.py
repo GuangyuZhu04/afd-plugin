@@ -10,6 +10,7 @@ import json
 import sys
 import threading
 import weakref
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 from types import ModuleType, SimpleNamespace
 from unittest.mock import MagicMock, call
@@ -38,6 +39,53 @@ from tests.unit.fakes.vllm_config import npu_dspark_config, npu_vllm_config
 @pytest.fixture
 def modules(monkeypatch):
     return load_async_modules(monkeypatch)
+
+
+@pytest.mark.parametrize("different", ["registered_rows", "hccl_mib"])
+def test_umdk_peers_reject_different_allocations_before_hccl(
+    modules, monkeypatch, different
+):
+    group, cam, _ = modules
+    store = MemoryStore()
+    monkeypatch.setattr(
+        group,
+        "rendezvous",
+        lambda method, rank, world_size, **kw: iter([(store, rank, world_size)]),
+    )
+    monkeypatch.setattr(group, "PrefixStore", lambda name, backend: backend)
+    monkeypatch.setattr(
+        group,
+        "_new_process_group_helper",
+        lambda *a, **kw: pytest.fail("allocated a mismatched HCCL group"),
+    )
+    monkeypatch.setattr(cam, "uses_umdk_async", lambda: True)
+    monkeypatch.setattr(cam.torch, "bfloat16", "bf16")
+    monkeypatch.setattr(cam, "create_hccl_process_group_options", lambda size: size)
+    peers = []
+    for rank, role in enumerate(("attention", "ffn")):
+        budget = 64 if rank and different == "registered_rows" else 32
+        monkeypatch.setattr(cam, "cam_receive_capacity", lambda rows=budget: rows)
+        cfg = npu_vllm_config(
+            role=role,
+            connector="CAMAsyncAFDConnector",
+            extra_config={
+                "dynamicQuant": 0,
+                "hccl_buffer_size": (
+                    1024 if rank and different == "hccl_mib" else 2048
+                ),
+            },
+        )
+        cfg.model_config.dtype = cam.torch.bfloat16
+        peer = cam.CAMAsyncAFDConnector(0, 0, cfg, parse_afd_config(cfg), 0)
+        peer.graph_startup.plan = FFNGraphPlan(signature="umdk_mxfp4", layer_ids=(3, 7))
+        peers.append(peer)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [pool.submit(peer.init_afd_connector) for peer in peers]
+        for future in futures:
+            with pytest.raises(
+                (ValueError, RuntimeError), match="transport signatures"
+            ):
+                future.result(timeout=5)
 
 
 @pytest.mark.parametrize("role", ["attention", "ffn"])
@@ -109,7 +157,7 @@ def test_sync_camp2p_does_not_require_layered_async_weights(
 
 @pytest.fixture
 def layered_startup_runner(modules, monkeypatch, mode, invalid):
-    _, _, runtime = modules
+    _, cam, runtime = modules
 
     def executor(layers):
         signature = repr(tuple(layer.layer_idx for layer in layers))
@@ -154,6 +202,7 @@ def layered_startup_runner(modules, monkeypatch, mode, invalid):
         [connector.graph_startup.plan]
     )
     runner.connector = connector
+    runner.session = cam.PushCAMSession(runtime.torch.bfloat16)
     runner._failure = runner._layered_executor = runner._mega_executor = None
     runner.requested_mode = mode
     return runner, connector

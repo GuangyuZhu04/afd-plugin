@@ -1,9 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
+# Description: NPU AFD feature validation rejects unsupported combinations before
+#              execution.
+# Create: 2026-10-19
+# Note: Cases exercise the worker admission rules for both NPU roles.
+# History: 2026-10-19 create
 """NPU AFD feature validation rejects unsupported combinations before execution."""
 
 from __future__ import annotations
 
+import json
+import sys
 from contextlib import nullcontext
 from importlib import import_module
 from types import SimpleNamespace
@@ -13,6 +20,7 @@ import pytest
 from afd_plugin.compat.npu import (
     fail_if_unsupported_npu_afd_features,
     npu_afd_num_ubatches,
+    umdk_mxfp_stack,
 )
 from afd_plugin.validation import validate_npu_model_runner_v2_config
 from tests.unit.fakes.async_ffn import load_async_modules, load_host_module
@@ -32,6 +40,7 @@ from tests.unit.fakes.vllm_config import (  # noqa: E402
 def host_dependencies(monkeypatch):
     load_async_modules(monkeypatch)
     load_host_module(monkeypatch, "afd_plugin.model_executor.models.model_utils")
+    load_host_module(monkeypatch, "afd_plugin.connectors.npu.camp2p.mxfp8_transport")
     load_host_module(monkeypatch, "afd_plugin.connectors.npu.camp2p.connector")
     load_host_module(monkeypatch, "afd_plugin.connectors.factory")
 
@@ -41,6 +50,134 @@ def _admit(config):
         config, expected_role=config.additional_config["afd"]["role"], device_type="npu"
     )
     fail_if_unsupported_npu_afd_features(config)
+
+
+@pytest.fixture
+def a5_bf16(monkeypatch):
+    pinned = {
+        name: SimpleNamespace(
+            version="0.34.0",
+            read_text=lambda _, sha=commit: json.dumps(
+                {"vcs_info": {"vcs": "git", "commit_id": sha}}
+            ),
+        )
+        for name, commit in umdk_mxfp_stack.UMDK_MXFP_STACK
+    }
+    monkeypatch.setattr(
+        umdk_mxfp_stack,
+        "distribution",
+        pinned.__getitem__,
+    )
+    monkeypatch.setattr(
+        "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: True
+    )
+    torch = sys.modules["torch"]
+    monkeypatch.setattr(torch, "bfloat16", "bf16")
+    utils = sys.modules["vllm_ascend.utils"]
+    monkeypatch.setattr(utils, "AscendDeviceType", SimpleNamespace(A5="a5", A3="a3"))
+    monkeypatch.setattr(utils, "get_ascend_device_type", lambda: "a5")
+    return torch.bfloat16
+
+
+@pytest.mark.parametrize("name", ["vllm", "vllm-ascend"])
+@pytest.mark.parametrize("change", ["release", "commit", "matching"])
+def test_umdk_mxfp_stack_checks_exact_build_and_recorded_source(
+    monkeypatch, name, change
+):
+    installed = {}
+    for package, commit in umdk_mxfp_stack.UMDK_MXFP_STACK:
+        actual = (
+            "0.32.0" if (package == name and change == "release") else "0.34.0+local"
+        )
+        source = "0" * 40 if (package == name and change == "commit") else commit
+        installed[package] = SimpleNamespace(
+            version=actual,
+            read_text=lambda _, sha=source: json.dumps(
+                {"vcs_info": {"vcs": "git", "commit_id": sha}}
+            ),
+        )
+    monkeypatch.setattr(umdk_mxfp_stack, "distribution", installed.__getitem__)
+    if change == "matching" or (name == "vllm-ascend" and change == "release"):
+        assert umdk_mxfp_stack.check_umdk_mxfp_stack() == {
+            package: dist.version for package, dist in installed.items()
+        }
+    else:
+        with pytest.raises(RuntimeError, match=name):
+            umdk_mxfp_stack.check_umdk_mxfp_stack()
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        (None, None),
+        ("integer_experts", None),
+        ("wrong_build", "registered-buffer plugin build"),
+        ("wrong_stack", "UMDK MXFP4 requires vllm"),
+        ("placement", "linear expert placement"),
+        ("dtype", "BF16"),
+        ("target", "DeepseekV4ForCausalLM"),
+        ("ffn_tp", "F TP=1"),
+        ("graph", "eager execution"),
+        ("ubo", "without DBO or ubatching"),
+        ("spec", "without draft models"),
+    ],
+)
+def test_a5_bf16_eager_admission(a5_bf16, monkeypatch, change, message):
+    config = _config_with(
+        role="ffn",
+        extra_config={"dynamicQuant": int(change == "integer_experts")},
+        **ASYNC_CAM,
+    )
+    config.model_config.hf_config.architectures = [
+        "DeepseekV4ForCausalLM" if change != "target" else "DeepseekV41ForCausalLM"
+    ]
+    config.model_config.dtype = "fp16" if change == "dtype" else a5_bf16
+    config.model_config.enforce_eager = change != "graph"
+    config.parallel_config.use_ubatching = change == "ubo"
+    config.parallel_config.tensor_parallel_size = 2 if change == "ffn_tp" else 1
+    if change == "wrong_build":
+        monkeypatch.setattr(
+            "afd_plugin.compat.npu.feature_validation.uses_umdk_async", lambda: False
+        )
+    if change == "wrong_stack":
+        monkeypatch.setattr(
+            umdk_mxfp_stack, "distribution", lambda _: SimpleNamespace(version="0.32.0")
+        )
+    if change == "placement":
+        config.parallel_config.expert_placement_strategy = "round_robin"
+    config.speculative_config = object() if change == "spec" else None
+    if message:
+        with pytest.raises(RuntimeError, match=message):
+            fail_if_unsupported_npu_afd_features(config)
+    else:
+        fail_if_unsupported_npu_afd_features(config)
+
+
+@pytest.mark.parametrize("role", ["attention", "ffn"])
+@pytest.mark.parametrize(
+    "attn_tp,batch,allowed",
+    [
+        (1, 32_768, True),
+        (1, 32_769, False),
+        (2, 65_536, True),
+        (2, 65_537, False),
+    ],
+)
+def test_a5_eager_source_rows_per_attention_rank(
+    a5_bf16, role, attn_tp, batch, allowed
+):
+    config = _config_with(
+        role=role,
+        tensor_parallel_size=attn_tp if role == "attention" else 1,
+        num_attention_ranks=attn_tp,
+        max_num_batched_tokens=batch,
+        model={"dtype": a5_bf16},
+        extra_config={"dynamicQuant": 0, "attn_ranks_per_dp": attn_tp},
+        **ASYNC_CAM,
+    )
+    config.model_config.hf_config.architectures = ["DeepseekV4ForCausalLM"]
+    with nullcontext() if allowed else pytest.raises(RuntimeError, match="32768"):
+        fail_if_unsupported_npu_afd_features(config)
 
 
 TWO_UBATCH_DBO = dict(

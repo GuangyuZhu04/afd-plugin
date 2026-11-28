@@ -1,387 +1,416 @@
 /*
  * SPDX-License-Identifier: MIT
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- * SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
- * Description: Host tiling and registration for afd_async_dispatch_recv.
- * Create: 2026-11-23
- * Note: The host selects the AIV launch dimensions and configures the MC2
- *       communication group.
- * History: 2026-11-23 add to the Ascend 950 port
+ * Description: afd_async_dispatch_recv operator definition and tiling
+ * Create: 2026-11-03
+ * Note: model-dependent sizes are read at tiling time and passed as runtime
+ *       fields; the tiling key stays constant. The tiling-time UB budget
+ *       re-derives the kernel's own pool layout, so a tiling the body cannot fit
+ *       is rejected on the host instead of aborting on device.
+ *       max_expanded_tokens is the second-layer split capacity q: the most
+ *       expanded rows (one (token, local expert) route each) a scheduler slice
+ *       may hold. max_padded_tokens is the physical row budget (>= q, a multiple
+ *       of expert_alignment) that sizes the receive buffers and the F-side
+ *       split. Size q for the balanced per-rank row count of one round,
+ *       ceil(factor * num_sources * window * topk / num_receivers) with factor
+ *       around 1.2, and cap it at 32768; batches above the cap simply split into
+ *       more slices. Both values must stay fixed for a prepared receive buffer.
+ * History: 2026-11-03 create runtime parameter port;
+ *          2026-11-03 real tensor interface (payload/active/state tensors);
+ *          2026-11-04 reject max_padded_tokens < expert_alignment on the host
  */
 
-#include "register/op_def_registry.h"
-#include "tiling/platform/platform_ascendc.h"
-#include "tiling/hccl/hccl_tiling.h"
 #include "../op_kernel/afd_async_dispatch_recv_tiling.h"
+#include "afd_async_opdef.h"
+#include "tiling/platform/platform_ascendc.h"
+#include "error_log.h"
 
-#include "afd_async_host_tiling.h"
-#include "ops_log.h"
-#include "ops_error.h"
+namespace {
+constexpr uint32_t kDefaultNumRanks = 2;
+constexpr uint32_t kDefaultNumExperts = 16;
+constexpr uint32_t kDefaultNumTopk = 8;
+constexpr uint32_t kDefaultNumSourceLanes = 4;
+constexpr uint32_t kDefaultNumLayers = 1;
+constexpr uint32_t kDefaultMaxExpandedTokens = 4096;
+constexpr uint32_t kDefaultMaxPaddedTokens = 4096;
+constexpr uint32_t kDefaultExpertAlignment = 128;
+constexpr uint32_t kDefaultNumTokensPerStage = 16;
+constexpr uint32_t kDefaultNumHidden = 3584;
+constexpr uint32_t kMaxNumRanks = 256;
+constexpr uint32_t kMaxNumExperts = 2048;
+constexpr uint32_t kMaxNumTopk = 32;
+constexpr uint32_t kMaxNumSourceLanes = 256;
+constexpr uint32_t kMaxNumLayers = 64;
+constexpr uint32_t kMaxLaneTokens = 32768;
+constexpr uint32_t kMaxNumHidden = 8192;
+constexpr uint32_t kMaxNumSFPacks = 512;
+constexpr int64_t kMaxInt32 = 2147483647;
+constexpr uint64_t kMaxPhysicalUbBytes = 253952;
+// recv_src_metadata rows: [source lane, round-local token, TopK slot, entry].
+constexpr int64_t kMetadataWords = 4;
+constexpr int64_t kActiveHeaderBytes = 64;
+constexpr size_t kInputActive = 2;
+constexpr size_t kInputExecutionState = 3;
+constexpr size_t kInputAfdWorkspace = 4;
+// Stage counts the kernel accepts: powers of two from 1 to 16.
+constexpr int64_t kMinNumTokensPerStage = 1;
+constexpr int64_t kMaxNumTokensPerStage = 16;
+// Rank of the tiled outputs and their positions in the OpDef output list.
+constexpr size_t kOutputRank = 2;
+constexpr size_t kOutputRecvX = 0;
+constexpr size_t kOutputRecvSf = 1;
+constexpr size_t kOutputSrcMetadata = 2;
 
-using namespace ge;
-using namespace afd_async;
-
-constexpr static int ONE_DIM = 1;
-
-constexpr static int INPUT_X_INDEX = 0;
-
-constexpr static int ATTR_ENUM_MAGIC = 0;
-constexpr static int ATTR_ENUM_MAX_SEQ_LEN = 1;
-constexpr static int ATTR_ENUM_HIDDEN_SIZE = 2;
-constexpr static int ATTR_ENUM_TOPK = 3;
-constexpr static int ATTR_ENUM_MOE_RANK_NUM = 4;
-constexpr static int ATTR_ENUM_ATTN_RANK_NUM = 5;
-constexpr static int ATTR_ENUM_ROUTE_EXPERT_NUM_PER_MOE = 6;
-constexpr static int ATTR_ENUM_MOE_RANK_ID = 7;
-constexpr static int ATTR_ENUM_WORLD_SIZE = 8;
-constexpr static int ATTR_ENUM_TP_SIZE = 9;
-constexpr static int ATTR_ENUM_DYNAMIC_QUANT = 10;
-constexpr static int ATTR_ENUM_HCCL_GROUP_NAME = 11;
-
-constexpr static int OUTPUT_EXPAND_X = 0;
-constexpr static int OUTPUT_DYNAMIC_SCALES = 1;
-constexpr static int OUTPUT_BATCH_INFO = 2;
-constexpr static int OUTPUT_EP_RECV_COUNT_ROUTED = 3;
-
-constexpr static int TILING_KEY_BF16 = 100;
-constexpr static int TILING_KEY_FP16 = 101;
-
-constexpr static int INFO_NUM = 5; // number of valid batch-info fields; also start/end expert per chunk
-
-// maxSeqLen [1, 8192]
-constexpr static int LIMIT_MAX_SEQ_LEN_MIN = 1;
-constexpr static int LIMIT_MAX_SEQ_LEN_MAX = 1024 * 256;
-constexpr static int LIMIT_HIDDEN_SIZE_MIN = 1;
-constexpr static int LIMIT_TOPK_MIN = 1;
-constexpr static int LIMIT_ATTENTION_RANK_SIZE_MIN = 1;
-constexpr static int LIMIT_TP_SIZE_MIN = 1;
-constexpr static int LIMIT_EXPERT_RANK_SIZE_MIN = 1;
-
-constexpr static int BATCH_INFO_VAL_NUM = 5;
-constexpr static int UB_ALIGN = 32;
-constexpr static int MAX_AIV_NUM = 48;
-
-constexpr static float EP_BALANCE_FACTOR = 1.2;
-
-constexpr static uint32_t OP_TYPE_ALL_TO_ALL = 8U;
-
-static uint64_t MathCeil(uint64_t n, uint64_t align)
+uint64_t Align32(uint64_t v)
 {
-    return (n + align - 1) / align * align;
+    return (v + 31uLL) & ~31uLL;
 }
 
-namespace optiling {
-static void SetHcommCfg(AfdAsyncDispatchRecvTilingData *tiling, const std::string &groupName, bool isAscend950)
+uint64_t Align512(uint64_t v)
 {
-    uint32_t opType1 = OP_TYPE_ALL_TO_ALL;
-    std::string algConfigAllToAllStr = "AlltoAll=level0:fullmesh;level1:pairwise";
+    return (v + 511uLL) & ~511uLL;
+}
 
-    AscendC::Mc2CcTilingConfig mc2CcTilingConfig(groupName, opType1, algConfigAllToAllStr);
-#ifdef AFD_TILING_HAS_COMM_ENGINE
-    // Match the A5 A2E/E2A MTE resource path: this field is HcclAccelerator::AIV.
-    if (isAscend950) {
-        mc2CcTilingConfig.SetCommEngine(afd_async::host::MTE_HCCL_ACCELERATOR);
+// Mirrors afd_async::afd::TokenLayout so host and device agree byte-for-byte.
+uint64_t RecordStride(uint64_t hiddenBytes, uint64_t sfBytes, uint64_t numTopk)
+{
+    const uint64_t topkIdxOffset = hiddenBytes + Align32(sfBytes);
+    const uint64_t topkWeightsOffset = topkIdxOffset + Align32(8uLL * numTopk);
+    const uint64_t srcTokenIdxOffset = topkWeightsOffset + 4uLL * numTopk;
+    const uint64_t validMaskOffset = srcTokenIdxOffset + 4uLL;
+    return Align512(validMaskOffset + 4uLL);
+}
+
+// Attributes reach tiling as int64. Read the full value and let the caller
+// check the domain before narrowing: narrowing first turned a negative or
+// > UINT32_MAX value into a plausible small number that reached the kernel.
+int64_t ReadIntAttr(const gert::TilingContext* context, size_t idx, int64_t fallback)
+{
+    auto attrs = context->GetAttrs();
+    if (attrs == nullptr) {
+        return fallback;
     }
-#else
-    (void)isAscend950;
-#endif
-    mc2CcTilingConfig.GetTiling(tiling->mc2InitTiling);
-    mc2CcTilingConfig.GetTiling(tiling->mc2CcTiling1);
+    const int64_t* value = attrs->GetInt(idx);
+    if (value == nullptr) {
+        return fallback;
+    }
+    return *value;
+}
+
+bool IsStageCount(int64_t t)
+{
+    return t >= kMinNumTokensPerStage && t <= kMaxNumTokensPerStage &&
+        (t & (t - 1)) == 0;
+}
+
+int64_t ByteVectorSize(const gert::TilingContext* context, size_t input)
+{
+    const gert::StorageShape* shape = context->GetInputShape(input);
+    if (shape == nullptr || shape->GetStorageShape().GetDimNum() != 1) {
+        return 0;
+    }
+    return shape->GetStorageShape().GetDim(0);
+}
+}  // namespace
+
+namespace optiling {
+using DispatchRecvTiling = Cam::AfdAsyncDispatchRecvTilingData;
+
+static ge::graphStatus ReadDispatchRecvGeometry(gert::TilingContext* context, DispatchRecvTiling* tiling)
+{
+    // Attr order follows the OpDef below: group_ep, num_ranks, num_experts,
+    // num_topk, num_source_lanes, num_layers, max_expanded_tokens,
+    // max_padded_tokens, expert_alignment, num_tokens_per_stage, rank_idx,
+    // recv_sf_token_stride, recv_sf_hidden_stride, payload_bytes, control_bytes,
+    // context_bytes, num_hidden, num_sf_packs, num_vec_cores.
+    const int64_t numRanksValue = ReadIntAttr(context, 1U, kDefaultNumRanks);
+    const int64_t numExpertsValue = ReadIntAttr(context, 2U, kDefaultNumExperts);
+    const int64_t numTopkValue = ReadIntAttr(context, 3U, kDefaultNumTopk);
+    const int64_t numSourceLanesValue = ReadIntAttr(context, 4U, kDefaultNumSourceLanes);
+    const int64_t numLayersValue = ReadIntAttr(context, 5U, kDefaultNumLayers);
+    const int64_t maxExpandedTokensValue = ReadIntAttr(context, 6U, kDefaultMaxExpandedTokens);
+    const int64_t maxPaddedTokensValue = ReadIntAttr(context, 7U, kDefaultMaxPaddedTokens);
+    const int64_t expertAlignmentValue = ReadIntAttr(context, 8U, kDefaultExpertAlignment);
+    const int64_t numTokensPerStageValue = ReadIntAttr(context, 9U, kDefaultNumTokensPerStage);
+    const int64_t rankIdxValue = ReadIntAttr(context, 10U, 0);
+    // Domain check on the int64 values, before any narrowing. The divisibility
+    // test is safe because the rank bounds are evaluated first.
+    OP_TILING_CHECK(numRanksValue <= 0 || numRanksValue > static_cast<int64_t>(kMaxNumRanks) ||
+        numExpertsValue <= 0 || numExpertsValue > static_cast<int64_t>(kMaxNumExperts) ||
+        numExpertsValue % numRanksValue != 0 ||
+        numTopkValue <= 0 || numTopkValue > static_cast<int64_t>(kMaxNumTopk) ||
+        numSourceLanesValue <= 0 ||
+        numSourceLanesValue > static_cast<int64_t>(kMaxNumSourceLanes) ||
+        numLayersValue <= 0 || numLayersValue > static_cast<int64_t>(kMaxNumLayers) ||
+        maxExpandedTokensValue <= 0 || maxExpandedTokensValue > kMaxInt32 ||
+        maxPaddedTokensValue <= 0 || maxPaddedTokensValue > kMaxInt32 ||
+        maxExpandedTokensValue > maxPaddedTokensValue ||
+        expertAlignmentValue <= 0 ||
+        (expertAlignmentValue & (expertAlignmentValue - 1)) != 0 ||
+        !IsStageCount(numTokensPerStageValue) ||
+        rankIdxValue < 0 || rankIdxValue >= numRanksValue,
+        OP_LOGE(context->GetNodeName(), "dispatch_recv shape out of support domain"),
+        return ge::GRAPH_FAILED);
+
+    tiling->numRanks = static_cast<uint32_t>(numRanksValue);
+    tiling->numExperts = static_cast<uint32_t>(numExpertsValue);
+    tiling->expertsPerRank = tiling->numExperts / tiling->numRanks;
+    tiling->numTopk = static_cast<uint32_t>(numTopkValue);
+    tiling->numSourceLanes = static_cast<uint32_t>(numSourceLanesValue);
+    tiling->numLayers = static_cast<uint32_t>(numLayersValue);
+    tiling->maxExpandedTokens = static_cast<uint32_t>(maxExpandedTokensValue);
+    tiling->maxPaddedTokens = static_cast<uint32_t>(maxPaddedTokensValue);
+    tiling->expertAlignment = static_cast<uint32_t>(expertAlignmentValue);
+    tiling->numTokensPerStage = static_cast<uint32_t>(numTokensPerStageValue);
+    tiling->rankIdx = static_cast<uint32_t>(rankIdxValue);
+    return ge::GRAPH_SUCCESS;
+}
+
+static ge::graphStatus ReadDispatchRecvTransferAttrs(gert::TilingContext* context, DispatchRecvTiling* tiling)
+{
+    const int64_t sfTokenStrideValue = ReadIntAttr(context, 11U, 0);
+    const int64_t sfHiddenStrideValue = ReadIntAttr(context, 12U, 1);
+    const int64_t payloadBytesValue = ReadIntAttr(context, 13U, 0);
+    const int64_t controlBytesValue = ReadIntAttr(context, 14U, 0);
+    const int64_t contextBytesValue = ReadIntAttr(context, 15U, 0);
+    // bf16 payload: hidden elements -> bytes. The fp8 body variant keeps the
+    // same element axis so the metadata layout stays comparable.
+    const int64_t numHiddenValue = ReadIntAttr(context, 16U, kDefaultNumHidden);
+    const int64_t numSFPacksValue = ReadIntAttr(context, 17U, 0);
+    OP_TILING_CHECK(numHiddenValue <= 0 || numHiddenValue > static_cast<int64_t>(kMaxNumHidden) ||
+        numSFPacksValue < 0 || numSFPacksValue > static_cast<int64_t>(kMaxNumSFPacks) ||
+        sfTokenStrideValue < 0 || sfTokenStrideValue > kMaxInt32 ||
+        sfHiddenStrideValue < 0 || sfHiddenStrideValue > kMaxInt32 ||
+        payloadBytesValue <= 0 || contextBytesValue <= 0 || controlBytesValue < 0,
+        OP_LOGE(context->GetNodeName(), "dispatch_recv shape out of support domain"),
+        return ge::GRAPH_FAILED);
+    // The second layer slices by expert with num_padded_rows as the physical row
+    // budget. A padded capacity below one alignment leaves no padding headroom,
+    // so a slice can make no progress on its current expert and the round never
+    // terminates on device. Reject the combination on the host instead.
+    OP_TILING_CHECK(tiling->maxPaddedTokens < tiling->expertAlignment,
+        OP_LOGE(context->GetNodeName(),
+            "dispatch_recv max_padded_tokens (%lld) must be >= expert_alignment (%lld)",
+            static_cast<long long>(tiling->maxPaddedTokens),
+            static_cast<long long>(tiling->expertAlignment)),
+        return ge::GRAPH_FAILED);
+
+    tiling->numHiddenBytes = static_cast<uint32_t>(numHiddenValue) * 2U;
+    tiling->numSFPacks = static_cast<uint32_t>(numSFPacksValue);
+    tiling->recvSfTokenStride = static_cast<int32_t>(sfTokenStrideValue);
+    tiling->recvSfHiddenStride = static_cast<int32_t>(sfHiddenStrideValue);
+    tiling->payloadBytes = static_cast<uint64_t>(payloadBytesValue);
+    tiling->controlBytes = static_cast<uint64_t>(controlBytesValue);
+    tiling->contextBytes = static_cast<uint64_t>(contextBytesValue);
+    return ge::GRAPH_SUCCESS;
+}
+
+static ge::graphStatus CheckDispatchRecvStorage(
+    gert::TilingContext* context, DispatchRecvTiling* tiling, uint32_t numVecCores)
+{
+    const int64_t activeSize = ByteVectorSize(context, kInputActive);
+    OP_TILING_CHECK(activeSize < kActiveHeaderBytes,
+        OP_LOGE(context->GetNodeName(), "dispatch_recv active must be a byte vector covering its header"),
+        return ge::GRAPH_FAILED);
+    const uint64_t activeBytes = static_cast<uint64_t>(activeSize);
+    const uint64_t legacyActiveBytes = kActiveHeaderBytes + 64uLL * tiling->numSourceLanes +
+        32uLL * tiling->numSourceLanes * tiling->expertsPerRank;
+    OP_TILING_CHECK(tiling->maxPaddedTokens > kMaxLaneTokens && activeBytes <= legacyActiveBytes,
+        OP_LOGE(context->GetNodeName(), "dispatch_recv rows above the legacy limit require transaction storage"),
+        return ge::GRAPH_FAILED);
+
+    if (activeBytes > legacyActiveBytes) {
+        const uint64_t segmentCapacity =
+            static_cast<uint64_t>(tiling->numSourceLanes) * tiling->expertsPerRank;
+        const uint64_t indexCapacity =
+            segmentCapacity < tiling->maxExpandedTokens ? segmentCapacity : tiling->maxExpandedTokens;
+        const uint64_t executionBytes = 32uLL + Align32(4uLL * tiling->numSourceLanes);
+        const uint64_t workspaceBytes = 32uLL * numVecCores + 256uLL + 2uLL * Align32(4uLL * indexCapacity);
+        OP_TILING_CHECK(
+            ByteVectorSize(context, kInputExecutionState) < static_cast<int64_t>(executionBytes) ||
+            ByteVectorSize(context, kInputAfdWorkspace) < static_cast<int64_t>(workspaceBytes),
+            OP_LOGE(context->GetNodeName(), "dispatch_recv transaction execution state or scratch is undersized"),
+            return ge::GRAPH_FAILED);
+    }
+    tiling->activeBytes = activeBytes;
+    return ge::GRAPH_SUCCESS;
+}
+
+static ge::graphStatus SetDispatchRecvResources(gert::TilingContext* context, DispatchRecvTiling* tiling)
+{
+    auto ascendcPlatform = platform_ascendc::PlatformAscendC(context->GetPlatformInfo());
+    const uint32_t aivNum = ascendcPlatform.GetCoreNumAiv();
+    OP_TILING_CHECK(aivNum == 0, OP_LOGE(context->GetNodeName(), "no AIV core available"),
+        return ge::GRAPH_FAILED);
+
+    // num_vec_cores == 0 keeps the platform AIV count; see dispatch_send.
+    const int64_t numVecCoresValue = ReadIntAttr(context, 18U, 0);
+    OP_TILING_CHECK(numVecCoresValue < 0 ||
+        numVecCoresValue > static_cast<int64_t>(aivNum),
+        OP_LOGE(context->GetNodeName(), "dispatch_recv num_vec_cores exceeds the AIV count"),
+        return ge::GRAPH_FAILED);
+    const uint32_t numVecCores = numVecCoresValue == 0 ?
+        aivNum : static_cast<uint32_t>(numVecCoresValue);
+    if (CheckDispatchRecvStorage(context, tiling, numVecCores) != ge::GRAPH_SUCCESS) {
+        return ge::GRAPH_FAILED;
+    }
+    uint64_t ubSize = 0;
+    ascendcPlatform.GetCoreMemSize(platform_ascendc::CoreMemType::UB, ubSize);
+    OP_TILING_CHECK(ubSize == 0 || ubSize > kMaxPhysicalUbBytes,
+        OP_LOGE(context->GetNodeName(), "reported UB size is outside the 950/3510 domain"),
+        return ge::GRAPH_FAILED);
+
+    // Re-derive the kernel pool: production DispatchCopyEpilogueUBLayout with
+    // runtime strides. token[2], metadata[2], refs[2], segment[2][32],
+    // zero[512], control[256].
+    const uint64_t tokenBytes =
+        RecordStride(tiling->numHiddenBytes, uint64_t(tiling->numSFPacks) * 2u, tiling->numTopk);
+    const uint64_t tokenStage = Align32(tokenBytes * tiling->numTokensPerStage);
+    const uint64_t metadataStage = Align32(16uLL * tiling->numTokensPerStage);
+    const uint64_t refsStage = Align32(4uLL * tiling->numTokensPerStage);
+    const uint64_t ubTotal = 2uLL * tokenStage + 2uLL * metadataStage + 2uLL * refsStage +
+        64uLL + 512uLL + 256uLL;
+    OP_TILING_CHECK(ubTotal > ubSize,
+        OP_LOGE(context->GetNodeName(), "dispatch_recv UB pool exceeds available UB"),
+        return ge::GRAPH_FAILED);
+    tiling->blockDim = numVecCores;
+    tiling->numVecCores = numVecCores;
+    // The SIMT vector functions address UB through the launch-time dynamic UB
+    // window: with the attribute unset only a few KiB are visible, so a VF
+    // that touches a routing array past it traps as aivec 341 no matter
+    // the layout. Request all but 32 KiB of the vector buffer; the rest
+    // covers the static shared-memory reserve the launcher adds on top.
+    const uint32_t dynUbSize = ubSize > 32768U ?
+        static_cast<uint32_t>(ubSize) - 32768U : static_cast<uint32_t>(ubSize);
+    (void)context->SetDynUBufSize(dynUbSize);
+    tiling->numUbBytes = static_cast<uint32_t>(ubSize);
+    return ge::GRAPH_SUCCESS;
 }
 
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
-    const char *nodeName = context->GetNodeName();
-    AfdAsyncDispatchRecvTilingData *tilingData =
-        context->GetTilingData<AfdAsyncDispatchRecvTilingData>();
-
-    auto attrs = context->GetAttrs();
-    int64_t magic = *(attrs->GetInt(ATTR_ENUM_MAGIC));
-    int64_t maxSeqLen = *(attrs->GetInt(ATTR_ENUM_MAX_SEQ_LEN));
-    int64_t hiddenSize = *(attrs->GetInt(ATTR_ENUM_HIDDEN_SIZE));
-    int64_t topk = *(attrs->GetInt(ATTR_ENUM_TOPK));
-    int64_t moeRankNum = *(attrs->GetInt(ATTR_ENUM_MOE_RANK_NUM));
-    int64_t attnRankNum = *(attrs->GetInt(ATTR_ENUM_ATTN_RANK_NUM));
-    int64_t routeExpertNumPerMoe = *(attrs->GetInt(ATTR_ENUM_ROUTE_EXPERT_NUM_PER_MOE));
-    int64_t moeRankId = *(attrs->GetInt(ATTR_ENUM_MOE_RANK_ID));
-    int64_t worldSize = *(attrs->GetInt(ATTR_ENUM_WORLD_SIZE));
-    int64_t tpSize = *(attrs->GetInt(ATTR_ENUM_TP_SIZE));
-    int64_t dynamicQuant = *(attrs->GetInt(ATTR_ENUM_DYNAMIC_QUANT));
-    auto groupNamePtr = attrs->GetAttrPointer<char>(ATTR_ENUM_HCCL_GROUP_NAME);
-
-    auto ascendcPlatform = platform_ascendc::PlatformAscendC(context->GetPlatformInfo());
-    bool isAscend950 = false;
-#ifdef AFD_TILING_HAS_COMM_ENGINE
-    isAscend950 = ascendcPlatform.GetSocVersion() == platform_ascendc::SocVersion::ASCEND950;
-#endif
-    uint64_t aivNum = afd_async::host::GetActiveAivCount(ascendcPlatform.GetCoreNumAiv());
-    uint64_t ubSize = 0UL;
-    ascendcPlatform.GetCoreMemSize(platform_ascendc::CoreMemType::UB, ubSize);
-    OPS_ERR_IF(aivNum == 0,
-        OPS_LOG_E(nodeName, "Platform has no active AIV cores."), return ge::GRAPH_FAILED);
-    if (isAscend950) {
-        OPS_ERR_IF(worldSize < 1 || worldSize > afd_async::host::A5_MAX_WORLD_SIZE
-            || moeRankNum < 1 || attnRankNum < 1 || moeRankNum > worldSize || attnRankNum > worldSize,
-            OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires positive A/F ranks and worldSize <= %ld.",
-                afd_async::host::A5_MAX_WORLD_SIZE), return ge::GRAPH_FAILED);
-        OPS_ERR_IF(hiddenSize < LIMIT_HIDDEN_SIZE_MIN || hiddenSize > afd_async::host::MAX_KERNEL_DIMENSION
-            || hiddenSize % static_cast<int64_t>(afd_async::host::UB_ALIGNMENT) != 0 || routeExpertNumPerMoe < 1
-            || routeExpertNumPerMoe > afd_async::host::MAX_KERNEL_DIMENSION / moeRankNum
-            || topk < 1 || topk > afd_async::host::MAX_KERNEL_DIMENSION,
-            OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires aligned hiddenSize and representable expert dimensions."),
-            return ge::GRAPH_FAILED);
-    }
-
-    int64_t expertNum = routeExpertNumPerMoe * moeRankNum;
-    uint64_t sharedMemSize = GetMaxWindowSize();
-
-    const gert::StorageShape *xShape = context->GetInputShape(INPUT_X_INDEX);
-
-    OPS_ERR_IF(maxSeqLen < LIMIT_MAX_SEQ_LEN_MIN || maxSeqLen > LIMIT_MAX_SEQ_LEN_MAX,
-        OPS_LOG_E(nodeName, "maxSeqLen is invalid, only support [%d, %d], but got maxSeqLen=%ld.",
-            LIMIT_MAX_SEQ_LEN_MIN, LIMIT_MAX_SEQ_LEN_MAX, maxSeqLen),
+    auto* tiling = context->GetTilingData<DispatchRecvTiling>();
+    OP_TILING_CHECK(tiling == nullptr, OP_LOGE(context->GetNodeName(), "tiling data is null"),
         return ge::GRAPH_FAILED);
-    OPS_ERR_IF(hiddenSize < LIMIT_HIDDEN_SIZE_MIN,
-        OPS_LOG_E(nodeName, "hiddenSize is invalid, must >= %d, but got hiddenSize=%ld.",
-            LIMIT_HIDDEN_SIZE_MIN, hiddenSize), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(topk < LIMIT_TOPK_MIN,
-        OPS_LOG_E(nodeName, "topk is invalid, must >= %d, but got topk=%ld.",
-            LIMIT_TOPK_MIN, topk), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(moeRankNum < LIMIT_EXPERT_RANK_SIZE_MIN,
-        OPS_LOG_E(nodeName, "moeRankNum is invalid, must >= %d, but got moeRankNum=%ld.",
-            LIMIT_EXPERT_RANK_SIZE_MIN, moeRankNum), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(attnRankNum < LIMIT_ATTENTION_RANK_SIZE_MIN,
-        OPS_LOG_E(nodeName, "attnRankNum is invalid, must >= %d, but got attnRankNum=%ld.",
-            LIMIT_ATTENTION_RANK_SIZE_MIN, attnRankNum), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(expertNum < topk,
-        OPS_LOG_E(nodeName, "expertNum is invalid, routeExpertNumPerMoe=%ld moeRankNum=%ld.",
-            routeExpertNumPerMoe, moeRankNum), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(worldSize != (moeRankNum + attnRankNum),
-        OPS_LOG_E(nodeName, "worldSize is invalid, must be moeRankNum+attnRankNum, but got worldSize=%ld.",
-            worldSize), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(moeRankId < 0 || moeRankId > (worldSize - 1),
-        OPS_LOG_E(nodeName, "moeRankId is invalid, only support [0, %ld), but got moeRankId=%ld.",
-            worldSize, moeRankId), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(tpSize < LIMIT_TP_SIZE_MIN || (attnRankNum % tpSize) != 0,
-        OPS_LOG_E(nodeName, "tpSize is invalid, must >= %d and divide attnRankNum, but got tpSize=%ld.",
-            LIMIT_TP_SIZE_MIN, tpSize), return ge::GRAPH_FAILED);
-
-    OPS_ERR_IF(dynamicQuant != 0 && dynamicQuant != 1,
-        OPS_LOG_E(nodeName, "dynamicQuant is invalid, only support 0 or 1, but got dynamicQuant=%ld.",
-            dynamicQuant), return ge::GRAPH_FAILED);
-
-    OPS_ERR_IF(xShape == nullptr, OPS_LOG_E(nodeName, "xShape is null."), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(xShape->GetStorageShape().GetDimNum() != ONE_DIM,
-        OPS_LOG_E(nodeName, "xShape dim is invalid, must be %d, but got dimNum=%u.",
-            ONE_DIM, xShape->GetStorageShape().GetDimNum()), return ge::GRAPH_FAILED);
-    OPS_ERR_IF(xShape->GetStorageShape().GetDim(0) != 1,
-        OPS_LOG_E(nodeName, "xShape dim0 is invalid, must be 1, but got dim0=%u.",
-            xShape->GetStorageShape().GetDim(0)), return ge::GRAPH_FAILED);
-
-    int64_t limitMaxSeqLenPerRank = maxSeqLen / tpSize;
-
-    float maxSeqLenFactor = GetBatchSizeFactor();
-    OPS_ERR_IF(!(maxSeqLenFactor > 0.0f && maxSeqLenFactor <= 1.0f),
-        OPS_LOG_E(nodeName, "maxSeqLenFactor is invalid, only support (0, 1], but got maxSeqLenFactor=%f.",
-            maxSeqLenFactor), return ge::GRAPH_FAILED);
-    uint64_t maxTokenNum = (int64_t)(LIMIT_MAX_SEQ_LEN_MAX * maxSeqLenFactor);
-
-    OPS_ERR_IF(isAscend950 && (limitMaxSeqLenPerRank < 1 || maxTokenNum < 1),
-        OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires positive source and receive capacities."),
-        return ge::GRAPH_FAILED);
-
-    if (isAscend950) {
-        uint64_t requiredUbSize = afd_async::host::DispatchRecvUbBytes(routeExpertNumPerMoe, tpSize, hiddenSize,
-            aivNum, limitMaxSeqLenPerRank, topk, maxTokenNum, dynamicQuant == 1);
-        OPS_ERR_IF(ubSize < requiredUbSize,
-            OPS_LOG_E(nodeName, "Ascend 950 compact-v2 requires %lu UB bytes but platform provides %lu.",
-                requiredUbSize, ubSize), return ge::GRAPH_FAILED);
+    DispatchRecvTiling pending{};
+    if (ReadDispatchRecvGeometry(context, &pending) != ge::GRAPH_SUCCESS ||
+        ReadDispatchRecvTransferAttrs(context, &pending) != ge::GRAPH_SUCCESS ||
+        SetDispatchRecvResources(context, &pending) != ge::GRAPH_SUCCESS) {
+        return ge::GRAPH_FAILED;
     }
-
-    // 64 B, info sent by dispatch send
-    uint64_t dispatchInfoSize = MathCeil(sizeof(int64_t) * BATCH_INFO_VAL_NUM, UB_ALIGN);
-    // max ~96 B, token count received per expert / chunk flag for whether expert already processed
-    uint64_t expertTokenCntSize = MathCeil(sizeof(int32_t) * routeExpertNumPerMoe, UB_ALIGN);
-    // max ~112 KB, real tokens received
-    uint64_t dispatchTokenSize = 0;
-    if (dynamicQuant == 1) {
-        dispatchTokenSize = MathCeil((sizeof(int8_t) * hiddenSize + UB_ALIGN) * limitMaxSeqLenPerRank, UB_ALIGN);
-    } else {
-        dispatchTokenSize = MathCeil(sizeof(int16_t) * hiddenSize * limitMaxSeqLenPerRank, UB_ALIGN);
-    }
-    // max ~144 KB, offsets of received tokens
-    uint64_t tokenAddrSize = MathCeil(sizeof(uint16_t) * limitMaxSeqLenPerRank * topk, UB_ALIGN);
-    // min shared memory needed on the moe side
-    uint64_t sharedMemMoeNeedSize =
-        (dispatchInfoSize + expertTokenCntSize * 2 + dispatchTokenSize + tokenAddrSize) * attnRankNum
-        + afd_async::host::WINDOW_CURSOR_BYTES;
-
-    OPS_ERR_IF(sharedMemSize < sharedMemMoeNeedSize,
-        OPS_LOG_E(nodeName, "sharedMemSize is %lu but need %lu.", sharedMemSize, sharedMemMoeNeedSize),
-        return ge::GRAPH_FAILED);
-
-    std::string groupName(groupNamePtr);
-    SetHcommCfg(tilingData, groupName, isAscend950);
-
-    tilingData->afdAsyncDispatchRecvInfo.magic = magic;
-    tilingData->afdAsyncDispatchRecvInfo.maxSeqLen = maxSeqLen;
-    tilingData->afdAsyncDispatchRecvInfo.hiddenSize = hiddenSize;
-    tilingData->afdAsyncDispatchRecvInfo.topk = topk;
-    tilingData->afdAsyncDispatchRecvInfo.moeRankNum = moeRankNum;
-    tilingData->afdAsyncDispatchRecvInfo.attnRankNum = attnRankNum;
-    tilingData->afdAsyncDispatchRecvInfo.routeExpertNumPerMoe = routeExpertNumPerMoe;
-    tilingData->afdAsyncDispatchRecvInfo.moeRankId = moeRankId;
-    tilingData->afdAsyncDispatchRecvInfo.worldSize = worldSize;
-    tilingData->afdAsyncDispatchRecvInfo.tpSize = tpSize;
-    tilingData->afdAsyncDispatchRecvInfo.maxTokenNum = maxTokenNum;
-    tilingData->afdAsyncDispatchRecvInfo.dynamicQuant = dynamicQuant;
-
-    // Launch the same active AIV count used by the compact statistics and token partitions.
-    uint32_t blockDim = ascendcPlatform.CalcTschBlockDim(aivNum, 0, aivNum);
-    context->SetBlockDim(blockDim);
-
-    tilingData->afdAsyncDispatchRecvInfo.aivNum = aivNum;
-    tilingData->afdAsyncDispatchRecvInfo.totalUbSize = ubSize;
-    tilingData->afdAsyncDispatchRecvInfo.totalWorkspaceSize = sharedMemSize;
-
-    auto xDtype = context->GetInputDesc(0)->GetDataType();
-    if (xDtype == ge::DT_BF16) {
-        context->SetTilingKey(TILING_KEY_BF16);
-    } else if (xDtype == ge::DT_FLOAT16) {
-        context->SetTilingKey(TILING_KEY_FP16);
-    }
-
+    *tiling = pending;
+    context->SetBlockDim(pending.blockDim);
     return ge::GRAPH_SUCCESS;
 }
-}
+}  // namespace optiling
 
 namespace ge {
 static ge::graphStatus InferShape(gert::InferShapeContext* context)
 {
     auto attrs = context->GetAttrs();
-    int64_t maxSeqLen = *(attrs->GetInt(ATTR_ENUM_MAX_SEQ_LEN));
-    int64_t hiddenSize = *(attrs->GetInt(ATTR_ENUM_HIDDEN_SIZE));
-    int64_t topk = *(attrs->GetInt(ATTR_ENUM_TOPK));
-    int64_t moeRankNum = *(attrs->GetInt(ATTR_ENUM_MOE_RANK_NUM));
-    int64_t routeExpertNumPerMoe = *(attrs->GetInt(ATTR_ENUM_ROUTE_EXPERT_NUM_PER_MOE));
-    int64_t tpSize = *(attrs->GetInt(ATTR_ENUM_TP_SIZE));
-    int64_t dynamicQuant = *(attrs->GetInt(ATTR_ENUM_DYNAMIC_QUANT));
-
-    // max token count a routing expert can receive
-    float maxSeqLenFactor = optiling::GetBatchSizeFactor();
-    OPS_ERR_IF(!(maxSeqLenFactor > 0.0f && maxSeqLenFactor <= 1.0f),
-        OPS_LOG_E(context->GetNodeName(), "maxSeqLenFactor is invalid, only support (0, 1], but got maxSeqLenFactor=%f.",
-            maxSeqLenFactor), return ge::GRAPH_FAILED);
-    int64_t maxTokenNum = (int64_t)(LIMIT_MAX_SEQ_LEN_MAX * maxSeqLenFactor);
-
-    gert::Shape *expandXOutShape = context->GetOutputShape(OUTPUT_EXPAND_X);
-    expandXOutShape->SetDimNum(2);
-    expandXOutShape->SetDim(0, maxTokenNum);
-    expandXOutShape->SetDim(1, hiddenSize);
-
-    // scales for tokens received by routing experts
-    gert::Shape *dynamicScalesOutShape = context->GetOutputShape(OUTPUT_DYNAMIC_SCALES);
-    dynamicScalesOutShape->SetDimNum(1);
-    if (dynamicQuant != 0) {
-        dynamicScalesOutShape->SetDim(0, maxTokenNum);
-    } else {
-        dynamicScalesOutShape->SetDim(0, 1);
+    int64_t maxPaddedTokens = kDefaultMaxPaddedTokens;
+    int64_t numHidden = kDefaultNumHidden;
+    int64_t numSFPacks = 0;
+    if (attrs != nullptr) {
+        const int64_t* padded = attrs->GetInt(7U);
+        const int64_t* hidden = attrs->GetInt(16U);
+        const int64_t* packs = attrs->GetInt(17U);
+        if (padded != nullptr && *padded > 0) {
+            maxPaddedTokens = *padded;
+        }
+        if (hidden != nullptr && *hidden > 0) {
+            numHidden = *hidden;
+        }
+        if (packs != nullptr && *packs > 0) {
+            numSFPacks = *packs;
+        }
     }
 
-    int64_t batchInfoNum = INFO_NUM + tpSize + routeExpertNumPerMoe * tpSize;
-    gert::Shape *batchInfoOutShape = context->GetOutputShape(OUTPUT_BATCH_INFO);
-    batchInfoOutShape->SetDimNum(1);
-    batchInfoOutShape->SetDim(0, batchInfoNum);
+    gert::Shape* xShape = context->GetOutputShape(kOutputRecvX);
+    xShape->SetDimNum(kOutputRank);
+    xShape->SetDim(0, maxPaddedTokens);
+    xShape->SetDim(1, numHidden);
 
-    gert::Shape *epRecvCountRoutedOutShape = context->GetOutputShape(OUTPUT_EP_RECV_COUNT_ROUTED);
-    epRecvCountRoutedOutShape->SetDimNum(1);
-    epRecvCountRoutedOutShape->SetDim(0, routeExpertNumPerMoe);
+    gert::Shape* sfShape = context->GetOutputShape(kOutputRecvSf);
+    sfShape->SetDimNum(kOutputRank);
+    sfShape->SetDim(0, maxPaddedTokens);
+    sfShape->SetDim(1, numSFPacks);
 
-    return ge::GRAPH_SUCCESS;
+    gert::Shape* metadataShape = context->GetOutputShape(kOutputSrcMetadata);
+    metadataShape->SetDimNum(kOutputRank);
+    metadataShape->SetDim(0, maxPaddedTokens);
+    metadataShape->SetDim(1, kMetadataWords);
+    return GRAPH_SUCCESS;
 }
 
-static ge::graphStatus InferDataType(gert::InferDataTypeContext *context)
+static ge::graphStatus InferDataType(gert::InferDataTypeContext* context)
 {
-    auto attrs = context->GetAttrs();
-    int64_t dynamicQuant = *(attrs->GetInt(ATTR_ENUM_DYNAMIC_QUANT));
-
-    auto xDtype = context->GetInputDesc(0)->GetDataType();
-
-    if (dynamicQuant != 0) {
-        context->SetOutputDataType(OUTPUT_EXPAND_X, ge::DT_INT8);
-    } else {
-        context->SetOutputDataType(OUTPUT_EXPAND_X, xDtype);
-    }
-
-    context->SetOutputDataType(OUTPUT_DYNAMIC_SCALES, ge::DT_FLOAT);
-    context->SetOutputDataType(OUTPUT_BATCH_INFO, ge::DT_INT64);
-    context->SetOutputDataType(OUTPUT_EP_RECV_COUNT_ROUTED, ge::DT_INT64);
-
-    return ge::GRAPH_SUCCESS;
+    context->SetOutputDataType(kOutputRecvX, ge::DT_BF16);
+    context->SetOutputDataType(kOutputRecvSf, ge::DT_INT16);
+    context->SetOutputDataType(kOutputSrcMetadata, ge::DT_INT32);
+    return GRAPH_SUCCESS;
 }
-}
+}  // namespace ge
 
 namespace ops {
 class AfdAsyncDispatchRecv : public OpDef {
 public:
     explicit AfdAsyncDispatchRecv(const char* name) : OpDef(name)
     {
-        this->Input("x")
-            .ParamType(REQUIRED)
-            .DataType({ge::DT_BF16, ge::DT_BF16, ge::DT_FLOAT16, ge::DT_FLOAT16})
-            .Format({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .UnknownShapeFormat({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .AutoContiguous();
-        this->Input("commArgs")
-            .ParamType(REQUIRED)
-            .DataType({ge::DT_FLOAT16, ge::DT_FLOAT16, ge::DT_FLOAT16, ge::DT_FLOAT16})
-            .Format({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .UnknownShapeFormat({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND});
+        // Inbound payload plus the AFD control plane. control_buffer is
+        // mutated in place, mirroring the production AFD contract.
+        RequiredAfdNdTensor(this->Input("payload"), ge::DT_UINT8);
+        RequiredAfdNdTensor(this->Input("context"), ge::DT_UINT8);
+        RequiredAfdNdTensor(this->Input("active"), ge::DT_UINT8);
+        RequiredAfdNdTensor(this->Input("execution_state"), ge::DT_UINT8);
+        RequiredAfdNdTensor(this->Input("workspace"), ge::DT_UINT8);
+        RequiredAfdNdTensor(this->Input("control_buffer"), ge::DT_UINT8);
 
-        this->Output("expandX")
-            .ParamType(REQUIRED)
-            .DataType({ge::DT_BF16, ge::DT_INT8, ge::DT_FLOAT16, ge::DT_INT8})
-            .Format({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .UnknownShapeFormat({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND});
-        this->Output("dynamicScales")
-            .ParamType(REQUIRED)
-            .DataType({ge::DT_FLOAT, ge::DT_FLOAT, ge::DT_FLOAT, ge::DT_FLOAT})
-            .Format({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .UnknownShapeFormat({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND});
-        this->Output("batchInfo")
-            .ParamType(REQUIRED)
-            .DataType({ge::DT_INT64, ge::DT_INT64, ge::DT_INT64, ge::DT_INT64})
-            .Format({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .UnknownShapeFormat({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND});
-        this->Output("epRecvCountRouted")
-            .ParamType(REQUIRED)
-            .DataType({ge::DT_INT64, ge::DT_INT64, ge::DT_INT64, ge::DT_INT64})
-            .Format({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND})
-            .UnknownShapeFormat({ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND, ge::FORMAT_ND});
+        RequiredAfdNdTensor(this->Output("recv_x"), ge::DT_BF16);
+        RequiredAfdNdTensor(this->Output("recv_sf"), ge::DT_INT16);
+        RequiredAfdNdTensor(this->Output("recv_src_metadata"), ge::DT_INT32);
 
-        this->Attr("magic").Int();
-        this->Attr("maxSeqLen").Int();
-        this->Attr("hiddenSize").Int();
-        this->Attr("topk").Int();
-        this->Attr("moeRankNum").Int();
-        this->Attr("attnRankNum").Int();
-        this->Attr("routeExpertNumPerMoe").Int();
-        this->Attr("moeRankId").Int();
-        this->Attr("worldSize").Int();
-        this->Attr("tpSize").Int();
-        this->Attr("dynamicQuant").Int();
-        this->Attr("hccl_group_name").String();
-
-        this->AICore().AddConfig("ascend950");
-        this->MC2().HcclGroup({"hccl_group_name"});
-
-        // support graph
+        DefineAttributes();
         this->SetInferShape(ge::InferShape).SetInferDataType(ge::InferDataType);
 
+        OpAICoreConfig aicoreConfig;
+        aicoreConfig.DynamicCompileStaticFlag(true)
+            .DynamicFormatFlag(true)
+            .DynamicRankSupportFlag(true)
+            .DynamicShapeSupportFlag(true)
+            .NeedCheckSupportFlag(false)
+            .PrecisionReduceFlag(true)
+            .ExtendCfgInfo("aclnnSupport.value", "support_aclnn")
+            .ExtendCfgInfo("jitCompile.flag", "static_true")
+            .ExtendCfgInfo("multiKernelSupportDynamicGraph.value", "multi_kernel");
+
         this->AICore().SetTiling(optiling::TilingFunc);
+        this->AICore().AddConfig("ascend950", aicoreConfig);
+    }
+
+private:
+    void DefineAttributes()
+    {
+        this->Attr("group_ep").String();
+        this->Attr("num_ranks").Int();
+        this->Attr("num_experts").Int();
+        this->Attr("num_topk").Int();
+        this->Attr("num_source_lanes").Int();
+        this->Attr("num_layers").Int();
+        this->Attr("max_expanded_tokens").Int();
+        this->Attr("max_padded_tokens").Int();
+        this->Attr("expert_alignment").Int();
+        this->Attr("num_tokens_per_stage").Int();
+        this->Attr("rank_idx").Int();
+        this->Attr("recv_sf_token_stride").Int();
+        this->Attr("recv_sf_hidden_stride").Int();
+        this->Attr("payload_bytes").Int();
+        this->Attr("control_bytes").Int();
+        this->Attr("context_bytes").Int();
+        this->Attr("num_hidden").Int();
+        this->Attr("num_sf_packs").Int();
+        this->Attr("num_vec_cores").Int();
     }
 };
-
 OP_ADD(AfdAsyncDispatchRecv);
-
-} // namespace ops
+}  // namespace ops

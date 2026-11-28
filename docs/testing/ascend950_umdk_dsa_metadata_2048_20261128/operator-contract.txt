@@ -1,0 +1,16 @@
+sparse_flash_mla_metadata output length, measured on device
+(adapter kwargs: layout_kv=PA_BBND, head_dim=512, batch_size=1, 4 query rows)
+
+num_heads_q=1 -> (2048,)
+num_heads_q=2 -> (2048,)
+num_heads_q=4 -> (2048,)
+num_heads_q=8 -> (2048,)
+
+dsa_v1.py:95 declares DSA_METADATA_BUFFER_SIZE = 1024
+
+Slice-assignment semantics against the buffer:
+  buf[:2048] = src_2048  -> OK
+  buf[:2048] = src_1024  -> RuntimeError
+
+qli producer note: npu_quant_lightning_indexer_v2_metadata is absent from the
+installed extension, so its output length could not be measured.

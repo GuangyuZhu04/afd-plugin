@@ -94,9 +94,8 @@ def _force_spawn_multiprocessing_if_requested() -> None:
 
 
 # vLLM model workers import the configured worker class directly in spawned
-# child interpreters; they do not invoke the general-plugin entry point below.
-# Apply the opt-in setting at package import time so it is also in effect before
-# Ascend TE Fusion initializes its compilation workers.
+# child interpreters. Set the requested process context before Ascend TE
+# Fusion initializes its compilation workers.
 _force_spawn_multiprocessing_if_requested()
 
 _DEEPSEEK_MODEL_REGISTRATIONS = {
@@ -113,9 +112,7 @@ _DEEPSEEK_MODEL_REGISTRATIONS = {
         "afd_plugin.model_executor.models.deepseek_v2:AFDDeepseekV3ForCausalLM"
     ),
     "DeepseekV4ForCausalLM": (
-        "afd_plugin.model_executor.models.npu.deepseek_v4:AFDDeepseekV4ForCausalLM"
-        if importlib.util.find_spec("torch_npu") is not None
-        else "afd_plugin.model_executor.models.deepseek_v4:AFDDeepseekV4ForCausalLM"
+        "afd_plugin.model_executor.models.deepseek_v4:AFDDeepseekV4ForCausalLM"
     ),
     "DSparkDraftModel": (
         "afd_plugin.model_executor.models.npu.deepseek_v4_dspark:"
@@ -231,6 +228,11 @@ def register_afd() -> None:
     from vllm.model_executor.models import ModelRegistry
 
     for model_arch, model_cls in _MODEL_REGISTRATIONS.items():
+        if device_type == "npu" and model_arch == "DeepseekV4ForCausalLM":
+            model_cls = (
+                "afd_plugin.model_executor.models.npu.deepseek_v4:"
+                "AFDDeepseekV4ForCausalLM"
+            )
         ModelRegistry.register_model(f"AFD{model_arch}", model_cls)
 
     _registered = True

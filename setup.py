@@ -140,5 +140,11 @@ if _env_enabled(os.environ.get("AFD_BUILD_GPU_ASYNC_OPS", "0")):
 
 setup(
     ext_modules=ext_modules,
+    py_modules=(
+        ["umdk_cam_op_lib"]
+        if any(ext.name == "afd_plugin._C_ascend" for ext in ext_modules)
+        and os.environ.get("SOC_VERSION", "").lower().startswith(("950", "ascend950"))
+        else []
+    ),
     cmdclass={"build_ext": BuildNativeOps},
 )

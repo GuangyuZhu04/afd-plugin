@@ -260,7 +260,7 @@ def test_repeated_interleaved_layer_ids(operators):
 
 
 def test_runner_preserves_raw_context_and_chunk_capacity(monkeypatch):
-    _, _, runtime = load_async_modules(monkeypatch)
+    _, cam, runtime = load_async_modules(monkeypatch)
     payloads = [
         SimpleNamespace(
             hidden_states=torch.empty(8, 32),
@@ -290,6 +290,7 @@ def test_runner_preserves_raw_context_and_chunk_capacity(monkeypatch):
     runner.__dict__.update(
         model=object(),
         connector=connector,
+        session=cam.PushCAMSession(torch.bfloat16),
         _mega_executor=None,
         _layered_executor=compute,
         layer_ids=(2, 5),

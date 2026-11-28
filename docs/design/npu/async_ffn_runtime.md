@@ -9,6 +9,13 @@ and receive-safe resource release independently of the synchronous CAMP2P
 
 ## Selection and startup
 
+On A5/950, `dynamicQuant=0` selects BF16 UMDK communication and the native
+DeepSeek-V4-Flash W4A8MXFP MLP. A compute slice can span layers. The executor
+selects weights for each layer and passes the aligned row counts for its local
+experts. The return is written to the owner's `combine_x` at the original
+physical offsets. An empty slice still completes ComputeReady and CombineSend.
+[Eight-NPU case](../../../tests/e2e/README.md#dsv4-flash-umdk-async-cam-on-ascend-950-local-8-npus).
+
 The target is the [pinned Ascend A3 stack](../../installation.md#ascend-npu-installation)
 with vLLM 0.34, using
 homogeneous DeepSeek-V4 W4A8 or W8A8 layers, dynamicQuant=1, static expert placement,

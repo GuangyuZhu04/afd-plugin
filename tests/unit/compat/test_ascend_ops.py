@@ -43,10 +43,16 @@ def test_ascend_ops_paths_are_plugin_owned():
         / "_cann_ops_custom/vendors/afd-plugin"
     )
     assert cust_opapi_path.parent == vendor_path / "op_api" / "lib"
-    assert cust_opapi_path.name in {"libcust_opapi.so", "libafd_cust_opapi.so"}
+    assert cust_opapi_path.name in {
+        "libcust_opapi.so",
+        "libafd_cust_opapi.so",
+        "libafd_umdk_opapi.so",
+    }
 
 
-@pytest.mark.parametrize("private_a5_library", [False, True])
+@pytest.mark.parametrize(
+    "private_a5_library", [None, "libafd_cust_opapi.so", "libafd_umdk_opapi.so"]
+)
 def test_ascend_ops_loader_sets_explicit_cust_opapi_path(
     tmp_path, monkeypatch, private_a5_library
 ):
@@ -58,7 +64,7 @@ def test_ascend_ops_loader_sets_explicit_cust_opapi_path(
     cust_opapi_path = op_api_lib / "libcust_opapi.so"
     cust_opapi_path.touch()
     if private_a5_library:
-        cust_opapi_path = op_api_lib / "libafd_cust_opapi.so"
+        cust_opapi_path = op_api_lib / private_a5_library
         cust_opapi_path.touch()
     monkeypatch.setattr(ops, "get_afd_cann_vendor_path", lambda: vendor_path)
     monkeypatch.setenv("ASCEND_CUSTOM_OPP_PATH", "/native/vendor")

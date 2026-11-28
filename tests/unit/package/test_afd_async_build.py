@@ -9,6 +9,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import runpy
 import subprocess
 from pathlib import Path
@@ -74,6 +76,51 @@ def test_afd_async_arch35_selector_is_specific_to_950():
     assert _run_select_ops("--soc", "ascend910_93", *args).returncode != 0
 
 
+def test_950_native_sources_match_pinned_umdk_git_blobs_and_plugin_fixes():
+    """Pin the source and result of each local fix as well as all other files."""
+    reference = json.loads(
+        (Path(__file__).parent / "fixtures/umdk_afd_sources.json").read_text("utf-8")
+    )
+    root = Path(__file__).resolve().parents[3] / "csrc/npu"
+    patterns = [
+        *(f"ascend_kernels/{op}_arch35/**/*" for op in AFD_ASYNC_OPERATORS),
+        "ascend_kernels/utils/op_kernel/afd_async/**/*",
+        "ascend_kernels/utils/op_kernel/afd_async_rt_common.h",
+        "ascend_kernels/utils/op_host/afd_async_opdef.h",
+        "ascend_kernels/utils/op_host/error_log.h",
+        "pybind/umdk/afd_async_*.cpp",
+    ]
+    blobs = {}
+    for pattern in patterns:
+        for path in root.glob(pattern):
+            if path.suffix.lower() not in {
+                ".c",
+                ".cc",
+                ".cpp",
+                ".cxx",
+                ".h",
+                ".hpp",
+                ".inc",
+                ".inl",
+                ".s",
+            }:
+                continue
+            # Git stores LF in the upstream text blobs, also on CRLF checkouts.
+            content = path.read_bytes().replace(b"\r\n", b"\n")
+            header = f"blob {len(content)}\0".encode("ascii")
+            name = path.relative_to(root).as_posix().replace("pybind/umdk/", "pybind/")
+            blobs[name] = hashlib.sha1(
+                header + content, usedforsecurity=False
+            ).hexdigest()
+    expected = reference["blobs"].copy()
+    for name, fix in reference["plugin_fixes"].items():
+        assert expected[name] == fix["upstream_blob"]
+        expected[name] = fix["plugin_blob"]
+    assert blobs == expected, (
+        f"Sources differ from the recorded UMDK {reference['commit']} port"
+    )
+
+
 def test_afd_async_selection_preserves_registry_order_with_legacy_operators():
     requested = [AFD_ASYNC_OPERATORS[-1], "e2a", AFD_ASYNC_OPERATORS[0]]
     result = _run_select_ops(
@@ -127,12 +174,7 @@ def test_selected_afd_async_sources_do_not_overwrite_other_operators_when_staged
         staged: dict[str, Path] = {}
         for operator in ("utils", *result.stdout.split()):
             part_dir = root / operator / part
-            if (
-                part == "op_api"
-                and operator.endswith("_arch35")
-                and not part_dir.is_dir()
-            ):
-                part_dir = root / operator.removesuffix("_arch35") / part
+            if part == "op_api" and operator.endswith("_arch35"):
                 assert part_dir.is_dir(), part_dir
             for path in part_dir.rglob("*"):
                 if not path.is_file():

@@ -6,35 +6,14 @@ Attention-to-Expert and Expert-to-Attention transfers:
 - `torch.ops.afd_ascend.a2e`
 - `torch.ops.afd_ascend.e2a`
 
-The 910C and 950 builds also contain four experimental routed-only CAM operators:
-`afd_async_dispatch_send`, `afd_async_dispatch_recv`, `afd_async_combine_send`,
-and `afd_async_combine_recv`, under the same `torch.ops.afd_ascend` namespace.
-Their compact protocol is documented in
-[the routed-only operator guide](../../docs/design/npu/cam_async_routed_ops.md).
+The 910C build registers four compact routed operators under `torch.ops.afd_ascend`.
+The 950 build bundles the registered-buffer operators from UMDK at `fee97356`
+under `torch.ops.umdk_cam_op_lib` with the `_arch35` suffix, alongside A2E/E2A. Kernel names match
+across targets. The ACLNN workspace-query prototypes and wire layouts are
+target-specific. [910C compact protocol](../../docs/design/npu/cam_async_routed_ops.md) ·
+[950 UMDK integration](../../docs/design/npu/ascend950_umdk_async.md).
 
-The 950 implementations use the HCCL MC2 input windows and MTE transfers. They
-share the compact `comm_args` / `group_name` schema, int32 expert IDs and four
-dispatch-receive outputs with the 910C implementation. Callers select the chip
-at build time and use the same unsuffixed torch, ACLNN and kernel names.
-
-The 950 sources come from the default MTE line in
-[GuangyuZhu04/afd-plugin at 4d134dc](https://github.com/GuangyuZhu04/afd-plugin/tree/4d134dc955c58727c08511c6043ee01279eb6279/csrc/npu/ascend_kernels),
-an ancestor of the [0.32 donor](https://github.com/GuangyuZhu04/afd-plugin/commit/d43535c92fdfe26334c0abb54bfa6d33e9616e34).
-Each 950 source directory registers its own SoC and reuses the common
-compact ACLNN interface. The 2026-11-23 creation and history entries in the
-new native files record their addition to this Ascend 950 port. The packaged
-LICENSE includes the 2025 Huawei notice for the original operator sources.
-The four vector-only kernel entries carry the donor's
-[AIV-only task declaration](https://github.com/GuangyuZhu04/afd-plugin/commit/cb303bbbd18b055919f86b194f2b754fa4e794e5).
-The plugin builds the compact transport without a CCU runtime or custom
-session class. The compact kernels and binding retain the Huawei MIT notice
-from the original import. The source distribution, wheel and native vendor
-install carry the repository license and third-party notice.
-[Original import](https://github.com/vllm-project/afd-plugin/pull/361)
-· [LICENSE](../../LICENSE)
-
-The native files added for the A5 port use the same MIT, Huawei 2026 and
-AFD plugin contributor notices. This includes the six helpers below.
+The following headers document the provenance of the older compact MTE helpers.
 Their filenames and include paths use the `afd_async_` prefix in this
 repository. The table links each original file at the commit that added it.
 
@@ -66,8 +45,8 @@ ascend_kernels/
   cmake_files/             # cmake/, op_host/, op_kernel/ build fragments
   a2e/{op_api,op_host,op_kernel}
   e2a/{op_api,op_host,op_kernel}
-  afd_async_*/{op_api,op_host,op_kernel}  # common ACLNN interfaces and 910C implementations
-  afd_async_*_arch35/{op_host,op_kernel}  # 950 compact MTE implementations
+  afd_async_*/{op_api,op_host,op_kernel}  # 910C compact ACLNN and kernels
+  afd_async_*_arch35/{op_host,op_kernel}  # 950 UMDK implementations with their own op_api
   grouped_matmul_swiglu_quant_v2_layered/{op_api,op_host,op_kernel}
   grouped_matmul_layered/{op_api,op_host,op_kernel}
   utils/op_host/           # CAM host logging/check/tiling-base headers
@@ -140,15 +119,15 @@ Common environment variables:
 - `TORCH_NPU_PATH`: optional path to the `torch_npu` package.
 - `SOC_VERSION`: `910c`, `ascend910_93*`, and `ascend910_9392` build
   A2E/E2A plus the four routed-only CAM operators for Ascend 910C.
-  `950`, `ascend950*`, and `Ascend950*` build A2E/E2A and the four compact
-  MTE operators for Atlas A5.
+  `950`, `ascend950*`, and `Ascend950*` build A2E/E2A and the four UMDK
+  registered-buffer operators for Atlas A5.
 - `MAX_JOBS`: number of parallel CMake build jobs for the PyTorch extension.
 - `AFD_BUILD_JOBS`: number of parallel CMake build jobs for the ACLNN operator
   project. Defaults to `8`.
 - `CMAKE_BUILD_TYPE`: ACLNN operator build type, `Release` (default) or `Debug`.
 - `AFD_SKIP_ACLNN_BUILD=1`: skip rebuilding the ACLNN operator package and
   build the PyTorch extension against an existing custom-op installation.
-  At async CAM startup, each worker checks the four compact operator schemas
+  At async CAM startup, each worker checks the four target-specific operator schemas
   and resolves their eight ACLNN execution and workspace-query symbols before
   joining the CAM communication group. If the installed library is stale,
   the error identifies its path and missing symbols.
@@ -166,8 +145,7 @@ generated `CMakePresets.json` through `scripts/set_conf.py`, then emits a
 deterministically named run package at `csrc/npu/output/AFD_<soc>.run`.
 
 For 950, `select_ops.py` maps each public `afd_async_*` selection to its
-`afd_async_*_arch35` source directory. The staging step uses the common
-`afd_async_*/op_api/` directory when the variant shares its ACLNN interface.
+`afd_async_*_arch35` source directory. Each 950 variant supplies its own `op_api/` directory.
 Staging copies each selected operator's `op_host/`, `op_kernel/`, and `op_api/`
 trees recursively, so operators that keep sources in nested directories (for
 example `grouped_matmul_swiglu_quant_v2_layered`, whose tiling implementation
@@ -199,7 +177,7 @@ AFD custom ops must coexist with vLLM-Ascend in the same process:
 - The CANN custom-op package is installed under the AFD vendor path,
   `afd_plugin/_cann_ops_custom/vendors/afd-plugin/...`.
 - The loader opens the package-local API through `AFD_CUST_OPAPI_LIB_PATH`.
-  The 950 wheel installs it as `libafd_cust_opapi.so` and appends the AFD vendor
+  The 950 wheel installs it as `libafd_umdk_opapi.so` and appends the AFD vendor
   after existing vendors in `ASCEND_CUSTOM_OPP_PATH` during plugin registration.
   Native Ascend operators retain their own API lookup, including the
   DeepSeek-V4 sparse-attention metadata implementation. The 910C package

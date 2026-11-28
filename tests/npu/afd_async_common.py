@@ -647,6 +647,7 @@ class NativeHarness:
         import torch_npu
 
         from afd_plugin.compat.npu import ensure_afd_ascend_ops_loaded
+        from afd_plugin.compat.npu.ops import uses_umdk_async
 
         self.torch = torch
         self.dist = dist
@@ -658,6 +659,11 @@ class NativeHarness:
         self.device = torch.device("npu", self.local_rank)
         self.dtype = torch.float16 if config.dtype == "fp16" else torch.bfloat16
         ensure_afd_ascend_ops_loaded()
+        if uses_umdk_async():
+            raise RuntimeError(
+                "This harness exercises compact CAM. For registered-buffer Ascend 950 "
+                "run tests/npu/umdk_roundtrip.py."
+            )
         self.operations = {
             "dispatch_send": torch.ops.afd_ascend.afd_async_dispatch_send,
             "dispatch_recv": torch.ops.afd_ascend.afd_async_dispatch_recv,

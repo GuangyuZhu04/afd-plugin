@@ -51,8 +51,7 @@ pybind11_add_module(afd_plugin_ascend_C
   "${CMAKE_CURRENT_LIST_DIR}/pytorch_extension/NPUBridge.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/pytorch_extension/NPUStorageImpl.cpp")
 
-# Keep registration aligned with the run package selected by setup.py. The
-# compact CAM operators share a PyTorch/ACLNN ABI across the two SoCs.
+# Keep the extension and the run package on the same transport ABI.
 if(NOT DEFINED AFD_SOC_VERSION OR AFD_SOC_VERSION STREQUAL "")
   set(AFD_SOC_VERSION "$ENV{SOC_VERSION}")
 endif()
@@ -66,7 +65,12 @@ if(AFD_SOC_VERSION STREQUAL "910c" OR AFD_SOC_VERSION MATCHES "^ascend910_93")
     "${CMAKE_CURRENT_LIST_DIR}/torch_binding_mega_moe_comm.cpp")
 elseif(AFD_SOC_VERSION STREQUAL "950" OR AFD_SOC_VERSION MATCHES "^[Aa]scend950")
   target_sources(afd_plugin_ascend_C PRIVATE
-    "${CMAKE_CURRENT_LIST_DIR}/afd_async_bindings.cpp")
+    umdk/registrations.cpp
+    umdk/afd_async_dispatch_send_arch35.cpp
+    umdk/afd_async_dispatch_recv_arch35.cpp
+    umdk/afd_async_combine_send_arch35.cpp
+    umdk/afd_async_combine_recv_arch35.cpp)
+  target_compile_definitions(afd_plugin_ascend_C PRIVATE AFD_USE_UMDK_ASYNC=1)
 else()
   message(FATAL_ERROR "Unsupported AFD_SOC_VERSION: ${AFD_SOC_VERSION}")
 endif()

@@ -220,6 +220,12 @@ class Case:
     worker_extension: str | None = None
     worker_environment: tuple[tuple[str, str], ...] = ()
 
+    def prepare_worker_environment(
+        self, environment: CaseEnvironment
+    ) -> dict[str, str]:
+        """Resolve any runtime-only assets before launching service processes."""
+        return dict(self.worker_environment)
+
     def __post_init__(self) -> None:
         if not self.id or not self.phases:
             raise ValueError("Case requires an ID and at least one phase")

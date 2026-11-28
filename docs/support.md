@@ -30,6 +30,12 @@ qualify every model/topology combination on the current target.
 | Ascend V2 + `CAMP2pAFDConnector` | Eager, `FULL`, or `FULL_DECODE_ONLY` native V2 ACL Graph | Eager or graph native DBO with two ubatches and Attention DP > 1; plain MLA graph DBO requires `FULL_DECODE_ONLY` | `compute_gate_on_attention` may be `false`, or `true` for DeepSeek-V4 at TP=1 (DBO needs Attention DP > 1 with two ubatches); `connector_extra_config.quant_mode` may be `0`, or `4` for the MXFP8 transport (equal Attention/FFN rank counts, at least three AIV cores, `a2e` build that takes `x_scale` and `quant_mode`); PP/CP, elastic EP and EPLB rejected; model-specific SP policy; role ranks equal DP x TP | The [0.34 A3 upgrade record](https://github.com/vllm-project/afd-plugin/pull/651) covers V2-Lite Graph + DBO in 2A1F and 2A2F. Earlier Lite evidence is linked below. `quant_mode=4` has no device run in this repository yet. |
 | Ascend V2 + `CAMAsyncAFDConnector` | Eager or native decode graph on Attention; layered FFN eager or FULL | Two native DBO microbatches on Attention, including DP1 and with FFN FULL; FFN stays outside the native DBO schedule | Experimental DeepSeek-V4 W4A8/W8A8 on A3/910C; `async_dp=true`, `compute_gate_on_attention=true`, and `dynamicQuant=1`; PP/CP unsupported; plugin-owned async CAM ops required | The [0.34 A3 upgrade record](https://github.com/vllm-project/afd-plugin/pull/651) covers DeepSeek-V4-Flash W4A8 cross-pod and interleaved Async CAM layouts and a DSpark PD Graph run. |
 
+The Ascend 950 `CAMAsyncAFDConnector` case targets DeepSeek-V4-Flash MXFP4
+with Attention DP2/TP2, FFN EP4/TP1, BF16 UMDK transport and eager MRV2 on
+both roles. Host and Meta checks cover the integration. Service readiness,
+answers and cleanup require the eight-device run.
+[MRV2 case](../tests/e2e/README.md#dsv4-flash-umdk-async-cam-on-ascend-950-local-8-npus)
+
 Historical Ascend results include the 0.30 V2-Lite 2A2F FULL 300-question
 comparison and 2A1F functional checks. The
 [0.32 validation record](https://github.com/vllm-project/afd-plugin/pull/507)

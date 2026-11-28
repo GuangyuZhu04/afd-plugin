@@ -12,9 +12,9 @@ The V2 DP2 cases replace the duplicate GPU `afd-eager-2a2f`,
 baseline and AFD eager, graph, and graph+DBO on 2A1F. Qwen3.6 MoE retains
 three: baseline and AFD eager and graph on 2A1F. GDN DBO is unsupported.
 
-The single-deployment inventory contains 52 definitions: 42 CUDA cases
+The single-deployment inventory contains 54 definitions: 42 CUDA cases
 (18 DeepSeek-V2-Lite, 13 Qwen3 MoE, three Qwen3.6 MoE and eight DSV4
-Flash) and ten NPU cases (seven DeepSeek-V2-Lite and three DSV4 Flash).
+Flash) and twelve NPU cases (seven DeepSeek-V2-Lite and five DSV4 Flash).
 The CUDA counts include the DeepEP M2N and standalone FFN service entries.
 CI selects 16 unique node IDs across ready/merge and weekly gates. Definitions,
 collected nodes and device acceptance results are different counts.
@@ -63,7 +63,7 @@ adding a model or case.
 
 ## Case migration and maintenance
 
-All 48 single-deployment entries now use model-local Python Cases through
+Single-deployment entries use model-local Python Cases through
 their existing pytest node IDs. This changes the harness, not their accepted
 workloads or coverage. It does not by itself establish device qualification:
 report actual CUDA/NPU results, host integration, skips and unexecuted cases
@@ -581,6 +581,43 @@ Defaults: API ports 19280/19281, AFD rendezvous port 6455, startup timeout
 `AFD_NPU_DSV4_E2E_AFD_PORT`, and `AFD_NPU_E2E_STARTUP_TIMEOUT`.
 `AFD_NPU_E2E_VLLM_BIN` selects the executable. Build the plugin-owned 910C
 operators before running. Model and all sixteen device IDs must be supplied explicitly; missing setup fails rather than skips.
+
+## DSV4 Flash UMDK async CAM on Ascend 950 (local, 8 NPUs)
+
+`afd-dsv4-flash-async-cam-dp2tp2-ep4` uses four Attention ranks (DP2/TP2)
+and four FFN ranks (EP4/TP1). Both roles use eager ModelRunnerV2. Attention
+computes routing and shared experts, sends BF16 rows and applies top-k
+weights during CombineRecv. FFN runs native W4A8MXFP on the layer/expert
+groups in each UMDK slice, deriving MX block scales from the BF16 activations. The
+transport and executor are shipped in the same plugin wheel.
+Use vLLM `0.34.0 / 62d4bc3c` and vLLM-Ascend `7dcdb690`
+on both roles. The worker checks the versions and source provenance before HCCL
+setup. Preserve the run directory on a host volume for the CANN logs, packaged
+kernel objects and exact-answer evaluation.
+[Build, preflight and board instructions](../../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_umdk.md)
+
+Provide eight device IDs, the local FP4 checkpoint and the routable interface
+of the assigned node. The test starts both roles, issues ten overlapping
+requests, checks the exact sums 19–28 and `finish_reason=stop`, and requires
+strict cleanup. Run it from the matching checkout with the extension installed
+in place, or from a tests-only harness alongside an installed wheel.
+
+```bash
+export AFD_E2E_BACKEND=npu AFD_E2E_DEVICES=0,1,2,3,4,5,6,7
+export AFD_NPU_E2E_MODEL=/path/to/DeepSeek-V4-Flash
+export HCCL_IF_IP='<advertised-communication-ip>'
+export HCCL_SOCKET_IFNAME='<communication-interface>'
+python -m pytest -q -s \
+  'tests/e2e/models/deepseek_v4_flash/test_async_cam_npu.py::test_deepseek_v4_flash_async_cam[afd-dsv4-flash-async-cam-dp2tp2-ep4]'
+```
+
+The run records `run.json`, `evaluation/completions.json` and both service
+logs. The evaluation also checks UMDK registration on Attention ranks 0–3
+and FFN ranks 4–7, and MXFP4 executor selection on every FFN rank.
+`AFD_CAM_OP_IO_LOG=1` adds UMDK transfer shapes and slice diagnostics.
+The published runs for the compact ModelRunnerV1 transport used different
+binaries. The registered-buffer MRV2 case requires its own device result.
+[Historical source run](https://github.com/GuangyuZhu04/afd-plugin/issues/5)
 
 ## DSV4 Flash sync CAMP2P concurrent requests (local, 4 or 16 NPUs)
 

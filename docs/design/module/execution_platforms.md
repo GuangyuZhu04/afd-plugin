@@ -354,13 +354,11 @@ CMake extension, and packages `_cann_ops_custom`. Loading remains lazy:
 the connector initializes. The package can therefore be imported without the
 NPU extension, but the CAMP2P data path cannot run without it.
 
-`CAMAsyncAFDConnector` loads the same AFD extension and additionally requires
-all four `torch.ops.afd_ascend.afd_async_*` operators. Both 910C and 950
-use compact routed-only metadata. Attention owns shared experts and FFN owns
-routed experts. The 950 build selects the A5 MTE kernels at build time.
-See [the routed-only guide](../npu/cam_async_routed_ops.md) for metadata
-and window lifetime contracts. Device validation remains necessary for each
-target topology.
+On 910C, `CAMAsyncAFDConnector` uses the compact routed-only AFD dispatcher.
+On 950, the connector uses the four UMDK registered-buffer operators bundled
+in the plugin and a paired DeepEP transaction scheduler. Attention owns shared
+experts and FFN owns routed experts. [910C protocol](../npu/cam_async_routed_ops.md) ·
+[950 integration](../npu/ascend950_umdk_async.md).
 
 The routed-only operator host tiling reads `HCCL_BUFFSIZE` in MiB, sharing
 the HCCL runtime's environment setting. When a domain overrides allocation

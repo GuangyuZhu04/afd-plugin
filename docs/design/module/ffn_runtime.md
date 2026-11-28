@@ -16,6 +16,7 @@ primary_code_paths:
   - "afd_plugin/v1/worker/npu/ffn_worker.py"
 related_code_paths:
   - "afd_plugin/connectors/npu/async_cam_runtime/async_cam_layered.py"
+  - "afd_plugin/connectors/npu/async_cam_runtime/afd_async_mxfp.py"
   - "afd_plugin/connectors/npu/async_cam_runtime/async_cam_mega.py"
   - "afd_plugin/connectors/npu/async_cam_runtime/async_cam_startup.py"
   - "afd_plugin/connectors/npu/async_cam_runtime/async_cam_session.py"
@@ -32,6 +33,8 @@ validation_paths:
   - "tests/unit/ffn_faas/test_*.py"
   - "tests/gpu/test_ffn_faas_gpu.py"
   - "tests/unit/connectors/npu/async_cam_runtime/test_async_cam_layered.py"
+  - "tests/unit/connectors/npu/async_cam_runtime/test_umdk_layout.py"
+  - "tests/unit/connectors/npu/async_cam_runtime/test_afd_async_mxfp.py"
   - "tests/unit/v1/worker/test_async_ffn_runtime.py"
   - "tests/unit/v1/worker/test_async_ffn_graph.py"
   - "tests/npu/test_afd_async_layered_w8a8.py"
@@ -353,14 +356,13 @@ The Ascend worker checks `connector.control_plane`. When it is `None`, as for
 CAM async, the worker calls `execute_connector_driven_step(shutdown_requested)`
 instead of a control-plane receive. The runner asks the execution session once
 per step whether to keep serving, so Pull adds no extra Store round trip to the
-loop. For each layer, the runner:
-
-1. receives a capacity-sized payload and its original CAM metadata through
-   `connector.recv_attn_output()`;
-2. passes activations, dynamic scales, expert counts and the device layer ID
-   to `AsyncCAMLayeredExecutor`;
-3. returns the routed output and original context with
-   `connector.send_ffn_output()`.
+loop. On A3 the layered executor consumes compact dispatch metadata, the
+device layer ID, expert counts and dynamic scales. The original context
+goes back to CombineSend. On A5 the UMDK runner polls one slice at a time.
+It selects one native expert MLP per represented layer and supplies physical
+per-expert row counts. W4A8MXFP derives group-32 activation scales from BF16
+and writes the layer interval to registered `combine_x`. ComputeReady and
+CombineSend retire the slice, including zero-row slices.
 
 Async eager does not use the synchronous DP-metadata graph cache. Its FULL
 mode captures a complete original DR/FFN/CS transaction with device-side layer

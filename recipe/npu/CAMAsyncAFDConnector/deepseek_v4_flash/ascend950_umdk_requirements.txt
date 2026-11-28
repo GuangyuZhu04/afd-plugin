@@ -1,0 +1,4 @@
+# DeepSeek-V4-Flash UMDK MXFP4 deployment on Ascend 950.
+# Official afd-plugin 0.34 NPU pair. Use setup_ascend950.sh for A5 build flags.
+vllm @ git+https://github.com/vllm-project/vllm.git@62d4bc3c7e33b1b6c906e233e6af2d3506c482ca
+vllm-ascend @ git+https://github.com/vllm-project/vllm-ascend.git@7dcdb690caf879a17ab07382880d5773f5202e20

@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the AFD plugin project
+# Description: DeepSeek V4 AFD model wrapper for the Ascend native implementation.
+# Create: 2026-09-04
+# Note: The role-specific model wrappers split Attention-side routing from remote
+#       expert execution.
+# History: 2026-09-04 create
 """DeepSeek V4 AFD model wrapper for the Ascend native implementation.
 
 The Ascend DSV4 implementation is not a DeepSeek V2 layer with different
@@ -25,6 +30,8 @@ from vllm.model_executor.layers import fused_moe
 from vllm.model_executor.layers.linear import ReplicatedLinear
 from vllm.sequence import IntermediateTensors
 
+from afd_plugin.compat.npu.ops import uses_umdk_async
+from afd_plugin.compat.npu.umdk_mxfp_stack import load_umdk_attention_extension
 from afd_plugin.config import (
     AFD_ASYNC_CONNECTOR,
     CAMP2P_CONNECTOR,
@@ -291,6 +298,7 @@ class AFDDeepseekV4AttentionGateRemoteMoE(RemoteFFNProxy):
             context,
             topk_weights=dispatch_payload.topk_weights,
             topk_ids=dispatch_payload.topk_ids,
+            dispatch_layout=dispatch_payload.layout,
         )
         shared_output = (
             self.shared_experts(hidden_states)
@@ -668,6 +676,17 @@ class AFDDeepseekV4Model(native.DeepseekV4Model):
         self.compilation_config = vllm_config.compilation_config
         self.afd_config = afd_config
         self.hidden_size = config.hidden_size
+        if (
+            afd_config.is_attention_server
+            and afd_config.connector == AFD_ASYNC_CONNECTOR
+            and uses_umdk_async()
+            and int(afd_config.connector_extra_config.get("dynamicQuant", 0)) == 0
+        ):
+            # 0.34 configs can encode compression in layer_types. Ask the same
+            # utility as the native decoder before allocating model layers.
+            from vllm.transformers_utils.deepseek_v4_utils import get_compress_ratios
+
+            load_umdk_attention_extension(indexed=4 in get_compress_ratios(config))
         # ### PATCH END: AFD model metadata
         self.config = config
         self.device = native.current_platform.device_type
@@ -885,6 +904,15 @@ class AFDDeepseekV4ForCausalLM(native.AscendDeepseekV4ForCausalLM):
         self,
     ) -> "tuple[list[QuantizedExpertWeights], str]":
         return _extract_quantized_expert_weights(self.model.layers)
+
+    def get_mxfp_expert_layers(self) -> dict[int, native.DeepseekV4MoE]:
+        """Return the native expert MLPs loaded by this FFN rank."""
+        return {
+            layer.layer_idx: layer.mlp
+            for layer in self.model.layers
+            if isinstance(layer, AFDDeepseekV4DecoderLayer)
+            and isinstance(layer.mlp, native.DeepseekV4MoE)
+        }
 
     def compute_ffn_output(
         self,
