@@ -30,6 +30,8 @@ from vllm.model_executor.layers import fused_moe
 from vllm.model_executor.layers.linear import ReplicatedLinear
 from vllm.sequence import IntermediateTensors
 
+from afd_plugin.compat.npu.ops import uses_umdk_async
+from afd_plugin.compat.npu.umdk_mxfp_stack import load_umdk_attention_extension
 from afd_plugin.config import (
     AFD_ASYNC_CONNECTOR,
     CAMP2P_CONNECTOR,
@@ -665,6 +667,20 @@ class AFDDeepseekV4Model(native.DeepseekV4Model):
         self.compilation_config = vllm_config.compilation_config
         self.afd_config = afd_config
         self.hidden_size = config.hidden_size
+        if (
+            afd_config.is_attention_server
+            and afd_config.connector == AFD_ASYNC_CONNECTOR
+            and uses_umdk_async()
+            and int(afd_config.connector_extra_config.get("dynamicQuant", 0)) == 0
+        ):
+            # Native HC is called unconditionally even when A5 disables the
+            # optional fused RMSNorm path. Load the extension only in this worker.
+            load_umdk_attention_extension(indexed=4 in config.compress_ratios)
+            from afd_plugin.compat.patches.npu.umdk_flash_attention import (
+                install_umdk_sas_metadata_adapter,
+            )
+
+            install_umdk_sas_metadata_adapter()
         # ### PATCH END: AFD model metadata
         self.config = config
         self.device = native.current_platform.device_type

@@ -91,6 +91,14 @@ def _use_installed_patch(binding, symbol, marker_name, install):
     "target_module, owner, symbol, adapter_module, scope_name",
     [
         pytest.param(
+            "vllm_ascend.attention.dsa_v1",
+            "AscendDSAMetadataBuilder",
+            "_build_sas_metadata",
+            "npu.umdk_flash_attention",
+            None,
+            id="npu-umdk-flash-sas-metadata",
+        ),
+        pytest.param(
             ENGINE_CORE, "EngineCore", "__init__", "engine_core", None, id="engine-init"
         ),
         pytest.param(

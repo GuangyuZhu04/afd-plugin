@@ -2,6 +2,8 @@
 
 For the Ascend 950 W4A8MXFP checkpoint, use the
 [eight-device UMDK eager deployment](ascend950_umdk.md).
+The [board setup and test scripts](ascend950_board.md) install the pinned stack
+and run the single-device, HCCL, roundtrip and model checks on a new host.
 
 This recipe configures target and draft A/F execution using the existing
 Async CAM transport. Attention retains attention, routing, shared experts,

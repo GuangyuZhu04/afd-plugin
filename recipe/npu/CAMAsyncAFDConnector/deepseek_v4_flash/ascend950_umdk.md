@@ -1,5 +1,8 @@
 # 在 8 张 Ascend 950 上启动 DeepSeek-V4-Flash
 
+11 月 28 日适配分支提供了容器、安装和分层测试脚本。换机部署使用本分支的框架 wheel，
+以包含 Attention 侧的 SAS 元数据适配和原生扩展加载。[新机搭建与复测](ascend950_board.md)
+
 这个用例运行两个 eager ModelRunnerV2 服务。前四张设备组成 Attention DP2/TP2，
 负责 Hash/普通门控、共享专家和最终加权合并。后四张组成 FFN EP4/TP1，每个 rank
 保存连续的一段路由专家。Attention 与 FFN 使用插件内置的四个
@@ -31,9 +34,9 @@ python -m pip install --no-index --no-deps --force-reinstall "$VLLM_WHEEL" "$VLL
 ```
 
 在已初始化 CANN 并安装匹配 DeepEP owner 的环境中执行以下命令，结果目录放在容器外持久卷。
-需要从源码构建时执行两条 pip 命令。板测镜像已安装框架版 `7cc7911` wheel 和 OPP 时可直接复用，
-从更新后的框架分支执行 `git archive HEAD tests`，以便这次运行使用修正了 TP 层号的测试脚本。
-[框架版 wheel 与 OPP](https://github.com/GuangyuZhu04/afd-plugin/releases/tag/ascend950-umdk-dsv4-flash-7cc7911)
+需要从源码构建时执行两条 pip 命令，再从相同分支执行 `git archive HEAD tests`。
+历史框架版 `7cc7911` 的 wheel 和 OPP 可用于复现 11 月 27 日的通信回环。
+[11 月 27 日制品](https://github.com/GuangyuZhu04/afd-plugin/releases/tag/ascend950-umdk-dsv4-flash-7cc7911)
 
 ```bash
 export SOC_VERSION=950 AFD_BUILD_ASCEND_OPS=1

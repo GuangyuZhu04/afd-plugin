@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+from importlib import import_module
 from importlib.metadata import PackageNotFoundError, distribution
 from importlib.util import find_spec
 from pathlib import Path
@@ -22,6 +23,42 @@ UMDK_MXFP_STACK = (
     ("vllm", "0.32.0+empty.g5df63a7", "5df63a7203cdb9328d824a27b682e77c7b9928be"),
     ("vllm-ascend", "0.32.0.dev0+gbd42eea", "bd42eea01d8312c4df469fabaed45f77a12df4d3"),
 )
+
+
+def load_umdk_attention_extension(*, indexed: bool) -> str:
+    """Load the native Attention bindings after the worker selects its device."""
+    import torch
+    from vllm_ascend.utils import bootstrap_custom_op_env
+
+    bootstrap_custom_op_env()
+    try:
+        extension = import_module("vllm_ascend.vllm_ascend_C")
+    except (ImportError, OSError) as exc:
+        raise RuntimeError(
+            "Cannot load vllm_ascend.vllm_ascend_C. Install the pinned A5 wheel "
+            f"built with COMPILE_CUSTOM_KERNELS=1 and its linked vendor. {exc}"
+        ) from exc
+    names = ["npu_hc_pre_v2", "npu_hc_post"]
+    if indexed:
+        names.extend(
+            (
+                "npu_quant_lightning_indexer_v2_metadata",
+                "npu_quant_lightning_indexer_v2",
+            )
+        )
+    missing = [
+        name
+        for name in names
+        if not hasattr(torch.ops._C_ascend, name)
+        or not torch._C._dispatch_has_kernel_for_dispatch_key(
+            f"_C_ascend::{name}", "PrivateUse1"
+        )
+    ]
+    if missing:
+        raise RuntimeError(
+            f"{extension.__file__} is missing Flash bindings: {', '.join(missing)}"
+        )
+    return str(extension.__file__)
 
 
 def _editable_commit(name: str, url: str) -> str:

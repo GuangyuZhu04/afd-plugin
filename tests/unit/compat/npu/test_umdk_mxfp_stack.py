@@ -6,11 +6,45 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 from types import SimpleNamespace
 
 import pytest
 
 from afd_plugin.compat.npu import umdk_mxfp_stack as stack
+
+
+@pytest.mark.parametrize("indexed", [False, True])
+def test_hc_only_extension_is_usable_only_without_indexed_layers(monkeypatch, indexed):
+    # A schema without a device dispatch is insufficient in this worker.
+    ops = SimpleNamespace(
+        npu_hc_pre_v2=1, npu_hc_post=1, npu_quant_lightning_indexer_v2_metadata=1
+    )
+    torch = SimpleNamespace(
+        ops=SimpleNamespace(_C_ascend=ops),
+        _C=SimpleNamespace(
+            _dispatch_has_kernel_for_dispatch_key=lambda name, key: name.startswith(
+                "_C_ascend::npu_hc_"
+            )
+        ),
+    )
+    monkeypatch.setitem(sys.modules, "torch", torch)
+    monkeypatch.setitem(
+        sys.modules,
+        "vllm_ascend.utils",
+        SimpleNamespace(bootstrap_custom_op_env=lambda: None),
+    )
+    monkeypatch.setattr(
+        stack, "import_module", lambda _: SimpleNamespace(__file__="vllm_ascend_C.so")
+    )
+    if indexed:
+        with pytest.raises(
+            RuntimeError,
+            match="vllm_ascend_C.so.*npu_quant_lightning_indexer_v2_metadata",
+        ):
+            stack.load_umdk_attention_extension(indexed=True)
+    else:
+        assert stack.load_umdk_attention_extension(indexed=False) == "vllm_ascend_C.so"
 
 
 def install_metadata(monkeypatch, commit, origin):

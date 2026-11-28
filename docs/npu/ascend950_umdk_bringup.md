@@ -1,5 +1,8 @@
 # Ascend 950 registered-buffer transport on hardware
 
+The [November 28 board recipe](../../recipe/npu/CAMAsyncAFDConnector/deepseek_v4_flash/ascend950_board.md)
+packages the environment setup and the independent Attention, HCCL and roundtrip checks.
+
 Build a 950 plugin wheel and install it with the DeepEP `AFDBuffer` owner at
 `25b5153e` and its DeepJIT submodule at `65f51395`. On openEuler the owner
 build needs C++20 `<format>`, the matching libstdc++ development package,
